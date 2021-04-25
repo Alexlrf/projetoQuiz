@@ -15,7 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.projeto.repository.Constants;
 
-public class Principal extends JFrame {
+public class TelaQuestoes extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
@@ -27,7 +27,7 @@ public class Principal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Principal frame = new Principal();
+					TelaQuestoes frame = new TelaQuestoes();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +39,7 @@ public class Principal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Principal() {
+	public TelaQuestoes() {
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);

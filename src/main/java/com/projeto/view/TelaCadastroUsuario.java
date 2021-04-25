@@ -18,6 +18,7 @@ import java.awt.FlowLayout;
 import javax.swing.border.LineBorder;
 import java.awt.Font;
 import javax.swing.border.BevelBorder;
+import java.awt.Dimension;
 
 public class TelaCadastroUsuario extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -44,11 +45,12 @@ public class TelaCadastroUsuario extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaCadastroUsuario() {
+		setTitle("Cadastro de Usu\u00E1rio");
+		setMinimumSize(new Dimension(200, 100));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 619, 415);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(222, 184, 135));
-		contentPane.setBorder(new LineBorder(Color.GRAY, 3));
 		setContentPane(contentPane);
 		
 		JPanel panel = new JPanel();
@@ -59,8 +61,8 @@ public class TelaCadastroUsuario extends JFrame {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(128, 128, 128), 4, true));
-		panel_1.setBackground(new Color(255, 235, 205));
+		panel_1.setBorder(null);
+		panel_1.setBackground(new Color(210, 180, 140));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -89,14 +91,20 @@ public class TelaCadastroUsuario extends JFrame {
 		panel_1.setLayout(new GridLayout(0, 3, 10, 10));
 		
 		JButton btnNewButton_2 = new JButton("Voltar");
+		btnNewButton_2.setToolTipText("Volta para p\u00E1gina de login");
+		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton_2.setBackground(new Color(105, 105, 105));
 		panel_1.add(btnNewButton_2);
 		
 		JButton btnNewButton_1 = new JButton("Limpar");
+		btnNewButton_1.setToolTipText("Limpa todos campos do formul\u00E1rio");
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton_1.setBackground(new Color(105, 105, 105));
 		panel_1.add(btnNewButton_1);
 		
 		JButton btnNewButton = new JButton("Cadastrar");
+		btnNewButton.setToolTipText("Cadastra o usu\u00E1rio");
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton.setBackground(new Color(105, 105, 105));
 		panel_1.add(btnNewButton);
 		contentPane.setLayout(gl_contentPane);
