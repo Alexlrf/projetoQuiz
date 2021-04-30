@@ -52,24 +52,24 @@ public class TelaQuestoes extends JFrame {
 		btn1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String titulo = "Quiz - Capitais de estados brasileiros";
-				String resposta = JOptionPane.showInputDialog(null, "Qual a capital do Paraná?", titulo,
+				String resposta = JOptionPane.showInputDialog(null, "Qual a capital do Paranï¿½?", titulo,
 						JOptionPane.QUESTION_MESSAGE).trim();
 				if (!resposta.equalsIgnoreCase("Curitiba")) {
 					String segundaResposta = JOptionPane.showInputDialog(null,
 							Constants.OUTRA_CHANCE, titulo, JOptionPane.ERROR_MESSAGE).trim();
 					if (segundaResposta.equalsIgnoreCase("Curitiba")) {
-						JOptionPane.showInternalMessageDialog(null, Constants.CERTA, titulo,
+						JOptionPane.showMessageDialog(null, Constants.CERTA, titulo,
 								JOptionPane.INFORMATION_MESSAGE);
 						btn1.setBackground(Color.green);
 						btn1.setEnabled(false);
 					} else {
-						JOptionPane.showInternalMessageDialog(null, Constants.ERRADA, titulo,
+						JOptionPane.showMessageDialog(null, Constants.ERRADA, titulo,
 								JOptionPane.ERROR_MESSAGE);
 						btn1.setBackground(Color.red);
 						btn1.setEnabled(false);
 					}
 				} else {
-					JOptionPane.showInternalMessageDialog(null, Constants.CERTA, titulo,
+					JOptionPane.showMessageDialog(null, Constants.CERTA, titulo,
 							JOptionPane.INFORMATION_MESSAGE);
 					btn1.setBackground(Color.green);
 					btn1.setEnabled(false);
