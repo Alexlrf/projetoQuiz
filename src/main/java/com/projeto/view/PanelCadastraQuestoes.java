@@ -144,7 +144,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		JButton btnAdicionaResposta = new JButton("");
 		btnAdicionaResposta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				limparTabela();
+				//limparTabela();
 			}
 		});
 		btnAdicionaResposta.setToolTipText("Adicionar resposta");
@@ -241,7 +241,5 @@ public class PanelCadastraQuestoes extends JPanel {
 		this.add(table);		
 
 	}	
-	private void limparTabela() {
-		table.setModel(new DefaultTableModel(new Object[][] { nomeColunas, }, nomeColunas));				
-	}
+
 }
