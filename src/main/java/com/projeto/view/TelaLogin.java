@@ -20,12 +20,14 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Font;
+import java.awt.Toolkit;
 
 public class TelaLogin extends JFrame {
 
@@ -52,6 +54,7 @@ public class TelaLogin extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaLogin() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaLogin.class.getResource("/imagens/iconeQuebraCabeca.png")));
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -59,6 +62,12 @@ public class TelaLogin extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
+		
+		JOptionPane.showMessageDialog(null, "Digite "
+				+ "\nUSUARIO = admin (Para acessar tela de cadastro de perguntas)"
+				+ "\nUSUARIO = aluno (Para acessar a tela de questões) ");
 		
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBounds(0, 0, 1368, 705);
@@ -86,6 +95,8 @@ public class TelaLogin extends JFrame {
 		);
 		
 		JFormattedTextField frmtdtxtfldUsuario = new JFormattedTextField();
+		frmtdtxtfldUsuario.setForeground(new Color(128, 128, 128));
+		frmtdtxtfldUsuario.setFont(new Font("Tahoma", Font.BOLD, 11));
 		frmtdtxtfldUsuario.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -103,7 +114,7 @@ public class TelaLogin extends JFrame {
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				if (frmtdtxtfldUsuario.getText().isEmpty() || frmtdtxtfldUsuario.getText().trim().length() < 1 ) {
+				if (frmtdtxtfldUsuario.getText().trim().isEmpty()) {
 					frmtdtxtfldUsuario.setText("USUÁRIO");
 				}
 			}
@@ -133,9 +144,10 @@ public class TelaLogin extends JFrame {
 		btnLogar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (frmtdtxtfldUsuario.getText().equalsIgnoreCase("admin")) {
-					TelaMenuProfessor telaMenuProfessor = new TelaMenuProfessor();	
-					telaMenuProfessor.setVisible(true);
-					dispose();
+					TelaMenuProfessor telaMenuProfessor = new TelaMenuProfessor();						
+					telaMenuProfessor.setVisible(true);					
+					dispose();					
+					
 				}else if(frmtdtxtfldUsuario.getText().equalsIgnoreCase("aluno")) {
 					TelaQuestoes questoes = new TelaQuestoes();
 					questoes.setVisible(true);

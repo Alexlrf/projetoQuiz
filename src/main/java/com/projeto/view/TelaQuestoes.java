@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.projeto.repository.Constants;
+import java.awt.Toolkit;
 
 public class TelaQuestoes extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -40,6 +41,7 @@ public class TelaQuestoes extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaQuestoes() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaQuestoes.class.getResource("/imagens/iconeQuebraCabeca.png")));
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);

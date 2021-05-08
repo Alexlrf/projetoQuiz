@@ -16,6 +16,7 @@ import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import java.awt.Toolkit;
+import javax.swing.JLabel;
 
 public class TelaMenuProfessor extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -51,22 +52,27 @@ public class TelaMenuProfessor extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnNewMenu_1 = new JMenu("GERAL");
-		menuBar.add(mnNewMenu_1);
+		JMenu menuGeral = new JMenu("GERAL");
+		menuBar.add(menuGeral);
 		
-		JMenu mnNewMenu = new JMenu("QUIZ");
+		JMenuItem menuAlgumaCoisa = new JMenuItem("Alguma Coisa");
+		menuGeral.add(menuAlgumaCoisa);
+		
+		JMenu mnNewMenu = new JMenu("QUESTÕES");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Cadastrar Quiz");
-		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_UNDEFINED, 0));
-		mntmNewMenuItem.addActionListener(new ActionListener() {
+		JMenuItem menuCadastraQuestao = new JMenuItem("Cadastrar Questão");
+		menuCadastraQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				contentPane = new PanelCadastraQuestoes();
 				setContentPane(contentPane);
 				revalidate();
 			}
 		});
-		mnNewMenu.add(mntmNewMenuItem);
+		mnNewMenu.add(menuCadastraQuestao);
+		
+		JMenuItem menuConsultaQuestao = new JMenuItem("Consultar Questões");
+		mnNewMenu.add(menuConsultaQuestao);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
