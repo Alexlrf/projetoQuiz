@@ -2,13 +2,16 @@ package com.projeto.model.bo;
 
 import java.util.List;
 
+import com.projeto.model.entity.PerguntaVO;
+
 public class AlternativaBO {
 
-	public void cadastraAlternativas(String pergunta, List<String> listaAlternativas) {
-		System.out.println("Deu certo - "+pergunta.toString());
-		
+	public void cadastraAlternativas(PerguntaVO pergunta, List<String> listaAlternativas) {
+		System.out.println(" CATEGORIA: "+pergunta.getCategoria()+"\n\n PERGUNTA: "+pergunta.getTexto()+"\n\n");
+		int cont = 1;
 		for (String opcao : listaAlternativas) {
-			System.out.println(opcao);
+			System.out.println(" >> ALTERNATIVA "+cont+":  "+opcao+"\n");
+			cont ++;
 		}
 		
 	}

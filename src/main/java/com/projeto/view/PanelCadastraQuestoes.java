@@ -42,6 +42,7 @@ public class PanelCadastraQuestoes extends JPanel {
 	private JComboBox comboBoxPerguntas = new JComboBox();
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private List<String> listaAlternativas = new ArrayList<>();
+	private PerguntaVO perguntaVO = null;
 	public JLabel lblNomeUsuario;
 
 	AlternativaController alternativaController = new AlternativaController();
@@ -116,11 +117,11 @@ public class PanelCadastraQuestoes extends JPanel {
 				if (Utils.stringValida(txtAdicionaCategoria.getText())
 						&& !txtAdicionaCategoria.getText().equalsIgnoreCase("Adicionar categoria")) {
 
-					if (JOptionPane.showConfirmDialog(null, txtAdicionaCategoria.getText().toUpperCase(),
+					if (JOptionPane.showConfirmDialog(null, Utils.formataEspacoUnico(txtAdicionaCategoria.getText().toString()).toUpperCase(),
 							"Confirmar categoria?", JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 
-						comboBoxPerguntas.addItem(txtAdicionaCategoria.getText().toString().trim());
+						comboBoxPerguntas.addItem(Utils.formataEspacoUnico(txtAdicionaCategoria.getText().toString()));
 						txtAdicionaCategoria.setText("Adicionar categoria");
 					} else {
 						txtAdicionaCategoria.setText("Adicionar categoria");
@@ -558,7 +559,7 @@ public class PanelCadastraQuestoes extends JPanel {
 					
 				} else {
 					try {						
-						alternativaController.cadastraAlternativas(txtCadastraPergunta.getText(), listaAlternativas);						
+						alternativaController.cadastraAlternativas(perguntaVO, listaAlternativas);						
 						JOptionPane.showMessageDialog(null, "Cadastro realizado!", Constants.SUCESSO, JOptionPane.INFORMATION_MESSAGE, null);
 						limpaPreenchimento();						
 						
@@ -569,15 +570,15 @@ public class PanelCadastraQuestoes extends JPanel {
 			}
 
 			private void capturaDadosDaTela() {
-				PerguntaVO perguntaVO = new PerguntaVO();
-				perguntaVO.setTexto(txtCadastraPergunta.getText());
-				perguntaVO.setCategoria(comboBoxPerguntas.getSelectedItem().toString());
 				listaAlternativas = new ArrayList<>();
-				listaAlternativas.add(txtCadastraResposta1.getText().toString());
-				listaAlternativas.add(txtCadastraResposta2.getText().toString());
-				listaAlternativas.add(txtCadastraResposta3.getText().toString());
-				listaAlternativas.add(txtCadastraResposta4.getText().toString());
-				listaAlternativas.add(txtCadastraResposta5.getText().toString());	
+				perguntaVO = new PerguntaVO();				
+				perguntaVO.setCategoria(comboBoxPerguntas.getSelectedItem().toString());
+				perguntaVO.setTexto(Utils.formataEspacoUnico(txtCadastraPergunta.getText().toString()));
+				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta1.getText().toString()));
+				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta2.getText().toString()));
+				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta3.getText().toString()));
+				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta4.getText().toString()));
+				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta5.getText().toString()));
 				
 			}
 

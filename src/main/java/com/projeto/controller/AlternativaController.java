@@ -6,6 +6,7 @@ import javax.swing.ButtonGroup;
 
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.AlternativaBO;
+import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 
@@ -13,12 +14,12 @@ public class AlternativaController {
 	 
 	AlternativaBO alternativaBO = new AlternativaBO();
 	
-	public boolean cadastraAlternativas(String pergunta, List<String> listaAlternativas) throws ErroNoCadastroException {		
+	public boolean cadastraAlternativas(PerguntaVO pergunta, List<String> listaAlternativas) throws ErroNoCadastroException {		
 		boolean retorno = true;
 		String validacao = "";		
 		
 		if (validaAlternativas(listaAlternativas)) {
-			if (validaPergunta(pergunta)) {
+			if (validaPergunta(pergunta.getTexto())) {
 				alternativaBO.cadastraAlternativas(pergunta, listaAlternativas);
 			}else {
 				validacao += "Verifique o campo PERGUNTA\n";

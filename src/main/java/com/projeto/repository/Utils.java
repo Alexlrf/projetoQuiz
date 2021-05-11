@@ -51,5 +51,18 @@ public class Utils {
 		}
 		return retorno;		
 	}
+	
+	/**
+	 * 
+	 * Utiliza os métodos trim() e replaceAll() da classe String para formatar texto
+	 * 
+	 * @param texto
+	 * @return String formatada com no máximo 1 espaço entre as palavras e sem espaços em branco no início e no fim do texto.
+	 */
+	public static String formataEspacoUnico(String texto) {
+		
+		return texto.replaceAll("\\s+", " ").trim();
+		
+	}
 
 }
