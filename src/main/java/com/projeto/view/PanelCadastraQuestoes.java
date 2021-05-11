@@ -29,6 +29,7 @@ import com.projeto.controller.AlternativaController;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -127,7 +128,7 @@ public class PanelCadastraQuestoes extends JPanel {
 
 				} else {
 					JOptionPane.showMessageDialog(null, "Digite a categoria", "ATENÇÃO",
-							JOptionPane.INFORMATION_MESSAGE, null);
+							JOptionPane.ERROR_MESSAGE, null);
 				}
 			}
 		});
@@ -141,12 +142,12 @@ public class PanelCadastraQuestoes extends JPanel {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (!Utils.stringValida(txtCadastraResposta1.getText())) {
-					txtCadastraResposta1.setText("1ª alternativa");
+					txtCadastraResposta1.setText(Constants.ALTERNATIVA_1);
 				}
 			}
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (txtCadastraResposta1.getText().equalsIgnoreCase("1ª alternativa")) {
+				if (txtCadastraResposta1.getText().equalsIgnoreCase(Constants.ALTERNATIVA_1)) {
 					txtCadastraResposta1.setText("");
 				}
 			}
@@ -154,7 +155,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta1.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (txtCadastraResposta1.getText().equalsIgnoreCase("1ª alternativa")) {
+				if (txtCadastraResposta1.getText().equalsIgnoreCase(Constants.ALTERNATIVA_1)) {
 					txtCadastraResposta1.setText("");
 				}
 			}
@@ -164,7 +165,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (txtCadastraResposta1.getText().equalsIgnoreCase("1ª alternativa")) {
+				if (txtCadastraResposta1.getText().equalsIgnoreCase(Constants.ALTERNATIVA_1)) {
 					txtCadastraResposta1.setText("");
 				}
 			}
@@ -179,11 +180,11 @@ public class PanelCadastraQuestoes extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if (txtCadastraResposta1.getText().trim().isEmpty()) {
-					txtCadastraResposta1.setText("1ª alternativa");
+					txtCadastraResposta1.setText(Constants.ALTERNATIVA_1);
 				}
 			}
 		});
-		txtCadastraResposta1.setText("1ª alternativa");
+		txtCadastraResposta1.setText(Constants.ALTERNATIVA_1);
 
 		JPanel panelBotoes = new JPanel();
 		panelBotoes.setBackground(new Color(222, 184, 135));
@@ -193,12 +194,12 @@ public class PanelCadastraQuestoes extends JPanel {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (!Utils.stringValida(txtCadastraResposta2.getText())) {
-					txtCadastraResposta2.setText("2ª alternativa");
+					txtCadastraResposta2.setText(Constants.ALTERNATIVA_2);
 				}
 			}
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (txtCadastraResposta2.getText().equalsIgnoreCase("2ª alternativa")) {
+				if (txtCadastraResposta2.getText().equalsIgnoreCase(Constants.ALTERNATIVA_2)) {
 					txtCadastraResposta2.setText("");
 				}
 			}
@@ -206,7 +207,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta2.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (txtCadastraResposta2.getText().equalsIgnoreCase("2ª alternativa")) {
+				if (txtCadastraResposta2.getText().equalsIgnoreCase(Constants.ALTERNATIVA_2)) {
 					txtCadastraResposta2.setText("");
 				}
 			}
@@ -216,7 +217,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (txtCadastraResposta2.getText().equalsIgnoreCase("2ª alternativa")) {
+				if (txtCadastraResposta2.getText().equalsIgnoreCase(Constants.ALTERNATIVA_2)) {
 					txtCadastraResposta2.setText("");
 				}
 			}
@@ -231,23 +232,23 @@ public class PanelCadastraQuestoes extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if (txtCadastraResposta2.getText().trim().isEmpty()) {
-					txtCadastraResposta2.setText("2ª alternativa");
+					txtCadastraResposta2.setText(Constants.ALTERNATIVA_2);
 				}
 			}
 		});
-		txtCadastraResposta2.setText("2ª alternativa");
+		txtCadastraResposta2.setText(Constants.ALTERNATIVA_2);
 
 		JFormattedTextField txtCadastraResposta3 = new JFormattedTextField();
 		txtCadastraResposta3.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (!Utils.stringValida(txtCadastraResposta3.getText())) {
-					txtCadastraResposta3.setText("3ª alternativa");
+					txtCadastraResposta3.setText(Constants.ALTERNATIVA_3);
 				}
 			}
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (txtCadastraResposta3.getText().equalsIgnoreCase("3ª alternativa")) {
+				if (txtCadastraResposta3.getText().equalsIgnoreCase(Constants.ALTERNATIVA_3)) {
 					txtCadastraResposta3.setText("");
 				}
 			}
@@ -255,7 +256,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta3.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (txtCadastraResposta3.getText().equalsIgnoreCase("3ª alternativa")) {
+				if (txtCadastraResposta3.getText().equalsIgnoreCase(Constants.ALTERNATIVA_3)) {
 					txtCadastraResposta3.setText("");
 				}
 			}
@@ -265,7 +266,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (txtCadastraResposta3.getText().equalsIgnoreCase("3ª alternativa")) {
+				if (txtCadastraResposta3.getText().equalsIgnoreCase(Constants.ALTERNATIVA_3)) {
 					txtCadastraResposta3.setText("");
 				}
 			}
@@ -280,23 +281,23 @@ public class PanelCadastraQuestoes extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if (txtCadastraResposta3.getText().trim().isEmpty()) {
-					txtCadastraResposta3.setText("3ª alternativa");
+					txtCadastraResposta3.setText(Constants.ALTERNATIVA_3);
 				}
 			}
 		});
-		txtCadastraResposta3.setText("3ª alternativa");
+		txtCadastraResposta3.setText(Constants.ALTERNATIVA_3);
 
 		JFormattedTextField txtCadastraResposta4 = new JFormattedTextField();
 		txtCadastraResposta4.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (!Utils.stringValida(txtCadastraResposta4.getText())) {
-					txtCadastraResposta4.setText("4ª alternativa");
+					txtCadastraResposta4.setText(Constants.ALTERNATIVA_4);
 				}
 			}
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (txtCadastraResposta4.getText().equalsIgnoreCase("4ª alternativa")) {
+				if (txtCadastraResposta4.getText().equalsIgnoreCase(Constants.ALTERNATIVA_4)) {
 					txtCadastraResposta4.setText("");
 				}
 			}
@@ -304,7 +305,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta4.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (txtCadastraResposta4.getText().equalsIgnoreCase("4ª alternativa")) {
+				if (txtCadastraResposta4.getText().equalsIgnoreCase(Constants.ALTERNATIVA_4)) {
 					txtCadastraResposta4.setText("");
 				}
 			}
@@ -314,7 +315,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (txtCadastraResposta4.getText().equalsIgnoreCase("4ª alternativa")) {
+				if (txtCadastraResposta4.getText().equalsIgnoreCase(Constants.ALTERNATIVA_4)) {
 					txtCadastraResposta4.setText("");
 				}
 			}
@@ -329,23 +330,23 @@ public class PanelCadastraQuestoes extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if (txtCadastraResposta4.getText().trim().isEmpty()) {
-					txtCadastraResposta4.setText("4ª alternativa");
+					txtCadastraResposta4.setText(Constants.ALTERNATIVA_4);
 				}
 			}
 		});
-		txtCadastraResposta4.setText("4ª alternativa");
+		txtCadastraResposta4.setText(Constants.ALTERNATIVA_4);
 
 		JFormattedTextField txtCadastraResposta5 = new JFormattedTextField();
 		txtCadastraResposta5.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (!Utils.stringValida(txtCadastraResposta5.getText())) {
-					txtCadastraResposta5.setText("5ª alternativa");
+					txtCadastraResposta5.setText(Constants.ALTERNATIVA_5);
 				}
 			}
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (txtCadastraResposta5.getText().equalsIgnoreCase("5ª alternativa")) {
+				if (txtCadastraResposta5.getText().equalsIgnoreCase(Constants.ALTERNATIVA_5)) {
 					txtCadastraResposta5.setText("");
 				}
 			}
@@ -353,7 +354,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta5.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (txtCadastraResposta5.getText().equalsIgnoreCase("5ª alternativa")) {
+				if (txtCadastraResposta5.getText().equalsIgnoreCase(Constants.ALTERNATIVA_5)) {
 					txtCadastraResposta5.setText("");
 				}
 			}
@@ -363,7 +364,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (txtCadastraResposta5.getText().equalsIgnoreCase("5ª alternativa")) {
+				if (txtCadastraResposta5.getText().equalsIgnoreCase(Constants.ALTERNATIVA_5)) {
 					txtCadastraResposta5.setText("");
 				}
 			}
@@ -378,23 +379,23 @@ public class PanelCadastraQuestoes extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if (txtCadastraResposta5.getText().trim().isEmpty()) {
-					txtCadastraResposta5.setText("5ª alternativa");
+					txtCadastraResposta5.setText(Constants.ALTERNATIVA_5);
 				}
 			}
 		});
-		txtCadastraResposta5.setText("5ª alternativa");
+		txtCadastraResposta5.setText(Constants.ALTERNATIVA_5);
 
 		JFormattedTextField txtCadastraPergunta = new JFormattedTextField();
 		txtCadastraPergunta.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (!Utils.stringValida(txtCadastraPergunta.getText())) {
-					txtCadastraPergunta.setText("Digite aqui a PERGUNTA");
+					txtCadastraPergunta.setText(Constants.PERGUNTA);
 				}
 			}
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (txtCadastraPergunta.getText().equalsIgnoreCase("Digite aqui a PERGUNTA")) {
+				if (txtCadastraPergunta.getText().equalsIgnoreCase(Constants.PERGUNTA)) {
 					txtCadastraPergunta.setText("");
 				}
 			}
@@ -402,7 +403,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraPergunta.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (txtCadastraPergunta.getText().equalsIgnoreCase("Digite aqui a PERGUNTA")) {
+				if (txtCadastraPergunta.getText().equalsIgnoreCase(Constants.PERGUNTA)) {
 					txtCadastraPergunta.setText("");
 				}
 			}
@@ -411,7 +412,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraPergunta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (txtCadastraPergunta.getText().equalsIgnoreCase("Digite aqui a PERGUNTA")) {
+				if (txtCadastraPergunta.getText().equalsIgnoreCase(Constants.PERGUNTA)) {
 					txtCadastraPergunta.setText("");
 				}
 			}
@@ -426,7 +427,7 @@ public class PanelCadastraQuestoes extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if (txtCadastraPergunta.getText().trim().isEmpty()) {
-					txtCadastraPergunta.setText("Digite aqui a PERGUNTA");
+					txtCadastraPergunta.setText(Constants.PERGUNTA);
 				}
 			}
 		});
@@ -542,34 +543,76 @@ public class PanelCadastraQuestoes extends JPanel {
 		JButton btnNewButton_2 = new JButton("New button");
 		panelBotoes.add(btnNewButton_2);
 
-		JButton btnNewButton_1 = new JButton("Salvar");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				capturaDadosDaTela();							
+
+				if (!validaAlternatiaCorreta(buttonGroup)) {
+					JOptionPane.showMessageDialog(null, "Verifique o preenchimento\n Marque a alternativa correta", Constants.ALERTA
+							, JOptionPane.ERROR_MESSAGE, null);
+					
+				} else if(!validaComboBoxCategoria(comboBoxPerguntas)) {
+					JOptionPane.showMessageDialog(null, "Insira uma categoria", Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);
+					
+				} else {
+					try {						
+						alternativaController.cadastraAlternativas(txtCadastraPergunta.getText(), listaAlternativas);						
+						JOptionPane.showMessageDialog(null, "Cadastro realizado!", Constants.SUCESSO, JOptionPane.INFORMATION_MESSAGE, null);
+						limpaPreenchimento();						
+						
+					} catch (ErroNoCadastroException mensagem) {						
+						JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);						
+					}
+				}
+			}
+
+			private void capturaDadosDaTela() {
 				PerguntaVO perguntaVO = new PerguntaVO();
 				perguntaVO.setTexto(txtCadastraPergunta.getText());
 				perguntaVO.setCategoria(comboBoxPerguntas.getSelectedItem().toString());
-
+				listaAlternativas = new ArrayList<>();
 				listaAlternativas.add(txtCadastraResposta1.getText().toString());
 				listaAlternativas.add(txtCadastraResposta2.getText().toString());
 				listaAlternativas.add(txtCadastraResposta3.getText().toString());
 				listaAlternativas.add(txtCadastraResposta4.getText().toString());
-				listaAlternativas.add(txtCadastraResposta5.getText().toString());
+				listaAlternativas.add(txtCadastraResposta5.getText().toString());	
+				
+			}
 
-				AlternativaController alternativaController = new AlternativaController();
+			private void limpaPreenchimento() {
+				buttonGroup.clearSelection();
+				comboBoxPerguntas.setSelectedIndex(0);
+				txtCadastraPergunta.setText(Constants.PERGUNTA);
+				txtCadastraResposta1.setText(Constants.ALTERNATIVA_1);
+				txtCadastraResposta2.setText(Constants.ALTERNATIVA_2);
+				txtCadastraResposta3.setText(Constants.ALTERNATIVA_3);
+				txtCadastraResposta4.setText(Constants.ALTERNATIVA_4);
+				txtCadastraResposta5.setText(Constants.ALTERNATIVA_5);
+				
+			}
 
-				try {
-
-					alternativaController.cadastraAlternativas(txtCadastraPergunta.getText(), listaAlternativas);						
-					JOptionPane.showMessageDialog(null, "Cadastro realizado!", "SUCESSO", JOptionPane.INFORMATION_MESSAGE, null);
-					
-				} catch (ErroNoCadastroException mensagem) {
-					
-					JOptionPane.showMessageDialog(null, mensagem.getMessage());					
+			private boolean validaAlternatiaCorreta(ButtonGroup buttonGroup) {
+				boolean validado = true;
+				if (!rdbtnOpcaoCorreta1.isSelected()&& !rdbtnOpcaoCorreta2.isSelected()&& !rdbtnOpcaoCorreta3.isSelected()
+						&& !rdbtnOpcaoCorreta4.isSelected()&& !rdbtnOpcaoCorreta5.isSelected()) {
+					validado = false;
 				}
+				return validado;
+			}
+
+			private boolean validaComboBoxCategoria(JComboBox comboBoxPerguntas) {
+				boolean categoriaValido = true;
+				if (comboBoxPerguntas.getSelectedIndex() < 1) {					
+					categoriaValido = false;
+				}
+				return categoriaValido;				
 			}
 		});
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		panelBotoes.add(btnNewButton_1);
+		
+		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 11));
+		panelBotoes.add(btnSalvar);
 		setLayout(groupLayout);
 
 	}

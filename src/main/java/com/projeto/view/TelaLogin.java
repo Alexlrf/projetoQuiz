@@ -1,36 +1,31 @@
 package com.projeto.view;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.Frame;
 import java.awt.Color;
-import javax.swing.JFormattedTextField;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import java.awt.CardLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.border.LineBorder;
-import java.awt.event.ActionListener;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Font;
-import java.awt.Toolkit;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 public class TelaLogin extends JFrame {
-
+	private static final long serialVersionUID = 1L;
+	
 	private JPanel contentPane;
 	private final JPanel panelCentralDados = new JPanel();
 
@@ -95,6 +90,14 @@ public class TelaLogin extends JFrame {
 		);
 		
 		JFormattedTextField frmtdtxtfldUsuario = new JFormattedTextField();
+		frmtdtxtfldUsuario.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (frmtdtxtfldUsuario.getText().equalsIgnoreCase("USUÁRIO")) {
+					frmtdtxtfldUsuario.setText("");
+				}
+			}
+		});
 		frmtdtxtfldUsuario.setForeground(new Color(128, 128, 128));
 		frmtdtxtfldUsuario.setFont(new Font("Tahoma", Font.BOLD, 11));
 		frmtdtxtfldUsuario.addMouseListener(new MouseAdapter() {
@@ -117,7 +120,7 @@ public class TelaLogin extends JFrame {
 				if (frmtdtxtfldUsuario.getText().trim().isEmpty()) {
 					frmtdtxtfldUsuario.setText("USUÁRIO");
 				}
-			}
+			}		
 		});
 		
 		frmtdtxtfldUsuario.setText("USUÁRIO");

@@ -8,7 +8,7 @@ public class AlternativaBO {
 		System.out.println("Deu certo - "+pergunta.toString());
 		
 		for (String opcao : listaAlternativas) {
-			
+			System.out.println(opcao);
 		}
 		
 	}
