@@ -1,11 +1,9 @@
 package com.projeto.view;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.awt.Image;
+import java.awt.Toolkit;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class PanelImagemBackground extends JPanel {
@@ -14,23 +12,16 @@ public class PanelImagemBackground extends JPanel {
 	 * Create the panel.
 	 */
 	
-	BufferedImage imagemFundo;
+	private Image planoDeFundo;
+	
 	public PanelImagemBackground() {
-		
-		try {
-			//imagemFundo = ImageIO.read(new File("C:\\Users\\alf_a\\Downloads\\iconeQuebraCabeca.png"));
-			imagemFundo = ImageIO.read(new File("C:/Users/alf_a/eclipse-workspace/quiz/src/main/java/com/projeto/view/background.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		planoDeFundo = Toolkit.getDefaultToolkit().getImage(PanelImagemBackground.class.getResource("/imagens/background.png"));
+		this.repaint();
 	}
 	
 	@Override
-	protected void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(imagemFundo, 0, 0, null);
+		g.drawImage(planoDeFundo, 0, 0, null);
 	}
-
 }
