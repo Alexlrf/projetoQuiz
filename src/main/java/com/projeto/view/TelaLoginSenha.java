@@ -171,17 +171,18 @@ public class TelaLoginSenha extends JFrame {
 		// chama a tela do professor
 		if (usuario.getTipo().equals(UsuarioEnum.PROFESSOR)) {
 			TelaMenuProfessor telaProfessor = new TelaMenuProfessor();
-			telaProfessor.pack();
 			telaProfessor.setVisible(true);
 			dispose();
 			
 			// chama a tela do coordenador
 		} else if (usuario.getTipo().equals(UsuarioEnum.COORDENACAO)) {
 			// TODO fazer tela de coordenação
+			JOptionPane.showMessageDialog(null, "Olá coordenador(a), sua tela ainda esta em construção", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 			
 			// chama a tela do aluno
 		} else if (usuario.getTipo().equals(UsuarioEnum.ALUNO)) {
 			// TODO fazer tela do aluno
+			JOptionPane.showMessageDialog(null, "Olá aluno, sua tela ainda esta em construção", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 	}

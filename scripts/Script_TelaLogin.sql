@@ -23,7 +23,7 @@ INSERT INTO usuario (login, senha, tipo)  VALUES ('Vilmar', MD5('Vilmar*04'), 'P
 DELIMITER $$  
  DROP FUNCTION IF EXISTS fun_valida_usuario $$
 
--- A função verifica se existe na base dados alguma informação 
+-- A função verifica se existe na base de dados alguma informação 
 -- que coincida com os valores passados aos parâmetros p_login e p_senha, 
 -- se existir, a função retornará o idUsuario, caso não, 0.
 CREATE FUNCTION fun_valida_usuario( p_login VARCHAR(20), p_senha VARCHAR(50))  RETURNS NUMERIC(1)
@@ -35,7 +35,7 @@ CREATE FUNCTION fun_valida_usuario( p_login VARCHAR(20), p_senha VARCHAR(50))  R
         
 		RETURN l_ret;  
 	END $$
-DELIMITER ;  
+DELIMITER ;
 
 SELECT fun_valida_usuario('admin','admin') as validacao;
 SELECT fun_valida_usuario('Alison','Alison@01') as validacao;
