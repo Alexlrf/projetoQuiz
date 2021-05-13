@@ -1,7 +1,7 @@
 package com.projeto.model.bo;
 
+import com.projeto.model.dao.UsuarioDAO;
 import com.projeto.model.entity.UsuarioVO;
-import com.projeto.repository.UsuarioDAO;
 
 public class VerificarLoginBO {
 

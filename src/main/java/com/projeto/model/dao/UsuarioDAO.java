@@ -1,4 +1,4 @@
-package com.projeto.repository;
+package com.projeto.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.projeto.enums.UsuarioEnum;
 import com.projeto.model.entity.UsuarioVO;
+import com.projeto.repository.Banco;
+import com.projeto.repository.BaseDao;
 
 public class UsuarioDAO implements BaseDao<UsuarioVO>{
 	
