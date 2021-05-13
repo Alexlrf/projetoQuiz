@@ -27,6 +27,8 @@ public class TelaLogin extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
+	private JFormattedTextField frmtdtxtfldUsuario;	
+
 	private final JPanel panelCentralDados = new JPanel();
 
 	/**
@@ -89,7 +91,7 @@ public class TelaLogin extends JFrame {
 					.addContainerGap(195, Short.MAX_VALUE))
 		);
 		
-		JFormattedTextField frmtdtxtfldUsuario = new JFormattedTextField();
+		frmtdtxtfldUsuario = new JFormattedTextField();
 		frmtdtxtfldUsuario.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -145,10 +147,13 @@ public class TelaLogin extends JFrame {
 			}
 		});
 		btnLogar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {				
 				if (frmtdtxtfldUsuario.getText().equalsIgnoreCase("admin")) {
-					TelaMenuProfessor telaMenuProfessor = new TelaMenuProfessor();						
-					telaMenuProfessor.setVisible(true);					
+					TelaMenuProfessor telaMenuProfessor = new TelaMenuProfessor();							
+//					PanelGeralProfessor geralProfessor = new PanelGeralProfessor();
+//					geralProfessor.lblNomeUsuarioLogado.setText(frmtdtxtfldUsuario.getText().toString());
+//					telaMenuProfessor.add(geralProfessor);					
+					telaMenuProfessor.setVisible(true);
 					dispose();					
 					
 				}else if(frmtdtxtfldUsuario.getText().equalsIgnoreCase("aluno")) {
@@ -182,5 +187,6 @@ public class TelaLogin extends JFrame {
 		);
 		panelCentralDados.setLayout(gl_panelCentralDados);
 		panelTeste.setLayout(gl_panelTeste);
-	}
+	}	
+	
 }
