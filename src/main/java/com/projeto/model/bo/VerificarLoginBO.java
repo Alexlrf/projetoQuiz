@@ -1,11 +1,12 @@
 package com.projeto.model.bo;
 
-import com.projeto.repository.VerificarLoginDAO;
+import com.projeto.model.entity.UsuarioVO;
+import com.projeto.repository.UsuarioDAO;
 
 public class VerificarLoginBO {
 
-	public boolean verificarLoginBO(String login, String senha) {
-		VerificarLoginDAO verificarLogin = new VerificarLoginDAO();
+	public UsuarioVO verificarLoginBO(String login, String senha) {
+		UsuarioDAO verificarLogin = new UsuarioDAO();
 		return verificarLogin.verificarLoginDAO(login, senha);
 	}
 

@@ -25,16 +25,20 @@ DELIMITER $$
 
 -- A função verifica se existe na base dados alguma informação 
 -- que coincida com os valores passados aos parâmetros p_login e p_senha, 
--- se existir, a função retornará o valor 1 (Um), caso não, 0 (Zero).
+-- se existir, a função retornará o idUsuario, caso não, 0.
 CREATE FUNCTION fun_valida_usuario( p_login VARCHAR(20), p_senha VARCHAR(50))  RETURNS NUMERIC(1)
 	BEGIN  
-		DECLARE l_ret NUMERIC(1) DEFAULT 0;  
+		DECLARE l_ret NUMERIC(1) DEFAULT 0;
 		SET l_ret = IFNULL((SELECT DISTINCT idUsuario FROM usuario  
 							WHERE login = p_login  
-							AND senha = MD5(p_senha)),0);                           
+							AND senha = MD5(p_senha)),0);    
+        
 		RETURN l_ret;  
 	END $$
 DELIMITER ;  
 
 SELECT fun_valida_usuario('admin','admin') as validacao;
+SELECT fun_valida_usuario('Alison','Alison@01') as validacao;
+SELECT fun_valida_usuario('Alexandro','Alexandro&02') as validacao;
+SELECT fun_valida_usuario('login','senha');
 

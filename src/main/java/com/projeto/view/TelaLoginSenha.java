@@ -1,6 +1,5 @@
 package com.projeto.view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -8,22 +7,23 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.projeto.controller.VerificarLoginController;
+import com.projeto.enums.UsuarioEnum;
+import com.projeto.exceptions.LoginNaoInformadoException;
+import com.projeto.exceptions.SenhaNaoInformadaException;
+import com.projeto.exceptions.UsuarioNaoExistenteException;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import net.miginfocom.swing.MigLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JPasswordField;
 import javax.swing.JButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TelaLoginSenha extends JFrame {
 
@@ -31,6 +31,7 @@ public class TelaLoginSenha extends JFrame {
 	private PlaceholderTextField txtLogin;
 	private PlaceholderPasswordField passwordField;
 	private JCheckBox cbxMostrarSenha;
+	private JButton btnNewButton;
 
 	/**
 	 * Launch the application.
@@ -69,15 +70,39 @@ public class TelaLoginSenha extends JFrame {
 		JPanelBackground.add(panel);
 		
 		txtLogin = new PlaceholderTextField();
+		txtLogin.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent evento) {
+				if (evento.getKeyChar() == KeyEvent.VK_ENTER) {
+					verificarLogin();
+				}
+			}
+		});
 		txtLogin.setPlaceholder("login do usuário");
 		txtLogin.setToolTipText("Digite o seu Login");
 		txtLogin.setColumns(10);
 		
 		passwordField = new PlaceholderPasswordField();
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent evento) {
+				if (evento.getKeyChar() == KeyEvent.VK_ENTER) {
+					verificarLogin();
+				}
+			}
+		});
 		passwordField.setPlaceholder("Senha do usuário");
 		passwordField.setToolTipText("Digite sua senha");
 		
-		JButton btnNewButton = new JButton("Entrar");
+		btnNewButton = new JButton("Entrar");
+		btnNewButton.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent evento) {
+				if (evento.getKeyChar() == KeyEvent.VK_ENTER) {
+					verificarLogin();
+				}
+			}
+		});
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				verificarLogin();
@@ -90,7 +115,7 @@ public class TelaLoginSenha extends JFrame {
 				if (cbxMostrarSenha.isSelected()) {
 					passwordField.setEchoChar((char)0);
 				} else {
-					passwordField.setEchoChar('*');
+					passwordField.setEchoChar('•');
 				}
 			}
 		});
@@ -127,17 +152,36 @@ public class TelaLoginSenha extends JFrame {
 	}
 
 	protected void verificarLogin() {
-		String login = txtLogin.getText();
-		String senha = passwordField.getText();
-		boolean perfilValido = false;
+		UsuarioVO usuario = new UsuarioVO();
+		usuario.setLogin(txtLogin.getText());
+		usuario.setSenha(new String(passwordField.getPassword()));
 		
 		VerificarLoginController verificacaoLogin = new VerificarLoginController();
-		perfilValido = verificacaoLogin.verificarLoginController(login, senha);
 		
-		if (perfilValido) {
-			JOptionPane.showMessageDialog(null, "Usuario existente.");
-		} else {
-			JOptionPane.showMessageDialog(null, "Usuario não cadastrado.");
+		try {
+			usuario = verificacaoLogin.verificarLoginController(usuario.getLogin(), usuario.getSenha());
+			this.verificarTipoUsuario(usuario);
+		} catch (UsuarioNaoExistenteException | LoginNaoInformadoException | SenhaNaoInformadaException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Erro de Login", JOptionPane.WARNING_MESSAGE);
+		}
+	}
+	
+	public void verificarTipoUsuario(UsuarioVO usuario) {
+		
+		// chama a tela do professor
+		if (usuario.getTipo().equals(UsuarioEnum.PROFESSOR)) {
+			TelaMenuProfessor telaProfessor = new TelaMenuProfessor();
+			telaProfessor.pack();
+			telaProfessor.setVisible(true);
+			dispose();
+			
+			// chama a tela do coordenador
+		} else if (usuario.getTipo().equals(UsuarioEnum.COORDENACAO)) {
+			// TODO fazer tela de coordenação
+			
+			// chama a tela do aluno
+		} else if (usuario.getTipo().equals(UsuarioEnum.ALUNO)) {
+			// TODO fazer tela do aluno
 		}
 		
 	}

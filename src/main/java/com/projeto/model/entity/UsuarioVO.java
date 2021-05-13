@@ -1,13 +1,15 @@
 package com.projeto.model.entity;
 
+import com.projeto.enums.UsuarioEnum;
+
 public class UsuarioVO {
 	
 	private Integer idUsuario;
 	private String login;
 	private String senha;
-	private String tipo;
+	private UsuarioEnum tipo;
 
-	public UsuarioVO(Integer idUsuario, String login, String senha, String tipo) {
+	public UsuarioVO(Integer idUsuario, String login, String senha, UsuarioEnum tipo) {
 		super();
 		this.idUsuario = idUsuario;
 		this.login = login;
@@ -43,11 +45,11 @@ public class UsuarioVO {
 		this.senha = senha;
 	}
 
-	public String getTipo() {
+	public UsuarioEnum getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(UsuarioEnum tipo) {
 		this.tipo = tipo;
 	}
 
