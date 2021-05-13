@@ -6,23 +6,22 @@ CREATE DATABASE DBTESTE;
 
 USE DBTESTE;
 
-CREATE TABLE usuario(   
-  id BIGINT NOT NULL AUTO_INCREMENT,  
+CREATE TABLE usuario (   
+  idUsuario INT NOT NULL AUTO_INCREMENT,  
   login VARCHAR(20) NOT NULL,  
-  senha VARCHAR(50) NOT NULL,  
-  PRIMARY KEY (`id`)  
+  senha VARCHAR(50) NOT NULL, 
+  tipo enum('PROFESSOR', 'ALUNO', 'COORDENACAO') NOT NULL,
+  PRIMARY KEY (idUsuario)  
  ); 
  
- SELECT * FROM USUARIO;
- 
-INSERT INTO usuario (id, login, senha)  VALUES (NULL, 'admin', MD5('admin'));
-INSERT INTO usuario (id, login, senha)  VALUES (NULL, 'Alison', MD5('Alison@01'));
-INSERT INTO usuario (id, login, senha)  VALUES (NULL, 'Alexandro', MD5('Alexandro&02'));
-INSERT INTO usuario (id, login, senha)  VALUES (NULL, 'Rodrigo', MD5('Rodrigo?03'));
-INSERT INTO usuario (id, login, senha)  VALUES (NULL, 'Vilmar', MD5('Vilmar*04'));
+INSERT INTO usuario (login, senha, tipo)  VALUES ('admin', MD5('admin'), 'COORDENACAO');
+INSERT INTO usuario (login, senha, tipo)  VALUES ('Alison', MD5('Alison@01'), 'ALUNO');
+INSERT INTO usuario (login, senha, tipo)  VALUES ('Alexandro', MD5('Alexandro&02'), 'ALUNO');
+INSERT INTO usuario (login, senha, tipo)  VALUES ('Rodrigo', MD5('Rodrigo?03'), 'ALUNO');
+INSERT INTO usuario (login, senha, tipo)  VALUES ('Vilmar', MD5('Vilmar*04'), 'PROFESSOR');
 
 DELIMITER $$  
--- DROP FUNCTION IF EXISTS fun_valida_usuario $$
+ DROP FUNCTION IF EXISTS fun_valida_usuario $$
 
 -- A função verifica se existe na base dados alguma informação 
 -- que coincida com os valores passados aos parâmetros p_login e p_senha, 
@@ -30,7 +29,7 @@ DELIMITER $$
 CREATE FUNCTION fun_valida_usuario( p_login VARCHAR(20), p_senha VARCHAR(50))  RETURNS NUMERIC(1)
 	BEGIN  
 		DECLARE l_ret NUMERIC(1) DEFAULT 0;  
-		SET l_ret = IFNULL((SELECT DISTINCT ID FROM usuario  
+		SET l_ret = IFNULL((SELECT DISTINCT idUsuario FROM usuario  
 							WHERE login = p_login  
 							AND senha = MD5(p_senha)),0);                           
 		RETURN l_ret;  
@@ -38,3 +37,4 @@ CREATE FUNCTION fun_valida_usuario( p_login VARCHAR(20), p_senha VARCHAR(50))  R
 DELIMITER ;  
 
 SELECT fun_valida_usuario('admin','admin') as validacao;
+
