@@ -16,21 +16,21 @@ public class AlternativaController {
 	
 	public boolean cadastraAlternativas(PerguntaVO pergunta, List<String> listaAlternativas) throws ErroNoCadastroException {		
 		boolean retorno = true;
-		String validacao = "";		
+		String validacaoAlternativa = "";		
 		
 		if (validaAlternativas(listaAlternativas)) {
 			if (validaPergunta(pergunta.getTexto())) {
 				alternativaBO.cadastraAlternativas(pergunta, listaAlternativas);
 			}else {
-				validacao += "Verifique o campo PERGUNTA\n";
+				validacaoAlternativa += "Verifique o campo PERGUNTA\n";
 			}
 			
 		}else {
-			validacao = "Verifique os campos das alternativas";
+			validacaoAlternativa = "Verifique os campos das alternativas";
 		}		
 		
-		if (!validacao.isEmpty()) {
-			throw new ErroNoCadastroException(validacao);
+		if (!validacaoAlternativa.isEmpty()) {
+			throw new ErroNoCadastroException(validacaoAlternativa);
 		}
 		return retorno;
 	}	

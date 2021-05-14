@@ -26,8 +26,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 
 import com.projeto.controller.AlternativaController;
+import com.projeto.controller.CategoriaController;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.AlternativaVO;
+import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
@@ -46,6 +48,8 @@ public class PanelCadastraQuestoes extends JPanel {
 	public JLabel lblNomeUsuario;
 
 	AlternativaController alternativaController = new AlternativaController();
+	CategoriaVO categoriaVO = new CategoriaVO();
+	CategoriaController categoriaController = new CategoriaController();
 
 	/**
 	 * Create the panel.
@@ -114,23 +118,21 @@ public class PanelCadastraQuestoes extends JPanel {
 		btnAdicionaCategoria.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnAdicionaCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (Utils.stringValida(txtAdicionaCategoria.getText())
-						&& !txtAdicionaCategoria.getText().equalsIgnoreCase("Adicionar categoria")) {
-
-					if (JOptionPane.showConfirmDialog(null, Utils.formataEspacoUnico(txtAdicionaCategoria.getText().toString()).toUpperCase(),
-							"Confirmar categoria?", JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-
+					
+					categoriaVO.setDescricaoCategoria(txtAdicionaCategoria.getText().toString().toUpperCase());
+					
+					try {
+						categoriaController.cadastraCategoria(categoriaVO);
+						JOptionPane.showMessageDialog(null, "Categoria cadastrada com sucesso!", Constants.SUCESSO,
+								JOptionPane.PLAIN_MESSAGE, null);
 						comboBoxPerguntas.addItem(Utils.formataEspacoUnico(txtAdicionaCategoria.getText().toString()));
 						txtAdicionaCategoria.setText("Adicionar categoria");
-					} else {
-						txtAdicionaCategoria.setText("Adicionar categoria");
+						
+					} catch (Exception mensagem) {
+						JOptionPane.showMessageDialog(null, mensagem.getMessage(), "ATENÇÃO",
+								JOptionPane.ERROR_MESSAGE, null);
 					}
 
-				} else {
-					JOptionPane.showMessageDialog(null, "Digite a categoria", "ATENÇÃO",
-							JOptionPane.ERROR_MESSAGE, null);
-				}
 			}
 		});
 
@@ -550,12 +552,12 @@ public class PanelCadastraQuestoes extends JPanel {
 				
 				capturaDadosDaTela();							
 
-				if (!validaAlternatiaCorreta(buttonGroup)) {
+				if (!validaAlternativaCorreta(buttonGroup)) {
 					JOptionPane.showMessageDialog(null, "Verifique o preenchimento\n Marque a alternativa correta", Constants.ALERTA
 							, JOptionPane.ERROR_MESSAGE, null);
 					
 				} else if(!validaComboBoxCategoria(comboBoxPerguntas)) {
-					JOptionPane.showMessageDialog(null, "Insira uma categoria", Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);
+					JOptionPane.showMessageDialog(null, "Selecione uma categoria", Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);
 					
 				} else {
 					try {						
@@ -594,7 +596,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				
 			}
 
-			private boolean validaAlternatiaCorreta(ButtonGroup buttonGroup) {
+			private boolean validaAlternativaCorreta(ButtonGroup buttonGroup) {
 				boolean validado = true;
 				if (!rdbtnOpcaoCorreta1.isSelected()&& !rdbtnOpcaoCorreta2.isSelected()&& !rdbtnOpcaoCorreta3.isSelected()
 						&& !rdbtnOpcaoCorreta4.isSelected()&& !rdbtnOpcaoCorreta5.isSelected()) {

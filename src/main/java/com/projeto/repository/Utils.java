@@ -12,9 +12,8 @@ public class Utils {
 	 */
 	public static boolean stringValida(String string) {
 		boolean retorno = false;
-		if (string != null && !string.isEmpty()) {
-			retorno = true;
-			
+		if (string != null && !string.trim().isEmpty()) {
+			retorno = true;			
 		}		
 		return retorno;
 	}
@@ -23,8 +22,7 @@ public class Utils {
 		boolean retorno = true;
 		LocalDate dataAtual = LocalDate.now();
 		if (data.isAfter(dataAtual)) {
-			retorno = false;
-			
+			retorno = false;			
 		}		
 		return retorno;		
 	}

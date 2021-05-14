@@ -149,10 +149,8 @@ public class TelaLogin extends JFrame {
 		btnLogar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
 				if (frmtdtxtfldUsuario.getText().equalsIgnoreCase("admin")) {
-					TelaMenuProfessor telaMenuProfessor = new TelaMenuProfessor();							
-//					PanelGeralProfessor geralProfessor = new PanelGeralProfessor();
-//					geralProfessor.lblNomeUsuarioLogado.setText(frmtdtxtfldUsuario.getText().toString());
-//					telaMenuProfessor.add(geralProfessor);					
+					TelaMenuProfessor telaMenuProfessor = new TelaMenuProfessor();		
+					
 					telaMenuProfessor.setVisible(true);
 					dispose();					
 					
