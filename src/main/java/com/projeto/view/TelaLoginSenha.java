@@ -78,7 +78,7 @@ public class TelaLoginSenha extends JFrame {
 				}
 			}
 		});
-		txtLogin.setPlaceholder("login do usuário");
+		txtLogin.setPlaceholder("Digite o seu login");
 		txtLogin.setToolTipText("Digite o seu Login");
 		txtLogin.setColumns(10);
 		
@@ -91,7 +91,7 @@ public class TelaLoginSenha extends JFrame {
 				}
 			}
 		});
-		passwordField.setPlaceholder("Senha do usuário");
+		passwordField.setPlaceholder("Digite sua senha");
 		passwordField.setToolTipText("Digite sua senha");
 		
 		btnNewButton = new JButton("Entrar");
@@ -127,7 +127,7 @@ public class TelaLoginSenha extends JFrame {
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(cbxMostrarSenha, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-							.addGap(492))
+							.addGap(461))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
