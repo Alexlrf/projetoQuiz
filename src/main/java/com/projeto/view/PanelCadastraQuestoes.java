@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -24,6 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
+
+import org.apache.poi.util.SystemOutLogger;
 
 import com.projeto.controller.AlternativaController;
 import com.projeto.controller.CategoriaController;
@@ -618,9 +621,18 @@ public class PanelCadastraQuestoes extends JPanel {
 		panelBotoes.add(btnSalvar);
 		setLayout(groupLayout);
 		
+		
 		List<CategoriaVO> listaCategorias = new ArrayList<>();
 		listaCategorias = categoriaController.consultaTodasCategorias();
-		comboBoxPerguntas.addItem(listaCategorias);
+		
+//		listaCategorias.sort(Comparator.comparing(CategoriaVO::getDescricaoCategoria));		
+//		listaCategorias.forEach(System.out::println);
+
+		
+		for (CategoriaVO categoriaVO : listaCategorias) {
+			comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
+			
+		}
 
 	}
 }
