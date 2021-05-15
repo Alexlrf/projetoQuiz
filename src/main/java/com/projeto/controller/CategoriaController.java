@@ -1,5 +1,7 @@
 package com.projeto.controller;
 
+import java.util.List;
+
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.CategoriaBO;
 import com.projeto.model.entity.CategoriaVO;
@@ -37,6 +39,11 @@ public class CategoriaController {
 			throw new ErroNoCadastroException(validacaoCategoria);			
 		}		
 		return categoriaValida;
+	}
+
+	public List<CategoriaVO> consultaTodasCategorias() {
+		
+		return categoriaBO.consultaTodasCategorias();
 	}
 
 }

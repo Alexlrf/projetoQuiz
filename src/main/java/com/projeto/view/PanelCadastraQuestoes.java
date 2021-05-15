@@ -617,6 +617,10 @@ public class PanelCadastraQuestoes extends JPanel {
 		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnSalvar);
 		setLayout(groupLayout);
+		
+		List<CategoriaVO> listaCategorias = new ArrayList<>();
+		listaCategorias = categoriaController.consultaTodasCategorias();
+		comboBoxPerguntas.addItem(listaCategorias);
 
 	}
 }

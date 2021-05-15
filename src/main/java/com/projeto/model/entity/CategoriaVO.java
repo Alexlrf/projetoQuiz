@@ -2,10 +2,10 @@ package com.projeto.model.entity;
 
 public class CategoriaVO {
 	
-	private Long idCategoria;
+	private int idCategoria;
 	private String descricaoCategoria;
 	
-	public CategoriaVO(Long idCategoria, String descricaoCategoria) {
+	public CategoriaVO(int idCategoria, String descricaoCategoria) {
 		super();
 		this.idCategoria = idCategoria;
 		this.descricaoCategoria = descricaoCategoria;
@@ -15,11 +15,11 @@ public class CategoriaVO {
 		super();
 	}
 
-	public Long getIdCategoria() {
+	public int getIdCategoria() {
 		return idCategoria;
 	}
 
-	public void setIdCategoria(Long idCategoria) {
+	public void setIdCategoria(int idCategoria) {
 		this.idCategoria = idCategoria;
 	}
 
