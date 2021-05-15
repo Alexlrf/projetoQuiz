@@ -8,13 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Banco {
+
 	
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String BANCODADOS = "DBTESTE";
 	private static final String CONEXAO = "jdbc:mysql://localhost:3306/" + BANCODADOS+ "?useTimezone=true&serverTimezone=UTC&useSSL=false";
 	private static final String USER = "root";
 	private static final String PASSWORD = "admin";
-
 
 	public static Connection getConnection() {
 		try {
@@ -109,5 +109,4 @@ public class Banco {
 			System.out.println("Erro: " + e.getMessage());
 		}
 	}
-
 }
