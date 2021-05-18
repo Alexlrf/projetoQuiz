@@ -14,11 +14,18 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.awt.event.InputEvent;
 import java.awt.Toolkit;
 import javax.swing.JLabel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import java.awt.Color;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class TelaMenuProfessor extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -85,17 +92,38 @@ public class TelaMenuProfessor extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		
+		DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		LocalDate calendario = LocalDate.now();
+		Instant relogioHora = Instant.now();
+		
+		JLabel lblNewLabel = new JLabel();
+		lblNewLabel.setText(dataFormatter.format(calendario).toString());
+		lblNewLabel.setBackground(new Color(169, 169, 169));
+		
+		JLabel lblNewLabel_1 = new JLabel("New label");
+		lblNewLabel.setText(relogioHora.toString());
+		
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 424, Short.MAX_VALUE)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(25)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(207, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 229, Short.MAX_VALUE)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(149, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
-
-	
 }

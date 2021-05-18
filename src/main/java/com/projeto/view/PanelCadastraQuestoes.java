@@ -59,7 +59,7 @@ public class PanelCadastraQuestoes extends JPanel {
 	 */
 	public PanelCadastraQuestoes() {
 		setBorder(new LineBorder(new Color(250, 128, 114), 6));
-		setBackground(new Color(222, 184, 135));
+		setBackground(new Color(112, 128, 144));
 
 		JLabel lblTitulo = new JLabel("Cadastrar Questões");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -193,7 +193,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta1.setText(Constants.ALTERNATIVA_1);
 
 		JPanel panelBotoes = new JPanel();
-		panelBotoes.setBackground(new Color(222, 184, 135));
+		panelBotoes.setBackground(new Color(112, 128, 144));
 
 		JFormattedTextField txtCadastraResposta2 = new JFormattedTextField();
 		txtCadastraResposta2.addFocusListener(new FocusAdapter() {
@@ -442,23 +442,23 @@ public class PanelCadastraQuestoes extends JPanel {
 
 		JRadioButton rdbtnOpcaoCorreta1 = new JRadioButton("CORRETA");
 		buttonGroup.add(rdbtnOpcaoCorreta1);
-		rdbtnOpcaoCorreta1.setBackground(new Color(222, 184, 135));
+		rdbtnOpcaoCorreta1.setBackground(new Color(112, 128, 144));
 
 		JRadioButton rdbtnOpcaoCorreta2 = new JRadioButton("CORRETA");
 		buttonGroup.add(rdbtnOpcaoCorreta2);
-		rdbtnOpcaoCorreta2.setBackground(new Color(222, 184, 135));
+		rdbtnOpcaoCorreta2.setBackground(new Color(112, 128, 144));
 
 		JRadioButton rdbtnOpcaoCorreta3 = new JRadioButton("CORRETA");
 		buttonGroup.add(rdbtnOpcaoCorreta3);
-		rdbtnOpcaoCorreta3.setBackground(new Color(222, 184, 135));
+		rdbtnOpcaoCorreta3.setBackground(new Color(112, 128, 144));
 
 		JRadioButton rdbtnOpcaoCorreta4 = new JRadioButton("CORRETA");
 		buttonGroup.add(rdbtnOpcaoCorreta4);
-		rdbtnOpcaoCorreta4.setBackground(new Color(222, 184, 135));
+		rdbtnOpcaoCorreta4.setBackground(new Color(112, 128, 144));
 
 		JRadioButton rdbtnOpcaoCorreta5 = new JRadioButton("CORRETA");
 		buttonGroup.add(rdbtnOpcaoCorreta5);
-		rdbtnOpcaoCorreta5.setBackground(new Color(222, 184, 135));
+		rdbtnOpcaoCorreta5.setBackground(new Color(112, 128, 144));
 
 		lblNomeUsuario = new JLabel("Nome Usuário");
 		lblNomeUsuario.setFont(new Font("Tahoma", Font.BOLD, 14));
