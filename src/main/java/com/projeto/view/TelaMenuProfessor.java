@@ -57,7 +57,7 @@ public class TelaMenuProfessor extends JFrame {
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		
+				
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
@@ -88,6 +88,14 @@ public class TelaMenuProfessor extends JFrame {
 		mnNewMenu.add(menuCadastraQuestao);
 		
 		JMenuItem menuConsultaQuestao = new JMenuItem("Consultar Questões");
+		menuConsultaQuestao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				contentPane = new PanelConsultaQuestoes();
+				setContentPane(contentPane);
+				revalidate();
+			}
+		});
 		mnNewMenu.add(menuConsultaQuestao);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
