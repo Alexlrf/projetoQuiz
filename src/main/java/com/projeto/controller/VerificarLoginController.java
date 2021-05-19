@@ -5,11 +5,13 @@ import com.projeto.exceptions.SenhaNaoInformadaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
 import com.projeto.model.bo.VerificarLoginBO;
 import com.projeto.model.entity.UsuarioVO;
+import com.projeto.view.TelaMenuProfessor;
 
 public class VerificarLoginController {
 
 	public UsuarioVO verificarLoginController(String login, String senha) throws UsuarioNaoExistenteException, LoginNaoInformadoException, SenhaNaoInformadaException {
 		VerificarLoginBO verificarLogin = new VerificarLoginBO();
+		TelaMenuProfessor telaProfessor = new TelaMenuProfessor();
 
 		if (login == null || login.trim().isEmpty()) {
 			throw new LoginNaoInformadoException("Login não informado");
@@ -23,6 +25,10 @@ public class VerificarLoginController {
 		if (usuario == null || usuario.getIdUsuario() <= 0) {
 			throw new UsuarioNaoExistenteException("Usuario não cadastrado");
 		}
+		
+		
+		telaProfessor.setUsuario(usuario);
+		telaProfessor.setVisible(true);
 		return usuario;
 	}
 

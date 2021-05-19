@@ -201,7 +201,8 @@ public class TelaLoginSenha extends JFrame {
 			
 			// chama a tela do coordenador
 		} else if (usuario.getTipo().equals(UsuarioEnum.COORDENACAO)) {
-			// TODO fazer tela de coordenação
+//			TelaMenuProfessor telaProfessor = new TelaMenuProfessor();
+//			telaProfessor.abrirTelaCoordenador(usuario);
 			JOptionPane.showMessageDialog(null, "Olá coordenador(a), sua tela ainda esta em construção", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 			
 			// chama a tela do aluno

@@ -1,19 +1,20 @@
 package com.projeto.model.entity;
 
-import java.io.Serializable;
+import java.util.List;
 
-public class PerguntaVO implements Serializable {	
-	private static final long serialVersionUID = 1L;
+public class PerguntaVO  {	
 	
 	private int idPergunta;
 	private String texto;
 	private String categoria;
+	private List<AlternativaVO> listaAlternativas;
 	
-	public PerguntaVO(int idPergunta, String texto, String categoria) {
+	public PerguntaVO(int idPergunta, String texto, String categoria, List<AlternativaVO> listaAlternativas) {
 		super();
 		this.idPergunta = idPergunta;
 		this.texto = texto;
 		this.categoria = categoria;
+		this.listaAlternativas = listaAlternativas;
 	}
 
 	public PerguntaVO() {
@@ -44,27 +45,13 @@ public class PerguntaVO implements Serializable {
 		this.categoria = categoria;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + idPergunta;
-		return result;
+	public List<AlternativaVO> getListaAlternativas() {
+		return listaAlternativas;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PerguntaVO other = (PerguntaVO) obj;
-		if (idPergunta != other.idPergunta)
-			return false;
-		return true;
+	public void setListaAlternativas(List<AlternativaVO> listaAlternativas) {
+		this.listaAlternativas = listaAlternativas;
 	}
-	 
-    
+	
+	    
 }
