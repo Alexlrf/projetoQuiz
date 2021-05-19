@@ -74,11 +74,11 @@ public class PanelConsultaQuestoes extends JPanel {
 		comboCategorias.setFont(new Font("Tahoma", Font.BOLD, 12));
 		comboCategorias.setModel(new DefaultComboBoxModel(new String[] {"CATEGORIAS"}));
 		List<CategoriaVO> categorias = new ArrayList<>();
-		categorias = categoriaController.consultaTodasCategorias();
+		//categorias = categoriaController.consultaTodasCategorias();
 		
-		for (CategoriaVO categoriaVO : categorias) {
-			comboCategorias.addItem(categoriaVO.getDescricaoCategoria());			
-		}
+//		for (CategoriaVO categoriaVO : categorias) {
+//			comboCategorias.addItem(categoriaVO.getDescricaoCategoria());			
+//		}
 		
 		JPanel panelBotoes = new JPanel();
 		panelBotoes.setBackground(new Color(112, 128, 144));
@@ -98,6 +98,8 @@ public class PanelConsultaQuestoes extends JPanel {
 		
 		textField = new PlaceholderTextField();
 		textField.setPlaceholder("Digite o seu login");
+		textField.setForeground(Color.black);
+		//textField.setP(Color.black);
 		textField.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(

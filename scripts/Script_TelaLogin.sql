@@ -14,6 +14,12 @@ CREATE TABLE usuario (
   PRIMARY KEY (idUsuario)  
  ); 
  
+ CREATE TABLE categoria (   
+  id_categoria INT NOT NULL AUTO_INCREMENT
+  , descricao_categoria VARCHAR(40) NOT NULL 
+  , constraint PK_CATEGORIA primary key (id_categoria)
+  );
+ 
 INSERT INTO usuario (login, senha, tipo)  VALUES ('admin', MD5('admin'), 'COORDENACAO');
 INSERT INTO usuario (login, senha, tipo)  VALUES ('Alison', MD5('Alison@01'), 'ALUNO');
 INSERT INTO usuario (login, senha, tipo)  VALUES ('Alexandro', MD5('Alexandro&02'), 'ALUNO');
