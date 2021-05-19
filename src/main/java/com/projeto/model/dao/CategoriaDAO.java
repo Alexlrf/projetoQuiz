@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.projeto.model.entity.CategoriaVO;
+import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Banco;
 import com.projeto.repository.BaseDao;
 
@@ -51,7 +52,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 				categoria = this.completeResultset(rs);
 				listaCategorias.add(categoria);
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			System.out.println("Erro na consulta!");
 		}
 		return listaCategorias;
@@ -75,7 +76,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
 			
 			
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// TODO: handle exception
 		}
 		

@@ -14,10 +14,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.Date;
 import java.awt.event.InputEvent;
 import java.awt.Toolkit;
 import javax.swing.JLabel;
@@ -26,6 +28,8 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class TelaMenuProfessor extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -53,7 +57,7 @@ public class TelaMenuProfessor extends JFrame {
 	 */
 	public TelaMenuProfessor() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaMenuProfessor.class.getResource("/imagens/iconeQuebraCabeca.png")));
-		setTitle("Q  U  I  Z");
+		setTitle("      Q  U  I  Z");
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -101,37 +105,36 @@ public class TelaMenuProfessor extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		LocalDate calendario = LocalDate.now();
-		Instant relogioHora = Instant.now();
+		DateTimeFormatter formataData = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		LocalDate calendario = LocalDate.now();				
+		String data = formataData.format(calendario).toString();
 		
-		JLabel lblNewLabel = new JLabel();
-		lblNewLabel.setText(dataFormatter.format(calendario).toString());
-		lblNewLabel.setBackground(new Color(169, 169, 169));
-		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel.setText(relogioHora.toString());
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(112, 128, 144));
+//		String hora = formataHora.toString();
+//		lblRelogio.setText(hora);
 		
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(25)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(207, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+					.addContainerGap(215, Short.MAX_VALUE)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(149, Short.MAX_VALUE))
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+					.addGap(0))
 		);
+		JLabel lblCalendario = new JLabel();
+		panel.add(lblCalendario);
+		lblCalendario.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblCalendario.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		lblCalendario.setText(data);
+		lblCalendario.setBackground(new Color(169, 169, 169));
 		contentPane.setLayout(gl_contentPane);
 	}
 }

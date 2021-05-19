@@ -3,6 +3,10 @@ package com.projeto.view;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import com.projeto.controller.CategoriaController;
+import com.projeto.controller.PerguntaController;
+import com.projeto.model.entity.CategoriaVO;
+import com.projeto.model.entity.PerguntaVO;
 import com.projeto.placeholder.PlaceholderTextField;
 
 import java.awt.Color;
@@ -15,15 +19,24 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.JFormattedTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PanelConsultaQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private JTable tableConsulta;
 	private PlaceholderTextField textoDeBusca;
+	private String[] nomeColunas = {"PERGUNTA", "CATEGORIA"};
+	private JTable tableAlternativas;
+	private CategoriaController categoriaController = new CategoriaController();
+	private PerguntaController perguntaController = new PerguntaController();
 
 	/**
 	 * Create the panel.
@@ -41,50 +54,92 @@ public class PanelConsultaQuestoes extends JPanel {
 		tableConsulta = new JTable();
 		
 		JComboBox comboCategorias = new JComboBox();
+		comboCategorias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<PerguntaVO> perguntas = new ArrayList<>();
+				if (comboCategorias.getSelectedIndex() > 0) {
+					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
+					perguntas = perguntaController.buscaPorCategoriaEscolhida(categoriaEscolhida);
+					
+					for (PerguntaVO perguntaVO : perguntas) {
+						System.out.println(perguntaVO.getTexto());
+						
+					}
+					
+				}
+			}
+		});
 		comboCategorias.setFont(new Font("Tahoma", Font.BOLD, 12));
 		comboCategorias.setModel(new DefaultComboBoxModel(new String[] {"CATEGORIAS"}));
+		List<CategoriaVO> categorias = new ArrayList<>();
+		categorias = categoriaController.consultaTodasCategorias();
+		
+		for (CategoriaVO categoriaVO : categorias) {
+			comboCategorias.addItem(categoriaVO.getDescricaoCategoria());			
+		}
 		
 		JPanel panelBotoes = new JPanel();
 		panelBotoes.setBackground(new Color(112, 128, 144));
 		
-		JFormattedTextField frmtdtxtfldDigiteOTexto = new JFormattedTextField();
-		frmtdtxtfldDigiteOTexto.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		frmtdtxtfldDigiteOTexto.setToolTipText("Digite o texto para busca");
-		frmtdtxtfldDigiteOTexto.setText("Digite o texto para busca");
+		JFormattedTextField txtformatadoTextoBusca = new JFormattedTextField();
+		txtformatadoTextoBusca.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtformatadoTextoBusca.setToolTipText("Digite o texto para busca");
+		txtformatadoTextoBusca.setText("Digite o texto para busca");
+		
+		tableAlternativas = new JTable();
+		
+		JLabel lblAlternativas = new JLabel("ALTERNATIVAS");
+		lblAlternativas.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		JLabel lblPerguntas = new JLabel("PERGUNTAS");
+		lblPerguntas.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
-							.addGap(25))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
-							.addContainerGap())
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(frmtdtxtfldDigiteOTexto, GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
-							.addGap(100)
-							.addComponent(comboCategorias, 0, 200, Short.MAX_VALUE)
+							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+								.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+									.addComponent(txtformatadoTextoBusca, GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+									.addGap(100)
+									.addComponent(comboCategorias, 0, 200, Short.MAX_VALUE))
+								.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE))
+							.addContainerGap())
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
+							.addGap(26))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(28)
+					.addContainerGap()
 					.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-					.addGap(37)
+					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(comboCategorias, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(frmtdtxtfldDigiteOTexto, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtformatadoTextoBusca, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblPerguntas)
+					.addGap(8)
+					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblAlternativas)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
-					.addGap(34)
-					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+					.addGap(28)
+					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		panelBotoes.setLayout(new GridLayout(1, 0, 10, 10));
@@ -100,7 +155,10 @@ public class PanelConsultaQuestoes extends JPanel {
 		
 		JButton btnNewButton = new JButton("New button");
 		panelBotoes.add(btnNewButton);
-		setLayout(groupLayout);
+		setLayout(groupLayout);		
 
 	}
+	
+	
+	
 }

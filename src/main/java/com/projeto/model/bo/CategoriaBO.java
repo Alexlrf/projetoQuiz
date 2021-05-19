@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.projeto.model.dao.CategoriaDAO;
 import com.projeto.model.entity.CategoriaVO;
+import com.projeto.model.entity.PerguntaVO;
 
 public class CategoriaBO {
 	

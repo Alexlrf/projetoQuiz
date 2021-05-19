@@ -2,11 +2,11 @@ package com.projeto.model.entity;
 
 public class PerguntaVO {
 	
-	private Long idPergunta;
+	private int idPergunta;
 	private String texto;
 	private String categoria;
 	
-	public PerguntaVO(Long idPergunta, String texto, String categoria) {
+	public PerguntaVO(int idPergunta, String texto, String categoria) {
 		super();
 		this.idPergunta = idPergunta;
 		this.texto = texto;
@@ -17,11 +17,11 @@ public class PerguntaVO {
 		super();
 	}
 
-	public Long getIdPergunta() {
+	public int getIdPergunta() {
 		return idPergunta;
 	}
 
-	public void setIdPergunta(Long idPergunta) {
+	public void setIdPergunta(int idPergunta) {
 		this.idPergunta = idPergunta;
 	}
 

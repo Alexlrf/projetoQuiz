@@ -4,11 +4,14 @@ import java.util.List;
 
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.CategoriaBO;
+import com.projeto.model.bo.PerguntaBO;
 import com.projeto.model.entity.CategoriaVO;
+import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Utils;
 
 public class CategoriaController {
 	CategoriaBO categoriaBO = new CategoriaBO();
+	PerguntaBO perguntaBO = new PerguntaBO();
 
 	public boolean cadastraCategoria(CategoriaVO categoriaVO) throws ErroNoCadastroException {
 		boolean retorno = true;
@@ -45,5 +48,6 @@ public class CategoriaController {
 		
 		return categoriaBO.consultaTodasCategorias();
 	}
+
 
 }
