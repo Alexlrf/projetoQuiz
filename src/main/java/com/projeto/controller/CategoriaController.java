@@ -1,5 +1,6 @@
 package com.projeto.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.projeto.exceptions.ErroNoCadastroException;
@@ -13,17 +14,22 @@ public class CategoriaController {
 	CategoriaBO categoriaBO = new CategoriaBO();
 	PerguntaBO perguntaBO = new PerguntaBO();
 
-	public boolean cadastraCategoria(CategoriaVO categoriaVO) throws ErroNoCadastroException {
+	public boolean cadastraCategoria(CategoriaVO categoriaVO) throws ErroNoCadastroException, SQLException {
 		boolean retorno = true;
 		
 		if (validaCategoria(categoriaVO)) {
-			if(categoriaBO.cadastraCategoria(categoriaVO)) {
-				
-			} else {
+			
+			if (!categoriaBO.cadastraCategoria(categoriaVO)) {
+				retorno = false;
 				throw new ErroNoCadastroException("Não foi possível cadastrar Categoria!\n Verifique se "
 						+categoriaVO.getDescricaoCategoria()+" já está cadastrada.\n");
-			}			
+			} 
+			
+		} else {
+			throw new ErroNoCadastroException("Texto inválido!\n Verifique se "
+					+categoriaVO.getDescricaoCategoria()+"\n não excede o número de caracteres.\n");
 		}
+		
 		return retorno;		
 		
 	}

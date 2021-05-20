@@ -1,35 +1,25 @@
 package com.projeto.view;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.KeyStroke;
-import java.awt.event.KeyEvent;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Date;
-import java.awt.event.InputEvent;
-import java.awt.Toolkit;
-import javax.swing.JLabel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.Color;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 public class TelaMenuProfessor extends JFrame {
 	private static final long serialVersionUID = 1L;

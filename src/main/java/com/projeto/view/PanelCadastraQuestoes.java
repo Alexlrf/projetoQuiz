@@ -87,7 +87,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				}
 			}
 		});
-		txtAdicionaCategoria.setForeground(new Color(128, 128, 128));
+		txtAdicionaCategoria.setForeground(Color.DARK_GRAY);
 		txtAdicionaCategoria.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		txtAdicionaCategoria.addMouseListener(new MouseAdapter() {
 			@Override
@@ -122,7 +122,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		btnAdicionaCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					
-					categoriaVO.setDescricaoCategoria(txtAdicionaCategoria.getText().toString().toUpperCase());
+					categoriaVO.setDescricaoCategoria(txtAdicionaCategoria.getText().toString().toUpperCase().trim());
 					
 					try {
 						categoriaController.cadastraCategoria(categoriaVO);
@@ -166,7 +166,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				}
 			}
 		});
-		txtCadastraResposta1.setForeground(new Color(128, 128, 128));
+		txtCadastraResposta1.setForeground(Color.DARK_GRAY);
 		txtCadastraResposta1.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		txtCadastraResposta1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -218,7 +218,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				}
 			}
 		});
-		txtCadastraResposta2.setForeground(new Color(128, 128, 128));
+		txtCadastraResposta2.setForeground(Color.DARK_GRAY);
 		txtCadastraResposta2.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		txtCadastraResposta2.addMouseListener(new MouseAdapter() {
 			@Override
@@ -267,7 +267,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				}
 			}
 		});
-		txtCadastraResposta3.setForeground(new Color(128, 128, 128));
+		txtCadastraResposta3.setForeground(Color.DARK_GRAY);
 		txtCadastraResposta3.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		txtCadastraResposta3.addMouseListener(new MouseAdapter() {
 			@Override
@@ -316,7 +316,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				}
 			}
 		});
-		txtCadastraResposta4.setForeground(new Color(128, 128, 128));
+		txtCadastraResposta4.setForeground(Color.DARK_GRAY);
 		txtCadastraResposta4.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		txtCadastraResposta4.addMouseListener(new MouseAdapter() {
 			@Override
@@ -365,7 +365,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				}
 			}
 		});
-		txtCadastraResposta5.setForeground(new Color(128, 128, 128));
+		txtCadastraResposta5.setForeground(Color.DARK_GRAY);
 		txtCadastraResposta5.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		txtCadastraResposta5.addMouseListener(new MouseAdapter() {
 			@Override
@@ -414,7 +414,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				}
 			}
 		});
-		txtCadastraPergunta.setForeground(new Color(128, 128, 128));
+		txtCadastraPergunta.setForeground(Color.DARK_GRAY);
 		txtCadastraPergunta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -441,22 +441,32 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraPergunta.setFont(new Font("Tahoma", Font.PLAIN, 11));
 
 		JRadioButton rdbtnOpcaoCorreta1 = new JRadioButton("CORRETA");
+		rdbtnOpcaoCorreta1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		rdbtnOpcaoCorreta1.setForeground(Color.BLACK);
 		buttonGroup.add(rdbtnOpcaoCorreta1);
 		rdbtnOpcaoCorreta1.setBackground(new Color(112, 128, 144));
 
 		JRadioButton rdbtnOpcaoCorreta2 = new JRadioButton("CORRETA");
+		rdbtnOpcaoCorreta2.setForeground(Color.BLACK);
+		rdbtnOpcaoCorreta2.setFont(new Font("Tahoma", Font.BOLD, 11));
 		buttonGroup.add(rdbtnOpcaoCorreta2);
 		rdbtnOpcaoCorreta2.setBackground(new Color(112, 128, 144));
 
 		JRadioButton rdbtnOpcaoCorreta3 = new JRadioButton("CORRETA");
+		rdbtnOpcaoCorreta3.setForeground(Color.BLACK);
+		rdbtnOpcaoCorreta3.setFont(new Font("Tahoma", Font.BOLD, 11));
 		buttonGroup.add(rdbtnOpcaoCorreta3);
 		rdbtnOpcaoCorreta3.setBackground(new Color(112, 128, 144));
 
 		JRadioButton rdbtnOpcaoCorreta4 = new JRadioButton("CORRETA");
+		rdbtnOpcaoCorreta4.setForeground(Color.BLACK);
+		rdbtnOpcaoCorreta4.setFont(new Font("Tahoma", Font.BOLD, 11));
 		buttonGroup.add(rdbtnOpcaoCorreta4);
 		rdbtnOpcaoCorreta4.setBackground(new Color(112, 128, 144));
 
 		JRadioButton rdbtnOpcaoCorreta5 = new JRadioButton("CORRETA");
+		rdbtnOpcaoCorreta5.setForeground(Color.BLACK);
+		rdbtnOpcaoCorreta5.setFont(new Font("Tahoma", Font.BOLD, 11));
 		buttonGroup.add(rdbtnOpcaoCorreta5);
 		rdbtnOpcaoCorreta5.setBackground(new Color(112, 128, 144));
 
