@@ -26,20 +26,20 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 		PerguntaVO perguntaVO = new PerguntaVO();
 		
 		perguntaVO.setTextoPergunta(rs.getString("texto_pergunta"));
-		perguntaVO.setCategoria(rs.getString("categoria"));
+//		perguntaVO.setCategoria(rs.getInt("id_categoria"));
 		perguntaVO.setIdPergunta(rs.getInt("id_pergunta"));
 		return perguntaVO;		
 	}
 
-	public List<PerguntaVO> buscaPorCategoriaEscolhida(String categoriaEscolhida){
+	public List<PerguntaVO> buscaPorCategoriaEscolhida(int idCategoria){
 		List<PerguntaVO> listaPerguntas = new ArrayList<PerguntaVO>();
-		String sql = "SELECT * FROM pergunta WHERE categoria = ?";
+		String sql = "SELECT * FROM pergunta WHERE id_categoria = ?";
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
 			
 			
-			stmt.setString(1, categoriaEscolhida);
+			stmt.setInt(1, idCategoria);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {				
 				PerguntaVO perguntaVO = new PerguntaVO();

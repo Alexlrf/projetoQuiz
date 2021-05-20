@@ -38,7 +38,6 @@ public class PanelConsultaQuestoes extends JPanel {
 	private JTable tableAlternativas;
 	private CategoriaController categoriaController = new CategoriaController();
 	private PerguntaController perguntaController = new PerguntaController();
-	private PlaceholderTextField textField;
 
 	/**
 	 * Create the panel.
@@ -74,11 +73,11 @@ public class PanelConsultaQuestoes extends JPanel {
 		comboCategorias.setFont(new Font("Tahoma", Font.BOLD, 12));
 		comboCategorias.setModel(new DefaultComboBoxModel(new String[] {"CATEGORIAS"}));
 		List<CategoriaVO> categorias = new ArrayList<>();
-		//categorias = categoriaController.consultaTodasCategorias();
+		categorias = categoriaController.consultaTodasCategorias();
 		
-//		for (CategoriaVO categoriaVO : categorias) {
-//			comboCategorias.addItem(categoriaVO.getDescricaoCategoria());			
-//		}
+		for (CategoriaVO categoriaVO : categorias) {
+			comboCategorias.addItem(categoriaVO.getDescricaoCategoria());			
+		}
 		
 		JPanel panelBotoes = new JPanel();
 		panelBotoes.setBackground(new Color(112, 128, 144));
@@ -96,11 +95,8 @@ public class PanelConsultaQuestoes extends JPanel {
 		JLabel lblPerguntas = new JLabel("PERGUNTAS");
 		lblPerguntas.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
-		textField = new PlaceholderTextField();
-		textField.setPlaceholder("Digite o seu login");
-		textField.setForeground(Color.black);
-		//textField.setP(Color.black);
-		textField.setColumns(10);
+		JLabel lblNewLabel = new JLabel("Consultar Questões");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -108,48 +104,50 @@ public class PanelConsultaQuestoes extends JPanel {
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(txtformatadoTextoBusca, GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+									.addComponent(txtformatadoTextoBusca, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
 									.addGap(100)
-									.addComponent(comboCategorias, 0, 81, Short.MAX_VALUE))
-								.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE))
+									.addComponent(comboCategorias, 0, 98, Short.MAX_VALUE)))
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
+							.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+							.addGap(54)
 							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
 							.addGap(26))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
+							.addContainerGap(363, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(360, Short.MAX_VALUE))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(comboCategorias, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(txtformatadoTextoBusca, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblPerguntas)
 					.addGap(8)
-					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+					.addGap(11)
 					.addComponent(lblAlternativas)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 4, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
 					.addGap(28)
 					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
