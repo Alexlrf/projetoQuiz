@@ -2,6 +2,7 @@ package com.projeto.view;
 
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
 import com.projeto.controller.CategoriaController;
 import com.projeto.controller.PerguntaController;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.JFormattedTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -34,7 +36,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	
 	private JTable tableConsulta;
 	private PlaceholderTextField textoDeBusca;
-	private String[] nomeColunas = {"PERGUNTA", "CATEGORIA"};
+	private String[] nomeColunas = {"P E R G U N T A", "C A T E G O R I A"};
 	private JTable tableAlternativas;
 	private CategoriaController categoriaController = new CategoriaController();
 	private PerguntaController perguntaController = new PerguntaController();
@@ -62,19 +64,33 @@ public class PanelConsultaQuestoes extends JPanel {
 					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
 					perguntas = perguntaController.buscaPorCategoriaEscolhida(categoriaEscolhida);
 					
-					for (PerguntaVO perguntaVO : perguntas) {
-						System.out.println(perguntaVO.getTextoPergunta());
+					if (perguntas.size() > 0) {
 						
+						preencherTabela(perguntas, categoriaEscolhida);
+						
+					} else {
+
 					}
 					
+										
 				}
 			}
+
+//			private void preencherTabela(List<PerguntaVO> perguntas) {
+//				// TODO Auto-generated method stub
+//				
+//			}
 		});
 		comboCategorias.setFont(new Font("Tahoma", Font.BOLD, 12));
 		comboCategorias.setModel(new DefaultComboBoxModel(new String[] {"CATEGORIAS"}));
+		
+		
+		/**
+		 * Preenche o combo box com as categorias ao iniciar a tela
+		 * 
+		 */
 		List<CategoriaVO> categorias = new ArrayList<>();
 		categorias = categoriaController.consultaTodasCategorias();
-		
 		for (CategoriaVO categoriaVO : categorias) {
 			comboCategorias.addItem(categoriaVO.getDescricaoCategoria());			
 		}
@@ -88,6 +104,15 @@ public class PanelConsultaQuestoes extends JPanel {
 		txtformatadoTextoBusca.setText("Digite o texto para busca");
 		
 		tableAlternativas = new JTable();
+		tableAlternativas.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null},
+			},
+			new String[] {
+				"New column", "New column"
+			}
+		));
+		tableAlternativas.getColumnModel().getColumn(0).setPreferredWidth(493);
 		
 		JLabel lblAlternativas = new JLabel("ALTERNATIVAS");
 		lblAlternativas.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -167,5 +192,27 @@ public class PanelConsultaQuestoes extends JPanel {
 		panelBotoes.add(btnNewButton);
 		setLayout(groupLayout);		
 
+	}
+	
+	private void preencherTabela(List<PerguntaVO> perguntas, String categoriaEscolhida) {		 
+		limpaTabela();
+		DefaultTableModel modeloTabela = (DefaultTableModel) tableConsulta.getModel();
+		tableConsulta.getColumnModel().getColumn(0).setPreferredWidth(650);
+		
+		for (PerguntaVO perguntaVO : perguntas) {
+			Object[] novaLinha = new Object[2];
+			
+			novaLinha[0] = perguntaVO.getTextoPergunta();
+			novaLinha[1] = categoriaEscolhida;
+			modeloTabela.addRow(novaLinha);
+			
+		}		
+	}
+	
+	private void limpaTabela() {		
+		tableConsulta.setModel(new DefaultTableModel(new Object[][] { nomeColunas }, nomeColunas));
+		Font  f1  = new Font(Font.SERIF, Font.PLAIN,  14);
+		//tableConsulta.setEditingRow(int ).setFont(f1);
+		//UIManager.put("TableHeader.font",new Font("Arial", Font.BOLD, 18) );
 	}
 }
