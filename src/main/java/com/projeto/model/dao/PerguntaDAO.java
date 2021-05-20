@@ -11,31 +11,9 @@ import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Banco;
 import com.projeto.repository.BaseDao;
 
-public class PerguntaDAO implements BaseDao<PerguntaVO>{
+public class PerguntaDAO implements BaseDao<PerguntaVO> {
 
-	@Override
-	public PerguntaVO insert(PerguntaVO obj) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public boolean update(PerguntaVO obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean delete(Integer obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public PerguntaVO findById(Integer obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<PerguntaVO> findAll() {
@@ -75,6 +53,33 @@ public class PerguntaDAO implements BaseDao<PerguntaVO>{
 		}
 		
 		return listaPerguntas;
+		
 	}
+
+	@Override
+	public PerguntaVO insert(PerguntaVO obj) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean update(PerguntaVO obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean delete(Integer obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public PerguntaVO findById(Integer obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }

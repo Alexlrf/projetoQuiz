@@ -1,16 +1,20 @@
 package com.projeto.model.entity;
 
-public class PerguntaVO {
+import java.util.List;
+
+public class PerguntaVO  {	
 	
 	private int idPergunta;
 	private String texto;
 	private String categoria;
+	private List<AlternativaVO> listaAlternativas;
 	
-	public PerguntaVO(int idPergunta, String texto, String categoria) {
+	public PerguntaVO(int idPergunta, String texto, String categoria, List<AlternativaVO> listaAlternativas) {
 		super();
 		this.idPergunta = idPergunta;
 		this.texto = texto;
 		this.categoria = categoria;
+		this.listaAlternativas = listaAlternativas;
 	}
 
 	public PerguntaVO() {
@@ -39,6 +43,15 @@ public class PerguntaVO {
 
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
-	}	
+	}
 
+	public List<AlternativaVO> getListaAlternativas() {
+		return listaAlternativas;
+	}
+
+	public void setListaAlternativas(List<AlternativaVO> listaAlternativas) {
+		this.listaAlternativas = listaAlternativas;
+	}
+	
+	    
 }

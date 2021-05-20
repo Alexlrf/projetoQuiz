@@ -21,14 +21,23 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import com.projeto.enums.UsuarioEnum;
+import com.projeto.model.entity.UsuarioVO;
+
 public class TelaMenuProfessor extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
+	private UsuarioVO usuario;
 
-	/**
-	 * Launch the application.
-	 */
+	public UsuarioVO getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(UsuarioVO usuario) {
+		this.usuario = usuario;
+	}
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -51,6 +60,78 @@ public class TelaMenuProfessor extends JFrame {
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		
+		if (usuario.getTipo().equals(UsuarioEnum.COORDENACAO)) {
+			
+			JMenuBar menuBar = new JMenuBar();
+			setJMenuBar(menuBar);
+			
+			JMenu menuGeral = new JMenu("GERAL");
+			menuBar.add(menuGeral);
+			
+			JMenuItem geral = new JMenuItem("Geral");
+			geral.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					contentPane = new PanelGeralProfessor();
+					setContentPane(contentPane);
+					revalidate();				
+				}
+			});
+			menuGeral.add(geral);
+			
+		} else if(usuario.getTipo().equals(UsuarioEnum.PROFESSOR)){
+			JMenuBar menuBar = new JMenuBar();
+			setJMenuBar(menuBar);
+			
+			JMenu menuGeral = new JMenu("GERAL");
+			menuBar.add(menuGeral);
+			
+			JMenuItem geral = new JMenuItem("Geral");
+			geral.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					contentPane = new PanelGeralProfessor();
+					setContentPane(contentPane);
+					revalidate();				
+				}
+			});
+			menuGeral.add(geral);
+			
+			JMenu mnNewMenu = new JMenu("QUESTÕES");
+			menuBar.add(mnNewMenu);
+			
+			JMenuItem menuCadastraQuestao = new JMenuItem("Cadastrar Questão");
+			menuCadastraQuestao.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {				
+					contentPane = new PanelCadastraQuestoes();				
+					setContentPane(contentPane);
+					revalidate();
+				}
+			});
+			mnNewMenu.add(menuCadastraQuestao);
+			
+			JMenuItem menuConsultaQuestao = new JMenuItem("Consultar Questões");
+			menuConsultaQuestao.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					contentPane = new PanelConsultaQuestoes();
+					setContentPane(contentPane);
+					revalidate();
+				}
+			});
+			mnNewMenu.add(menuConsultaQuestao);
+			contentPane = new JPanel();
+			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+			setContentPane(contentPane);
+
+		}
+		
+				
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -126,5 +207,10 @@ public class TelaMenuProfessor extends JFrame {
 		lblCalendario.setText(data);
 		lblCalendario.setBackground(new Color(169, 169, 169));
 		contentPane.setLayout(gl_contentPane);
+	}
+
+	public void abrirTelaCoordenador(UsuarioVO usuario) {
+		// TODO Auto-generated method stub
+		
 	}
 }
