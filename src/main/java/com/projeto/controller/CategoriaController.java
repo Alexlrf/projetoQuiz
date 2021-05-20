@@ -1,26 +1,35 @@
 package com.projeto.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.CategoriaBO;
+import com.projeto.model.bo.PerguntaBO;
 import com.projeto.model.entity.CategoriaVO;
+import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Utils;
 
 public class CategoriaController {
 	CategoriaBO categoriaBO = new CategoriaBO();
+	PerguntaBO perguntaBO = new PerguntaBO();
 
-	public boolean cadastraCategoria(CategoriaVO categoriaVO) throws ErroNoCadastroException {
+	public boolean cadastraCategoria(CategoriaVO categoriaVO) throws ErroNoCadastroException, SQLException {
 		boolean retorno = true;
 		
 		if (validaCategoria(categoriaVO)) {
-			if(categoriaBO.cadastraCategoria(categoriaVO)) {
-				
-			} else {
+			
+			if (!categoriaBO.cadastraCategoria(categoriaVO)) {
+				retorno = false;
 				throw new ErroNoCadastroException("Não foi possível cadastrar Categoria!\n Verifique se "
 						+categoriaVO.getDescricaoCategoria()+" já está cadastrada.\n");
-			}			
+			} 
+			
+		} else {
+			throw new ErroNoCadastroException("Texto inválido!\n Verifique se "
+					+categoriaVO.getDescricaoCategoria()+"\n não excede o número de caracteres.\n");
 		}
+		
 		return retorno;		
 		
 	}
@@ -45,5 +54,6 @@ public class CategoriaController {
 		
 		return categoriaBO.consultaTodasCategorias();
 	}
+
 
 }

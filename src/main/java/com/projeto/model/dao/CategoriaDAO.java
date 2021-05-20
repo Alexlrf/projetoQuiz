@@ -8,15 +8,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.projeto.model.entity.CategoriaVO;
+import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Banco;
 import com.projeto.repository.BaseDao;
 
 public class CategoriaDAO implements BaseDao<CategoriaVO>{
 
 	@Override
-	public CategoriaVO insert(CategoriaVO obj) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public CategoriaVO insert(CategoriaVO categoriaVO) throws SQLException {
+		CategoriaVO categoria = new CategoriaVO();
+		String sql = "INSERT INTO categoria (descricao_categoria) VALUES (?);";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
+			stmt.setString(1, categoriaVO.getDescricaoCategoria());
+			stmt.executeUpdate();
+			
+			ResultSet id = stmt.getGeneratedKeys();
+			if (id.next()) {				
+				categoria.setIdCategoria(id.getInt(1));				
+			}			
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao cadastrar categoria!");
+			throw new SQLException("Erro ao cadastrar categoria!");
+		}
+		
+		return categoria;
 	}
 
 	@Override
@@ -51,7 +69,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 				categoria = this.completeResultset(rs);
 				listaCategorias.add(categoria);
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			System.out.println("Erro na consulta!");
 		}
 		return listaCategorias;
@@ -68,15 +86,24 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 	}
 
 	public boolean consultaCategoriaExistente(CategoriaVO categoriaVO) {
-		CategoriaVO categoriaVO2 = new CategoriaVO();
-		boolean retorno = true;
-		String sql = "SELECT * FROM categoria WHERE descricao_categoria LIKE '%"+categoriaVO.getDescricaoCategoria()+"%'";
+		CategoriaVO categoria = new CategoriaVO();
+		boolean retorno = false;
+		String sql = "SELECT * FROM categoria WHERE descricao_categoria = ?";
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
 			
+			stmt.setString(1, categoriaVO.getDescricaoCategoria());
+			ResultSet rs = stmt.executeQuery();
 			
-		} catch (Exception e) {
-			// TODO: handle exception
+			if (rs.next()) {
+				categoria = completeResultset(rs);
+				retorno = true;
+			}
+			
+			
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar categoria por descrição!");
+			retorno = true;
 		}
 		
 		return retorno;

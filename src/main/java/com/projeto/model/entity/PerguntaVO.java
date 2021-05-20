@@ -1,44 +1,50 @@
 package com.projeto.model.entity;
 
-import java.io.Serializable;
+import java.util.List;
 
-public class PerguntaVO implements Serializable {
+public class PerguntaVO  {	
 	
-	
-	private static final long serialVersionUID = 1L;
-	
-	private Long idPergunta;
-	private String texto;
+	private int idPergunta;
+	private int idUsuario;
+	private String textoPergunta;
 	private String categoria;
+	private List<AlternativaVO> listaAlternativas;
 	
-	private AlternativaVO questao;
-	
-	
-	public PerguntaVO(Long idPergunta, String texto, String categoria) {
+	public PerguntaVO(int idPergunta, int idUsuario, String textoPergunta, String categoria, List<AlternativaVO> listaAlternativas) {
 		super();
 		this.idPergunta = idPergunta;
-		this.texto = texto;
+		this.idUsuario = idUsuario;
+		this.textoPergunta = textoPergunta;
 		this.categoria = categoria;
+		this.listaAlternativas = listaAlternativas;
 	}
 
 	public PerguntaVO() {
 		super();
 	}
 
-	public Long getIdPergunta() {
+	public int getIdPergunta() {
 		return idPergunta;
 	}
 
-	public void setIdPergunta(Long idPergunta) {
+	public void setIdPergunta(int idPergunta) {
 		this.idPergunta = idPergunta;
 	}
-
-	public String getTexto() {
-		return texto;
+		
+	public int getIdUsuario() {
+		return idUsuario;
 	}
 
-	public void setTexto(String texto) {
-		this.texto = texto;
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public String getTextoPergunta() {
+		return textoPergunta;
+	}
+
+	public void setTextoPergunta(String textoPergunta) {
+		this.textoPergunta = textoPergunta;
 	}
 
 	public String getCategoria() {
@@ -49,44 +55,13 @@ public class PerguntaVO implements Serializable {
 		this.categoria = categoria;
 	}
 
-	public AlternativaVO getQuestao() {
-		return questao;
+	public List<AlternativaVO> getListaAlternativas() {
+		return listaAlternativas;
 	}
 
-	public void setQuestao(AlternativaVO questao) {
-		this.questao = questao;
+	public void setListaAlternativas(List<AlternativaVO> listaAlternativas) {
+		this.listaAlternativas = listaAlternativas;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((idPergunta == null) ? 0 : idPergunta.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PerguntaVO other = (PerguntaVO) obj;
-		if (idPergunta == null) {
-			if (other.idPergunta != null)
-				return false;
-		} else if (!idPergunta.equals(other.idPergunta))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "idPergunta=" + idPergunta
-				+ "\ntexto=" + texto
-				+ "\ncategoria=" + categoria;
-	}	
-    
+	
+	    
 }

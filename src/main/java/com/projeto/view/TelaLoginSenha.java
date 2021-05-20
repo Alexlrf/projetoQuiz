@@ -1,10 +1,26 @@
 package com.projeto.view;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import com.projeto.controller.VerificarLoginController;
 import com.projeto.enums.UsuarioEnum;
@@ -15,18 +31,9 @@ import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
 
-import javax.swing.JOptionPane;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JCheckBox;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
 public class TelaLoginSenha extends JFrame {
-
+	private static final long serialVersionUID = 1L;
+	
 	private JPanel contentPane;
 	private PlaceholderTextField txtLogin;
 	private PlaceholderPasswordField passwordField;
@@ -53,21 +60,22 @@ public class TelaLoginSenha extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaLoginSenha() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaLoginSenha.class.getResource("/imagens/iconeQuebraCabeca.png")));
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 864, 720);
+		setBounds(100, 100, 564, 506);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 		
 		JPanel JPanelBackground = new JPanel();
-		JPanelBackground.setBounds(10, 11, 828, 659);
-		contentPane.add(JPanelBackground);
-		JPanelBackground.setLayout(null);
+		JPanelBackground.setBorder(new LineBorder(new Color(250, 128, 114), 5));
+		JPanelBackground.setBackground(new Color(112, 128, 144));
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 828, 659);
-		JPanelBackground.add(panel);
+		panel.setBackground(new Color(0, 102, 153));
+		panel.setMaximumSize(new Dimension(300, 300));
+		
 		
 		txtLogin = new PlaceholderTextField();
 		txtLogin.addKeyListener(new KeyAdapter() {
@@ -95,6 +103,7 @@ public class TelaLoginSenha extends JFrame {
 		passwordField.setToolTipText("Digite sua senha");
 		
 		btnNewButton = new JButton("Entrar");
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNewButton.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent evento) {
@@ -110,6 +119,8 @@ public class TelaLoginSenha extends JFrame {
 		});
 		
 		cbxMostrarSenha = new JCheckBox("Mostrar senha");
+		cbxMostrarSenha.setBackground(new Color(0, 102, 153));
+		cbxMostrarSenha.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		cbxMostrarSenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (cbxMostrarSenha.isSelected()) {
@@ -122,33 +133,47 @@ public class TelaLoginSenha extends JFrame {
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(241)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(cbxMostrarSenha, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-							.addGap(461))
+							.addContainerGap()
+							.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 388, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(24)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
-								.addComponent(passwordField, Alignment.TRAILING, 319, 319, 319)
-								.addComponent(txtLogin, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE))
-							.addGap(268))))
+								.addComponent(passwordField, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+								.addComponent(txtLogin, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+								.addComponent(cbxMostrarSenha))))
+					.addGap(24))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(248)
+					.addGap(70)
 					.addComponent(txtLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(34)
+					.addGap(17)
 					.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(1)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(cbxMostrarSenha)
-					.addGap(18)
+					.addGap(20)
 					.addComponent(btnNewButton)
-					.addContainerGap(272, Short.MAX_VALUE))
+					.addGap(44))
 		);
 		panel.setLayout(gl_panel);
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addComponent(JPanelBackground, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addComponent(JPanelBackground, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+		);
+		FlowLayout fl_JPanelBackground = new FlowLayout(FlowLayout.CENTER, 20, 190);
+		JPanelBackground.setLayout(fl_JPanelBackground);
+		JPanelBackground.add(panel);
+		contentPane.setLayout(gl_contentPane);
+		
 	}
 
 	protected void verificarLogin() {
@@ -176,7 +201,8 @@ public class TelaLoginSenha extends JFrame {
 			
 			// chama a tela do coordenador
 		} else if (usuario.getTipo().equals(UsuarioEnum.COORDENACAO)) {
-			// TODO fazer tela de coordenação
+//			TelaMenuProfessor telaProfessor = new TelaMenuProfessor();
+//			telaProfessor.abrirTelaCoordenador(usuario);
 			JOptionPane.showMessageDialog(null, "Olá coordenador(a), sua tela ainda esta em construção", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 			
 			// chama a tela do aluno

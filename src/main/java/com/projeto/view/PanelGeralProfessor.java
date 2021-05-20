@@ -8,7 +8,9 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Font;
 
-public class PanelGeralProfessor extends JPanel {
+public class PanelGeralProfessor extends JPanel {	
+	private static final long serialVersionUID = 1L;
+	
 	public JLabel lblNomeUsuarioLogado;
 	private String nomeUsuario;	
 	

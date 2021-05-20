@@ -19,7 +19,7 @@ public class AlternativaController {
 		String validacaoAlternativa = "";		
 		
 		if (validaAlternativas(listaAlternativas)) {
-			if (validaPergunta(pergunta.getTexto())) {
+			if (validaPergunta(pergunta.getTextoPergunta())) {
 				alternativaBO.cadastraAlternativas(pergunta, listaAlternativas);
 			}else {
 				validacaoAlternativa += "Verifique o campo PERGUNTA\n";
