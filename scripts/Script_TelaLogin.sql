@@ -106,3 +106,15 @@ SELECT fun_valida_usuario('Alison','Alison@01') as validacao;
 SELECT fun_valida_usuario('Alexandro','Alexandro&02') as validacao;
 SELECT fun_valida_usuario('login','senha');
 
+
+select 
+	distinct(usuario.id_usuario), categoria.descricao_categoria, pergunta.texto_pergunta
+    , alternativa.texto_alternativa, alternativa.alternativa_correta
+from 
+	usuario
+ inner join
+	pergunta on usuario.id_usuario = pergunta.id_usuario
+ inner join
+    categoria on categoria.id_categoria = pergunta.id_categoria
+ inner join
+    alternativa on alternativa.id_pergunta = pergunta.id_pergunta;
