@@ -2,12 +2,12 @@ package com.projeto.model.entity;
 
 public class AlternativaVO {
 	
-	private Long idAlternativa;
-	private Long idPergunta;
+	private int idAlternativa;
+	private int idPergunta;
 	private String texto;
 	private Boolean alternativaCorreta;
 	
-	public AlternativaVO(Long idAlternativa, Long idPergunta, String texto, Boolean alternativaCorreta) {
+	public AlternativaVO(int idAlternativa, int idPergunta, String texto, Boolean alternativaCorreta) {
 		super();
 		this.idAlternativa = idAlternativa;
 		this.idPergunta = idPergunta;
@@ -19,19 +19,19 @@ public class AlternativaVO {
 		super();
 	}
 
-	public Long getIdAlternativa() {
+	public int getIdAlternativa() {
 		return idAlternativa;
 	}
 
-	public void setIdAlternativa(Long idAlternativa) {
+	public void setIdAlternativa(int idAlternativa) {
 		this.idAlternativa = idAlternativa;
 	}
 
-	public Long getIdPergunta() {
+	public int getIdPergunta() {
 		return idPergunta;
 	}
 
-	public void setIdPergunta(Long idPergunta) {
+	public void setIdPergunta(int idPergunta) {
 		this.idPergunta = idPergunta;
 	}
 

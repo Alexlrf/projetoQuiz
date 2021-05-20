@@ -588,7 +588,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				listaAlternativas = new ArrayList<>();
 				perguntaVO = new PerguntaVO();				
 				perguntaVO.setCategoria(comboBoxPerguntas.getSelectedItem().toString());
-				perguntaVO.setTexto(Utils.formataEspacoUnico(txtCadastraPergunta.getText().toString()));
+				perguntaVO.setTextoPergunta(Utils.formataEspacoUnico(txtCadastraPergunta.getText().toString()));
 				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta1.getText().toString()));
 				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta2.getText().toString()));
 				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta3.getText().toString()));

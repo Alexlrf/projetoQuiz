@@ -5,14 +5,16 @@ import java.util.List;
 public class PerguntaVO  {	
 	
 	private int idPergunta;
-	private String texto;
+	private int idUsuario;
+	private String textoPergunta;
 	private String categoria;
 	private List<AlternativaVO> listaAlternativas;
 	
-	public PerguntaVO(int idPergunta, String texto, String categoria, List<AlternativaVO> listaAlternativas) {
+	public PerguntaVO(int idPergunta, int idUsuario, String textoPergunta, String categoria, List<AlternativaVO> listaAlternativas) {
 		super();
 		this.idPergunta = idPergunta;
-		this.texto = texto;
+		this.idUsuario = idUsuario;
+		this.textoPergunta = textoPergunta;
 		this.categoria = categoria;
 		this.listaAlternativas = listaAlternativas;
 	}
@@ -28,13 +30,21 @@ public class PerguntaVO  {
 	public void setIdPergunta(int idPergunta) {
 		this.idPergunta = idPergunta;
 	}
-
-	public String getTexto() {
-		return texto;
+		
+	public int getIdUsuario() {
+		return idUsuario;
 	}
 
-	public void setTexto(String texto) {
-		this.texto = texto;
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public String getTextoPergunta() {
+		return textoPergunta;
+	}
+
+	public void setTextoPergunta(String textoPergunta) {
+		this.textoPergunta = textoPergunta;
 	}
 
 	public String getCategoria() {

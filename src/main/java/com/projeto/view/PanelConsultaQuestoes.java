@@ -64,7 +64,7 @@ public class PanelConsultaQuestoes extends JPanel {
 					perguntas = perguntaController.buscaPorCategoriaEscolhida(categoriaEscolhida);
 					
 					for (PerguntaVO perguntaVO : perguntas) {
-						System.out.println(perguntaVO.getTexto());
+						System.out.println(perguntaVO.getTextoPergunta());
 						
 					}
 					
