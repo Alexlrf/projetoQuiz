@@ -31,6 +31,7 @@ import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.placeholder.PlaceholderTextField;
+import javax.swing.JTextField;
 
 public class PanelConsultaQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -41,20 +42,17 @@ public class PanelConsultaQuestoes extends JPanel {
 	private CategoriaController categoriaController = new CategoriaController();
 	private PerguntaController perguntaController = new PerguntaController();
 	private List<PerguntaVO> perguntas = new ArrayList<>();
-	private PlaceholderTextField textoDeBusca;
 	private JTable tableAlternativas;
 	private JTable tableConsulta;
+	private PlaceholderTextField textFieldBusca;
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelConsultaQuestoes() {
 		setBackground(new Color(112, 128, 144));
-		setBorder(new LineBorder(new Color(250, 128, 114), 5));
-		
-		textoDeBusca = new PlaceholderTextField();
-		textoDeBusca.setText("Digite o texto para busca");
-		
+		setBorder(new LineBorder(new Color(250, 128, 114), 5));		
+				
 		JLabel lblNomeUsuario = new JLabel("Nome Usuário");
 		lblNomeUsuario.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
@@ -83,6 +81,8 @@ public class PanelConsultaQuestoes extends JPanel {
 					} else {
 						JOptionPane.showMessageDialog(null, "Não foi possível realizar consulta!", "ATENÇÃO",
 								JOptionPane.ERROR_MESSAGE, null);
+						limpaTabelaPerguntas();
+						limpaTabelaAlternativas();
 					}										
 				}
 			}
@@ -105,11 +105,6 @@ public class PanelConsultaQuestoes extends JPanel {
 		JPanel panelBotoes = new JPanel();
 		panelBotoes.setBackground(new Color(112, 128, 144));
 		
-		JFormattedTextField txtformatadoTextoBusca = new JFormattedTextField();
-		txtformatadoTextoBusca.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtformatadoTextoBusca.setToolTipText("Digite o texto para busca");
-		txtformatadoTextoBusca.setText("Digite o texto para busca");
-		
 		tableAlternativas = new JTable();
 		tableAlternativas.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -124,8 +119,12 @@ public class PanelConsultaQuestoes extends JPanel {
 		JLabel lblPerguntas = new JLabel("PERGUNTAS");
 		lblPerguntas.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
-		JLabel lblNewLabel = new JLabel("Consultar Questões");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
+		JLabel lblTitulo = new JLabel("Consultar Questões");
+		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 24));
+		
+		textFieldBusca = new PlaceholderTextField();
+		textFieldBusca.setPlaceholder("Digite o texto para busca");
+		textFieldBusca.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -133,21 +132,21 @@ public class PanelConsultaQuestoes extends JPanel {
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(txtformatadoTextoBusca, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-									.addGap(54)
-									.addComponent(comboCategorias, 0, 144, Short.MAX_VALUE)))
+									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+									.addGap(50)
+									.addComponent(comboCategorias, 0, 180, Short.MAX_VALUE)))
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
 							.addGap(54)
 							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
 							.addGap(26))
@@ -164,19 +163,21 @@ public class PanelConsultaQuestoes extends JPanel {
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblTitulo, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(comboCategorias, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtformatadoTextoBusca, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(1)
+							.addComponent(textFieldBusca, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblPerguntas)
 					.addGap(8)
 					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
 					.addGap(11)
 					.addComponent(lblAlternativas)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
 					.addGap(28)
 					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
