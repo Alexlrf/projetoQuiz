@@ -6,6 +6,7 @@ import javax.swing.ButtonGroup;
 
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.AlternativaBO;
+import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
@@ -46,6 +47,10 @@ public class AlternativaController {
 			perguntaValida = false;
 		}
 		return perguntaValida;
+	}
+
+	public List<AlternativaVO> buscaAlternativas(PerguntaVO pergunta) {
+ 		return alternativaBO.buscaAlternativas(pergunta);
 	}	
 
 }
