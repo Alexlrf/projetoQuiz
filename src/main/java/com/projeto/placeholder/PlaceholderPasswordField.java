@@ -1,5 +1,6 @@
 package com.projeto.placeholder;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -57,7 +58,7 @@ public class PlaceholderPasswordField extends JPasswordField {
 
         final Graphics2D g = (Graphics2D) pG;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(getDisabledTextColor());
+        g.setColor(Color.LIGHT_GRAY);
         g.drawString(placeholder, getInsets().left, pG.getFontMetrics().getMaxAscent() + getInsets().top);
     }
 
