@@ -3,6 +3,7 @@ package com.projeto.seletor;
 public class PerguntaSeletor {
 	
 	private String categoria;
+	private int idCategoria;
 	private String texto;
 	
 	private int limite;
@@ -23,7 +24,7 @@ public class PerguntaSeletor {
 		
 		boolean temFiltro = false;
 		
-		if ((this.categoria != null) && (this.categoria.trim().length() > 0)) {
+		if (this.idCategoria > 0) {
 			temFiltro = true;
 		}
 		if ((this.texto != null) && (this.texto.trim().length() > 0)) {
@@ -48,9 +49,18 @@ public class PerguntaSeletor {
 	 */
 	
 	
-	// Getters and Setters
+	// Getters and Setters	
+	
 	public int getOffset() {
 		return (this.limite * (this.pagina - 1));
+	}
+
+	public int getIdCategoria() {
+		return idCategoria;
+	}
+
+	public void setIdCategoria(int idCategoria) {
+		this.idCategoria = idCategoria;
 	}
 
 	public String getCategoria() {

@@ -7,6 +7,7 @@ import java.util.List;
 import com.projeto.model.bo.PerguntaBO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Utils;
+import com.projeto.seletor.PerguntaSeletor;
 
 public class PerguntaController {
 	PerguntaBO perguntaBO = new PerguntaBO();
@@ -15,6 +16,27 @@ public class PerguntaController {
 	public List<PerguntaVO> buscaPorCategoriaEscolhida(String categoriaEscolhida) {
 		return perguntaBO.buscaPorCategoriaEscolhida(categoriaEscolhida);
 	}
+	
+
+	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws SQLException{
+		String mensagem = "";
+		
+		listaPerguntas = perguntaBO.buscaComSeletor(perguntaSeletor);
+		if (listaPerguntas == null || listaPerguntas.size() == 0) {
+			mensagem = "Falha na consulta!\nTente novamente";
+		} 
+		
+		if (Utils.stringValida(mensagem)) {
+			throw new SQLException(mensagem);		
+		}
+		
+		return listaPerguntas;
+		
+		// return perguntaBO.buscaComSeletor(perguntaSeletor);
+	}
+	
+	
+	
 
 	public List<PerguntaVO> buscaPorTextoDigitado(String textoDigitado) throws SQLException {		
 		String mensagem = "";

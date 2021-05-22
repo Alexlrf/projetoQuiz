@@ -8,7 +8,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -24,6 +27,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.commons.collections4.map.HashedMap;
+
 import com.projeto.controller.AlternativaController;
 import com.projeto.controller.CategoriaController;
 import com.projeto.controller.PerguntaController;
@@ -31,6 +36,7 @@ import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.placeholder.PlaceholderTextField;
+import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
 
 import javax.swing.JTextField;
@@ -47,6 +53,8 @@ public class PanelConsultaQuestoes extends JPanel {
 	private PlaceholderTextField textFieldBusca;
 	private JTable tableAlternativas;
 	private JTable tableConsulta;
+	
+	Map<Integer, String> mapCategorias = new HashedMap<>();
 
 	/**
 	 * Create the panel.
@@ -103,9 +111,10 @@ public class PanelConsultaQuestoes extends JPanel {
 		List<CategoriaVO> categorias = new ArrayList<>();
 		categorias = categoriaController.consultaTodasCategorias();
 		for (CategoriaVO categoriaVO : categorias) {
-			comboCategorias.addItem(categoriaVO.getDescricaoCategoria());			
+			comboCategorias.addItem(categoriaVO.getDescricaoCategoria());
+			mapCategorias.put(categoriaVO.getIdCategoria(), categoriaVO.getDescricaoCategoria());			
 		}
-		
+				
 		JPanel panelBotoes = new JPanel();
 		panelBotoes.setBackground(new Color(112, 128, 144));
 		
@@ -202,19 +211,35 @@ public class PanelConsultaQuestoes extends JPanel {
 		JButton btnConsultar = new JButton("CONSULTAR");
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PerguntaSeletor perguntaSeletor = new PerguntaSeletor();
+				limpaTabelaPerguntas();
+				limpaTabelaAlternativas();
+				PerguntaSeletor perguntaSeletor = new PerguntaSeletor();				
 				
+				if (Utils.stringValida(textFieldBusca.getText().toString().trim())) {
+					perguntaSeletor.setTexto(Utils.formataEspacoUnico(textFieldBusca.getText().toString()));
+				} else {
+					perguntaSeletor.setTexto("");
+				}
 				
-				String textoDigitado = textFieldBusca.getText().toString().trim();
-				try {
+				if (comboCategorias.getSelectedIndex()>0) {
+					perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
+					int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());					
+					perguntaSeletor.setIdCategoria(indexEscolhido);
 					
-					perguntas = perguntaController.buscaPorTextoDigitado(textoDigitado);
+				} else {
+					perguntaSeletor.setCategoria("");
+				}				
+				
+				try {
+					//List<PerguntaVO> listaPerguntas = new ArrayList<>();
+					perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
 					preencherTabelaPerguntas(perguntas);
 					
-				} catch (Exception mensagem) {
-					JOptionPane.showMessageDialog(null, mensagem, "ATENÇÃO",
-							JOptionPane.ERROR_MESSAGE, null);
+				} catch (Exception e2) {
+					// TODO: handle exception
 				}
+											
+
 			}
 		});
 		btnConsultar.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -273,5 +298,15 @@ public class PanelConsultaQuestoes extends JPanel {
 		Font  f1  = new Font(Font.SERIF, Font.PLAIN,  14);
 		//tableConsulta.setEditingRow(int ).setFont(f1);
 		//UIManager.put("TableHeader.font",new Font("Arial", Font.BOLD, 18) );
+	}
+	
+	public static <T, E> T getChavePorValor(Map<T, E> map, E value) {
+
+	    for (Entry<T, E> entry : map.entrySet()) {
+	        if (value.equals(entry.getValue())) {	        	       	
+	            return entry.getKey();
+	        }
+	    }
+	    return null;
 	}
 }

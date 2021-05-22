@@ -7,14 +7,38 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.protocol.Resultset;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Banco;
 import com.projeto.repository.BaseDao;
+import com.projeto.seletor.PerguntaSeletor;
 
 public class PerguntaDAO implements BaseDao<PerguntaVO> {
 	
 
+	@Override
+	public PerguntaVO insert(PerguntaVO obj) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean update(PerguntaVO obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean delete(Integer obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public PerguntaVO findById(Integer obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public List<PerguntaVO> findAll() {
 		// TODO Auto-generated method stub
@@ -31,31 +55,6 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 		return perguntaVO;		
 	}
 
-//	public List<PerguntaVO> buscaPorCategoriaEscolhida(int idCategoria){
-//		List<PerguntaVO> listaPerguntas = new ArrayList<PerguntaVO>();
-//		String sql = "SELECT * FROM pergunta WHERE id_categoria = ?";
-//		
-//		try (Connection conn = Banco.getConnection();
-//				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){			
-//			
-//			stmt.setInt(1, idCategoria);
-//			ResultSet rs = stmt.executeQuery();
-//			while(rs.next()) {				
-//				PerguntaVO perguntaVO = new PerguntaVO();
-//				perguntaVO = completeResultset(rs);
-//				listaPerguntas.add(perguntaVO);
-//				
-//			}			
-//			
-//		} catch (SQLException e) {
-//			System.out.println("Erro ao buscar pergunta por categoria!\n"+e.getMessage());
-//		}
-//		
-//		return listaPerguntas;
-//		
-//	}
-	
-	
 	public List<PerguntaVO> buscaPorCategoriaEscolhida(int idCategoria){
 		List<PerguntaVO> listaPerguntas = new ArrayList<PerguntaVO>();
 		PerguntaVO pergunta; 
@@ -90,36 +89,101 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 		
 		return listaPerguntas;
 		
+	}	
+
+	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) {
+		
+		List<PerguntaVO> listaPerguntasBuscadas = new ArrayList<>();
+		PerguntaVO p;
+		String sql = "SELECT * FROM Pergunta p";
+		
+		if (perguntaSeletor.temFiltro()) {
+			sql = criarFiltros(perguntaSeletor, sql);
+		}
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				p = new PerguntaVO();
+				p.setTextoPergunta(rs.getString("texto_pergunta"));
+				p.setCategoria(buscaNomeCategoriaPorId(rs));
+				p.setIdPergunta(rs.getInt("id_pergunta"));
+				
+				listaPerguntasBuscadas.add(p);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar vacinas com filtros.\nCausa: " + e.getMessage());
+			
+		}		
+		return listaPerguntasBuscadas;
 	}
 	
-	
-	
-	
 
-	@Override
-	public PerguntaVO insert(PerguntaVO obj) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	private String buscaNomeCategoriaPorId(ResultSet rs) {
+		String categoria = "";
+		
+		String sql = "SELECT descricao_categoria FROM categoria WHERE id_categoria = ?";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
+			
+			stmt.setInt(1, rs.getInt("id_categoria"));
+			ResultSet res = stmt.executeQuery();
+
+			if (res.next()) {
+				categoria = res.getString("descricao_categoria");				
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Erro ao buscar pergunta por categoria!\n"+e.getMessage());
+		}	
+		
+		return categoria;
 	}
 
-	@Override
-	public boolean update(PerguntaVO obj) {
-		// TODO Auto-generated method stub
-		return false;
+	private String criarFiltros(PerguntaSeletor perguntaSeletor, String sql) {
+		sql += " WHERE ";
+		boolean primeiro = true;
+		
+		if (perguntaSeletor.getTexto().trim().length() > 0) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+			sql += "p.texto_pergunta LIKE '%" + perguntaSeletor.getTexto() + "%'";
+			primeiro = false;
+		}
+		
+		if (perguntaSeletor.getIdCategoria() > 0) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+			sql += "p.id_categoria = " + perguntaSeletor.getIdCategoria() ;
+			primeiro = false;
+		}		
+		return sql;
 	}
 
-	@Override
-	public boolean delete(Integer obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public int buscaIdcategoria(String categoria) {
+		int idRetornado = 0;
+		String sql = "SELECT id_categoria FROM categoria WHERE descricao_categoria = ?";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
+			
+			stmt.setString(1, categoria);
+			ResultSet rs = stmt.executeQuery();
 
-	@Override
-	public PerguntaVO findById(Integer obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+			if (rs.next()) {
+				idRetornado = rs.getInt("id_categoria");				
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Erro ao buscar pergunta por categoria!\n"+e.getMessage());
+		}		
+		return idRetornado;
+	}	
 	
 	public List<PerguntaVO> buscaPorTextoDigitado(String textoDigitado) {
 		List<PerguntaVO> listaPerguntas = new ArrayList<>();
