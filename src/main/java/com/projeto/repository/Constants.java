@@ -15,5 +15,6 @@ public class Constants {
 	public static final String ALTERNATIVA_5 = "5ª alternativa";
 	
 	public static final String PERGUNTA = "Digite aqui a PERGUNTA";
+	public static final String ADICINA_CATEGORIA = "Adicionar categoria";
 
 }

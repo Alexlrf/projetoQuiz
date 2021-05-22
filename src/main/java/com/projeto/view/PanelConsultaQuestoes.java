@@ -203,7 +203,6 @@ public class PanelConsultaQuestoes extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				String textoDigitado = textFieldBusca.getText().toString().trim();
-				//List<PerguntaVO> listaPerguntas = new ArrayList<>();
 				try {
 					
 					perguntas = perguntaController.buscaPorTextoDigitado(textoDigitado);
