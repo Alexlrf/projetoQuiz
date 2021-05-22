@@ -136,19 +136,6 @@ public class TelaMenuProfessor extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu menuGeral = new JMenu("GERAL");
-		menuBar.add(menuGeral);
-		
-		JMenuItem geral = new JMenuItem("Geral");
-		geral.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				contentPane = new PanelGeralProfessor();
-				setContentPane(contentPane);
-				revalidate();				
-			}
-		});
-		menuGeral.add(geral);
-		
 		JMenu mnNewMenu = new JMenu("QUESTÕES");
 		menuBar.add(mnNewMenu);
 		
@@ -179,33 +166,19 @@ public class TelaMenuProfessor extends JFrame {
 		DateTimeFormatter formataData = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		LocalDate calendario = LocalDate.now();				
 		String data = formataData.format(calendario).toString();
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(112, 128, 144));
 //		String hora = formataHora.toString();
 //		lblRelogio.setText(hora);
 		
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-					.addContainerGap(215, Short.MAX_VALUE)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGap(0, 424, Short.MAX_VALUE)
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
-					.addGap(0))
+				.addGap(0, 229, Short.MAX_VALUE)
 		);
-		JLabel lblCalendario = new JLabel();
-		panel.add(lblCalendario);
-		lblCalendario.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCalendario.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		lblCalendario.setText(data);
-		lblCalendario.setBackground(new Color(169, 169, 169));
 		contentPane.setLayout(gl_contentPane);
 	}
 

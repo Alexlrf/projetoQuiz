@@ -15,5 +15,9 @@ public class PerguntaBO {
 		
 		return perguntaDAO.buscaPorCategoriaEscolhida(idCategoria);
 	}
+	public List<PerguntaVO> buscaPorTextoDigitado(String textoDigitado) {
+		
+		return perguntaDAO.buscaPorTextoDigitado(textoDigitado);
+	}
 
 }

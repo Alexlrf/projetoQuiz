@@ -71,13 +71,16 @@ public class PanelConsultaQuestoes extends JPanel {
 		
 		JComboBox comboCategorias = new JComboBox();
 		comboCategorias.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {				
+			public void actionPerformed(ActionEvent e) {
+				limpaTabelaPerguntas();
+				limpaTabelaAlternativas();
 				if (comboCategorias.getSelectedIndex() > 0) {
 					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
 					perguntas = perguntaController.buscaPorCategoriaEscolhida(categoriaEscolhida);
 					
-					if (perguntas.size() > 0) {						
-						preencherTabelaPerguntas(perguntas, categoriaEscolhida);						
+					if (perguntas.size() > 0) {
+						limpaTabelaPerguntas();
+						preencherTabelaPerguntas(perguntas);						
 					} else {
 						JOptionPane.showMessageDialog(null, "Não foi possível realizar consulta!", "ATENÇÃO",
 								JOptionPane.ERROR_MESSAGE, null);
@@ -169,15 +172,15 @@ public class PanelConsultaQuestoes extends JPanel {
 						.addComponent(comboCategorias, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(1)
-							.addComponent(textFieldBusca, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(textFieldBusca, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblPerguntas)
-					.addGap(8)
-					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
 					.addGap(11)
 					.addComponent(lblAlternativas)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
 					.addGap(28)
 					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
@@ -193,6 +196,22 @@ public class PanelConsultaQuestoes extends JPanel {
 		panelBotoes.add(btnAlterar);
 		
 		JButton btnConsultar = new JButton("CONSULTAR");
+		btnConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String textoDigitado = textFieldBusca.getText().toString().trim();
+				List<PerguntaVO> listaPerguntas = new ArrayList<>();
+				try {
+					
+					listaPerguntas = perguntaController.buscaPorTextoDigitado(textoDigitado);
+					preencherTabelaPerguntas(listaPerguntas);
+					
+				} catch (Exception mensagem) {
+					JOptionPane.showMessageDialog(null, mensagem, "ATENÇÃO",
+							JOptionPane.ERROR_MESSAGE, null);
+				}
+			}
+		});
 		btnConsultar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnConsultar);
 		
@@ -228,7 +247,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		
 	}
 
-	private void preencherTabelaPerguntas(List<PerguntaVO> perguntas, String categoriaEscolhida) {		 
+	private void preencherTabelaPerguntas(List<PerguntaVO> perguntas) {		 
 		limpaTabelaPerguntas();
 		DefaultTableModel modeloTabela = (DefaultTableModel) tableConsulta.getModel();
 		tableConsulta.getColumnModel().getColumn(0).setPreferredWidth(650);
@@ -237,7 +256,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			Object[] novaLinha = new Object[2];
 			
 			novaLinha[0] = perguntaVO.getTextoPergunta();
-			novaLinha[1] = categoriaEscolhida;
+			novaLinha[1] = perguntaVO.getCategoria();
 			modeloTabela.addRow(novaLinha);
 			
 		}		
