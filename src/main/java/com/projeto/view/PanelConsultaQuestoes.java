@@ -31,6 +31,8 @@ import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.placeholder.PlaceholderTextField;
+import com.projeto.seletor.PerguntaSeletor;
+
 import javax.swing.JTextField;
 
 public class PanelConsultaQuestoes extends JPanel {
@@ -42,9 +44,9 @@ public class PanelConsultaQuestoes extends JPanel {
 	private CategoriaController categoriaController = new CategoriaController();
 	private PerguntaController perguntaController = new PerguntaController();
 	private List<PerguntaVO> perguntas = new ArrayList<>();
+	private PlaceholderTextField textFieldBusca;
 	private JTable tableAlternativas;
 	private JTable tableConsulta;
-	private PlaceholderTextField textFieldBusca;
 
 	/**
 	 * Create the panel.
@@ -92,8 +94,7 @@ public class PanelConsultaQuestoes extends JPanel {
 
 		});
 		comboCategorias.setFont(new Font("Tahoma", Font.BOLD, 12));
-		comboCategorias.setModel(new DefaultComboBoxModel(new String[] {"CATEGORIAS"}));
-		
+		comboCategorias.setModel(new DefaultComboBoxModel(new String[] {"CATEGORIAS"}));		
 		
 		/**
 		 * Preenche o combo box com as categorias ao iniciar a tela
@@ -201,6 +202,8 @@ public class PanelConsultaQuestoes extends JPanel {
 		JButton btnConsultar = new JButton("CONSULTAR");
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				PerguntaSeletor perguntaSeletor = new PerguntaSeletor();
+				
 				
 				String textoDigitado = textFieldBusca.getText().toString().trim();
 				try {
