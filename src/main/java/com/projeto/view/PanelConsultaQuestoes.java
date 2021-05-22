@@ -61,10 +61,15 @@ public class PanelConsultaQuestoes extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int perguntaSelecionada = tableConsulta.getSelectedRow()-1;
-				 
-				PerguntaVO pergunta = perguntas.get(perguntaSelecionada);
 				
-				preencherAlternativas(pergunta);
+				if (perguntaSelecionada >= 0) {
+					PerguntaVO pergunta = perguntas.get(perguntaSelecionada);
+					preencherAlternativas(pergunta);					
+				} else {
+
+				}
+				 
+				
 				
 			}
 		});
@@ -200,11 +205,11 @@ public class PanelConsultaQuestoes extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				String textoDigitado = textFieldBusca.getText().toString().trim();
-				List<PerguntaVO> listaPerguntas = new ArrayList<>();
+				//List<PerguntaVO> listaPerguntas = new ArrayList<>();
 				try {
 					
-					listaPerguntas = perguntaController.buscaPorTextoDigitado(textoDigitado);
-					preencherTabelaPerguntas(listaPerguntas);
+					perguntas = perguntaController.buscaPorTextoDigitado(textoDigitado);
+					preencherTabelaPerguntas(perguntas);
 					
 				} catch (Exception mensagem) {
 					JOptionPane.showMessageDialog(null, mensagem, "ATENÇÃO",
@@ -244,7 +249,7 @@ public class PanelConsultaQuestoes extends JPanel {
 
 	private void limpaTabelaAlternativas() {
 		tableAlternativas.setModel(new DefaultTableModel(new Object[][] { nomeColunasAlternativas }, nomeColunasAlternativas));
-		
+		tableAlternativas.getColumnModel().getColumn(0).setPreferredWidth(650);
 	}
 
 	private void preencherTabelaPerguntas(List<PerguntaVO> perguntas) {		 
@@ -264,6 +269,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	
 	private void limpaTabelaPerguntas() {		
 		tableConsulta.setModel(new DefaultTableModel(new Object[][] { nomeColunasPerguntas }, nomeColunasPerguntas));
+		tableConsulta.getColumnModel().getColumn(0).setPreferredWidth(650);
 		Font  f1  = new Font(Font.SERIF, Font.PLAIN,  14);
 		//tableConsulta.setEditingRow(int ).setFont(f1);
 		//UIManager.put("TableHeader.font",new Font("Arial", Font.BOLD, 18) );
