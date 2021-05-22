@@ -65,12 +65,7 @@ public class PanelConsultaQuestoes extends JPanel {
 				if (perguntaSelecionada >= 0) {
 					PerguntaVO pergunta = perguntas.get(perguntaSelecionada);
 					preencherAlternativas(pergunta);					
-				} else {
-
 				}
-				 
-				
-				
 			}
 		});
 		
@@ -120,6 +115,9 @@ public class PanelConsultaQuestoes extends JPanel {
 			new String[] {
 			}
 		));
+		
+		limpaTabelaAlternativas();
+		limpaTabelaPerguntas();
 		
 		JLabel lblAlternativas = new JLabel("ALTERNATIVAS");
 		lblAlternativas.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -224,7 +222,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnSalvar);
 		setLayout(groupLayout);		
-
+		
 	}
 	
 	protected void preencherAlternativas(PerguntaVO pergunta) {
