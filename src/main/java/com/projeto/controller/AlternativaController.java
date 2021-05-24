@@ -1,5 +1,6 @@
 package com.projeto.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -15,13 +16,13 @@ public class AlternativaController {
 	 
 	AlternativaBO alternativaBO = new AlternativaBO();
 	
-	public boolean cadastraAlternativas(PerguntaVO pergunta, List<String> listaAlternativas) throws ErroNoCadastroException {		
+	public boolean cadastraAlternativas(PerguntaVO pergunta, List<String> listaAlternativas) throws ErroNoCadastroException, SQLException {		
 		boolean retorno = true;
 		String validacaoAlternativa = "";		
 		
 		if (validaAlternativas(listaAlternativas)) {
 			if (validaPergunta(pergunta.getTextoPergunta())) {
-				alternativaBO.cadastraAlternativas(pergunta, listaAlternativas);
+				retorno =alternativaBO.cadastraAlternativas(pergunta, listaAlternativas);
 			}else {
 				validacaoAlternativa += "Verifique o campo PERGUNTA\n";
 			}

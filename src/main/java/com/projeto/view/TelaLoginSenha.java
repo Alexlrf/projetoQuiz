@@ -195,7 +195,7 @@ public class TelaLoginSenha extends JFrame {
 		
 		// chama a tela do professor
 		if (usuario.getTipo().equals(UsuarioEnum.PROFESSOR)) {
-			TelaMenuProfessor telaProfessor = new TelaMenuProfessor();
+			TelaPrincipal telaProfessor = new TelaPrincipal();
 			telaProfessor.setVisible(true);
 			dispose();
 			

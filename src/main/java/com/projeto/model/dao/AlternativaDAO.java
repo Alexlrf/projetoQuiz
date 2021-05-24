@@ -79,4 +79,9 @@ public class AlternativaDAO implements BaseDao<AlternativaVO>{
 		return alternativas;
 	}
 
+	public boolean cadastraPergunta(PerguntaVO pergunta) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

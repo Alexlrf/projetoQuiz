@@ -11,6 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -601,6 +602,9 @@ public class PanelCadastraQuestoes extends JPanel {
 					} catch (ErroNoCadastroException mensagem) {						
 						JOptionPane.showMessageDialog(null, mensagem.getMessage(), 
 								Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);						
+					} catch (SQLException e1) {
+						JOptionPane.showMessageDialog(null, "Erro no cadastro!", 
+								Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);	
 					}
 				}
 			}
