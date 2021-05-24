@@ -17,15 +17,10 @@ public class AlternativaBO {
 		boolean retorno = true;
 		perguntaVO = perguntaDAO.insert(pergunta);
 		
-		if (perguntaVO.getIdPergunta() < 1) {
-			retorno = false;
-			
-		} else {
-			
-		}
-		
-		
-		
+//		if (perguntaVO.getIdPergunta() < 1) {
+//			retorno = false;			
+//		} else {			
+//		}		
 		
 		System.out.println(" CATEGORIA: "+pergunta.getCategoria()+"\n\n PERGUNTA: "+pergunta.getTextoPergunta()+"\n\n");
 		int cont = 1;

@@ -54,6 +54,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	private PerguntaController perguntaController = new PerguntaController();
 	private List<PerguntaVO> perguntas = new ArrayList<>();
 	private PlaceholderTextField textFieldBusca;
+	private JComboBox comboCategorias;
 	private JTable tableAlternativas;
 	private JTable tableConsulta;
 	
@@ -82,25 +83,27 @@ public class PanelConsultaQuestoes extends JPanel {
 			}
 		});
 		
-		JComboBox comboCategorias = new JComboBox();
+		comboCategorias = new JComboBox();
 		comboCategorias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				limpaTabelaPerguntas();
-				limpaTabelaAlternativas();
-				if (comboCategorias.getSelectedIndex() > 0) {
-					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
-					perguntas = perguntaController.buscaPorCategoriaEscolhida(categoriaEscolhida);
-					
-					if (perguntas.size() > 0) {
-						limpaTabelaPerguntas();
-						preencherTabelaPerguntas(perguntas);						
-					} else {
-						JOptionPane.showMessageDialog(null, "Não foi possível realizar consulta!", "ATENÇÃO",
-								JOptionPane.ERROR_MESSAGE, null);
-						limpaTabelaPerguntas();
-						limpaTabelaAlternativas();
-					}										
-				}
+				
+				consultarPerguntas();
+//				limpaTabelaPerguntas();
+//				limpaTabelaAlternativas();
+//				if (comboCategorias.getSelectedIndex() > 0) {
+//					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
+//					perguntas = perguntaController.buscaPorCategoriaEscolhida(categoriaEscolhida);
+//					
+//					if (perguntas.size() > 0) {
+//						limpaTabelaPerguntas();
+//						preencherTabelaPerguntas(perguntas);						
+//					} else {
+//						JOptionPane.showMessageDialog(null, "Não foi possível realizar consulta!", "ATENÇÃO",
+//								JOptionPane.ERROR_MESSAGE, null);
+//						limpaTabelaPerguntas();
+//						limpaTabelaAlternativas();
+//					}										
+//				}
 			}
 
 		});
@@ -219,32 +222,8 @@ public class PanelConsultaQuestoes extends JPanel {
 		formataBotao(btnConsultar);
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				limpaTabelaPerguntas();
-				limpaTabelaAlternativas();
-				PerguntaSeletor perguntaSeletor = new PerguntaSeletor();				
+				consultarPerguntas();
 				
-				if (Utils.stringValida(textFieldBusca.getText().toString().trim())) {
-					perguntaSeletor.setTexto(Utils.formataEspacoUnico(textFieldBusca.getText().toString()));
-				} else {
-					perguntaSeletor.setTexto("");
-				}
-				
-				if (comboCategorias.getSelectedIndex()>0) {
-					perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
-					int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());					
-					perguntaSeletor.setIdCategoria(indexEscolhido);
-					
-				} else {
-					perguntaSeletor.setCategoria("");
-				}				
-				
-				try {
-					perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
-					preencherTabelaPerguntas(perguntas);
-					
-				} catch (Exception e2) {
-					// TODO: handle exception
-				}
 			}
 		});
 		btnConsultar.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -258,6 +237,35 @@ public class PanelConsultaQuestoes extends JPanel {
 		
 	}
 	
+	protected void consultarPerguntas() {
+		limpaTabelaPerguntas();
+		limpaTabelaAlternativas();
+		PerguntaSeletor perguntaSeletor = new PerguntaSeletor();				
+		
+		if (Utils.stringValida(textFieldBusca.getText().toString().trim())) {
+			perguntaSeletor.setTexto(Utils.formataEspacoUnico(textFieldBusca.getText().toString()));
+		} else {
+			perguntaSeletor.setTexto("");
+		}
+		
+		if (comboCategorias.getSelectedIndex()>0) {
+			perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
+			int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());					
+			perguntaSeletor.setIdCategoria(indexEscolhido);
+			
+		} else {
+			perguntaSeletor.setCategoria("");
+		}				
+		
+		try {
+			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
+			preencherTabelaPerguntas(perguntas);
+			
+		} catch (Exception e2) {
+			// TODO: handle exception
+		}		
+	}
+
 	protected void preencherAlternativas(PerguntaVO pergunta) {
 		List<AlternativaVO> alternativas = alternativaController.buscaAlternativas(pergunta);
 		preencherTabelaAlternativas(alternativas);
@@ -334,4 +342,5 @@ public class PanelConsultaQuestoes extends JPanel {
 		});
 		return botao;
 	}
+	
 }
