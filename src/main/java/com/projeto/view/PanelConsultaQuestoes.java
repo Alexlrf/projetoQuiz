@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.DefaultButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -25,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
+import javax.swing.colorchooser.DefaultColorSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.collections4.map.HashedMap;
@@ -40,6 +42,7 @@ import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
 
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 public class PanelConsultaQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -201,14 +204,19 @@ public class PanelConsultaQuestoes extends JPanel {
 		panelBotoes.setLayout(new GridLayout(1, 0, 10, 10));
 		
 		JButton btnExcluir = new JButton("EXCLUIR");
+		
+		formataBotao(btnExcluir);
+
 		btnExcluir.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnExcluir);
 		
 		JButton btnAlterar = new JButton("ALTERAR");
+		formataBotao(btnAlterar);
 		btnAlterar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnAlterar);
 		
-		JButton btnConsultar = new JButton("CONSULTAR");
+		JButton btnConsultar = new JButton("CONSULTAR");		
+		formataBotao(btnConsultar);
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				limpaTabelaPerguntas();
@@ -231,21 +239,19 @@ public class PanelConsultaQuestoes extends JPanel {
 				}				
 				
 				try {
-					//List<PerguntaVO> listaPerguntas = new ArrayList<>();
 					perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
 					preencherTabelaPerguntas(perguntas);
 					
 				} catch (Exception e2) {
 					// TODO: handle exception
 				}
-											
-
 			}
 		});
 		btnConsultar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnConsultar);
 		
 		JButton btnSalvar = new JButton("SALVAR");
+		formataBotao(btnSalvar);
 		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnSalvar);
 		setLayout(groupLayout);		
@@ -287,8 +293,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			
 			novaLinha[0] = perguntaVO.getTextoPergunta();
 			novaLinha[1] = perguntaVO.getCategoria();
-			modeloTabela.addRow(novaLinha);
-			
+			modeloTabela.addRow(novaLinha);			
 		}		
 	}
 	
@@ -308,5 +313,25 @@ public class PanelConsultaQuestoes extends JPanel {
 	        }
 	    }
 	    return null;
+	}
+	
+	public JButton formataBotao(JButton botao) {
+		
+		botao.setBackground(UIManager.getColor("Button.light"));
+		botao.setForeground(UIManager.getColor("Button.foreground"));
+		botao.addMouseListener(new MouseAdapter() {			
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				botao.setBackground(Color.darkGray);
+				botao.setForeground(UIManager.getColor("Button.light"));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				botao.setBackground(UIManager.getColor("Button.light"));
+				botao.setForeground(UIManager.getColor("Button.foreground"));
+			}
+		});
+		return botao;
 	}
 }

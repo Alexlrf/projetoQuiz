@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.UIManager;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 
@@ -121,6 +122,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtAdicionaCategoria.setText("Adicionar categoria");
 
 		JButton btnAdicionaCategoria = new JButton("");
+		formataBotao(btnAdicionaCategoria);
 		btnAdicionaCategoria.setToolTipText("Adicionar categoria");
 		btnAdicionaCategoria
 				.setIcon(new ImageIcon(PanelCadastraQuestoes.class.getResource("/imagens/btnAdiciona.png")));
@@ -128,7 +130,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		btnAdicionaCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					
-					categoriaVO.setDescricaoCategoria(txtAdicionaCategoria.getText().toString().toUpperCase().trim());
+					categoriaVO.setDescricaoCategoria(Utils.formataEspacoUnico(txtAdicionaCategoria.getText()).toString().toUpperCase());
 					
 					try {
 						categoriaController.cadastraCategoria(categoriaVO);
@@ -556,13 +558,16 @@ public class PanelCadastraQuestoes extends JPanel {
 				.addGap(9)));
 		panelBotoes.setLayout(new GridLayout(1, 0, 10, 5));
 
-		JButton btnNewButton_4 = new JButton("New button");
+		JButton btnNewButton_4 = new JButton("New button");		
+		formataBotao(btnNewButton_4);
 		panelBotoes.add(btnNewButton_4);
 
 		JButton btnNewButton_3 = new JButton("New button");
+		formataBotao(btnNewButton_3);
 		panelBotoes.add(btnNewButton_3);
 
 		JButton btnNewButton_2 = new JButton("Limpar");
+		formataBotao(btnNewButton_2);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				limpaPreenchimento();
@@ -573,25 +578,29 @@ public class PanelCadastraQuestoes extends JPanel {
 		panelBotoes.add(btnNewButton_2);
 
 		JButton btnSalvar = new JButton("Salvar");
+		formataBotao(btnSalvar);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
-				capturaDadosDaTela();							
-
+				capturaDadosDaTela();
+			
 				if (!validaAlternativaCorreta(buttonGroup)) {
-					JOptionPane.showMessageDialog(null, "Verifique o preenchimento\n Marque a alternativa correta", Constants.ALERTA
+					JOptionPane.showMessageDialog(null, "Verifique o preenchimento\n Marque a alternativa correta",
+							Constants.ALERTA
 							, JOptionPane.ERROR_MESSAGE, null);
 					
 				} else if(!validaComboBoxCategoria(comboBoxPerguntas)) {
-					JOptionPane.showMessageDialog(null, "Selecione uma categoria", Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);
-					
+					JOptionPane.showMessageDialog(null, "Selecione uma categoria",
+							Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);					
 				} else {
 					try {						
 						alternativaController.cadastraAlternativas(perguntaVO, listaAlternativas);						
-						JOptionPane.showMessageDialog(null, "Cadastro realizado!", Constants.SUCESSO, JOptionPane.INFORMATION_MESSAGE, null);
+						JOptionPane.showMessageDialog(null, "Cadastro realizado!", 
+								Constants.SUCESSO, JOptionPane.INFORMATION_MESSAGE, null);
 						limpaPreenchimento();						
 						
 					} catch (ErroNoCadastroException mensagem) {						
-						JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);						
+						JOptionPane.showMessageDialog(null, mensagem.getMessage(), 
+								Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);						
 					}
 				}
 			}
@@ -652,6 +661,26 @@ public class PanelCadastraQuestoes extends JPanel {
 		comboBoxPerguntas.setSelectedIndex(0);
 		buttonGroup.clearSelection();
 		
+	}
+	
+public JButton formataBotao(JButton botao) {
+		
+		botao.setBackground(UIManager.getColor("Button.light"));
+		botao.setForeground(UIManager.getColor("Button.foreground"));
+		botao.addMouseListener(new MouseAdapter() {			
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				botao.setBackground(Color.darkGray);
+				botao.setForeground(UIManager.getColor("Button.light"));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				botao.setBackground(UIManager.getColor("Button.light"));
+				botao.setForeground(UIManager.getColor("Button.foreground"));
+			}
+		});
+		return botao;
 	}
 
 }

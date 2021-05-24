@@ -15,8 +15,7 @@ public class PerguntaController {
 
 	public List<PerguntaVO> buscaPorCategoriaEscolhida(String categoriaEscolhida) {
 		return perguntaBO.buscaPorCategoriaEscolhida(categoriaEscolhida);
-	}
-	
+	}	
 
 	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws SQLException{
 		String mensagem = "";
@@ -28,15 +27,9 @@ public class PerguntaController {
 		
 		if (Utils.stringValida(mensagem)) {
 			throw new SQLException(mensagem);		
-		}
-		
-		return listaPerguntas;
-		
-		// return perguntaBO.buscaComSeletor(perguntaSeletor);
-	}
-	
-	
-	
+		}		
+		return listaPerguntas;		
+	}	
 
 	public List<PerguntaVO> buscaPorTextoDigitado(String textoDigitado) throws SQLException {		
 		String mensagem = "";
