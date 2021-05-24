@@ -3,14 +3,14 @@ package com.projeto.controller;
 import com.projeto.exceptions.LoginNaoInformadoException;
 import com.projeto.exceptions.SenhaNaoInformadaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
-import com.projeto.model.bo.VerificarLoginBO;
+import com.projeto.model.bo.UsuarioBO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.view.TelaPrincipal;
 
-public class VerificarLoginController {
+public class UsuarioController {
 
 	public UsuarioVO verificarLoginController(String login, String senha) throws UsuarioNaoExistenteException, LoginNaoInformadoException, SenhaNaoInformadaException {
-		VerificarLoginBO verificarLogin = new VerificarLoginBO();
+		UsuarioBO verificarLogin = new UsuarioBO();
 		TelaPrincipal telaProfessor = new TelaPrincipal();
 
 		if (login == null || login.trim().isEmpty()) {
