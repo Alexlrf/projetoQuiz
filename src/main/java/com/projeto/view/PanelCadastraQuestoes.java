@@ -5,10 +5,14 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -23,23 +27,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.UIManager;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
-
-import org.apache.poi.util.SystemOutLogger;
 
 import com.projeto.controller.AlternativaController;
 import com.projeto.controller.CategoriaController;
 import com.projeto.exceptions.ErroNoCadastroException;
-import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class PanelCadastraQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -49,6 +47,16 @@ public class PanelCadastraQuestoes extends JPanel {
 	private List<String> listaAlternativas = new ArrayList<>();
 	private PerguntaVO perguntaVO = null;
 	public JLabel lblNomeUsuario;
+	private JFormattedTextField txtAdicionaCategoria;
+	private	JFormattedTextField txtCadastraPergunta;
+	private	JFormattedTextField txtCadastraResposta1;
+	private	JFormattedTextField txtCadastraResposta2;
+	private	JFormattedTextField txtCadastraResposta3;
+	private	JFormattedTextField txtCadastraResposta4;
+	private	JFormattedTextField txtCadastraResposta5;
+		
+	
+
 
 	AlternativaController alternativaController = new AlternativaController();
 	CategoriaVO categoriaVO = new CategoriaVO();
@@ -64,7 +72,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		JLabel lblTitulo = new JLabel("Cadastrar Questões");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 24));
 
-		JFormattedTextField txtAdicionaCategoria = new JFormattedTextField();
+		txtAdicionaCategoria = new JFormattedTextField();
 		txtAdicionaCategoria.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -115,6 +123,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtAdicionaCategoria.setText("Adicionar categoria");
 
 		JButton btnAdicionaCategoria = new JButton("");
+		formataBotao(btnAdicionaCategoria);
 		btnAdicionaCategoria.setToolTipText("Adicionar categoria");
 		btnAdicionaCategoria
 				.setIcon(new ImageIcon(PanelCadastraQuestoes.class.getResource("/imagens/btnAdiciona.png")));
@@ -122,7 +131,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		btnAdicionaCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					
-					categoriaVO.setDescricaoCategoria(txtAdicionaCategoria.getText().toString().toUpperCase().trim());
+					categoriaVO.setDescricaoCategoria(Utils.formataEspacoUnico(txtAdicionaCategoria.getText()).toString().toUpperCase());
 					
 					try {
 						categoriaController.cadastraCategoria(categoriaVO);
@@ -143,7 +152,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		comboBoxPerguntas.setFont(new Font("Tahoma", Font.BOLD, 11));
 		comboBoxPerguntas.setModel(new DefaultComboBoxModel(new String[] { "C A T E G O R I A S" }));
 
-		JFormattedTextField txtCadastraResposta1 = new JFormattedTextField();
+		txtCadastraResposta1 = new JFormattedTextField();
 		txtCadastraResposta1.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -195,7 +204,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		JPanel panelBotoes = new JPanel();
 		panelBotoes.setBackground(new Color(112, 128, 144));
 
-		JFormattedTextField txtCadastraResposta2 = new JFormattedTextField();
+		txtCadastraResposta2 = new JFormattedTextField();
 		txtCadastraResposta2.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -244,7 +253,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		});
 		txtCadastraResposta2.setText(Constants.ALTERNATIVA_2);
 
-		JFormattedTextField txtCadastraResposta3 = new JFormattedTextField();
+		txtCadastraResposta3 = new JFormattedTextField();
 		txtCadastraResposta3.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -293,7 +302,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		});
 		txtCadastraResposta3.setText(Constants.ALTERNATIVA_3);
 
-		JFormattedTextField txtCadastraResposta4 = new JFormattedTextField();
+		txtCadastraResposta4 = new JFormattedTextField();
 		txtCadastraResposta4.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -342,7 +351,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		});
 		txtCadastraResposta4.setText(Constants.ALTERNATIVA_4);
 
-		JFormattedTextField txtCadastraResposta5 = new JFormattedTextField();
+		txtCadastraResposta5 = new JFormattedTextField();
 		txtCadastraResposta5.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -391,7 +400,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		});
 		txtCadastraResposta5.setText(Constants.ALTERNATIVA_5);
 
-		JFormattedTextField txtCadastraPergunta = new JFormattedTextField();
+		txtCadastraPergunta = new JFormattedTextField();
 		txtCadastraPergunta.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -550,36 +559,52 @@ public class PanelCadastraQuestoes extends JPanel {
 				.addGap(9)));
 		panelBotoes.setLayout(new GridLayout(1, 0, 10, 5));
 
-		JButton btnNewButton_4 = new JButton("New button");
+		JButton btnNewButton_4 = new JButton("New button");		
+		formataBotao(btnNewButton_4);
 		panelBotoes.add(btnNewButton_4);
 
 		JButton btnNewButton_3 = new JButton("New button");
+		formataBotao(btnNewButton_3);
 		panelBotoes.add(btnNewButton_3);
 
-		JButton btnNewButton_2 = new JButton("New button");
+		JButton btnNewButton_2 = new JButton("Limpar");
+		formataBotao(btnNewButton_2);
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				limpaPreenchimento();
+				
+			}
+		});
+		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnNewButton_2);
 
 		JButton btnSalvar = new JButton("Salvar");
+		formataBotao(btnSalvar);
 		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				capturaDadosDaTela();							
-
+			public void actionPerformed(ActionEvent e) {				
+				capturaDadosDaTela();
+			
 				if (!validaAlternativaCorreta(buttonGroup)) {
-					JOptionPane.showMessageDialog(null, "Verifique o preenchimento\n Marque a alternativa correta", Constants.ALERTA
+					JOptionPane.showMessageDialog(null, "Verifique o preenchimento\n Marque a alternativa correta",
+							Constants.ALERTA
 							, JOptionPane.ERROR_MESSAGE, null);
 					
 				} else if(!validaComboBoxCategoria(comboBoxPerguntas)) {
-					JOptionPane.showMessageDialog(null, "Selecione uma categoria", Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);
-					
+					JOptionPane.showMessageDialog(null, "Selecione uma categoria",
+							Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);					
 				} else {
 					try {						
 						alternativaController.cadastraAlternativas(perguntaVO, listaAlternativas);						
-						JOptionPane.showMessageDialog(null, "Cadastro realizado!", Constants.SUCESSO, JOptionPane.INFORMATION_MESSAGE, null);
+						JOptionPane.showMessageDialog(null, "Cadastro realizado!", 
+								Constants.SUCESSO, JOptionPane.INFORMATION_MESSAGE, null);
 						limpaPreenchimento();						
 						
 					} catch (ErroNoCadastroException mensagem) {						
-						JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);						
+						JOptionPane.showMessageDialog(null, mensagem.getMessage(), 
+								Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);						
+					} catch (SQLException e1) {
+						JOptionPane.showMessageDialog(null, "Erro no cadastro!", 
+								Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);	
 					}
 				}
 			}
@@ -594,18 +619,6 @@ public class PanelCadastraQuestoes extends JPanel {
 				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta3.getText().toString()));
 				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta4.getText().toString()));
 				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta5.getText().toString()));
-				
-			}
-
-			private void limpaPreenchimento() {
-				buttonGroup.clearSelection();
-				comboBoxPerguntas.setSelectedIndex(0);
-				txtCadastraPergunta.setText(Constants.PERGUNTA);
-				txtCadastraResposta1.setText(Constants.ALTERNATIVA_1);
-				txtCadastraResposta2.setText(Constants.ALTERNATIVA_2);
-				txtCadastraResposta3.setText(Constants.ALTERNATIVA_3);
-				txtCadastraResposta4.setText(Constants.ALTERNATIVA_4);
-				txtCadastraResposta5.setText(Constants.ALTERNATIVA_5);
 				
 			}
 
@@ -634,15 +647,46 @@ public class PanelCadastraQuestoes extends JPanel {
 		
 		List<CategoriaVO> listaCategorias = new ArrayList<>();
 		listaCategorias = categoriaController.consultaTodasCategorias();
-		
-//		listaCategorias.sort(Comparator.comparing(CategoriaVO::getDescricaoCategoria));		
-//		listaCategorias.forEach(System.out::println);
-
-		
+				
 		for (CategoriaVO categoriaVO : listaCategorias) {
 			comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
 			
-		}
-
+		}		
 	}
+	
+	protected void limpaPreenchimento() {
+		txtAdicionaCategoria.setText(Constants.ADICINA_CATEGORIA);
+		txtCadastraResposta5.setText(Constants.ALTERNATIVA_5);
+		txtCadastraResposta4.setText(Constants.ALTERNATIVA_4);
+		txtCadastraResposta3.setText(Constants.ALTERNATIVA_3);
+		txtCadastraResposta2.setText(Constants.ALTERNATIVA_2);
+		txtCadastraResposta1.setText(Constants.ALTERNATIVA_1);
+		txtCadastraPergunta.setText(Constants.PERGUNTA);
+		comboBoxPerguntas.setSelectedIndex(0);
+		buttonGroup.clearSelection();
+		
+	}
+	
+public JButton formataBotao(JButton botao) {
+		
+		botao.setBackground(UIManager.getColor("Button.light"));
+		botao.setForeground(UIManager.getColor("Button.foreground"));
+		botao.addMouseListener(new MouseAdapter() {			
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				botao.setBackground(Color.darkGray);
+				botao.setForeground(UIManager.getColor("Button.light"));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				botao.setBackground(UIManager.getColor("Button.light"));
+				botao.setForeground(UIManager.getColor("Button.foreground"));
+			}
+		});
+		return botao;
+	}
+
 }
+
+

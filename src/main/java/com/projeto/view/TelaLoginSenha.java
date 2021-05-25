@@ -22,7 +22,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import com.projeto.controller.VerificarLoginController;
+import com.projeto.controller.UsuarioController;
 import com.projeto.enums.UsuarioEnum;
 import com.projeto.exceptions.LoginNaoInformadoException;
 import com.projeto.exceptions.SenhaNaoInformadaException;
@@ -181,7 +181,7 @@ public class TelaLoginSenha extends JFrame {
 		usuario.setLogin(txtLogin.getText());
 		usuario.setSenha(new String(passwordField.getPassword()));
 		
-		VerificarLoginController verificacaoLogin = new VerificarLoginController();
+		UsuarioController verificacaoLogin = new UsuarioController();
 		
 		try {
 			usuario = verificacaoLogin.verificarLoginController(usuario.getLogin(), usuario.getSenha());
@@ -195,7 +195,7 @@ public class TelaLoginSenha extends JFrame {
 		
 		// chama a tela do professor
 		if (usuario.getTipo().equals(UsuarioEnum.PROFESSOR)) {
-			TelaMenuProfessor telaProfessor = new TelaMenuProfessor();
+			TelaPrincipal telaProfessor = new TelaPrincipal();
 			telaProfessor.setVisible(true);
 			dispose();
 			

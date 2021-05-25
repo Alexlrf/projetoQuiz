@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.projeto.model.entity.CategoriaVO;
-import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Banco;
 import com.projeto.repository.BaseDao;
 
@@ -107,6 +106,30 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 		}
 		
 		return retorno;
+	}
+
+	public int buscaIdCategoria(String categoriaEscolhida) {
+		int idRetornado = 0;
+		String sql = "SELECT id_categoria FROM categoria WHERE descricao_categoria = ?"; 
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
+			
+			stmt.setString(1, categoriaEscolhida);
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				
+				idRetornado = rs.getInt(1);
+				
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Erro ao consultar categoria por descrição!");
+			
+		}		
+		
+		return idRetornado;
 	}
 
 	
