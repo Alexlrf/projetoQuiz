@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -35,6 +36,8 @@ import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.placeholder.PlaceholderTextField;
+import com.projeto.repository.Constants;
+import com.projeto.repository.GeradorPlanilha;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
 
@@ -134,7 +137,18 @@ public class PanelConsultaQuestoes extends JPanel {
 				int resultado = jfc.showSaveDialog(null);
 				if (resultado == JFileChooser.APPROVE_OPTION) {
 					String caminhoEscolhido =jfc.getSelectedFile().getAbsolutePath();
+					GeradorPlanilha geradorPlanilha = new GeradorPlanilha();
+					try {
+						geradorPlanilha.gerarPlanilhaPerguntas(perguntas, caminhoEscolhido);
+						JOptionPane.showMessageDialog(null, "Planilha gerada com sucesso!", Constants.SUCESSO,
+								JOptionPane.PLAIN_MESSAGE, null);
+						
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, "Erro ao gerar planilha!", "ATENÇÃO",
+								JOptionPane.ERROR_MESSAGE, null);
+					}
 				}
+				
 				
 				
 				
