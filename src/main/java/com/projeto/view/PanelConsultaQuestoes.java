@@ -40,6 +40,7 @@ import com.projeto.repository.Constants;
 import com.projeto.repository.GeradorPlanilha;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
+import javax.swing.ImageIcon;
 
 public class PanelConsultaQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -127,40 +128,13 @@ public class PanelConsultaQuestoes extends JPanel {
 		textFieldBusca = new PlaceholderTextField();
 		textFieldBusca.setPlaceholder("Digite o texto para busca");
 		textFieldBusca.setColumns(10);
-		
-		JButton btnGerarXls = new JButton("XLS");
-		btnGerarXls.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser jfc = new JFileChooser();
-				jfc.setDialogTitle("Salvar relatório como...");
-				
-				int resultado = jfc.showSaveDialog(null);
-				if (resultado == JFileChooser.APPROVE_OPTION) {
-					String caminhoEscolhido =jfc.getSelectedFile().getAbsolutePath();
-					GeradorPlanilha geradorPlanilha = new GeradorPlanilha();
-					try {
-						geradorPlanilha.gerarPlanilhaPerguntas(perguntas, caminhoEscolhido);
-						JOptionPane.showMessageDialog(null, "Planilha gerada com sucesso!", Constants.SUCESSO,
-								JOptionPane.PLAIN_MESSAGE, null);
-						
-					} catch (Exception e2) {
-						JOptionPane.showMessageDialog(null, "Erro ao gerar planilha!", "ATENÇÃO",
-								JOptionPane.ERROR_MESSAGE, null);
-					}
-				}
-				
-				
-				
-				
-			}
-		});
 
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
 							.addContainerGap())
@@ -180,11 +154,7 @@ public class PanelConsultaQuestoes extends JPanel {
 							.addGap(54)
 							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
 							.addGap(26))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnGerarXls)
-							.addContainerGap(293, Short.MAX_VALUE))
+						.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap(360, Short.MAX_VALUE))))
@@ -202,21 +172,58 @@ public class PanelConsultaQuestoes extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(1)
 							.addComponent(textFieldBusca, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblPerguntas)
-						.addComponent(btnGerarXls))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+					.addGap(33)
+					.addComponent(lblPerguntas)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
 					.addGap(11)
 					.addComponent(lblAlternativas)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 17, Short.MAX_VALUE)
 					.addGap(28)
 					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		panelBotoes.setLayout(new GridLayout(1, 0, 10, 10));
+		
+		JButton btnGerarXls = new JButton("   Salvar Excel");	
+		btnGerarXls.setBackground(UIManager.getColor("Button.light"));
+		btnGerarXls.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnGerarXls.setBackground(new Color(153, 255, 153));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnGerarXls.setBackground(UIManager.getColor("Button.light"));
+			}
+		});
+		btnGerarXls.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnGerarXls.setToolTipText("Salva como planilha Excel ");
+		panelBotoes.add(btnGerarXls);
+		btnGerarXls.setIcon(new ImageIcon(PanelConsultaQuestoes.class.getResource("/imagens/excel.png")));
+		btnGerarXls.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				JFileChooser jfc = new JFileChooser();
+				jfc.setDialogTitle("Salvar relatório como...");
+				
+				int resultado = jfc.showSaveDialog(null);
+				if (resultado == JFileChooser.APPROVE_OPTION) {
+					String caminhoEscolhido =jfc.getSelectedFile().getAbsolutePath();
+					GeradorPlanilha geradorPlanilha = new GeradorPlanilha();
+					try {
+						geradorPlanilha.gerarPlanilhaPerguntas(perguntas, caminhoEscolhido);
+						JOptionPane.showMessageDialog(null, "Planilha gerada com sucesso!", Constants.SUCESSO,
+								JOptionPane.PLAIN_MESSAGE, null);
+						
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, "Erro ao gerar planilha!", "ATENÇÃO",
+								JOptionPane.ERROR_MESSAGE, null);
+					}
+				}				
+				
+			}
+		});
 		
 		JButton btnExcluir = new JButton("EXCLUIR");
 		
