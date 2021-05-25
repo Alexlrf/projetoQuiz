@@ -1,6 +1,7 @@
 package com.projeto.view;
 
 import javax.swing.JPanel;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -8,6 +9,13 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.text.MaskFormatter;
+
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.projeto.placeholder.PlaceholderPasswordField;
+import com.projeto.placeholder.PlaceholderTextField;
+
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
 import java.awt.Component;
@@ -16,20 +24,31 @@ import javax.swing.JCheckBox;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import javax.swing.JFormattedTextField;
 
 public class PanelCadastrarUsuario extends JPanel {
-	private JTextField txtNome;
-	private JTextField txtCpf;
+	private PlaceholderTextField txtNome;
+	private JFormattedTextField txtCpf;
 	private final ButtonGroup buttonGroupSexo = new ButtonGroup();
 	private final ButtonGroup buttonGroupDeficiencia = new ButtonGroup();
-	private JTextField txtRg;
-	private JTextField txtCelular;
-	private JTextField txtNacionalidade;
-	private JPasswordField pswSenha;
-	private JPasswordField pswConfirmarSenha;
-	private JTextField txtDataNascimento;
+	private JFormattedTextField txtRg;
+	private JFormattedTextField txtCelular;
+	private PlaceholderTextField txtNacionalidade;
+	private PlaceholderPasswordField pswSenha;
+	private PlaceholderPasswordField pswConfirmarSenha;
+	private DatePickerSettings dateSettings;
+	private DatePicker dataNascimento;
+	private JRadioButton btnMasculino;
+	private JRadioButton btnFeminino;
+	private JRadioButton btnDeficienteSim;
+	private JRadioButton btnDeficienteNao;
+	private JCheckBox cbMostrarSenha;
+	private JCheckBox cbConfirmarSenha;
+	private JButton btnLimpar;
+	private JButton BtnCadastrar;
 
 	/**
 	 * Create the panel.
@@ -57,7 +76,8 @@ public class PanelCadastrarUsuario extends JPanel {
 		
 		JLabel lblNome = new JLabel("Nome:");
 		
-		txtNome = new JTextField();
+		txtNome = new PlaceholderTextField();
+		txtNome.setPlaceholder("Digite o nome completo, Ex: José da Silva Sauro.");
 		txtNome.setColumns(10);
 		
 		JLabel lblCadastrarAluno = new JLabel("Cadastrar Aluno");
@@ -66,43 +86,63 @@ public class PanelCadastrarUsuario extends JPanel {
 		
 		JLabel lblRg = new JLabel("RG:");
 		
-		txtRg = new JTextField();
+		MaskFormatter mascaraRg;
+		try {
+			mascaraRg = new MaskFormatter("#.###.###");
+			txtRg = new JFormattedTextField(mascaraRg);
+		} catch (ParseException e) {
+			System.out.println("Erro ao formatar mascara de Rg: " + e.getMessage());
+		}
 		txtRg.setColumns(10);
 		
-		txtCpf = new JTextField();
+		MaskFormatter mascaraCpf;
+		try {
+			mascaraCpf = new MaskFormatter("###.###.###-##");
+			txtCpf = new JFormattedTextField(mascaraCpf);
+		} catch (ParseException e) {
+			System.out.println("Erro ao formatar mascara de Cpf: " + e.getMessage());
+		}
 		txtCpf.setColumns(10);
 		
 		JLabel lblCpf = new JLabel("CPF:");
 		
 		JLabel lblDataDeNascimento = new JLabel("Data de Nascimento:");
 		
-		txtDataNascimento = new JTextField();
-		txtDataNascimento.setColumns(10);
+		dateSettings = new DatePickerSettings();
+		dateSettings.setAllowKeyboardEditing(false);
+		dataNascimento = new DatePicker(dateSettings);
 		
 		JLabel lblSexo = new JLabel("Sexo");
 		
-		JRadioButton btnMasculino = new JRadioButton("Masculino");
+		btnMasculino = new JRadioButton("Masculino");
 		buttonGroupSexo.add(btnMasculino);
 		
-		JRadioButton btnFeminino = new JRadioButton("Feminino");
+		btnFeminino = new JRadioButton("Feminino");
 		buttonGroupSexo.add(btnFeminino);
 		
 		JLabel lblPossuiDeficiencia = new JLabel("Possui alguma deficiência?");
 		
-		JRadioButton btnDeficienteSim = new JRadioButton("Sim");
+		btnDeficienteSim = new JRadioButton("Sim");
 		buttonGroupDeficiencia.add(btnDeficienteSim);
 		
-		JRadioButton btnDeficienteNao = new JRadioButton("Não");
+		btnDeficienteNao = new JRadioButton("Não");
 		buttonGroupDeficiencia.add(btnDeficienteNao);
 		
 		JLabel lblCelular = new JLabel("Celular:");
 		
-		txtCelular = new JTextField();
+		MaskFormatter mascaraCelular;
+		try {
+			mascaraCelular = new MaskFormatter("(##) #####-####");
+			txtCelular = new JFormattedTextField(mascaraCelular);
+		} catch (ParseException e) {
+			System.out.println("Erro ao formatar mascara de celular: "  + e.getMessage());
+		}
 		txtCelular.setColumns(10);
 		
 		JLabel lblNacionalidade = new JLabel("Nacionalidade:");
 		
-		txtNacionalidade = new JTextField();
+		txtNacionalidade = new PlaceholderTextField();
+		txtNacionalidade.setPlaceholder("Digite sua nacionalidade, Ex: 'Brasil'.");
 		txtNacionalidade.setColumns(10);
 		
 		JLabel lblTurno = new JLabel("Turno:");
@@ -111,26 +151,46 @@ public class PanelCadastrarUsuario extends JPanel {
 		
 		JLabel lblSenha = new JLabel("Senha:");
 		
-		pswSenha = new JPasswordField();
+		pswSenha = new PlaceholderPasswordField();
+		pswSenha.setPlaceholder("Digite sua senha, e não se esqueça de anotar.");
 		
-		JCheckBox cbMostrarSenha = new JCheckBox("Mostrar Senha");
+		cbMostrarSenha = new JCheckBox("Mostrar Senha");
+		cbMostrarSenha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (cbMostrarSenha.isSelected()) {
+					pswSenha.setEchoChar((char)0);
+				} else {
+					pswSenha.setEchoChar('•');
+				}
+			}
+		});
 		
 		JLabel lblDicaSenha = new JLabel("A senha deve conter de 8 à 30 caracteres.");
 		
 		JLabel lblConfirmarSenha = new JLabel("Confirmar Senha:");
 		
-		pswConfirmarSenha = new JPasswordField();
+		pswConfirmarSenha = new PlaceholderPasswordField();
+		pswConfirmarSenha.setPlaceholder("A confirmação da senha deve ser exatamente igual a senha digitada anteriormente.");
 		
-		JCheckBox cbMostrarConfirmacaoSenha = new JCheckBox("Mostrar Senha");
+		cbConfirmarSenha = new JCheckBox("Mostrar Senha");
+		cbConfirmarSenha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (cbConfirmarSenha.isSelected()) {
+					pswConfirmarSenha.setEchoChar((char)0);
+				} else {
+					pswConfirmarSenha.setEchoChar('•');
+				}
+			}
+		});
 		
-		JButton btnLimpar = new JButton("L I M P A R");
+		btnLimpar = new JButton("L I M P A R");
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
 		btnLimpar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JButton BtnCadastrar = new JButton("C A D A S T R A R");
+		BtnCadastrar = new JButton("C A D A S T R A R");
 		BtnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -167,7 +227,7 @@ public class PanelCadastrarUsuario extends JPanel {
 									.addComponent(lblConfirmarSenha)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addComponent(cbMostrarConfirmacaoSenha, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+										.addComponent(cbConfirmarSenha, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
 										.addComponent(pswConfirmarSenha, GroupLayout.DEFAULT_SIZE, 585, Short.MAX_VALUE)))))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(27)
@@ -189,7 +249,7 @@ public class PanelCadastrarUsuario extends JPanel {
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(lblDataDeNascimento, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtDataNascimento, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+									.addComponent(dataNascimento, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
 									.addGap(18)
 									.addComponent(lblSexo)
 									.addGap(16)
@@ -237,7 +297,7 @@ public class PanelCadastrarUsuario extends JPanel {
 					.addGap(47)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblDataDeNascimento)
-						.addComponent(txtDataNascimento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(dataNascimento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblSexo)
 						.addComponent(btnFeminino)
 						.addComponent(btnMasculino))
@@ -267,7 +327,7 @@ public class PanelCadastrarUsuario extends JPanel {
 						.addComponent(lblConfirmarSenha)
 						.addComponent(pswConfirmarSenha, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbMostrarConfirmacaoSenha)
+					.addComponent(cbConfirmarSenha)
 					.addGap(218))
 				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
 					.addContainerGap(675, Short.MAX_VALUE)
