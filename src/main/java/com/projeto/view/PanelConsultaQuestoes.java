@@ -17,6 +17,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -123,6 +124,22 @@ public class PanelConsultaQuestoes extends JPanel {
 		textFieldBusca = new PlaceholderTextField();
 		textFieldBusca.setPlaceholder("Digite o texto para busca");
 		textFieldBusca.setColumns(10);
+		
+		JButton btnGerarXls = new JButton("XLS");
+		btnGerarXls.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser jfc = new JFileChooser();
+				jfc.setDialogTitle("Salvar relatório como...");
+				
+				int resultado = jfc.showSaveDialog(null);
+				if (resultado == JFileChooser.APPROVE_OPTION) {
+					String caminhoEscolhido =jfc.getSelectedFile().getAbsolutePath();
+				}
+				
+				
+				
+			}
+		});
 
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -136,7 +153,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
 							.addContainerGap())
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
@@ -151,11 +168,12 @@ public class PanelConsultaQuestoes extends JPanel {
 							.addGap(26))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(363, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnGerarXls)
+							.addContainerGap(293, Short.MAX_VALUE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap(360, Short.MAX_VALUE))))
-
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -170,8 +188,10 @@ public class PanelConsultaQuestoes extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(1)
 							.addComponent(textFieldBusca, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblPerguntas)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblPerguntas)
+						.addComponent(btnGerarXls))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
 					.addGap(11)
@@ -319,5 +339,4 @@ public class PanelConsultaQuestoes extends JPanel {
 		});
 		return botao;
 	}
-	
 }
