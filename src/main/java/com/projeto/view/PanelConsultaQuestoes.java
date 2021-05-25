@@ -8,25 +8,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.DefaultButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
-import javax.swing.colorchooser.DefaultColorSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.collections4.map.HashedMap;
@@ -40,9 +36,6 @@ import com.projeto.model.entity.PerguntaVO;
 import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
-
-import javax.swing.JTextField;
-import javax.swing.UIManager;
 
 public class PanelConsultaQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -85,25 +78,8 @@ public class PanelConsultaQuestoes extends JPanel {
 		
 		comboCategorias = new JComboBox();
 		comboCategorias.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
+			public void actionPerformed(ActionEvent e) {				
 				consultarPerguntas();
-//				limpaTabelaPerguntas();
-//				limpaTabelaAlternativas();
-//				if (comboCategorias.getSelectedIndex() > 0) {
-//					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
-//					perguntas = perguntaController.buscaPorCategoriaEscolhida(categoriaEscolhida);
-//					
-//					if (perguntas.size() > 0) {
-//						limpaTabelaPerguntas();
-//						preencherTabelaPerguntas(perguntas);						
-//					} else {
-//						JOptionPane.showMessageDialog(null, "Não foi possível realizar consulta!", "ATENÇÃO",
-//								JOptionPane.ERROR_MESSAGE, null);
-//						limpaTabelaPerguntas();
-//						limpaTabelaAlternativas();
-//					}										
-//				}
 			}
 
 		});
@@ -147,6 +123,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		textFieldBusca = new PlaceholderTextField();
 		textFieldBusca.setPlaceholder("Digite o texto para busca");
 		textFieldBusca.setColumns(10);
+
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -159,7 +136,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
 							.addContainerGap())
-						.addGroup(groupLayout.createSequentialGroup()
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
@@ -178,6 +155,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap(360, Short.MAX_VALUE))))
+
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -309,8 +287,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		tableConsulta.setModel(new DefaultTableModel(new Object[][] { nomeColunasPerguntas }, nomeColunasPerguntas));
 		tableConsulta.getColumnModel().getColumn(0).setPreferredWidth(650);
 		Font  f1  = new Font(Font.SERIF, Font.PLAIN,  14);
-		//tableConsulta.setEditingRow(int ).setFont(f1);
-		//UIManager.put("TableHeader.font",new Font("Arial", Font.BOLD, 18) );
+
 	}
 	
 	public static <T, E> T getChavePorValor(Map<T, E> map, E value) {
