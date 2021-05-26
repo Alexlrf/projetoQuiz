@@ -79,9 +79,33 @@ public class AlternativaDAO implements BaseDao<AlternativaVO>{
 		return alternativas;
 	}
 
-	public boolean cadastraPergunta(PerguntaVO pergunta) {
-		// TODO Auto-generated method stub
-		return false;
+
+	public boolean cadastraAlternativas(PerguntaVO perguntaVO, List<String> listaAlternativas) {
+		boolean retorno = true;
+		String sql = "INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) VALUES (?, ?, ?);";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
+			
+			for (String alternativa : listaAlternativas) {
+				
+				stmt.setInt(1, perguntaVO.getIdPergunta());
+				stmt.setString(2, alternativa);
+				
+			}
+			
+			
+			
+			
+		} catch (SQLException e) {
+			System.out.println("Erro ao cadastrar lista de alternativas!");
+			
+		}
+		
+		
+		
+		return retorno;
+		
 	}
 
 }

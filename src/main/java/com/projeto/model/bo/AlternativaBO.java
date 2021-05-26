@@ -25,22 +25,18 @@ public class AlternativaBO {
 		
 		if (perguntaVO.getCategoria().getIdCategoria() < 0 || perguntaVO.getCategoria() == null) {
 			mensagem = "Erro ao cadastrar pergunta!";
-			throw new SQLException(mensagem);
+			retorno = false;
 		} else {
-			
-			System.out.println(" CATEGORIA: "+pergunta.getCategoria()+"\n\n PERGUNTA: "+pergunta.getTextoPergunta()+"\n\n");
-			int cont = 1;
-			for (String opcao : listaAlternativas) {
-				System.out.println(" >> ALTERNATIVA "+cont+":  "+opcao+"\n");
-				cont ++;
+			if (!alternativaDAO.cadastraAlternativas(perguntaVO, listaAlternativas)) {
+				mensagem = "Erro ao cadastrar alternativas!";
+				retorno = false;
 			}
-
 		}
 		
-	
-		
-		return retorno;
-		
+		if (Utils.stringValida(mensagem)) {
+			throw new SQLException(mensagem);
+		}		
+		return retorno;		
 	}
 
 	public List<AlternativaVO> buscaAlternativas(PerguntaVO pergunta) {

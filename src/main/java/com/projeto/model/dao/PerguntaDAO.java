@@ -31,7 +31,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			stmt.executeUpdate();
 			ResultSet id = stmt.getGeneratedKeys();
 			if (id.next()) {				
-				perguntaVO.setCategoria(categoriaDAO.findById(id.getInt(1)));				
+				perguntaVO.setIdPergunta(id.getInt(1));
 			}			
 			
 		} catch(SQLException e) {
