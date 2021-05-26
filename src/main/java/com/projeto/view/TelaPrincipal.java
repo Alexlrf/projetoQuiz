@@ -96,8 +96,4 @@ public class TelaPrincipal extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 
-	public void abrirTelaCoordenador(UsuarioVO usuario) {
-		// TODO Auto-generated method stub
-		
-	}
 }
