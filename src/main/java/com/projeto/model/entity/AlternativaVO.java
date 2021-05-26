@@ -5,9 +5,9 @@ public class AlternativaVO {
 	private int idAlternativa;
 	private int idPergunta;
 	private String texto;
-	private Boolean alternativaCorreta;
+	private String alternativaCorreta;
 	
-	public AlternativaVO(int idAlternativa, int idPergunta, String texto, Boolean alternativaCorreta) {
+	public AlternativaVO(int idAlternativa, int idPergunta, String texto, String alternativaCorreta) {
 		super();
 		this.idAlternativa = idAlternativa;
 		this.idPergunta = idPergunta;
@@ -43,11 +43,11 @@ public class AlternativaVO {
 		this.texto = texto;
 	}
 
-	public Boolean getAlternativaCorreta() {
+	public String getAlternativaCorreta() {
 		return alternativaCorreta;
 	}
 
-	public void setAlternativaCorreta(Boolean alternativaCorreta) {
+	public void setAlternativaCorreta(String alternativaCorreta) {
 		this.alternativaCorreta = alternativaCorreta;
 	}
 	
