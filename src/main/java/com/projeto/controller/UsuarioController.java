@@ -1,6 +1,7 @@
 package com.projeto.controller;
 
 import com.projeto.exceptions.LoginNaoInformadoException;
+import com.projeto.exceptions.SenhaIncorretaException;
 import com.projeto.exceptions.SenhaNaoInformadaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
 import com.projeto.model.bo.UsuarioBO;
@@ -9,7 +10,7 @@ import com.projeto.view.TelaPrincipal;
 
 public class UsuarioController {
 
-	public UsuarioVO verificarLoginController(String login, String senha) throws UsuarioNaoExistenteException, LoginNaoInformadoException, SenhaNaoInformadaException {
+	public UsuarioVO verificarLoginController(String login, String senha) throws UsuarioNaoExistenteException, LoginNaoInformadoException, SenhaNaoInformadaException, SenhaIncorretaException {
 		UsuarioBO verificarLogin = new UsuarioBO();
 		TelaPrincipal telaProfessor = new TelaPrincipal();
 
@@ -19,13 +20,18 @@ public class UsuarioController {
 			throw new SenhaNaoInformadaException("Senha não informada");
 		}
 		
-		UsuarioVO usuario = new UsuarioVO();
+		UsuarioVO usuario = new UsuarioVO() {
+		};
+		
 		usuario = verificarLogin.verificarLoginBO(login, senha);
 
 		if (usuario == null || usuario.getIdUsuario() <= 0) {
 			throw new UsuarioNaoExistenteException("Usuario não cadastrado");
 		}
 		
+		if (usuario.getIdUsuario() > 0 && usuario.getSenha().trim().isEmpty()) {
+			throw new SenhaIncorretaException("Senha incorreta");
+		}
 		
 		telaProfessor.setUsuario(usuario);
 		telaProfessor.setVisible(true);

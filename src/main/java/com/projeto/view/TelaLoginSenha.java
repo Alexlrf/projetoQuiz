@@ -23,8 +23,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import com.projeto.controller.UsuarioController;
-import com.projeto.enums.UsuarioEnum;
+import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.exceptions.LoginNaoInformadoException;
+import com.projeto.exceptions.SenhaIncorretaException;
 import com.projeto.exceptions.SenhaNaoInformadaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
 import com.projeto.model.entity.UsuarioVO;
@@ -176,17 +177,16 @@ public class TelaLoginSenha extends JFrame {
 		
 	}
 
-	protected void verificarLogin() {
-		UsuarioVO usuario = new UsuarioVO();
-		usuario.setLogin(txtLogin.getText());
-		usuario.setSenha(new String(passwordField.getPassword()));
+	protected void verificarLogin(){
+		UsuarioVO usuario = new UsuarioVO() {
+		};
 		
 		UsuarioController verificacaoLogin = new UsuarioController();
 		
 		try {
-			usuario = verificacaoLogin.verificarLoginController(usuario.getLogin(), usuario.getSenha());
+			usuario = verificacaoLogin.verificarLoginController(txtLogin.getText(), new String(passwordField.getPassword()));
 			this.verificarTipoUsuario(usuario);
-		} catch (UsuarioNaoExistenteException | LoginNaoInformadoException | SenhaNaoInformadaException e) {
+		} catch (UsuarioNaoExistenteException | LoginNaoInformadoException | SenhaNaoInformadaException | SenhaIncorretaException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Erro de Login", JOptionPane.WARNING_MESSAGE);
 		}
 	}
@@ -194,19 +194,19 @@ public class TelaLoginSenha extends JFrame {
 	public void verificarTipoUsuario(UsuarioVO usuario) {
 		
 		// chama a tela do professor
-		if (usuario.getTipo().equals(UsuarioEnum.PROFESSOR)) {
+		if (usuario.getTipo().equals(TipoUsuarioEnum.PROFESSOR)) {
 			TelaPrincipal telaProfessor = new TelaPrincipal();
 			telaProfessor.setVisible(true);
 			dispose();
 			
 			// chama a tela do coordenador
-		} else if (usuario.getTipo().equals(UsuarioEnum.COORDENACAO)) {
+		} else if (usuario.getTipo().equals(TipoUsuarioEnum.COORDENACAO)) {
 //			TelaMenuProfessor telaProfessor = new TelaMenuProfessor();
 //			telaProfessor.abrirTelaCoordenador(usuario);
 			JOptionPane.showMessageDialog(null, "Olá coordenador(a), sua tela ainda esta em construção", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 			
 			// chama a tela do aluno
-		} else if (usuario.getTipo().equals(UsuarioEnum.ALUNO)) {
+		} else if (usuario.getTipo().equals(TipoUsuarioEnum.ALUNO)) {
 			// TODO fazer tela do aluno
 			JOptionPane.showMessageDialog(null, "Olá aluno, sua tela ainda esta em construção", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 		}

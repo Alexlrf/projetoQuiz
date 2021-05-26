@@ -1,6 +1,6 @@
 package com.projeto.enums;
 
-public enum UsuarioEnum {
+public enum TipoUsuarioEnum {
 	PROFESSOR
 	, ALUNO
 	, COORDENACAO;
@@ -10,8 +10,8 @@ public enum UsuarioEnum {
 	 * @param usuarioEnum
 	 * @return
 	 */
-	public static UsuarioEnum getEstagioPesquisa(String usuarioEnum){
-        for(UsuarioEnum usuario:UsuarioEnum.values()){
+	public static TipoUsuarioEnum getTipoUsuarioEnum(String usuarioEnum){
+        for(TipoUsuarioEnum usuario:TipoUsuarioEnum.values()){
             if(usuario.toString().equals(usuarioEnum.toUpperCase())){
                 return usuario;
             }
