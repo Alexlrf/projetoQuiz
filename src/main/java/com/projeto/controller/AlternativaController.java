@@ -3,29 +3,19 @@ package com.projeto.controller;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
-
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.AlternativaBO;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.PerguntaVO;
-import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 
 public class AlternativaController {
 	 
 	AlternativaBO alternativaBO = new AlternativaBO();
 	
-	public boolean cadastraAlternativas(PerguntaVO pergunta, List<String> listaAlternativas) throws ErroNoCadastroException, SQLException {		
-		boolean retorno = true;
+	public boolean cadastraQuestao(PerguntaVO pergunta, List<String> listaAlternativas) throws ErroNoCadastroException, SQLException {		
 		
-		
-//		if (validaAlternativas(listaAlternativas)) {
-//			if (validaPergunta(pergunta.getTextoPergunta())) {
-//				retorno =alternativaBO.cadastraAlternativas(pergunta, listaAlternativas);
-//			}else {
-
-		return retorno;
+		return alternativaBO.cadastraQuestao(pergunta, listaAlternativas);
 	}	
 
 	public boolean validaAlternativas(List<String> listaAlternativas) {			

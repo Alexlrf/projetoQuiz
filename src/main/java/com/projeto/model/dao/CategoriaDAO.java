@@ -50,9 +50,23 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 
 	@Override
 	public CategoriaVO findById(Integer obj) {
-		// TODO Auto-generated method stub
-		return null;
+		CategoriaVO categoria = new CategoriaVO();
+		String sql = "SELECT * FROM categoria WHERE id_categoria = ?";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
+			
+			ResultSet rs = stmt.executeQuery();			
+			if (rs.next()) {
+				categoria = this.completeResultset(rs);
+				
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro na consulta de categoria por id!");
+		}
+		return categoria;
 	}
+	
 
 	@Override
 	public List<CategoriaVO> findAll() {

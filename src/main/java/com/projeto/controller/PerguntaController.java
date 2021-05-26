@@ -18,19 +18,19 @@ public class PerguntaController {
 		return perguntaBO.buscaPorCategoriaEscolhida(categoriaEscolhida);
 	}	
 
-	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws SQLException{
-		String mensagem = "";
-		
-		listaPerguntas = perguntaBO.buscaComSeletor(perguntaSeletor);
-		if (listaPerguntas == null || listaPerguntas.size() == 0) {
-			mensagem = "Falha na consulta!\nTente novamente";
-		} 
-		
-		if (Utils.stringValida(mensagem)) {
-			throw new SQLException(mensagem);		
-		}		
-		return listaPerguntas;		
-	}	
+//	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws SQLException{
+//		String mensagem = "";
+//		
+//		listaPerguntas = perguntaBO.buscaComSeletor(perguntaSeletor);
+//		if (listaPerguntas == null || listaPerguntas.size() == 0) {
+//			mensagem = "Falha na consulta!\nTente novamente";
+//		} 
+//		
+//		if (Utils.stringValida(mensagem)) {
+//			throw new SQLException(mensagem);		
+//		}		
+//		return listaPerguntas;		
+//	}	
 
 	public List<PerguntaVO> buscaPorTextoDigitado(String textoDigitado) throws SQLException {		
 		String mensagem = "";

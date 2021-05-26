@@ -276,13 +276,13 @@ public class PanelConsultaQuestoes extends JPanel {
 			perguntaSeletor.setCategoria("");
 		}				
 		
-		try {
-			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
-			preencherTabelaPerguntas(perguntas);
-			
-		} catch (Exception e2) {
-			// TODO: handle exception
-		}		
+//		try {
+//			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
+//			preencherTabelaPerguntas(perguntas);
+//			
+//		} catch (Exception e2) {
+//			// TODO: handle exception
+//		}		
 	}
 
 	protected void preencherAlternativas(PerguntaVO pergunta) {

@@ -602,7 +602,7 @@ public class PanelCadastraQuestoes extends JPanel {
 								, JOptionPane.ERROR_MESSAGE, null);						
 				} else {
 					try {						
-						alternativaController.cadastraAlternativas(perguntaVO, listaAlternativas);						
+						alternativaController.cadastraQuestao(perguntaVO, listaAlternativas);						
 						JOptionPane.showMessageDialog(null, "Cadastro realizado!", 
 								Constants.SUCESSO, JOptionPane.INFORMATION_MESSAGE, null);
 						limpaPreenchimento();						
@@ -619,8 +619,10 @@ public class PanelCadastraQuestoes extends JPanel {
 
 			private void capturaDadosDaTela() {
 				listaAlternativas = new ArrayList<>();
-				perguntaVO = new PerguntaVO();				
-				perguntaVO.setCategoria(comboBoxPerguntas.getSelectedItem().toString());
+				perguntaVO = new PerguntaVO();
+				CategoriaVO categoriaVO = new CategoriaVO();
+				categoriaVO.setDescricaoCategoria(comboBoxPerguntas.getSelectedItem().toString());
+				perguntaVO.setCategoria(categoriaVO);
 				perguntaVO.setTextoPergunta(Utils.formataEspacoUnico(txtCadastraPergunta.getText().toString()));
 				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta1.getText().toString()));
 				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta2.getText().toString()));

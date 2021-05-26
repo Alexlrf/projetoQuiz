@@ -7,10 +7,10 @@ public class PerguntaVO  {
 	private int idPergunta;
 	private int idUsuario;
 	private String textoPergunta;
-	private String categoria;
+	private CategoriaVO categoria;
 	private List<AlternativaVO> listaAlternativas;
 	
-	public PerguntaVO(int idPergunta, int idUsuario, String textoPergunta, String categoria, List<AlternativaVO> listaAlternativas) {
+	public PerguntaVO(int idPergunta, int idUsuario, String textoPergunta, CategoriaVO categoria, List<AlternativaVO> listaAlternativas) {
 		super();
 		this.idPergunta = idPergunta;
 		this.idUsuario = idUsuario;
@@ -47,11 +47,11 @@ public class PerguntaVO  {
 		this.textoPergunta = textoPergunta;
 	}
 
-	public String getCategoria() {
+	public CategoriaVO getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(String categoria) {
+	public void setCategoria(CategoriaVO categoria) {
 		this.categoria = categoria;
 	}
 

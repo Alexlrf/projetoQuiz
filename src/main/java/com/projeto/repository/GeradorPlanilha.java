@@ -32,7 +32,7 @@ public class GeradorPlanilha {
 		for (PerguntaVO pergunta : perguntas) {
 			Row novaLinha = aba.createRow(rowNum++);
 			novaLinha.createCell(0).setCellValue(pergunta.getTextoPergunta());
-			novaLinha.createCell(1).setCellValue(pergunta.getCategoria());
+			novaLinha.createCell(1).setCellValue(pergunta.getCategoria().getDescricaoCategoria());
 			
 		}
 		

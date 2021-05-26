@@ -29,19 +29,19 @@ public class PerguntaBO {
 	 * @throws SQLException
 	 */
 	
-	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws SQLException{	
-		List<PerguntaVO> listaPerguntas = new ArrayList<>();
-		int idCategoria = 0;
-		if (Utils.stringValida(perguntaSeletor.getCategoria())) {
-			idCategoria = perguntaDAO.buscaIdcategoria(perguntaSeletor.getCategoria());
-			perguntaSeletor.setIdCategoria(idCategoria);
-			listaPerguntas = perguntaDAO.buscaComSeletor(perguntaSeletor);			
-		} else {
-			perguntaSeletor.setIdCategoria(0);
-			listaPerguntas = perguntaDAO.buscaComSeletor(perguntaSeletor);
-		}		
-		return listaPerguntas;
-	}
+//	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws SQLException{	
+//		List<PerguntaVO> listaPerguntas = new ArrayList<>();
+//		int idCategoria = 0;
+//		if (Utils.stringValida(perguntaSeletor.getCategoria())) {
+//			idCategoria = perguntaDAO.buscaIdcategoria(perguntaSeletor.getCategoria());
+//			perguntaSeletor.setIdCategoria(idCategoria);
+//			listaPerguntas = perguntaDAO.buscaComSeletor(perguntaSeletor);			
+//		} else {
+//			perguntaSeletor.setIdCategoria(0);
+//			listaPerguntas = perguntaDAO.buscaComSeletor(perguntaSeletor);
+//		}		
+//		return listaPerguntas;
+//	}
 	
 	
 	public List<PerguntaVO> buscaPorTextoDigitado(String textoDigitado) {
