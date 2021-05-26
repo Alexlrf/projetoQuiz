@@ -33,6 +33,7 @@ import javax.swing.border.LineBorder;
 
 import com.projeto.controller.AlternativaController;
 import com.projeto.controller.CategoriaController;
+import com.projeto.controller.PerguntaController;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
@@ -42,11 +43,9 @@ import com.projeto.repository.Utils;
 public class PanelCadastraQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private JComboBox comboBoxPerguntas = new JComboBox();
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private List<String> listaAlternativas = new ArrayList<>();
-	private PerguntaVO perguntaVO = null;
-	public JLabel lblNomeUsuario;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JComboBox comboBoxPerguntas = new JComboBox();
 	private JFormattedTextField txtAdicionaCategoria;
 	private	JFormattedTextField txtCadastraPergunta;
 	private	JFormattedTextField txtCadastraResposta1;
@@ -54,13 +53,13 @@ public class PanelCadastraQuestoes extends JPanel {
 	private	JFormattedTextField txtCadastraResposta3;
 	private	JFormattedTextField txtCadastraResposta4;
 	private	JFormattedTextField txtCadastraResposta5;
-		
-	
-
+	private PerguntaVO perguntaVO = null;
+	public JLabel lblNomeUsuario;
 
 	AlternativaController alternativaController = new AlternativaController();
-	CategoriaVO categoriaVO = new CategoriaVO();
 	CategoriaController categoriaController = new CategoriaController();
+	PerguntaController perguntaController = new PerguntaController();
+	CategoriaVO categoriaVO = new CategoriaVO();
 
 	/**
 	 * Create the panel.
@@ -581,17 +580,26 @@ public class PanelCadastraQuestoes extends JPanel {
 		JButton btnSalvar = new JButton("Salvar");
 		formataBotao(btnSalvar);
 		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {				
-				capturaDadosDaTela();
-			
-				if (!validaAlternativaCorreta(buttonGroup)) {
-					JOptionPane.showMessageDialog(null, "Verifique o preenchimento\n Marque a alternativa correta",
-							Constants.ALERTA
-							, JOptionPane.ERROR_MESSAGE, null);
+			public void actionPerformed(ActionEvent e) {
+				
+				capturaDadosDaTela();				
+				if(!validaComboBoxCategoria(comboBoxPerguntas)) {
+					JOptionPane.showMessageDialog(null, "Selecione uma categoria!",
+							Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);	
 					
-				} else if(!validaComboBoxCategoria(comboBoxPerguntas)) {
-					JOptionPane.showMessageDialog(null, "Selecione uma categoria",
-							Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);					
+				}  else if (!perguntaController.validaPergunta(perguntaVO)) {
+					JOptionPane.showMessageDialog(null, "Verifique o preenchimento do campo PERGUNTA!",
+							Constants.ALERTA
+							, JOptionPane.ERROR_MESSAGE, null);					
+					
+				}else if (!alternativaController.validaAlternativas(listaAlternativas)) {
+					JOptionPane.showMessageDialog(null, "Verifique o preenchimento das alternativas!",
+							Constants.ALERTA
+							, JOptionPane.ERROR_MESSAGE, null);						
+				}else if (!validaAlternativaCorreta(buttonGroup)) {
+						JOptionPane.showMessageDialog(null, "Marque a alternativa correta!",
+								Constants.ALERTA
+								, JOptionPane.ERROR_MESSAGE, null);						
 				} else {
 					try {						
 						alternativaController.cadastraAlternativas(perguntaVO, listaAlternativas);						

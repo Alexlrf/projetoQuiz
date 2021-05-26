@@ -18,37 +18,21 @@ public class AlternativaController {
 	
 	public boolean cadastraAlternativas(PerguntaVO pergunta, List<String> listaAlternativas) throws ErroNoCadastroException, SQLException {		
 		boolean retorno = true;
-		String validacaoAlternativa = "";		
 		
-		if (validaAlternativas(listaAlternativas)) {
-			if (validaPergunta(pergunta.getTextoPergunta())) {
-				retorno =alternativaBO.cadastraAlternativas(pergunta, listaAlternativas);
-			}else {
-				validacaoAlternativa += "Verifique o campo PERGUNTA\n";
-			}
-			
-		}else {
-			validacaoAlternativa = "Verifique os campos das alternativas";
-		}		
 		
-		if (!validacaoAlternativa.isEmpty()) {
-			throw new ErroNoCadastroException(validacaoAlternativa);
-		}
+//		if (validaAlternativas(listaAlternativas)) {
+//			if (validaPergunta(pergunta.getTextoPergunta())) {
+//				retorno =alternativaBO.cadastraAlternativas(pergunta, listaAlternativas);
+//			}else {
+
 		return retorno;
 	}	
 
-	private boolean validaAlternativas(List<String> listaAlternativas) {			
+	public boolean validaAlternativas(List<String> listaAlternativas) {			
 		return Utils.alternativaValida(listaAlternativas.get(0), listaAlternativas.get(1)
 				, listaAlternativas.get(2), listaAlternativas.get(3), listaAlternativas.get(4));
 	}	
 
-	private boolean validaPergunta(String pergunta) {
-		boolean perguntaValida = true;
-		if (pergunta.equalsIgnoreCase(Constants.PERGUNTA) || !Utils.stringValida(pergunta)) {
-			perguntaValida = false;
-		}
-		return perguntaValida;
-	}
 
 	public List<AlternativaVO> buscaAlternativas(PerguntaVO pergunta) {
  		return alternativaBO.buscaAlternativas(pergunta);

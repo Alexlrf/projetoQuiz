@@ -52,14 +52,14 @@ public class TelaPrincipal extends JFrame {
 		setTitle("      Q  U  I  Z");
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);		
-			
+		setBounds(100, 100, 450, 300);
+				
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnNewMenu = new JMenu("QUESTÕES");
+		JMenu mnNewMenu = new JMenu("QUESTÕES"); 
 		menuBar.add(mnNewMenu);
-		
+				
 		JMenuItem menuCadastraQuestao = new JMenuItem("Cadastrar Questão");
 		menuCadastraQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
@@ -80,7 +80,7 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		mnNewMenu.add(menuConsultaQuestao);
-		contentPane = new JPanel();
+		contentPane = new Home();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);		
 		

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.projeto.model.bo.PerguntaBO;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
 
@@ -47,4 +48,13 @@ public class PerguntaController {
 		return listaPerguntas;		
 	}
 
+	public boolean validaPergunta(PerguntaVO perguntaVO) {
+		boolean perguntaValida = true;
+		if (perguntaVO.getTextoPergunta().equalsIgnoreCase(Constants.PERGUNTA) || !Utils.stringValida(perguntaVO.getTextoPergunta())) {
+			perguntaValida = false;
+		}
+		return perguntaValida;
+	}
 }
+
+
