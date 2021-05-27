@@ -97,7 +97,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		List<CategoriaVO> categorias = new ArrayList<>();
 		categorias = categoriaController.consultaTodasCategorias();
 		for (CategoriaVO categoriaVO : categorias) {
-			comboCategorias.addItem(categoriaVO.getDescricaoCategoria());
+			comboCategorias.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
 			mapCategorias.put(categoriaVO.getIdCategoria(), categoriaVO.getDescricaoCategoria());			
 		}
 				
@@ -135,21 +135,21 @@ public class PanelConsultaQuestoes extends JPanel {
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
 									.addGap(50)
-									.addComponent(comboCategorias, 0, 180, Short.MAX_VALUE)))
+									.addComponent(comboCategorias, 0, 341, Short.MAX_VALUE)))
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
 							.addGap(54)
 							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
 							.addGap(26))
@@ -177,8 +177,8 @@ public class PanelConsultaQuestoes extends JPanel {
 					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
 					.addGap(11)
 					.addComponent(lblAlternativas)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 17, Short.MAX_VALUE)
+					.addGap(18)
+					.addComponent(tableAlternativas, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE)
 					.addGap(28)
 					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
@@ -213,7 +213,7 @@ public class PanelConsultaQuestoes extends JPanel {
 					try {
 						geradorPlanilha.gerarPlanilhaPerguntas(perguntas, caminhoEscolhido);
 						JOptionPane.showMessageDialog(null, "Planilha gerada com sucesso!", Constants.SUCESSO,
-								JOptionPane.PLAIN_MESSAGE, null);
+								JOptionPane.INFORMATION_MESSAGE, null);
 						
 					} catch (Exception e2) {
 						JOptionPane.showMessageDialog(null, "Erro ao gerar planilha!", "ATENÇÃO",
@@ -273,11 +273,16 @@ public class PanelConsultaQuestoes extends JPanel {
 		}				
 		
 		try {
-			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);			
-			preencherTabelaPerguntas(perguntas);
+			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
+			if (perguntas.size() == 0 || perguntas == null) {
+								
+			} else {
+				preencherTabelaPerguntas(perguntas);
+			}
 			
-		} catch (Exception e2) {
-			// TODO: handle exception
+		} catch (Exception mensagem) {
+			JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
+					JOptionPane.ERROR_MESSAGE, null);
 		}		
 	}
 
@@ -294,8 +299,8 @@ public class PanelConsultaQuestoes extends JPanel {
 		for (AlternativaVO alternativaVO : alternativas) {
 			Object[] novaLinha = new Object[2];
 			
-			novaLinha[0] = alternativaVO.getTexto();
-			novaLinha[1] = alternativaVO.getAlternativaCorreta();
+			novaLinha[0] = alternativaVO.getTexto().toUpperCase();
+			novaLinha[1] = alternativaVO.getAlternativaCorreta().toUpperCase();
 			modeloTabela.addRow(novaLinha);
 		}		
 	}
@@ -313,8 +318,8 @@ public class PanelConsultaQuestoes extends JPanel {
 		for (PerguntaVO perguntaVO : perguntas) {
 			Object[] novaLinha = new Object[2];
 			
-			novaLinha[0] = perguntaVO.getTextoPergunta();
-			novaLinha[1] = perguntaVO.getCategoria().getDescricaoCategoria();
+			novaLinha[0] = perguntaVO.getTextoPergunta().toUpperCase();
+			novaLinha[1] = perguntaVO.getCategoria().getDescricaoCategoria().toUpperCase();
 			modeloTabela.addRow(novaLinha);			
 		}		
 	}

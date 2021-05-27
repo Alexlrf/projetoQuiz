@@ -24,7 +24,7 @@ CREATE TABLE usuario (
   id_pergunta INT NOT NULL AUTO_INCREMENT
   , id_usuario INT NOT NULL
   , id_categoria INT NOT NULL
-  , texto_pergunta VARCHAR(40) NOT NULL  
+  , texto_pergunta TEXT NOT NULL  
   , constraint PK_PERGUNTA primary key (id_pergunta)
   , constraint FK_PERGUNTA_USUARIO foreign key (id_usuario) references usuario(id_usuario)
    , constraint FK_PERGUNTA_CATEGORIA foreign key (id_categoria) references categoria(id_categoria)
@@ -33,7 +33,7 @@ CREATE TABLE usuario (
   CREATE TABLE alternativa (   
   id_alternativa INT NOT NULL AUTO_INCREMENT
   , id_pergunta INT NOT NULL
-  , texto_alternativa VARCHAR(255) NOT NULL 
+  , texto_alternativa TEXT NOT NULL 
   , alternativa_correta ENUM('CORRETA', 'ERRADA') NOT NULL
   , constraint PK_ALTERNATIVA primary key (id_alternativa)
   , constraint FK_ALTERNATIVA_PERGUNTA foreign key (id_pergunta) references pergunta(id_pergunta)
@@ -107,14 +107,3 @@ SELECT fun_valida_usuario('Alexandro','Alexandro&02') as validacao;
 SELECT fun_valida_usuario('login','senha');
 
 
-select 
-	distinct(usuario.id_usuario), categoria.descricao_categoria, pergunta.texto_pergunta
-    , alternativa.texto_alternativa, alternativa.alternativa_correta
-from 
-	usuario
- inner join
-	pergunta on usuario.id_usuario = pergunta.id_usuario
- inner join
-    categoria on categoria.id_categoria = pergunta.id_categoria
- inner join
-    alternativa on alternativa.id_pergunta = pergunta.id_pergunta;

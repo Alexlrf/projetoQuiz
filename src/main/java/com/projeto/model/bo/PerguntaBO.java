@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.model.dao.CategoriaDAO;
 import com.projeto.model.dao.PerguntaDAO;
 import com.projeto.model.entity.CategoriaVO;
@@ -31,7 +32,7 @@ public class PerguntaBO {
 	 * @throws SQLException
 	 */
 	
-	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws SQLException{	
+	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws ErroNaConsultaException{	
 		List<PerguntaVO> listaPerguntas = new ArrayList<>();
 		
 		if (Utils.stringValida(perguntaSeletor.getCategoria())) {
