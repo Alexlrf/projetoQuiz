@@ -15,139 +15,123 @@ import com.projeto.repository.Banco;
 
 public class UsuarioDAO{
 	
-//	public UsuarioVO verificarLoginDAO(String login, String senha) {
-//		UsuarioVO usuario;
-//		
-//		String sql = "SELECT CPF FROM USUARIO WHERE CPF = " + login;
-//
-//		try (Connection conn = Banco.getConnection();
-//				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
-//			
-//			ResultSet valido = stmt.executeQuery();
-//			
-//			// valida se a consulta tenha algum retorno
-//			if (valido.next()) {
-//				usuario.setIdUsuario(valido.getInt("validacao"));
-//				
-//				
-//				// valida se o usuario existe
-//				if (usuario.getIdUsuario() > 0) {
-//					usuario = this.validarSenha(login, senha);
-//				}
-//			}
-//		} catch (SQLException e) {
-//			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
-//		}
-//		return usuario;
-//	}
-
-//	private UsuarioVO validarSenha(String login, String senha) {
-//		UsuarioVO usuario;
-//		String sql = "SELECT * FROM usuario WHERE cpf = '" + login + "' AND senha = MD5('" + senha + "')";
-//
-//		try (Connection conn = Banco.getConnection();
-//				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
-//			
-//			ResultSet valido = stmt.executeQuery();
-//			
-//			// valida se a consulta tenha algum retorno
-//			if (valido.next()) {
-//				usuario.setIdUsuario(valido.getInt("validacao"));
-//				
-//				// valida se o usuario e senha existem
-//				if (usuario.getIdUsuario() > 0 && usuario.getSenha().trim().isEmpty()) {
-//					usuario = this.findById(usuario.getIdUsuario());
-//				}
-//			}
-//		} catch (SQLException e) {
-//			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
-//		}
-//		return usuario;
-//	}
-	
-	public UsuarioVO verificarLoginDAO(String cpf, String senha) {
-	UsuarioVO usuario = null;
-	String sql = "SELECT * FROM usuario WHERE cpf = '" + cpf + "' AND senha = MD5('" + senha + "')";
-
-	try (Connection conn = Banco.getConnection();
-			PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+	/**
+	 * Verifica se o cpf está correto
+	 * @param cpf
+	 * @return
+	 */
+	public boolean verificarCpfDAO(String cpf) {
+		boolean validar  = false;
 		
-		ResultSet rs = stmt.executeQuery();
-		
-		// valida se a consulta tenha algum retorno
-		if (rs.next()) {
-			String tipo = rs.getString("TIPO");
+		String sql = "SELECT CPF FROM USUARIO WHERE CPF = '" + cpf + "'";
+
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
 			
-			// usuario = this.preencherAtributosGerais(usuario, rs);
+			ResultSet valido = stmt.executeQuery();
 			
-			// Verifica se o usuario é um aluno
-			if(tipo.equals("ALUNO")) {
-				AlunoVO usuarioAluno = (AlunoVO) usuario;
-				// usuarioAluno = (AlunoVO) this.preencherAtributosGerais(usuarioAluno, rs);
-				usuarioAluno.setNome(rs.getString("NOME"));
-				usuarioAluno.setRg(rs.getString("RG"));
-				usuarioAluno.setCpf(rs.getString("CPF"));
-				usuarioAluno.setDataNascimento(rs.getDate("DT_NASCIMENTO").toLocalDate());
-				usuarioAluno.setSexo(rs.getString("SEXO").charAt(0));
-				usuarioAluno.setPossuiDeficiencia(rs.getBoolean("POSSUI_DEFICIENCIA"));
-				usuarioAluno.setCelular(rs.getString("CELULAR"));
-				usuarioAluno.setNacionalidade(rs.getString("NACIONALIDADE"));
-				usuarioAluno.setTurno(TurnoEnum.getTurnoEnum(rs.getString("TURNO")));
-				usuarioAluno.setTipo(TipoUsuarioEnum.getTipoUsuarioEnum(rs.getString("TIPO")));
-				return usuarioAluno;
-			
-				// Verifica se o usuario é um professor
-			} else if (tipo.equals("PROFESSOR")) {
-				ProfessorVO usuarioProfessor = new ProfessorVO();
-				// usuarioProfessor = (ProfessorVO) this.preencherAtributosGerais(usuarioProfessor, rs);
-				usuarioProfessor.setIdUsuario(rs.getInt("ID_USUARIO"));
-				usuarioProfessor.setNome(rs.getString("NOME"));
-				usuarioProfessor.setRg(rs.getString("RG"));
-				usuarioProfessor.setCpf(rs.getString("CPF"));
-				usuarioProfessor.setDataNascimento(rs.getDate("DT_NASCIMENTO").toLocalDate());
-				usuarioProfessor.setSexo(rs.getString("SEXO").charAt(0));
-				usuarioProfessor.setPossuiDeficiencia(rs.getBoolean("POSSUI_DEFICIENCIA"));
-				usuarioProfessor.setCelular(rs.getString("CELULAR"));
-				usuarioProfessor.setNacionalidade(rs.getString("NACIONALIDADE"));
-				usuarioProfessor.setTurno(TurnoEnum.getTurnoEnum(rs.getString("TURNO")));
-				usuarioProfessor.setTipo(TipoUsuarioEnum.getTipoUsuarioEnum(rs.getString("TIPO")));
-				usuarioProfessor.setDisciplina(rs.getString("DISCIPLINA"));
-				return usuarioProfessor;
-				
-				// Verifica se o usuario é um coordenador
-			} else if (tipo.equals("COORDENADOR")) {
-				CoordenadorVO usuarioCoordenador = (CoordenadorVO) usuario;
-				// usuarioCoordenador = (CoordenadorVO) this.preencherAtributosGerais(usuarioCoordenador, rs);
-				return usuarioCoordenador;
-				
+			// valida se a consulta tenha algum retorno
+			if (valido.next()) {
+				validar = true;
 			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
 		}
-	} catch (SQLException e) {
-		System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
+		return validar;
 	}
-	return usuario;
-}
 	
 	/**
-	 * 
+	 * Verifica se a senha está correta
+	 * @param senha
+	 * @return
+	 */
+	public boolean verificarSenhaDAO(String senha) {
+		boolean validar  = false;
+		
+		String sql = "SELECT SENHA FROM USUARIO WHERE SENHA = MD5('" + senha + "')";
+
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+			
+			ResultSet valido = stmt.executeQuery();
+			
+			// valida se a consulta tenha algum retorno
+			if (valido.next()) {
+				validar = true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
+		}
+		return validar;
+	}
+	
+	/**
+	 * verifica a existencia de um usuario através do parametros passados, identifica qual o seu tipo e preenche seus atributos.
+	 * @param cpf
+	 * @param senha
+	 * @return tipo de usuario e seus atributos.
+	 */
+	public UsuarioVO verificarCpfSenhaDAO(String cpf, String senha) {
+		UsuarioVO usuario = null;
+		String sql = "SELECT * FROM usuario WHERE cpf = '" + cpf + "' AND senha = MD5('" + senha + "')";
+	
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			// valida se a consulta tenha algum retorno
+			if (rs.next()) {
+				String tipo = rs.getString("TIPO");
+				
+				// Verifica se o usuario é um aluno
+				if(tipo.equals("ALUNO")) {
+					AlunoVO usuarioAluno = new AlunoVO();
+					usuarioAluno = (AlunoVO) preencherAtributos(usuarioAluno, rs);
+					return usuarioAluno;
+				
+					// Verifica se o usuario é um professor
+				} else if (tipo.equals("PROFESSOR")) {
+					ProfessorVO usuarioProfessor = new ProfessorVO();
+					usuarioProfessor = (ProfessorVO) this.preencherAtributos(usuarioProfessor, rs);
+					usuarioProfessor.setDisciplina(rs.getString("DISCIPLINA"));
+					return usuarioProfessor;
+					
+					// Verifica se o usuario é um coordenador
+				} else if (tipo.equals("COORDENADOR")) {
+					CoordenadorVO usuarioCoordenador = new CoordenadorVO();
+					usuarioCoordenador = (CoordenadorVO) this.preencherAtributos(usuarioCoordenador, rs);
+					return usuarioCoordenador;
+				} else {
+					return null;
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
+		}
+		return usuario;
+	}
+	
+	/**
+	 * Preenche os atributos em comum entre os usuarios
 	 * @param usuario
 	 * @param rs
-	 * @return usuario com os atributos preenchidos;
+	 * @return usuario com os atributos preenchidos
 	 * @throws SQLException
 	 */
-//	private UsuarioVO preencherAtributosGerais(UsuarioVO usuario, ResultSet rs) throws SQLException {
-//		usuario.setNome(rs.getString("NOME"));
-//		usuario.setRg(rs.getString("RG"));
-//		usuario.setCpf(rs.getString("CPF"));
-//		usuario.setDataNascimento(rs.getDate("DT_NASCIMENTO").toLocalDate());
-//		usuario.setSexo(rs.getString("SEXO").charAt(0));
-//		usuario.setPossuiDeficiencia(rs.getBoolean("POSSUI_DEFICIENCIA"));
-//		usuario.setCelular(rs.getString("CELULAR"));
-//		usuario.setNacionalidade(rs.getString("NACIONALIDADE"));
-//		usuario.setTurno(TurnoEnum.getTurnoEnum(rs.getString("TURNO")));
-//		usuario.setTipo(TipoUsuarioEnum.getTipoUsuarioEnum(rs.getString("TIPO")));
-//		
-//		return usuario;
-//	}
+	private UsuarioVO preencherAtributos(UsuarioVO usuario, ResultSet rs) throws SQLException {
+		usuario.setIdUsuario(rs.getInt("ID_USUARIO"));
+		usuario.setNome(rs.getString("NOME"));
+		usuario.setRg(rs.getString("RG"));
+		usuario.setCpf(rs.getString("CPF"));
+		usuario.setDataNascimento(rs.getDate("DT_NASCIMENTO").toLocalDate());
+		usuario.setSexo(rs.getString("SEXO").charAt(0));
+		usuario.setPossuiDeficiencia(rs.getBoolean("POSSUI_DEFICIENCIA"));
+		usuario.setCelular(rs.getString("CELULAR"));
+		usuario.setNacionalidade(rs.getString("NACIONALIDADE"));
+		usuario.setTurno(TurnoEnum.getTurnoEnum(rs.getString("TURNO")));
+		usuario.setTipo(TipoUsuarioEnum.getTipoUsuarioEnum(rs.getString("TIPO")));
+		return usuario;
+	}
 
 }
