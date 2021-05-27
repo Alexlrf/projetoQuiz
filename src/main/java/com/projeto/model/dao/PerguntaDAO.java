@@ -69,8 +69,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 	public PerguntaVO completeResultset(ResultSet rs) throws SQLException {
 		PerguntaVO perguntaVO = new PerguntaVO();
 		
-		perguntaVO.setTextoPergunta(rs.getString("texto_pergunta"));
-		//perguntaVO.setCategoria(rs.categoriaDAO.fin);		
+		perguntaVO.setTextoPergunta(rs.getString("texto_pergunta"));				
 		perguntaVO.setIdPergunta(rs.getInt("id_pergunta"));
 		return perguntaVO;		
 	}

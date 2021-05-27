@@ -16,18 +16,19 @@ public class AlternativaBO {
 	PerguntaVO perguntaVO = new PerguntaVO();
 	CategoriaVO categoriaVO = new CategoriaVO();
 
-	public boolean cadastraQuestao(PerguntaVO pergunta, List<String> listaAlternativas) throws SQLException {
+	public boolean cadastraQuestao(PerguntaVO pergunta) throws SQLException {
 		boolean retorno = true;
 		String mensagem = "";
 		
 		pergunta.setCategoria(perguntaDAO.buscaIdcategoria(pergunta.getCategoria().getDescricaoCategoria()));
 		perguntaVO = perguntaDAO.insert(pergunta);
+		pergunta.setIdPergunta(perguntaVO.getIdPergunta());
 		
-		if (perguntaVO.getCategoria().getIdCategoria() < 0 || perguntaVO.getCategoria() == null) {
+		if (pergunta.getCategoria().getIdCategoria() < 0 || pergunta.getCategoria() == null) {
 			mensagem = "Erro ao cadastrar pergunta!";
 			retorno = false;
 		} else {
-			if (!alternativaDAO.cadastraAlternativas(perguntaVO, listaAlternativas)) {
+			if (!alternativaDAO.cadastraAlternativas(pergunta)) {
 				mensagem = "Erro ao cadastrar alternativas!";
 				retorno = false;
 			}

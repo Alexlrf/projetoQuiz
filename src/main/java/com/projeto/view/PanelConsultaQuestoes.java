@@ -267,7 +267,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			perguntaSeletor.setTexto("");
 		}
 		
-		if (comboCategorias.getSelectedIndex()>0) {
+		if (comboCategorias.getSelectedIndex() > 0) {
 			perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
 			int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());					
 			perguntaSeletor.setIdCategoria(indexEscolhido);
@@ -276,13 +276,13 @@ public class PanelConsultaQuestoes extends JPanel {
 			perguntaSeletor.setCategoria("");
 		}				
 		
-//		try {
-//			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
-//			preencherTabelaPerguntas(perguntas);
-//			
-//		} catch (Exception e2) {
-//			// TODO: handle exception
-//		}		
+		try {
+			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
+			preencherTabelaPerguntas(perguntas);
+			
+		} catch (Exception e2) {
+			// TODO: handle exception
+		}		
 	}
 
 	protected void preencherAlternativas(PerguntaVO pergunta) {
@@ -319,7 +319,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			Object[] novaLinha = new Object[2];
 			
 			novaLinha[0] = perguntaVO.getTextoPergunta();
-			novaLinha[1] = perguntaVO.getCategoria();
+			novaLinha[1] = perguntaVO.getCategoria().getDescricaoCategoria();
 			modeloTabela.addRow(novaLinha);			
 		}		
 	}

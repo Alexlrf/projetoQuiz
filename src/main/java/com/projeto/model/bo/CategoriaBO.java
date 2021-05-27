@@ -38,4 +38,9 @@ public class CategoriaBO {
 		return categoriaDAO.findAll();
 	}
 
+	public CategoriaVO buscaCategoriaPorDescricao(String descricaoCategoria) { 
+		
+ 		return categoriaDAO.buscaCategoriaPorDescricao(descricaoCategoria);
+	}
+
 }

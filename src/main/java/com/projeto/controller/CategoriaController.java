@@ -28,8 +28,7 @@ public class CategoriaController {
 		} else {
 			throw new ErroNoCadastroException("Texto inválido!\n Verifique se "
 					+categoriaVO.getDescricaoCategoria()+"\n não excede o número de caracteres.\n");
-		}
-		
+		}		
 		return retorno;		
 		
 	}
@@ -53,6 +52,12 @@ public class CategoriaController {
 	public List<CategoriaVO> consultaTodasCategorias() {
 		
 		return categoriaBO.consultaTodasCategorias();
+	}
+
+
+	public CategoriaVO buscaCategoriaPorDescricao(String descricaoCategoria) {
+				
+		return categoriaBO.buscaCategoriaPorDescricao(descricaoCategoria);
 	}
 
 

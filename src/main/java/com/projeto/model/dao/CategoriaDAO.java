@@ -49,13 +49,13 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 	}
 
 	@Override
-	public CategoriaVO findById(Integer obj) {
+	public CategoriaVO findById(Integer id) {
 		CategoriaVO categoria = new CategoriaVO();
 		String sql = "SELECT * FROM categoria WHERE id_categoria = ?";
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
-			
+			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();			
 			if (rs.next()) {
 				categoria = this.completeResultset(rs);
@@ -142,8 +142,32 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			System.out.println("Erro ao consultar categoria por descrição!");
 			
 		}		
-		
 		return idRetornado;
+	}
+
+	public CategoriaVO buscaCategoriaPorDescricao(String descricaoCategoria) {
+		CategoriaVO categoriaVO = new CategoriaVO();
+		String sql = "SELECT * FROM categoria WHERE descricao_categoria = ?;";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
+			
+			stmt.setString(1, descricaoCategoria);
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				
+				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
+				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
+				
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Erro ao consultar categoria por descrição!");
+			
+		}	
+		
+		return categoriaVO;
 	}
 
 	

@@ -35,6 +35,7 @@ import com.projeto.controller.AlternativaController;
 import com.projeto.controller.CategoriaController;
 import com.projeto.controller.PerguntaController;
 import com.projeto.exceptions.ErroNoCadastroException;
+import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Constants;
@@ -43,7 +44,7 @@ import com.projeto.repository.Utils;
 public class PanelCadastraQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private List<String> listaAlternativas = new ArrayList<>();
+	private List<AlternativaVO> listaAlternativas = new ArrayList<>();
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JComboBox comboBoxPerguntas = new JComboBox();
 	private JFormattedTextField txtAdicionaCategoria;
@@ -602,16 +603,16 @@ public class PanelCadastraQuestoes extends JPanel {
 								, JOptionPane.ERROR_MESSAGE, null);						
 				} else {
 					try {						
-						alternativaController.cadastraQuestao(perguntaVO, listaAlternativas);						
+						alternativaController.cadastraQuestao(perguntaVO);						
 						JOptionPane.showMessageDialog(null, "Cadastro realizado!", 
 								Constants.SUCESSO, JOptionPane.INFORMATION_MESSAGE, null);
 						limpaPreenchimento();						
 						
 					} catch (ErroNoCadastroException mensagem) {						
-						JOptionPane.showMessageDialog(null, mensagem.getMessage(), 
+						JOptionPane.showMessageDialog(null, mensagem, 
 								Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);						
-					} catch (SQLException e1) {
-						JOptionPane.showMessageDialog(null, "Erro no cadastro!", 
+					} catch (SQLException mensagem) {
+						JOptionPane.showMessageDialog(null, mensagem, 
 								Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);	
 					}
 				}
@@ -622,14 +623,56 @@ public class PanelCadastraQuestoes extends JPanel {
 				perguntaVO = new PerguntaVO();
 				CategoriaVO categoriaVO = new CategoriaVO();
 				categoriaVO.setDescricaoCategoria(comboBoxPerguntas.getSelectedItem().toString());
+				categoriaVO = categoriaController.buscaCategoriaPorDescricao(comboBoxPerguntas.getSelectedItem().toString());
 				perguntaVO.setCategoria(categoriaVO);
-				perguntaVO.setTextoPergunta(Utils.formataEspacoUnico(txtCadastraPergunta.getText().toString()));
-				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta1.getText().toString()));
-				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta2.getText().toString()));
-				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta3.getText().toString()));
-				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta4.getText().toString()));
-				listaAlternativas.add(Utils.formataEspacoUnico(txtCadastraResposta5.getText().toString()));
+				perguntaVO.setTextoPergunta(Utils.formataEspacoUnico(txtCadastraPergunta.getText().toString()));				
 				
+				AlternativaVO alternativa1 = new AlternativaVO();				
+				alternativa1.setTexto(Utils.formataEspacoUnico(txtCadastraResposta1.getText().toString()));
+				if (rdbtnOpcaoCorreta1.isSelected()) {
+					alternativa1.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
+				} else {
+					alternativa1.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
+				}
+				
+				AlternativaVO alternativa2 = new AlternativaVO();
+				alternativa2.setTexto(Utils.formataEspacoUnico(txtCadastraResposta2.getText().toString()));
+				if (rdbtnOpcaoCorreta2.isSelected()) {
+					alternativa2.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
+				} else {
+					alternativa2.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
+				}
+				
+				AlternativaVO alternativa3 = new AlternativaVO();
+				alternativa3.setTexto(Utils.formataEspacoUnico(txtCadastraResposta3.getText().toString()));
+				if (rdbtnOpcaoCorreta3.isSelected()) {
+					alternativa3.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
+				} else {
+					alternativa3.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
+				}
+				
+				AlternativaVO alternativa4 = new AlternativaVO();
+				alternativa4.setTexto(Utils.formataEspacoUnico(txtCadastraResposta4.getText().toString()));
+				if (rdbtnOpcaoCorreta4.isSelected()) {
+					alternativa4.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
+				} else {
+					alternativa4.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
+				}
+				
+				AlternativaVO alternativa5 = new AlternativaVO();
+				alternativa5.setTexto(Utils.formataEspacoUnico(txtCadastraResposta5.getText().toString()));
+				if (rdbtnOpcaoCorreta5.isSelected()) {
+					alternativa5.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
+				} else {
+					alternativa5.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
+				}				
+				listaAlternativas.add(alternativa1);
+				listaAlternativas.add(alternativa2);
+				listaAlternativas.add(alternativa3);
+				listaAlternativas.add(alternativa4);
+				listaAlternativas.add(alternativa5);
+				
+				perguntaVO.setListaAlternativas(listaAlternativas);
 			}
 
 			private boolean validaAlternativaCorreta(ButtonGroup buttonGroup) {

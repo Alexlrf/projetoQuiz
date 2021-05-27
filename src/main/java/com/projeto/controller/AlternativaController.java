@@ -13,14 +13,14 @@ public class AlternativaController {
 	 
 	AlternativaBO alternativaBO = new AlternativaBO();
 	
-	public boolean cadastraQuestao(PerguntaVO pergunta, List<String> listaAlternativas) throws ErroNoCadastroException, SQLException {		
+	public boolean cadastraQuestao(PerguntaVO pergunta) throws ErroNoCadastroException, SQLException {		
 		
-		return alternativaBO.cadastraQuestao(pergunta, listaAlternativas);
+		return alternativaBO.cadastraQuestao(pergunta);
 	}	
 
-	public boolean validaAlternativas(List<String> listaAlternativas) {			
-		return Utils.alternativaValida(listaAlternativas.get(0), listaAlternativas.get(1)
-				, listaAlternativas.get(2), listaAlternativas.get(3), listaAlternativas.get(4));
+	public boolean validaAlternativas(List<AlternativaVO> listaAlternativas) {			
+		return Utils.alternativaValida(listaAlternativas.get(0).getTexto(), listaAlternativas.get(1).getTexto()
+				, listaAlternativas.get(2).getTexto(), listaAlternativas.get(3).getTexto(), listaAlternativas.get(4).getTexto());
 	}	
 
 
