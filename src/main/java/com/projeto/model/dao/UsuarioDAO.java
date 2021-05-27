@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.projeto.enums.TipoUsuarioEnum;
+import com.projeto.enums.TurnoEnum;
 import com.projeto.model.entity.AlunoVO;
 import com.projeto.model.entity.CoordenadorVO;
 import com.projeto.model.entity.ProfessorVO;
@@ -64,11 +65,9 @@ public class UsuarioDAO{
 //		return usuario;
 //	}
 	
-	@SuppressWarnings("unlikely-arg-type")
-	public UsuarioVO verificarLoginDAO(String login, String senha) {
+	public UsuarioVO verificarLoginDAO(String cpf, String senha) {
 	UsuarioVO usuario = null;
-	
-	String sql = "SELECT * FROM usuario WHERE cpf = '" + login + "' AND senha = MD5('" + senha + "')s";
+	String sql = "SELECT * FROM usuario WHERE cpf = '" + cpf + "' AND senha = MD5('" + senha + "')";
 
 	try (Connection conn = Banco.getConnection();
 			PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
@@ -77,14 +76,27 @@ public class UsuarioDAO{
 		
 		// valida se a consulta tenha algum retorno
 		if (rs.next()) {
-			String tipo = rs.getString("tipo");
+			String tipo = rs.getString("TIPO");
 			
-			if(tipo.equals(TipoUsuarioEnum.ALUNO)) {
-				usuario = new AlunoVO();
-			} else if (tipo.equals(TipoUsuarioEnum.PROFESSOR)) {
-				usuario = new ProfessorVO();
-			} else if (tipo.equals(TipoUsuarioEnum.COORDENACAO)) {
-				usuario = new CoordenadorVO();
+			// Verifica se o usuario é um aluno
+			if(tipo.equalsIgnoreCase("ALUNO")) {
+				AlunoVO usuarioAluno = (AlunoVO) usuario;
+				usuarioAluno = (AlunoVO) this.preencherAtributosGerais(usuarioAluno, rs);
+				return usuarioAluno;
+			
+				// Verifica se o usuario é um professor
+			} else if (tipo.equalsIgnoreCase("PROFESSOR")) {
+				ProfessorVO usuarioProfessor = (ProfessorVO) usuario;
+				usuarioProfessor = (ProfessorVO) this.preencherAtributosGerais(usuarioProfessor, rs);
+				usuarioProfessor.setDisciplina(rs.getString("DISCIPLINA"));
+				return usuarioProfessor;
+				
+				// Verifica se o usuario é um coordenador
+			} else if (tipo.equalsIgnoreCase("COORDENADOR")) {
+				CoordenadorVO usuarioCoordenador = (CoordenadorVO) usuario;
+				usuarioCoordenador = (CoordenadorVO) this.preencherAtributosGerais(usuarioCoordenador, rs);
+				return usuarioCoordenador;
+				
 			}
 		}
 	} catch (SQLException e) {
@@ -92,33 +104,27 @@ public class UsuarioDAO{
 	}
 	return usuario;
 }
-
-//	public UsuarioVO findById(Integer idUsuario) {
-//		UsuarioVO usuario;
-//		String sql = "SELECT * FROM USUARIO WHERE IDUSUARIO = " + idUsuario;
-//		
-//		try (Connection conn = Banco.getConnection();
-//				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
-//			
-//			ResultSet resultadoConsulta = stmt.executeQuery();
-//			
-//			if (resultadoConsulta.next()) {
-//				usuario = this.completeResultset(resultadoConsulta);
-//			}
-//		} catch (SQLException e) {
-//			System.out.println("Erro ao consultar usuario por idUsuario." + e.getMessage());
-//		}
-//		
-//		return usuario;
-//	}
-
-//	public UsuarioVO completeResultset(ResultSet rs) throws SQLException {
-//		UsuarioVO usuario = new UsuarioVO() {
-//		};
-//		usuario.setIdUsuario(rs.getInt("IDUSUARIO"));
-//		usuario.setSenha(rs.getString("SENHA"));
-//		usuario.setTipo(TipoUsuarioEnum.getTipoUsuarioEnum(rs.getString("TIPO")));		
-//		return usuario;
-//	}
+	
+	/**
+	 * 
+	 * @param usuario
+	 * @param rs
+	 * @return usuario com os atributos preenchidos;
+	 * @throws SQLException
+	 */
+	private UsuarioVO preencherAtributosGerais(UsuarioVO usuario, ResultSet rs) throws SQLException {
+		usuario.setNome(rs.getString("NOME"));
+		usuario.setRg(rs.getString("RG"));
+		usuario.setCpf(rs.getString("CPF"));
+		usuario.setDataNascimento(rs.getDate("DT_NASCIMENTO").toLocalDate());
+		usuario.setSexo(rs.getString("SEXO").charAt(0));
+		usuario.setPossuiDeficiencia(rs.getBoolean("POSSUI_DEFICIENCIA"));
+		usuario.setCelular(rs.getString("CELULAR"));
+		usuario.setNacionalidade(rs.getString("NACIONALIDADE"));
+		usuario.setTurno(TurnoEnum.getTurnoEnum(rs.getString("TURNO")));
+		usuario.setTipo(TipoUsuarioEnum.getTipoUsuarioEnum(rs.getString("TIPO")));
+		
+		return usuario;
+	}
 
 }

@@ -3,7 +3,7 @@ package com.projeto.enums;
 public enum TipoUsuarioEnum {
 	PROFESSOR
 	, ALUNO
-	, COORDENACAO;
+	, COORDENADOR;
 	
 	/**
 	 * Converte o enum em String.
