@@ -31,9 +31,9 @@ public class UsuarioController {
 			throw new UsuarioNaoExistenteException("Usuario não cadastrado");
 		}
 		
-		if (usuario.getIdUsuario() > 0 && usuario.getSenha().trim().isEmpty()) {
-			throw new SenhaIncorretaException("Senha incorreta");
-		}
+//		if (usuario.getIdUsuario() > 0 && usuario.getSenha().trim().isEmpty()) {
+//			throw new SenhaIncorretaException("Senha incorreta");
+//		}
 		
 		if(usuario instanceof AlunoVO) {
 			AlunoVO aluno = (AlunoVO) usuario;
