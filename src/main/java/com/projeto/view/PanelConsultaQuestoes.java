@@ -86,7 +86,6 @@ public class PanelConsultaQuestoes extends JPanel {
 			public void actionPerformed(ActionEvent e) {				
 				consultarPerguntas();
 			}
-
 		});
 		comboCategorias.setFont(new Font("Tahoma", Font.BOLD, 12));
 		comboCategorias.setModel(new DefaultComboBoxModel(new String[] {"CATEGORIAS"}));		
@@ -221,7 +220,6 @@ public class PanelConsultaQuestoes extends JPanel {
 								JOptionPane.ERROR_MESSAGE, null);
 					}
 				}				
-				
 			}
 		});
 		
@@ -241,8 +239,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		formataBotao(btnConsultar);
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				consultarPerguntas();
-				
+				consultarPerguntas();				
 			}
 		});
 		btnConsultar.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -252,8 +249,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		formataBotao(btnSalvar);
 		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnSalvar);
-		setLayout(groupLayout);		
-		
+		setLayout(groupLayout);			
 	}
 	
 	protected void consultarPerguntas() {
@@ -277,7 +273,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		}				
 		
 		try {
-			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
+			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);			
 			preencherTabelaPerguntas(perguntas);
 			
 		} catch (Exception e2) {
@@ -301,8 +297,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			novaLinha[0] = alternativaVO.getTexto();
 			novaLinha[1] = alternativaVO.getAlternativaCorreta();
 			modeloTabela.addRow(novaLinha);
-		}
-		
+		}		
 	}
 
 	private void limpaTabelaAlternativas() {

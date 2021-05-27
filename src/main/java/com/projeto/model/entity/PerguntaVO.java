@@ -61,7 +61,5 @@ public class PerguntaVO  {
 
 	public void setListaAlternativas(List<AlternativaVO> listaAlternativas) {
 		this.listaAlternativas = listaAlternativas;
-	}
-	
-	    
+	}	    
 }

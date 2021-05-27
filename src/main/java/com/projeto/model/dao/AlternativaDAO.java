@@ -68,8 +68,7 @@ public class AlternativaDAO implements BaseDao<AlternativaVO>{
 				AlternativaVO alternativaVO = new AlternativaVO();
 				alternativaVO = completeResultset(rs);
 				alternativas.add(alternativaVO);
-			}
-			
+			}			
 			
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar alternativas por id_pergunta!");
@@ -77,7 +76,6 @@ public class AlternativaDAO implements BaseDao<AlternativaVO>{
 		}				
 		return alternativas;
 	}
-
 
 	public boolean cadastraAlternativas(PerguntaVO perguntaVO) {
 		boolean retorno = true;
@@ -100,5 +98,4 @@ public class AlternativaDAO implements BaseDao<AlternativaVO>{
 		}
 		return retorno;		
 	}
-
 }

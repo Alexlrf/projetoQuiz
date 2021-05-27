@@ -124,17 +124,33 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
 			ResultSet rs = stmt.executeQuery();
-
+			
 			while (rs.next()) {
 				p = new PerguntaVO();
 				p.setTextoPergunta(rs.getString("texto_pergunta"));
-				p.setCategoria(categoriaDAO.findById(perguntaSeletor.getIdCategoria()));
 				p.setIdPergunta(rs.getInt("id_pergunta"));
+				
+				if (perguntaSeletor.getIdCategoria() == 0) {
+					p.setCategoria(categoriaDAO.buscaCategoria(p));
+				} else {
+					p.setCategoria(categoriaDAO.findById(perguntaSeletor.getIdCategoria()));
+				}
 				
 				listaPerguntasBuscadas.add(p);
 			}
+			
+			
+
+//			while (rs.next()) {
+//				p = new PerguntaVO();
+//				p.setTextoPergunta(rs.getString("texto_pergunta"));
+//				p.setCategoria(categoriaDAO.findById(perguntaSeletor.getIdCategoria()));
+//				p.setIdPergunta(rs.getInt("id_pergunta"));
+//				
+//				listaPerguntasBuscadas.add(p);
+//			}
 		} catch (SQLException e) {
-			System.out.println("Erro ao consultar vacinas com filtros.\nCausa: " + e.getMessage());
+			System.out.println("Erro ao consultar perguntas com filtros.\nCausa: " + e.getMessage());
 			
 		}		
 		return listaPerguntasBuscadas;

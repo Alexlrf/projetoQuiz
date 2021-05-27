@@ -144,7 +144,6 @@ public class PanelCadastraQuestoes extends JPanel {
 						JOptionPane.showMessageDialog(null, mensagem.getMessage(), "ATENÇÃO",
 								JOptionPane.ERROR_MESSAGE, null);
 					}
-
 			}
 		});
 
@@ -695,8 +694,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		
 		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnSalvar);
-		setLayout(groupLayout);
-		
+		setLayout(groupLayout);	
 		
 		List<CategoriaVO> listaCategorias = new ArrayList<>();
 		listaCategorias = categoriaController.consultaTodasCategorias();
@@ -716,8 +714,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		txtCadastraResposta1.setText(Constants.ALTERNATIVA_1);
 		txtCadastraPergunta.setText(Constants.PERGUNTA);
 		comboBoxPerguntas.setSelectedIndex(0);
-		buttonGroup.clearSelection();
-		
+		buttonGroup.clearSelection();		
 	}
 	
 public JButton formataBotao(JButton botao) {
@@ -739,7 +736,6 @@ public JButton formataBotao(JButton botao) {
 		});
 		return botao;
 	}
-
 }
 
 
