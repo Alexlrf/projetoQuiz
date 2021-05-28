@@ -17,7 +17,6 @@ public class UsuarioController {
 
 	public UsuarioVO verificarLoginController(String cpf, String senha) throws UsuarioNaoExistenteException, LoginNaoInformadoException, SenhaNaoInformadaException, SenhaIncorretaException {
 		UsuarioBO verificarLogin = new UsuarioBO();
-		TelaPrincipal telaProfessor = new TelaPrincipal();
 		
 		// caso algum dos campos estejam nulos, deverá lançar uma Exceção
 		if (cpf == null || cpf.trim().isEmpty()) {
@@ -27,21 +26,10 @@ public class UsuarioController {
 		}
 		
 		UsuarioVO usuario = verificarLogin.verificarLoginBO(cpf, senha);
+		TelaPrincipal telaPrincipal = new TelaPrincipal();
+		telaPrincipal.setUsuario(usuario);
+		telaPrincipal.setVisible(true);
 		
-		if(usuario instanceof AlunoVO) {
-			AlunoVO aluno = (AlunoVO) usuario;
-			JOptionPane.showMessageDialog(null, "Olá aluno" + aluno.getNome() + ", seu menu será chamado em breve... ☺");
-		} else if (usuario instanceof ProfessorVO) {
-			ProfessorVO professor = (ProfessorVO) usuario;
-			JOptionPane.showMessageDialog(null, "Olá professor " + professor.getNome() + " disciplina " + professor.getDisciplina() + ", seu menu será chamado em breve... ☺");
-		} else if (usuario instanceof CoordenadorVO) {
-			CoordenadorVO coordenador = (CoordenadorVO) usuario;
-			JOptionPane.showMessageDialog(null, "Olá coordenador " + coordenador.getNome() + ", seu menu será chamado em breve... ☺");
-		}
-		
-//		telaProfessor.setUsuario(usuario);
-//		telaProfessor.setVisible(true);
 		return usuario;
 	}
-
 }

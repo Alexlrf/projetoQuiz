@@ -193,7 +193,6 @@ public class TelaLoginSenha extends JFrame {
 		JPanelBackground.setLayout(fl_JPanelBackground);
 		JPanelBackground.add(panel);
 		contentPane.setLayout(gl_contentPane);
-		
 	}
 
 	protected void verificarLogin(){
