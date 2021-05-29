@@ -10,32 +10,37 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.ParseException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.text.MaskFormatter;
 
 import com.projeto.controller.UsuarioController;
-import com.projeto.enums.UsuarioEnum;
+import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.exceptions.LoginNaoInformadoException;
+import com.projeto.exceptions.SenhaIncorretaException;
 import com.projeto.exceptions.SenhaNaoInformadaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
+import javax.swing.JLabel;
 
 public class TelaLoginSenha extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
-	private PlaceholderTextField txtLogin;
+	private JFormattedTextField txtCpf;
 	private PlaceholderPasswordField passwordField;
 	private JCheckBox cbxMostrarSenha;
 	private JButton btnNewButton;
@@ -77,8 +82,14 @@ public class TelaLoginSenha extends JFrame {
 		panel.setMaximumSize(new Dimension(300, 300));
 		
 		
-		txtLogin = new PlaceholderTextField();
-		txtLogin.addKeyListener(new KeyAdapter() {
+		MaskFormatter mascaraCpf;
+		try {
+			mascaraCpf = new MaskFormatter("###.###.###-##");
+			txtCpf = new JFormattedTextField(mascaraCpf);
+		} catch (ParseException e) {
+			System.out.println("Erro ao formatar mascara de Cpf: " + e.getMessage());
+		}
+		txtCpf.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent evento) {
 				if (evento.getKeyChar() == KeyEvent.VK_ENTER) {
@@ -86,9 +97,8 @@ public class TelaLoginSenha extends JFrame {
 				}
 			}
 		});
-		txtLogin.setPlaceholder("Digite o seu login");
-		txtLogin.setToolTipText("Digite o seu Login");
-		txtLogin.setColumns(10);
+		txtCpf.setToolTipText("Digite o seu Cpf");
+		txtCpf.setColumns(10);
 		
 		passwordField = new PlaceholderPasswordField();
 		passwordField.addKeyListener(new KeyAdapter() {
@@ -130,10 +140,14 @@ public class TelaLoginSenha extends JFrame {
 				}
 			}
 		});
+		
+		JLabel lblCpf = new JLabel("Cpf");
+		
+		JLabel lblSenha = new JLabel("Senha");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+			gl_panel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel.createSequentialGroup()
 					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addContainerGap()
@@ -142,16 +156,22 @@ public class TelaLoginSenha extends JFrame {
 							.addGap(24)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addComponent(passwordField, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
-								.addComponent(txtLogin, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
-								.addComponent(cbxMostrarSenha))))
+								.addComponent(cbxMostrarSenha)
+								.addComponent(txtCpf, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+								.addComponent(lblCpf, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblSenha))))
 					.addGap(24))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(70)
-					.addComponent(txtLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(17)
+					.addGap(32)
+					.addComponent(lblCpf)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(lblSenha)
+					.addGap(3)
 					.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(cbxMostrarSenha)
@@ -173,43 +193,19 @@ public class TelaLoginSenha extends JFrame {
 		JPanelBackground.setLayout(fl_JPanelBackground);
 		JPanelBackground.add(panel);
 		contentPane.setLayout(gl_contentPane);
-		
 	}
 
-	protected void verificarLogin() {
-		UsuarioVO usuario = new UsuarioVO();
-		usuario.setLogin(txtLogin.getText());
-		usuario.setSenha(new String(passwordField.getPassword()));
+	protected void verificarLogin(){
+		UsuarioController usuarioController = new UsuarioController();
 		
-		UsuarioController verificacaoLogin = new UsuarioController();
+		String cpf = txtCpf.getText().replace(".", "").replace("-", "");
+		String senha = new String(passwordField.getPassword());
 		
 		try {
-			usuario = verificacaoLogin.verificarLoginController(usuario.getLogin(), usuario.getSenha());
-			this.verificarTipoUsuario(usuario);
-		} catch (UsuarioNaoExistenteException | LoginNaoInformadoException | SenhaNaoInformadaException e) {
+			UsuarioVO usuario = usuarioController.verificarLoginController(cpf, senha);
+			
+		} catch (UsuarioNaoExistenteException | LoginNaoInformadoException | SenhaNaoInformadaException | SenhaIncorretaException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Erro de Login", JOptionPane.WARNING_MESSAGE);
 		}
-	}
-	
-	public void verificarTipoUsuario(UsuarioVO usuario) {
-		
-		// chama a tela do professor
-		if (usuario.getTipo().equals(UsuarioEnum.PROFESSOR)) {
-			TelaPrincipal telaProfessor = new TelaPrincipal();
-			telaProfessor.setVisible(true);
-			dispose();
-			
-			// chama a tela do coordenador
-		} else if (usuario.getTipo().equals(UsuarioEnum.COORDENACAO)) {
-//			TelaMenuProfessor telaProfessor = new TelaMenuProfessor();
-//			telaProfessor.abrirTelaCoordenador(usuario);
-			JOptionPane.showMessageDialog(null, "Olá coordenador(a), sua tela ainda esta em construção", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-			
-			// chama a tela do aluno
-		} else if (usuario.getTipo().equals(UsuarioEnum.ALUNO)) {
-			// TODO fazer tela do aluno
-			JOptionPane.showMessageDialog(null, "Olá aluno, sua tela ainda esta em construção", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-		}
-		
 	}
 }
