@@ -1,17 +1,17 @@
 package com.projeto.enums;
 
-public enum UsuarioEnum {
+public enum TipoUsuarioEnum {
 	PROFESSOR
 	, ALUNO
-	, COORDENACAO;
+	, COORDENADOR;
 	
 	/**
 	 * Converte o enum em String.
 	 * @param usuarioEnum
 	 * @return
 	 */
-	public static UsuarioEnum getEstagioPesquisa(String usuarioEnum){
-        for(UsuarioEnum usuario:UsuarioEnum.values()){
+	public static TipoUsuarioEnum getTipoUsuarioEnum(String usuarioEnum){
+        for(TipoUsuarioEnum usuario:TipoUsuarioEnum.values()){
             if(usuario.toString().equals(usuarioEnum.toUpperCase())){
                 return usuario;
             }

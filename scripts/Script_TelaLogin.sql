@@ -6,21 +6,30 @@ CREATE DATABASE DBTESTE;
 
 USE DBTESTE;
 
-CREATE TABLE usuario (   
-  id_usuario INT NOT NULL AUTO_INCREMENT  
-  , login VARCHAR(20) NOT NULL  
-  , senha VARCHAR(50) NOT NULL 
-  , tipo enum('PROFESSOR', 'ALUNO', 'COORDENACAO') NOT NULL
-  , constraint PK_USUARIO primary key (id_usuario)
- ); 
+CREATE TABLE USUARIO (
+  ID_USUARIO INT NOT NULL AUTO_INCREMENT
+  , NOME VARCHAR(255) NOT NULL
+  , RG VARCHAR(8) UNIQUE NOT NULL
+  , CPF VARCHAR(11) UNIQUE NOT NULL
+  , DT_NASCIMENTO DATE NOT NULL
+  , SEXO CHAR(1) NOT NULL
+  , POSSUI_DEFICIENCIA BOOLEAN NOT NULL
+  , CELULAR VARCHAR(11)
+  , NACIONALIDADE VARCHAR(50) NOT NULL
+  , TURNO ENUM('MATUTINO', 'VESPERTINO', 'NOTURNO', 'MATUTINO_E_VERSPERTINO', 'MATUTINO_E_NOTURNO', 'VESPERTINO_E_NOTURNO') NOT NULL
+  , DISCIPLINA VARCHAR(50)
+  , SENHA VARCHAR(50) NOT NULL
+  , TIPO ENUM('PROFESSOR', 'ALUNO', 'COORDENADOR') NOT NULL
+  , CONSTRAINT PK_USUARIO PRIMARY KEY (ID_USUARIO)
+ );
  
- CREATE TABLE categoria (   
+ CREATE TABLE categoria (
   id_categoria INT NOT NULL AUTO_INCREMENT
-  , descricao_categoria VARCHAR(50) NOT NULL 
+  , descricao_categoria VARCHAR(50) NOT NULL
   , constraint PK_CATEGORIA primary key (id_categoria)
   );
   
-  CREATE TABLE pergunta (   
+  CREATE TABLE pergunta (
   id_pergunta INT NOT NULL AUTO_INCREMENT
   , id_usuario INT NOT NULL
   , id_categoria INT NOT NULL
@@ -30,7 +39,7 @@ CREATE TABLE usuario (
    , constraint FK_PERGUNTA_CATEGORIA foreign key (id_categoria) references categoria(id_categoria)
   );
   
-  CREATE TABLE alternativa (   
+  CREATE TABLE alternativa (
   id_alternativa INT NOT NULL AUTO_INCREMENT
   , id_pergunta INT NOT NULL
   , texto_alternativa TEXT NOT NULL 
@@ -38,8 +47,8 @@ CREATE TABLE usuario (
   , constraint PK_ALTERNATIVA primary key (id_alternativa)
   , constraint FK_ALTERNATIVA_PERGUNTA foreign key (id_pergunta) references pergunta(id_pergunta)
   );
-  
-  
+
+
 INSERT INTO usuario (login, senha, tipo)  VALUES ('admin', MD5('admin'), 'COORDENACAO');
 INSERT INTO usuario (login, senha, tipo)  VALUES ('Alison', MD5('Alison@01'), 'ALUNO');
 INSERT INTO usuario (login, senha, tipo)  VALUES ('Alexandro', MD5('Alexandro&02'), 'ALUNO');
@@ -84,18 +93,18 @@ INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) va
 
 
 
-DELIMITER $$  
+ DELIMITER $$  
  DROP FUNCTION IF EXISTS fun_valida_usuario $$
 
 -- A função verifica se existe na base de dados alguma informação 
 -- que coincida com os valores passados aos parâmetros p_login e p_senha, 
 -- se existir, a função retornará o idUsuario, caso não, 0.
-CREATE FUNCTION fun_valida_usuario( p_login VARCHAR(20), p_senha VARCHAR(50))  RETURNS NUMERIC(1)
+CREATE FUNCTION fun_valida_usuario( p_login VARCHAR(20), p_senha VARCHAR(50))  RETURNS integer
 	BEGIN  
-		DECLARE l_ret NUMERIC(1) DEFAULT 0;
+		DECLARE l_ret integer DEFAULT 0;
 		SET l_ret = IFNULL((SELECT DISTINCT id_usuario FROM usuario  
-							WHERE login = p_login  
-							AND senha = MD5(p_senha)),0);    
+							WHERE cpf = p_login  
+							AND senha = MD5(p_senha)),0);   
         
 		RETURN l_ret;  
 	END $$

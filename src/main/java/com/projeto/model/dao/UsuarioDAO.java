@@ -4,37 +4,26 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
-import com.projeto.enums.UsuarioEnum;
+import com.projeto.enums.TipoUsuarioEnum;
+import com.projeto.enums.TurnoEnum;
+import com.projeto.model.entity.AlunoVO;
+import com.projeto.model.entity.CoordenadorVO;
+import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Banco;
-import com.projeto.repository.BaseDao;
 
-public class UsuarioDAO implements BaseDao<UsuarioVO>{
+public class UsuarioDAO{
 	
-	@Override
-	public UsuarioVO insert(UsuarioVO obj) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean update(UsuarioVO obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean delete(Integer obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public UsuarioVO verificarLoginDAO(String login, String senha) {
-		UsuarioVO usuario = new UsuarioVO();
+	/**
+	 * Verifica se o cpf está correto
+	 * @param cpf
+	 * @return
+	 */
+	public boolean verificarCpfDAO(String cpf) {
+		boolean validar  = false;
 		
-		String sql = "SELECT fun_valida_usuario('" + login + "','" + senha + "') as validacao" ;
+		String sql = "SELECT CPF FROM USUARIO WHERE CPF = '" + cpf + "'";
 
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
@@ -43,11 +32,78 @@ public class UsuarioDAO implements BaseDao<UsuarioVO>{
 			
 			// valida se a consulta tenha algum retorno
 			if (valido.next()) {
-				usuario.setIdUsuario(valido.getInt("validacao"));
+				validar = true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
+		}
+		return validar;
+	}
+	
+	/**
+	 * Verifica se a senha está correta
+	 * @param senha
+	 * @return
+	 */
+	public boolean verificarSenhaDAO(String senha) {
+		boolean validar  = false;
+		
+		String sql = "SELECT SENHA FROM USUARIO WHERE SENHA = MD5('" + senha + "')";
+
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+			
+			ResultSet valido = stmt.executeQuery();
+			
+			// valida se a consulta tenha algum retorno
+			if (valido.next()) {
+				validar = true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
+		}
+		return validar;
+	}
+	
+	/**
+	 * verifica a existencia de um usuario através do parametros passados, identifica qual o seu tipo e preenche seus atributos.
+	 * @param cpf
+	 * @param senha
+	 * @return tipo de usuario e seus atributos.
+	 */
+	public UsuarioVO verificarCpfSenhaDAO(String cpf, String senha) {
+		UsuarioVO usuario = null;
+		String sql = "SELECT * FROM usuario WHERE cpf = '" + cpf + "' AND senha = MD5('" + senha + "')";
+	
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			// valida se a consulta tenha algum retorno
+			if (rs.next()) {
+				String tipo = rs.getString("TIPO");
 				
-				// valida se o idUsuario foi retornado
-				if (usuario.getIdUsuario() > 0) {
-					usuario = this.findById(usuario.getIdUsuario());
+				// Verifica se o usuario é um aluno
+				if(tipo.equals("ALUNO")) {
+					AlunoVO usuarioAluno = new AlunoVO();
+					usuarioAluno = (AlunoVO) preencherAtributos(usuarioAluno, rs);
+					return usuarioAluno;
+				
+					// Verifica se o usuario é um professor
+				} else if (tipo.equals("PROFESSOR")) {
+					ProfessorVO usuarioProfessor = new ProfessorVO();
+					usuarioProfessor = (ProfessorVO) this.preencherAtributos(usuarioProfessor, rs);
+					usuarioProfessor.setDisciplina(rs.getString("DISCIPLINA"));
+					return usuarioProfessor;
+					
+					// Verifica se o usuario é um coordenador
+				} else if (tipo.equals("COORDENADOR")) {
+					CoordenadorVO usuarioCoordenador = new CoordenadorVO();
+					usuarioCoordenador = (CoordenadorVO) this.preencherAtributos(usuarioCoordenador, rs);
+					return usuarioCoordenador;
+				} else {
+					return null;
 				}
 			}
 		} catch (SQLException e) {
@@ -55,44 +111,27 @@ public class UsuarioDAO implements BaseDao<UsuarioVO>{
 		}
 		return usuario;
 	}
-
-	@Override
-	public UsuarioVO findById(Integer idUsuario) {
-		UsuarioVO usuario = new UsuarioVO();
-		String sql = "SELECT * FROM USUARIO WHERE IDUSUARIO = " + idUsuario;
-		
-		try (Connection conn = Banco.getConnection();
-				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
-			
-			ResultSet resultadoConsulta = stmt.executeQuery();
-			
-			if (resultadoConsulta.next()) {
-				usuario = this.completeResultset(resultadoConsulta);
-			}
-		} catch (SQLException e) {
-			System.out.println("Erro ao consultar usuario por idUsuario." + e.getMessage());
-		}
-		
+	
+	/**
+	 * Preenche os atributos em comum entre os usuarios
+	 * @param usuario
+	 * @param rs
+	 * @return usuario com os atributos preenchidos
+	 * @throws SQLException
+	 */
+	private UsuarioVO preencherAtributos(UsuarioVO usuario, ResultSet rs) throws SQLException {
+		usuario.setIdUsuario(rs.getInt("ID_USUARIO"));
+		usuario.setNome(rs.getString("NOME"));
+		usuario.setRg(rs.getString("RG"));
+		usuario.setCpf(rs.getString("CPF"));
+		usuario.setDataNascimento(rs.getDate("DT_NASCIMENTO").toLocalDate());
+		usuario.setSexo(rs.getString("SEXO").charAt(0));
+		usuario.setPossuiDeficiencia(rs.getBoolean("POSSUI_DEFICIENCIA"));
+		usuario.setCelular(rs.getString("CELULAR"));
+		usuario.setNacionalidade(rs.getString("NACIONALIDADE"));
+		usuario.setTurno(TurnoEnum.getTurnoEnum(rs.getString("TURNO")));
+		usuario.setTipo(TipoUsuarioEnum.getTipoUsuarioEnum(rs.getString("TIPO")));
 		return usuario;
 	}
-
-	@Override
-	public UsuarioVO completeResultset(ResultSet rs) throws SQLException {
-		UsuarioVO usuario = new UsuarioVO();
-		usuario.setIdUsuario(rs.getInt("IDUSUARIO"));
-		usuario.setSenha(rs.getString("SENHA"));
-		usuario.setTipo(UsuarioEnum.getEstagioPesquisa(rs.getString("TIPO")));		
-		return usuario;
-	}
-
-	@Override
-	public List<UsuarioVO> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	
-	
 
 }
