@@ -36,8 +36,6 @@ public class PerguntaBO {
 		List<PerguntaVO> listaPerguntas = new ArrayList<>();
 		
 		if (Utils.stringValida(perguntaSeletor.getCategoria())) {
-//			categoriaVO = perguntaDAO.buscaIdcategoria(perguntaSeletor.getCategoria());
-//			perguntaSeletor.setIdCategoria(categoriaVO.getIdCategoria());
 			listaPerguntas = perguntaDAO.buscaComSeletor(perguntaSeletor);	
 			
 		} else {

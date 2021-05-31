@@ -24,7 +24,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
 			stmt.setString(1, categoriaVO.getDescricaoCategoria());
-			stmt.setInt(2, categoria.getUsuario().getIdUsuario());
+			stmt.setInt(2, categoriaVO.getUsuario().getIdUsuario());
 			stmt.executeUpdate();
 			
 			ResultSet id = stmt.getGeneratedKeys();

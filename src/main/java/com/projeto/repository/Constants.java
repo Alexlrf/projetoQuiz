@@ -6,7 +6,7 @@ public class Constants {
 	public static final String PERGUNTA = "Digite aqui a PERGUNTA";
 	
 	public static final String ALTERNATIVA_CORRETA = "CORRETA";
-	public static final String ALTERNATIVA_ERRADA = "ERRADA";
+	public static final String ALTERNATIVA_ERRADA = "- - -";
 	
 	public static final String SUCESSO = "SUCESSO";
 	public static final String ALERTA = "ALERTA";

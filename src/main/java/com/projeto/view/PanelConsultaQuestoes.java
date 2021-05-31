@@ -36,6 +36,7 @@ import com.projeto.controller.PerguntaController;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Constants;
@@ -58,7 +59,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	private JComboBox comboCategorias;
 	private JTable tableAlternativas;
 	private int perguntaSelecionada;
-	private UsuarioVO usuarioLogado;
+	//private UsuarioVO usuarioLogado;
 	private JLabel lblNomeUsuario;
 	private JTable tableConsulta;
 
@@ -94,6 +95,43 @@ public class PanelConsultaQuestoes extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				consultarPerguntas();
 			}
+
+			protected void consultarPerguntas() {
+				limpaTabelaPerguntas();
+				limpaTabelaAlternativas();
+				PerguntaSeletor perguntaSeletor = new PerguntaSeletor();
+				
+				if (Utils.stringValida(textFieldBusca.getText().toString().trim())) {
+					perguntaSeletor.setTexto(Utils.formataEspacoUnico(textFieldBusca.getText().toString()));
+				} else {
+					perguntaSeletor.setTexto("");
+				}
+				
+				if (comboCategorias.getSelectedIndex() > 0) {
+					perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
+					int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());
+					perguntaSeletor.setIdCategoria(indexEscolhido);
+					
+				} else {
+					perguntaSeletor.setCategoria("");
+				}
+				
+				perguntaSeletor.setIdUsuario(usuarioLogado.getIdUsuario());
+				
+				try {
+					perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
+					
+					if (perguntas.size() != 0 || perguntas != null) {
+						preencherTabelaPerguntas(perguntas);								
+					} 
+					
+				} catch (Exception mensagem) {
+					JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
+							JOptionPane.ERROR_MESSAGE, null);
+				}						
+			}
+				
+			
 		});
 		comboCategorias.setFont(new Font("Tahoma", Font.BOLD, 12));
 		comboCategorias.setModel(new DefaultComboBoxModel(new String[] { "CATEGORIAS" }));
@@ -132,67 +170,6 @@ public class PanelConsultaQuestoes extends JPanel {
 		textFieldBusca.setColumns(10);
 
 		GroupLayout groupLayout = new GroupLayout(this);
-//<<<<<<< HEAD
-//		groupLayout
-//				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-//						.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-//								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-//										.addGroup(groupLayout.createSequentialGroup()
-//												.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 454,
-//														Short.MAX_VALUE)
-//												.addContainerGap())
-//										.addGroup(groupLayout
-//												.createSequentialGroup()
-//												.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 454,
-//														Short.MAX_VALUE)
-//												.addContainerGap())
-//										.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-//												.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-//														.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 454,
-//																Short.MAX_VALUE)
-//														.addGroup(groupLayout.createSequentialGroup()
-//																.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE,
-//																		224, Short.MAX_VALUE)
-//																.addGap(50).addComponent(comboCategorias, 0, 180,
-//																		Short.MAX_VALUE)))
-//												.addContainerGap())
-//										.addGroup(groupLayout.createSequentialGroup()
-//												.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-//												.addGap(54)
-//												.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128,
-//														GroupLayout.PREFERRED_SIZE)
-//												.addGap(26))
-//										.addGroup(groupLayout.createSequentialGroup()
-//												.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 101,
-//														GroupLayout.PREFERRED_SIZE)
-//												.addContainerGap(363, Short.MAX_VALUE))
-//										.addGroup(groupLayout.createSequentialGroup()
-//												.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 104,
-//														GroupLayout.PREFERRED_SIZE)
-//												.addContainerGap(360, Short.MAX_VALUE))))
-//
-//				);
-//		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-//				.createSequentialGroup().addContainerGap()
-//				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-//						.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-//						.addComponent(lblTitulo, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-//				.addPreferredGap(ComponentPlacement.UNRELATED)
-//				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-//						.addComponent(comboCategorias, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-//								GroupLayout.PREFERRED_SIZE)
-//						.addGroup(groupLayout.createSequentialGroup().addGap(1).addComponent(textFieldBusca,
-//								GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
-//				.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(lblPerguntas)
-//				.addPreferredGap(ComponentPlacement.RELATED)
-//				.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE).addGap(11)
-//				.addComponent(lblAlternativas).addPreferredGap(ComponentPlacement.UNRELATED)
-//				.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE).addGap(28)
-//				.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-//				.addContainerGap()));
-//		panelBotoes.setLayout(new GridLayout(1, 0, 10, 10));
-//
-//=======
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
@@ -287,9 +264,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			}
 		});
 		
-//>>>>>>> desenvolvimento
 		JButton btnExcluir = new JButton("EXCLUIR");
-
 		formataBotao(btnExcluir);
 
 		btnExcluir.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -385,8 +360,39 @@ public class PanelConsultaQuestoes extends JPanel {
 		formataBotao(btnConsultar);
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				consultarPerguntas();				
+				limpaTabelaPerguntas();
+				limpaTabelaAlternativas();
+				PerguntaSeletor perguntaSeletor = new PerguntaSeletor();
+				
+				if (Utils.stringValida(textFieldBusca.getText().toString().trim())) {
+					perguntaSeletor.setTexto(Utils.formataEspacoUnico(textFieldBusca.getText().toString()));
+				} else {
+					perguntaSeletor.setTexto("");
+				}
+				
+				if (comboCategorias.getSelectedIndex() > 0) {
+					perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
+					int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());
+					perguntaSeletor.setIdCategoria(indexEscolhido);
+					
+				} else {
+					perguntaSeletor.setCategoria("");
+				}
+				
+				perguntaSeletor.setIdUsuario(usuarioLogado.getIdUsuario());
+				
+				try {
+					perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
+					
+					if (perguntas.size() != 0 || perguntas != null) {
+						preencherTabelaPerguntas(perguntas);								
+					} 
+					
+				} catch (Exception mensagem) {
+					JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
+							JOptionPane.ERROR_MESSAGE, null);
+				}
+						
 			}
 		});
 		btnConsultar.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -397,41 +403,9 @@ public class PanelConsultaQuestoes extends JPanel {
 		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnSalvar);
 		setLayout(groupLayout);
-
+		
 	}
 
-	protected void consultarPerguntas() {
-		limpaTabelaPerguntas();
-		limpaTabelaAlternativas();
-		PerguntaSeletor perguntaSeletor = new PerguntaSeletor();
-
-		if (Utils.stringValida(textFieldBusca.getText().toString().trim())) {
-			perguntaSeletor.setTexto(Utils.formataEspacoUnico(textFieldBusca.getText().toString()));
-		} else {
-			perguntaSeletor.setTexto("");
-		}
-
-		if (comboCategorias.getSelectedIndex() > 0) {
-			perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
-			int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());
-			perguntaSeletor.setIdCategoria(indexEscolhido);
-
-		} else {
-			perguntaSeletor.setCategoria("");
-		}
-
-		try {
-			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
-
-			if (perguntas.size() != 0 || perguntas != null) {
-				preencherTabelaPerguntas(perguntas);								
-			} 
-			
-		} catch (Exception mensagem) {
-			JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
-					JOptionPane.ERROR_MESSAGE, null);
-		}		
-	}
 
 	protected void preencherAlternativas(PerguntaVO pergunta) {
 		List<AlternativaVO> alternativas = alternativaController.buscaAlternativas(pergunta);

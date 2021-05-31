@@ -128,6 +128,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			while (rs.next()) {
 				p = new PerguntaVO();
 				p.setTextoPergunta(rs.getString("texto_pergunta"));
+				p.setIdUsuario(rs.getInt("id_usuario"));
 				p.setIdPergunta(rs.getInt("id_pergunta"));
 				
 				if (perguntaSeletor.getIdCategoria() == 0) {
@@ -196,6 +197,14 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 				sql += " AND ";
 			}
 			sql += "p.id_categoria = " + perguntaSeletor.getIdCategoria() ;
+			primeiro = false;
+		}
+		
+		if (perguntaSeletor.getIdUsuario() > 0) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+			sql += "p.id_usuario = " + perguntaSeletor.getIdUsuario() ;
 			primeiro = false;
 		}		
 		return sql;
