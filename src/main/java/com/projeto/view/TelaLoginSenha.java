@@ -203,6 +203,7 @@ public class TelaLoginSenha extends JFrame {
 		
 		try {
 			UsuarioVO usuario = usuarioController.verificarLoginController(cpf, senha);
+			dispose();
 			
 		} catch (UsuarioNaoExistenteException | LoginNaoInformadoException | SenhaNaoInformadaException | SenhaIncorretaException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Erro de Login", JOptionPane.WARNING_MESSAGE);

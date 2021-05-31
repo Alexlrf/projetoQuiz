@@ -18,6 +18,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -34,6 +35,7 @@ import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.placeholder.PlaceholderTextField;
+import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
 
@@ -192,6 +194,44 @@ public class PanelConsultaQuestoes extends JPanel {
 		panelBotoes.add(btnExcluir);
 		
 		JButton btnAlterar = new JButton("ALTERAR");
+		btnAlterar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String[] opcoes = {"Escolha uma opção", "CATEGORIA", "PERGUNTA", "ALTERNATIVA"};
+						
+				String opcaoEscolhida = (String) JOptionPane.showInputDialog(null, null, "ALTERAR",
+						JOptionPane.QUESTION_MESSAGE, null, opcoes, opcoes[0]);
+				
+				if (!opcaoEscolhida.equalsIgnoreCase("Escolha uma opção")) {
+					
+					switch (opcaoEscolhida) {
+					
+					case "CATEGORIA":
+						if (comboCategorias.getSelectedIndex() != 0) {
+							String categoriaEscolhida = comboCategorias.getSelectedItem().toString();						
+							String categoriaAlterada = JOptionPane.showInputDialog(null, categoriaEscolhida, "Digite a alteração desejada!",
+									JOptionPane.QUESTION_MESSAGE);							
+							System.out.println(categoriaAlterada);
+							
+						} else {
+							JOptionPane.showMessageDialog(null, "Escolha uma categoria!", Constants.ALERTA, JOptionPane.ERROR_MESSAGE, null);
+							
+						}
+						
+						break;
+					case "PERGUNTA":
+						
+						break;
+					case "ALTERNATIVA":
+						
+						break;
+						
+					default:
+						break;
+					}
+				}
+				
+			}
+		});
 		formataBotao(btnAlterar);
 		btnAlterar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnAlterar);
