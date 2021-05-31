@@ -25,7 +25,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
 			
-			stmt.setInt(1, 5);
+			stmt.setInt(1, pergunta.getIdUsuario());
 			stmt.setInt(2, pergunta.getCategoria().getIdCategoria());
 			stmt.setString(3, pergunta.getTextoPergunta());
 			stmt.executeUpdate();

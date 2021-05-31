@@ -103,7 +103,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		 * 
 		 */
 		List<CategoriaVO> categorias = new ArrayList<>();
-		categorias = categoriaController.consultaTodasCategorias();
+		categorias = categoriaController.consultaTodasCategorias(usuarioLogado);
 		for (CategoriaVO categoriaVO : categorias) {
 			comboCategorias.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
 			mapCategorias.put(categoriaVO.getIdCategoria(), categoriaVO.getDescricaoCategoria());			
