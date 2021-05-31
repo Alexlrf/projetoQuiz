@@ -32,20 +32,11 @@ public class TelaPrincipal extends JFrame {
 	private JMenuItem menuItemCadastrarprofessor;
 	private JMenuItem menuItemCadastrarCoordenador;
 	private JMenuItem menuItemCadastrarAluno;
-	private JMenu mnQuestoes;
-	private JMenuItem menuCadastraQuestao;
-	private JMenuItem menuConsultaQuestao;
+	private JMenu menuQuestoes;
+	private JMenuItem menuItemCadastraQuestao;
+	private JMenuItem menuItemConsultaQuestao;
 	private JMenu menuResolverQuiz;
 	private JMenuItem menuItemResponderQuiz;
-	
-	public UsuarioVO getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(UsuarioVO usuario) {
-		this.usuario = usuario;
-		TelaPrincipal();
-	}
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -59,7 +50,20 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 	}
+	
+	public UsuarioVO getUsuario() {
+		return usuario;
+	}
 
+	public void setUsuario(UsuarioVO usuario) {
+		this.usuario = usuario;
+		this.TelaPrincipal();
+	}
+	
+	public TelaPrincipal() {
+		this.TelaPrincipal();
+	}
+//	
 	/**
 	 * Create the frame.
 	 */
@@ -74,24 +78,32 @@ public class TelaPrincipal extends JFrame {
 		setJMenuBar(menuBar);
 		
 		menuResolverQuiz = new JMenu("RESOLVER QUESTÕES");
+		menuBar.add(menuResolverQuiz);
 		
 		menuItemResponderQuiz = new JMenuItem("Responder Quiz");
+		menuItemResponderQuiz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Fazer o painel do aluno de resolver as questões
+				JOptionPane.showMessageDialog(null, "Tela em Construção...");
+			}
+		});
 		menuResolverQuiz.add(menuItemResponderQuiz);
 		
-		mnQuestoes = new JMenu("QUESTÕES");
+		menuQuestoes = new JMenu("QUESTÕES");
+		menuBar.add(menuQuestoes);
 		
-		menuCadastraQuestao = new JMenuItem("Cadastrar Questão");
-		menuCadastraQuestao.addActionListener(new ActionListener() {
+		menuItemCadastraQuestao = new JMenuItem("Cadastrar Questão");
+		menuItemCadastraQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
 				contentPane = new PanelCadastraQuestoes();				
 				setContentPane(contentPane);
 				revalidate();
 			}
 		});
-		mnQuestoes.add(menuCadastraQuestao);
+		menuQuestoes.add(menuItemCadastraQuestao);
 		
-		menuConsultaQuestao = new JMenuItem("Consultar Questões");
-		menuConsultaQuestao.addActionListener(new ActionListener() {
+		menuItemConsultaQuestao = new JMenuItem("Consultar Questões");
+		menuItemConsultaQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				contentPane = new PanelConsultaQuestoes();
@@ -99,22 +111,51 @@ public class TelaPrincipal extends JFrame {
 				revalidate();
 			}
 		});
-		mnQuestoes.add(menuConsultaQuestao);
+		menuQuestoes.add(menuItemConsultaQuestao);
 		
 		menuRelatorioDeUsuarios = new JMenu("RELATÓRIO");
+		menuBar.add(menuRelatorioDeUsuarios);
 		
 		menuItemRelatorioDeUsuarios = new JMenuItem("Relatório de Usuários");
+		menuItemRelatorioDeUsuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO  Fazer painel de relatórios de usuarios para o coordenador
+				JOptionPane.showMessageDialog(null, "Tela em Construção...");
+			}
+		});
 		menuRelatorioDeUsuarios.add(menuItemRelatorioDeUsuarios);
 		
 		menuCadastroDeUsuarios = new JMenu("CADASTRO DE USUÁRIOS");
+		menuBar.add(menuCadastroDeUsuarios);
 		
 		menuItemCadastrarprofessor = new JMenuItem("CadastrarProfessor");
+		menuItemCadastrarprofessor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new PanelCadastrarProfessor();
+				setContentPane(contentPane);
+				revalidate();
+			}
+		});
 		menuCadastroDeUsuarios.add(menuItemCadastrarprofessor);
 		
 		menuItemCadastrarCoordenador = new JMenuItem("Cadastrar Coordenador");
+		menuItemCadastrarCoordenador.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new PanelCadastrarCoordenador();
+				setContentPane(contentPane);
+				revalidate();
+			}
+		});
 		menuCadastroDeUsuarios.add(menuItemCadastrarCoordenador);
 		
 		menuItemCadastrarAluno = new JMenuItem("Cadastrar Aluno");
+		menuItemCadastrarAluno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new PanelCadastrarAluno();
+				setContentPane(contentPane);
+				revalidate();
+			}
+		});
 		menuCadastroDeUsuarios.add(menuItemCadastrarAluno);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -133,24 +174,45 @@ public class TelaPrincipal extends JFrame {
 		
 		if(usuario instanceof AlunoVO) {
 			AlunoVO aluno = (AlunoVO) usuario;
-			
-			menuBar.add(menuResolverQuiz);
+			this.abrirTelaAluno(aluno);
 			
 		} else if (usuario instanceof ProfessorVO) {
 			ProfessorVO professor = (ProfessorVO) usuario;
-			
-			menuBar.add(mnQuestoes);
+			this.abrirTelaProfessor(professor);
 			
 		} else if (usuario instanceof CoordenadorVO) {
 			CoordenadorVO coordenador = (CoordenadorVO) usuario;
-			
-			menuBar.add(menuRelatorioDeUsuarios);
-			menuBar.add(menuCadastroDeUsuarios);
+			this.abrirTelaCoordenador(coordenador);
 		}
 	}
 
+	public void abrirTelaAluno(AlunoVO aluno) {
+		// visibilidades somente do aluno
+		menuResolverQuiz.setVisible(true);
+		
+		// visibilidades negadas para o aluno
+		menuQuestoes.setVisible(false);
+		menuRelatorioDeUsuarios.setVisible(false);
+		menuCadastroDeUsuarios.setVisible(false);
+	}
+
+	public void abrirTelaProfessor(ProfessorVO professor) {
+		// visibilidades somente do professor
+		menuQuestoes.setVisible(true);
+		
+		// visibilidades negadas para o professor
+		menuResolverQuiz.setVisible(false);
+		menuRelatorioDeUsuarios.setVisible(false);
+		menuCadastroDeUsuarios.setVisible(false);
+	}
+
 	public void abrirTelaCoordenador(CoordenadorVO coordenador) {
+		// visibilidades somente do coordenador
+		menuRelatorioDeUsuarios.setVisible(true);
+		menuCadastroDeUsuarios.setVisible(true);
 		
-		
+		// visibilidades negadas para o coordenador
+		menuQuestoes.setVisible(false);
+		menuResolverQuiz.setVisible(false);
 	}
 }

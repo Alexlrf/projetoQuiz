@@ -1,5 +1,3 @@
-SET GLOBAL log_bin_trust_function_creators = 1;
-
 DROP DATABASE IF EXISTS DBTESTE;
 
 CREATE DATABASE DBTESTE;
@@ -25,6 +23,7 @@ CREATE TABLE USUARIO (
  
  CREATE TABLE categoria (
   id_categoria INT NOT NULL AUTO_INCREMENT
+  , id_usuario int not null
   , descricao_categoria VARCHAR(50) NOT NULL
   , constraint PK_CATEGORIA primary key (id_categoria)
   );
@@ -48,23 +47,25 @@ CREATE TABLE USUARIO (
   , constraint FK_ALTERNATIVA_PERGUNTA foreign key (id_pergunta) references pergunta(id_pergunta)
   );
 
+INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, DISCIPLINA, SENHA, TIPO) 
+	VALUES ('VILMAR', '1234567', '12345678987', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', 'DESKTOP', MD5('vilmar'), 'PROFESSOR');
 
-INSERT INTO usuario (login, senha, tipo)  VALUES ('admin', MD5('admin'), 'COORDENACAO');
-INSERT INTO usuario (login, senha, tipo)  VALUES ('Alison', MD5('Alison@01'), 'ALUNO');
-INSERT INTO usuario (login, senha, tipo)  VALUES ('Alexandro', MD5('Alexandro&02'), 'ALUNO');
-INSERT INTO usuario (login, senha, tipo)  VALUES ('Rodrigo', MD5('Rodrigo?03'), 'ALUNO');
-INSERT INTO usuario (login, senha, tipo)  VALUES ('Vilmar', MD5('Vilmar*04'), 'PROFESSOR');
+INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO) 
+	VALUES ('kOGUT', '3216547', '98765432123', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', MD5('kogut'), 'COORDENADOR');
 
-INSERT INTO categoria (descricao_categoria) values('ORIENTAÇÃO A OBJETOS');
-INSERT INTO categoria (descricao_categoria) values('GIT / GITHUB');
-INSERT INTO categoria (descricao_categoria) values('SELETORES');
-INSERT INTO categoria (descricao_categoria) values('INTERFACES');
-INSERT INTO categoria (descricao_categoria) values('EXCEÇÕES');
+INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO) 
+	VALUES ('ALISON', '4567891', '12345678978', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', MD5('alison'), 'ALUNO');
 
-INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values(5, 1, 'O QUE É ABSTRAÇÃO?');
-INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values(5, 2, 'QUAL A DIFERENÇA ENTRE GIT E GITHUB?');
-INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values(5, 2, 'O QUE É UM PUSH?');
-INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values(5, 3, 'QUAL A FUNÇÃO DOS SELETORES?');
+INSERT INTO categoria (id_usuario, descricao_categoria) values(1, 'ORIENTAÇÃO A OBJETOS');
+INSERT INTO categoria (id_usuario, descricao_categoria) values(1, 'GIT / GITHUB');
+INSERT INTO categoria (id_usuario, descricao_categoria) values(1, 'SELETORES');
+INSERT INTO categoria (id_usuario, descricao_categoria) values(1, 'INTERFACES');
+INSERT INTO categoria (id_usuario, descricao_categoria) values(1, 'EXCEÇÕES');
+
+INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values(1, 1, 'O QUE É ABSTRAÇÃO?');
+INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values(1, 2, 'QUAL A DIFERENÇA ENTRE GIT E GITHUB?');
+INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values(1, 2, 'O QUE É UM PUSH?');
+INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values(1, 3, 'QUAL A FUNÇÃO DOS SELETORES?');
 
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UMA CATEGORIA DE CLASSE JAVA', 'ERRADA');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UM TIPO DE ATRIBUTO JAVA', 'ERRADA');
@@ -89,32 +90,6 @@ INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) va
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'AUXILIAR NA APRESENTAÇÃO DO LAYOUT DE UMA JFRAME', 'ERRADA');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'POSSIBILITA CONSULTAS SQL MAIS COMPLEXAS DE FORMA MAIS DINÂMICA', 'CORRETA');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'INSTANCIAR OBJETOS DE CLASSES ABSTRATAS', 'ERRADA');
-
-
-
-
- DELIMITER $$  
- DROP FUNCTION IF EXISTS fun_valida_usuario $$
-
--- A função verifica se existe na base de dados alguma informação 
--- que coincida com os valores passados aos parâmetros p_login e p_senha, 
--- se existir, a função retornará o idUsuario, caso não, 0.
-CREATE FUNCTION fun_valida_usuario( p_login VARCHAR(20), p_senha VARCHAR(50))  RETURNS integer
-	BEGIN  
-		DECLARE l_ret integer DEFAULT 0;
-		SET l_ret = IFNULL((SELECT DISTINCT id_usuario FROM usuario  
-							WHERE cpf = p_login  
-							AND senha = MD5(p_senha)),0);   
-        
-		RETURN l_ret;  
-	END $$
-DELIMITER ;
-
-SELECT fun_valida_usuario('admin','admin') as validacao;
-SELECT fun_valida_usuario('Alison','Alison@01') as validacao;
-SELECT fun_valida_usuario('Alexandro','Alexandro&02') as validacao;
-SELECT fun_valida_usuario('login','senha');
-
 
 select 
 	distinct(usuario.id_usuario), categoria.descricao_categoria, pergunta.texto_pergunta
