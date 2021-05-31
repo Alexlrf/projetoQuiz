@@ -56,4 +56,10 @@ public class CategoriaController {
 	}
 
 
+	public boolean alteraCategoria(String categoriaEscolhida, String categoriaAlterada) {
+		
+		return categoriaBO.alteraCategoria(categoriaEscolhida, categoriaAlterada);
+	}
+
+
 }

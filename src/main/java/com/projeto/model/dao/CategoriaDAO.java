@@ -128,8 +128,26 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			System.out.println("Erro ao consultar categoria por descrição!");
 			
 		}		
-		
 		return idRetornado;
+	}
+
+	public boolean alteraCategoria(String categoriaEscolhida, String categoriaAlterada) {
+		boolean alteradaCategoria = true;
+		String sql = "UPDATE categoria SET descricao_categoria = ? WHERE descricao_categoria = ?"; 
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
+			
+			stmt.setString(1, categoriaAlterada);
+			stmt.setString(2, categoriaEscolhida);
+			stmt.executeUpdate();			
+			
+		}catch (SQLException e) {
+			System.out.println("Erro ao alterar categoria por descrição!");
+			alteradaCategoria = false;
+			
+		}			
+		return alteradaCategoria;
 	}
 
 	

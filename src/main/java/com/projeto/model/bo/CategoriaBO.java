@@ -38,4 +38,9 @@ public class CategoriaBO {
 		return categoriaDAO.findAll();
 	}
 
+	public boolean alteraCategoria(String categoriaEscolhida, String categoriaAlterada) {
+		// TODO Auto-generated method stub
+		return categoriaDAO.alteraCategoria(categoriaEscolhida, categoriaAlterada);
+	}
+
 }
