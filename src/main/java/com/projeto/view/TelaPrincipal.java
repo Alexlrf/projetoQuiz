@@ -95,7 +95,7 @@ public class TelaPrincipal extends JFrame {
 		menuItemCadastraQuestao = new JMenuItem("Cadastrar Questão");
 		menuItemCadastraQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
-				contentPane = new PanelCadastraQuestoes();				
+				contentPane = new PanelCadastraQuestoes(usuario);				
 				setContentPane(contentPane);
 				revalidate();
 			}
