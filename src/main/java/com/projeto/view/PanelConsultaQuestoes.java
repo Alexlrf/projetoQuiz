@@ -52,6 +52,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	private PlaceholderTextField textFieldBusca;
 	private JComboBox comboCategorias;
 	private JTable tableAlternativas;
+	private int perguntaSelecionada;
 	private JTable tableConsulta;
 
 	Map<Integer, String> mapCategorias = new HashedMap<>();
@@ -70,7 +71,8 @@ public class PanelConsultaQuestoes extends JPanel {
 		tableConsulta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
+				
+				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
 
 				if (perguntaSelecionada >= 0) {
 					PerguntaVO pergunta = perguntas.get(perguntaSelecionada);
@@ -205,8 +207,9 @@ public class PanelConsultaQuestoes extends JPanel {
 						break;
 						
 					case "PERGUNTA":
-
+						preparaAlteracaoPergunta();
 						break;
+						
 					case "ALTERNATIVA":
 
 						break;
@@ -239,6 +242,36 @@ public class PanelConsultaQuestoes extends JPanel {
 				}
 
 			}
+			
+			
+			private void preparaAlteracaoPergunta() {
+				PerguntaVO perguntaVO = perguntas.get(perguntaSelecionada);
+				
+				String textoAlterado = Utils.formataEspacoUnico(JOptionPane.showInputDialog(null, perguntaVO.getTextoPergunta(),
+						"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE).toUpperCase());
+				CategoriaVO[] categoriasCombo = null;
+				int i = 0;
+//				for (CategoriaVO categoriaVO : categorias) {
+//					categoriasCombo[i] = categoriaVO;
+//					i++;
+//				}
+				
+				CategoriaVO categoriaAlterada = (CategoriaVO) JOptionPane.showInputDialog(null, null, "ALTERAR",
+						JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0]);
+				
+//				CategoriaVO categoriaAlterada = JOptionPane.showInputDialog(null, null,
+//						"Alterar", JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0]));
+				
+				PerguntaVO perguntaAlterada = new PerguntaVO();
+				perguntaAlterada.setTextoPergunta(textoAlterado);
+				//perguntaAlterada.set
+				
+				System.out.println(perguntaAlterada.getCategoria()+"  "+perguntaAlterada.getTextoPergunta());
+				
+				
+			}
+			
+			
 		});
 		formataBotao(btnAlterar);
 		btnAlterar.setFont(new Font("Tahoma", Font.BOLD, 11));
