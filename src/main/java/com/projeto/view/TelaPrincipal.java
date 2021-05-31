@@ -68,11 +68,11 @@ public class TelaPrincipal extends JFrame {
 		setTitle("      Q  U  I  Z");
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);		
-			
+		setBounds(100, 100, 450, 300);
+				
 		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-		
+		setJMenuBar(menuBar);		
+
 		menuResolverQuiz = new JMenu("RESOLVER QUESTÕES");
 		
 		menuItemResponderQuiz = new JMenuItem("Responder Quiz");
@@ -99,6 +99,7 @@ public class TelaPrincipal extends JFrame {
 				revalidate();
 			}
 		});
+
 		mnQuestoes.add(menuConsultaQuestao);
 		
 		menuRelatorioDeUsuarios = new JMenu("RELATÓRIO");

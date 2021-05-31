@@ -7,7 +7,6 @@ import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.CategoriaBO;
 import com.projeto.model.bo.PerguntaBO;
 import com.projeto.model.entity.CategoriaVO;
-import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Utils;
 
 public class CategoriaController {
@@ -28,12 +27,9 @@ public class CategoriaController {
 		} else {
 			throw new ErroNoCadastroException("Texto inválido!\n Verifique se "
 					+categoriaVO.getDescricaoCategoria()+"\n não excede o número de caracteres.\n");
-		}
-		
-		return retorno;		
-		
-	}
-	
+		}		
+		return retorno;			
+	}	
 
 	private boolean validaCategoria(CategoriaVO categoriaVO) throws ErroNoCadastroException {
 		String validacaoCategoria = " ";
@@ -62,4 +58,8 @@ public class CategoriaController {
 	}
 
 
+	public CategoriaVO buscaCategoriaPorDescricao(String descricaoCategoria) {
+				
+		return categoriaBO.buscaCategoriaPorDescricao(descricaoCategoria);
+	}
 }

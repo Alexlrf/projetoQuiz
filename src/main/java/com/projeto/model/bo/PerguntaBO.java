@@ -4,15 +4,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.model.dao.CategoriaDAO;
 import com.projeto.model.dao.PerguntaDAO;
+import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
 
 public class PerguntaBO {
 	PerguntaDAO perguntaDAO = new PerguntaDAO();
-	CategoriaDAO categoriaDAO = new CategoriaDAO();	
+	CategoriaDAO categoriaDAO = new CategoriaDAO();
+	CategoriaVO categoriaVO = new CategoriaVO();
 	
 	public List<PerguntaVO> buscaPorCategoriaEscolhida(String categoriaEscolhida) {		
 		int idCategoria =  categoriaDAO.buscaIdCategoria(categoriaEscolhida);
@@ -29,13 +32,14 @@ public class PerguntaBO {
 	 * @throws SQLException
 	 */
 	
-	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws SQLException{	
+	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws ErroNaConsultaException{	
 		List<PerguntaVO> listaPerguntas = new ArrayList<>();
-		int idCategoria = 0;
+		
 		if (Utils.stringValida(perguntaSeletor.getCategoria())) {
-			idCategoria = perguntaDAO.buscaIdcategoria(perguntaSeletor.getCategoria());
-			perguntaSeletor.setIdCategoria(idCategoria);
-			listaPerguntas = perguntaDAO.buscaComSeletor(perguntaSeletor);			
+//			categoriaVO = perguntaDAO.buscaIdcategoria(perguntaSeletor.getCategoria());
+//			perguntaSeletor.setIdCategoria(categoriaVO.getIdCategoria());
+			listaPerguntas = perguntaDAO.buscaComSeletor(perguntaSeletor);	
+			
 		} else {
 			perguntaSeletor.setIdCategoria(0);
 			listaPerguntas = perguntaDAO.buscaComSeletor(perguntaSeletor);
