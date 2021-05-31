@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.projeto.model.dao.CategoriaDAO;
 import com.projeto.model.entity.CategoriaVO;
-import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Utils;
 
 public class CategoriaBO {
@@ -41,6 +40,10 @@ public class CategoriaBO {
 	public boolean alteraCategoria(String categoriaEscolhida, String categoriaAlterada) {
 		// TODO Auto-generated method stub
 		return categoriaDAO.alteraCategoria(categoriaEscolhida, categoriaAlterada);
+	}
+	public CategoriaVO buscaCategoriaPorDescricao(String descricaoCategoria) { 
+		
+ 		return categoriaDAO.buscaCategoriaPorDescricao(descricaoCategoria);
 	}
 
 }
