@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JFormattedTextField;
 
-public class PanelCadastrarUsuario extends JPanel {
+public class PanelCadastrarAluno extends JPanel {
 	private PlaceholderTextField txtNome;
 	private JFormattedTextField txtCpf;
 	private final ButtonGroup buttonGroupSexo = new ButtonGroup();
@@ -53,7 +53,7 @@ public class PanelCadastrarUsuario extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelCadastrarUsuario() {
+	public PanelCadastrarAluno() {
 		setBackground(new Color(205, 92, 92));
 		
 		JPanel panel = new JPanel();

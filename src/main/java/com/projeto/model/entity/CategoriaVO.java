@@ -4,7 +4,6 @@ public class CategoriaVO {
 	
 	private int idCategoria;
 	private UsuarioVO usuario; 
-
 	private String descricaoCategoria;
 	
 	public CategoriaVO(int idCategoria, UsuarioVO usuario, String descricaoCategoria) {
@@ -40,6 +39,6 @@ public class CategoriaVO {
 
 	public void setDescricaoCategoria(String descricaoCategoria) {
 		this.descricaoCategoria = descricaoCategoria;
-	}	
+	}
 
 }
