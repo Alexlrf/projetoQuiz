@@ -83,7 +83,7 @@ public class TelaPrincipal extends JFrame {
 		menuCadastraQuestao = new JMenuItem("Cadastrar Questão");
 		menuCadastraQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
-				contentPane = new PanelCadastraQuestoes();				
+				contentPane = new PanelCadastraQuestoes(usuario);				
 				setContentPane(contentPane);
 				revalidate();
 			}
@@ -94,7 +94,7 @@ public class TelaPrincipal extends JFrame {
 		menuConsultaQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				contentPane = new PanelConsultaQuestoes();
+				contentPane = new PanelConsultaQuestoes(usuario);
 				setContentPane(contentPane);
 				revalidate();
 			}

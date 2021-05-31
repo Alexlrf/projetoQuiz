@@ -36,12 +36,14 @@ import com.projeto.controller.PerguntaController;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Constants;
 import com.projeto.repository.GeradorPlanilha;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
 import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 public class PanelConsultaQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -56,6 +58,8 @@ public class PanelConsultaQuestoes extends JPanel {
 	private JComboBox comboCategorias;
 	private JTable tableAlternativas;
 	private int perguntaSelecionada;
+	private UsuarioVO usuarioLogado;
+	private JLabel lblNomeUsuario;
 	private JTable tableConsulta;
 
 	Map<Integer, String> mapCategorias = new HashedMap<>();
@@ -63,11 +67,12 @@ public class PanelConsultaQuestoes extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelConsultaQuestoes() {
+	public PanelConsultaQuestoes(UsuarioVO usuarioLogado) {
 		setBackground(new Color(112, 128, 144));
 		setBorder(new LineBorder(new Color(250, 128, 114), 5));
 
-		JLabel lblNomeUsuario = new JLabel("Nome Usuário");
+		lblNomeUsuario = new JLabel(usuarioLogado.getNome());
+		lblNomeUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNomeUsuario.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		tableConsulta = new JTable();
