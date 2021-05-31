@@ -6,30 +6,38 @@ import java.util.List;
 import com.projeto.model.dao.AlternativaDAO;
 import com.projeto.model.dao.PerguntaDAO;
 import com.projeto.model.entity.AlternativaVO;
+import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.repository.Utils;
 
 public class AlternativaBO {
 	AlternativaDAO alternativaDAO = new AlternativaDAO();
 	PerguntaDAO perguntaDAO = new PerguntaDAO();
 	PerguntaVO perguntaVO = new PerguntaVO();
+	CategoriaVO categoriaVO = new CategoriaVO();
 
-	public boolean cadastraAlternativas(PerguntaVO pergunta, List<String> listaAlternativas) throws SQLException {
+	public boolean cadastraQuestao(PerguntaVO pergunta) throws SQLException {
 		boolean retorno = true;
+		String mensagem = "";
+		
+		pergunta.setCategoria(perguntaDAO.buscaIdcategoria(pergunta.getCategoria().getDescricaoCategoria()));
 		perguntaVO = perguntaDAO.insert(pergunta);
+		pergunta.setIdPergunta(perguntaVO.getIdPergunta());
 		
-//		if (perguntaVO.getIdPergunta() < 1) {
-//			retorno = false;			
-//		} else {			
-//		}		
-		
-		System.out.println(" CATEGORIA: "+pergunta.getCategoria()+"\n\n PERGUNTA: "+pergunta.getTextoPergunta()+"\n\n");
-		int cont = 1;
-		for (String opcao : listaAlternativas) {
-			System.out.println(" >> ALTERNATIVA "+cont+":  "+opcao+"\n");
-			cont ++;
+		if (pergunta.getCategoria().getIdCategoria() < 0 || pergunta.getCategoria() == null) {
+			mensagem = "Erro ao cadastrar pergunta!";
+			retorno = false;
+		} else {
+			if (!alternativaDAO.cadastraAlternativas(pergunta)) {
+				mensagem = "Erro ao cadastrar alternativas!";
+				retorno = false;
+			}
 		}
-		return retorno;
 		
+		if (Utils.stringValida(mensagem)) {
+			throw new SQLException(mensagem);
+		}		
+		return retorno;		
 	}
 
 	public List<AlternativaVO> buscaAlternativas(PerguntaVO pergunta) {

@@ -4,8 +4,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.model.bo.PerguntaBO;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
 
@@ -17,21 +19,21 @@ public class PerguntaController {
 		return perguntaBO.buscaPorCategoriaEscolhida(categoriaEscolhida);
 	}	
 
-	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws SQLException{
+	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws ErroNaConsultaException{
 		String mensagem = "";
 		
 		listaPerguntas = perguntaBO.buscaComSeletor(perguntaSeletor);
 		if (listaPerguntas == null || listaPerguntas.size() == 0) {
-			mensagem = "Falha na consulta!\nTente novamente";
+			mensagem = "Não foram encontradas perguntas para esta pesquisa";
 		} 
 		
 		if (Utils.stringValida(mensagem)) {
-			throw new SQLException(mensagem);		
+			throw new ErroNaConsultaException(mensagem);		
 		}		
 		return listaPerguntas;		
 	}	
 
-	public List<PerguntaVO> buscaPorTextoDigitado(String textoDigitado) throws SQLException {		
+	public List<PerguntaVO> buscaPorTextoDigitado(String textoDigitado) throws ErroNaConsultaException {		
 		String mensagem = "";
 		
 		if (Utils.stringValida(textoDigitado)) {
@@ -42,9 +44,18 @@ public class PerguntaController {
 		
 		if (listaPerguntas == null || listaPerguntas.size() == 0) {
 			mensagem = "Não foram encontradas perguntas com este termo de busca!";
-			throw new SQLException(mensagem);
+			throw new ErroNaConsultaException(mensagem);
 		}		
 		return listaPerguntas;		
 	}
 
+	public boolean validaPergunta(PerguntaVO perguntaVO) {
+		boolean perguntaValida = true;
+		if (perguntaVO.getTextoPergunta().equalsIgnoreCase(Constants.PERGUNTA) || !Utils.stringValida(perguntaVO.getTextoPergunta())) {
+			perguntaValida = false;
+		}
+		return perguntaValida;
+	}
 }
+
+

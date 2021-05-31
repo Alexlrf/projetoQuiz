@@ -94,5 +94,4 @@ public class PerguntaSeletor {
 	public void setPagina(int pagina) {
 		this.pagina = pagina;
 	}
-
 }

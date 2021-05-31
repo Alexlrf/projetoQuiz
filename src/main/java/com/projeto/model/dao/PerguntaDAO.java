@@ -7,18 +7,38 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Banco;
 import com.projeto.repository.BaseDao;
 import com.projeto.seletor.PerguntaSeletor;
 
 public class PerguntaDAO implements BaseDao<PerguntaVO> {
+	PerguntaVO perguntaVO = new PerguntaVO();
+	CategoriaVO categoriaVO = new CategoriaVO();
+	CategoriaDAO categoriaDAO = new CategoriaDAO();
 	
-
 	@Override
-	public PerguntaVO insert(PerguntaVO obj) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public PerguntaVO insert(PerguntaVO pergunta) throws SQLException {
+		String sql = "INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values (?, ?, ?);";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
+			
+			stmt.setInt(1, 5);
+			stmt.setInt(2, pergunta.getCategoria().getIdCategoria());
+			stmt.setString(3, pergunta.getTextoPergunta());
+			stmt.executeUpdate();
+			ResultSet id = stmt.getGeneratedKeys();
+			if (id.next()) {				
+				perguntaVO.setIdPergunta(id.getInt(1));
+			}			
+			
+		} catch(SQLException e) {
+			System.out.println("Erro no cadastro de pergunta!");
+		}
+		
+		return perguntaVO;
 	}
 
 	@Override
@@ -49,8 +69,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 	public PerguntaVO completeResultset(ResultSet rs) throws SQLException {
 		PerguntaVO perguntaVO = new PerguntaVO();
 		
-		perguntaVO.setTextoPergunta(rs.getString("texto_pergunta"));
-		perguntaVO.setCategoria(rs.getString("id_categoria"));		
+		perguntaVO.setTextoPergunta(rs.getString("texto_pergunta"));				
 		perguntaVO.setIdPergunta(rs.getInt("id_pergunta"));
 		return perguntaVO;		
 	}
@@ -67,6 +86,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 						+ "categoria on categoria.id_categoria = pergunta.id_categoria"
 				+ "	WHERE "
 						+ "pergunta.id_categoria = ?";
+		String sqlCategoria = "";
 				
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
@@ -76,7 +96,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 
 			while (rs.next()) {
 				pergunta = new PerguntaVO();
-				pergunta.setCategoria(rs.getString("categoria.descricao_categoria"));
+				pergunta.setCategoria(categoriaDAO.findById(idCategoria));
 				pergunta.setIdUsuario(rs.getInt("pergunta.id_usuario"));
 				pergunta.setTextoPergunta(rs.getString("pergunta.texto_pergunta"));
 				pergunta.setIdPergunta(rs.getInt("pergunta.id_pergunta"));
@@ -104,17 +124,33 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
 			ResultSet rs = stmt.executeQuery();
-
+			
 			while (rs.next()) {
 				p = new PerguntaVO();
 				p.setTextoPergunta(rs.getString("texto_pergunta"));
-				p.setCategoria(buscaNomeCategoriaPorId(rs));
 				p.setIdPergunta(rs.getInt("id_pergunta"));
+				
+				if (perguntaSeletor.getIdCategoria() == 0) {
+					p.setCategoria(categoriaDAO.buscaCategoria(p));
+				} else {
+					p.setCategoria(categoriaDAO.findById(perguntaSeletor.getIdCategoria()));
+				}
 				
 				listaPerguntasBuscadas.add(p);
 			}
+			
+			
+
+//			while (rs.next()) {
+//				p = new PerguntaVO();
+//				p.setTextoPergunta(rs.getString("texto_pergunta"));
+//				p.setCategoria(categoriaDAO.findById(perguntaSeletor.getIdCategoria()));
+//				p.setIdPergunta(rs.getInt("id_pergunta"));
+//				
+//				listaPerguntasBuscadas.add(p);
+//			}
 		} catch (SQLException e) {
-			System.out.println("Erro ao consultar vacinas com filtros.\nCausa: " + e.getMessage());
+			System.out.println("Erro ao consultar perguntas com filtros.\nCausa: " + e.getMessage());
 			
 		}		
 		return listaPerguntasBuscadas;
@@ -165,8 +201,8 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 		return sql;
 	}
 
-	public int buscaIdcategoria(String categoria) {
-		int idRetornado = 0;
+	public CategoriaVO buscaIdcategoria(String categoria) {
+		
 		String sql = "SELECT id_categoria FROM categoria WHERE descricao_categoria = ?";
 		
 		try (Connection conn = Banco.getConnection();
@@ -176,13 +212,13 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				idRetornado = rs.getInt("id_categoria");				
+				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));				
 			}
 			
 		} catch (SQLException e) {
 			System.out.println("Erro ao buscar pergunta por categoria!\n"+e.getMessage());
 		}		
-		return idRetornado;
+		return categoriaVO;
 	}	
 	
 	public List<PerguntaVO> buscaPorTextoDigitado(String textoDigitado) {
@@ -207,7 +243,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			
 			while (rs.next()) {
 				pergunta = new PerguntaVO();
-				pergunta.setCategoria(rs.getString("categoria.descricao_categoria"));
+				pergunta.setCategoria(buscaIdcategoria(textoDigitado));
 				pergunta.setIdUsuario(rs.getInt("pergunta.id_usuario"));
 				pergunta.setTextoPergunta(rs.getString("pergunta.texto_pergunta"));
 				pergunta.setIdPergunta(rs.getInt("pergunta.id_pergunta"));

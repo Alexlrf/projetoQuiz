@@ -15,6 +15,8 @@ import javax.swing.text.MaskFormatter;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.projeto.enums.TipoUsuarioEnum;
+import com.projeto.model.entity.ProfessorVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
 
@@ -325,7 +327,9 @@ public class PanelCadastrarProfessor extends JPanel {
 		);
 		panel.setLayout(gl_panel);
 		setLayout(groupLayout);
-
-	}
+		ProfessorVO professor = new ProfessorVO();
+		professor.setTipo(TipoUsuarioEnum.PROFESSOR);
+	} 
+	
 
 }

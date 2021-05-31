@@ -3,52 +3,26 @@ package com.projeto.controller;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
-
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.AlternativaBO;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.PerguntaVO;
-import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 
 public class AlternativaController {
 	 
 	AlternativaBO alternativaBO = new AlternativaBO();
 	
-	public boolean cadastraAlternativas(PerguntaVO pergunta, List<String> listaAlternativas) throws ErroNoCadastroException, SQLException {		
-		boolean retorno = true;
-		String validacaoAlternativa = "";		
+	public boolean cadastraQuestao(PerguntaVO pergunta) throws ErroNoCadastroException, SQLException {		
 		
-		if (validaAlternativas(listaAlternativas)) {
-			if (validaPergunta(pergunta.getTextoPergunta())) {
-				retorno =alternativaBO.cadastraAlternativas(pergunta, listaAlternativas);
-			}else {
-				validacaoAlternativa += "Verifique o campo PERGUNTA\n";
-			}
-			
-		}else {
-			validacaoAlternativa = "Verifique os campos das alternativas";
-		}		
-		
-		if (!validacaoAlternativa.isEmpty()) {
-			throw new ErroNoCadastroException(validacaoAlternativa);
-		}
-		return retorno;
+		return alternativaBO.cadastraQuestao(pergunta);
 	}	
 
-	private boolean validaAlternativas(List<String> listaAlternativas) {			
-		return Utils.alternativaValida(listaAlternativas.get(0), listaAlternativas.get(1)
-				, listaAlternativas.get(2), listaAlternativas.get(3), listaAlternativas.get(4));
+	public boolean validaAlternativas(List<AlternativaVO> listaAlternativas) {			
+		return Utils.alternativaValida(listaAlternativas.get(0).getTexto(), listaAlternativas.get(1).getTexto()
+				, listaAlternativas.get(2).getTexto(), listaAlternativas.get(3).getTexto(), listaAlternativas.get(4).getTexto());
 	}	
 
-	private boolean validaPergunta(String pergunta) {
-		boolean perguntaValida = true;
-		if (pergunta.equalsIgnoreCase(Constants.PERGUNTA) || !Utils.stringValida(pergunta)) {
-			perguntaValida = false;
-		}
-		return perguntaValida;
-	}
 
 	public List<AlternativaVO> buscaAlternativas(PerguntaVO pergunta) {
  		return alternativaBO.buscaAlternativas(pergunta);

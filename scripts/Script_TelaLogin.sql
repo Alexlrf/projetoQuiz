@@ -32,7 +32,7 @@ CREATE TABLE USUARIO (
   id_pergunta INT NOT NULL AUTO_INCREMENT
   , id_usuario INT NOT NULL
   , id_categoria INT NOT NULL
-  , texto_pergunta VARCHAR(40) NOT NULL
+  , texto_pergunta TEXT NOT NULL  
   , constraint PK_PERGUNTA primary key (id_pergunta)
   , constraint FK_PERGUNTA_USUARIO foreign key (id_usuario) references usuario(id_usuario)
    , constraint FK_PERGUNTA_CATEGORIA foreign key (id_categoria) references categoria(id_categoria)
@@ -41,7 +41,7 @@ CREATE TABLE USUARIO (
   CREATE TABLE alternativa (
   id_alternativa INT NOT NULL AUTO_INCREMENT
   , id_pergunta INT NOT NULL
-  , texto_alternativa VARCHAR(255) NOT NULL
+  , texto_alternativa TEXT NOT NULL 
   , alternativa_correta ENUM('CORRETA', 'ERRADA') NOT NULL
   , constraint PK_ALTERNATIVA primary key (id_alternativa)
   , constraint FK_ALTERNATIVA_PERGUNTA foreign key (id_pergunta) references pergunta(id_pergunta)
