@@ -22,6 +22,9 @@ import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 
 public class TelaPrincipal extends JFrame {
+	public TelaPrincipal() {
+		setExtendedState(Frame.MAXIMIZED_BOTH);
+	}
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
