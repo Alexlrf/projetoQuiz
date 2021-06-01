@@ -15,37 +15,34 @@ import java.util.Map.Entry;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.collections4.map.HashedMap;
 
-import com.mysql.cj.util.Util;
 import com.projeto.controller.AlternativaController;
 import com.projeto.controller.CategoriaController;
 import com.projeto.controller.PerguntaController;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
-import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Constants;
 import com.projeto.repository.GeradorPlanilha;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
-import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
 
 public class PanelConsultaQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -61,7 +58,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	private JComboBox comboCategorias;
 	private JTable tableAlternativas;
 	private int perguntaSelecionada;
-	//private UsuarioVO usuarioLogado;
+	// private UsuarioVO usuarioLogado;
 	private JLabel lblNomeUsuario;
 	private JTable tableConsulta;
 
@@ -82,7 +79,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		tableConsulta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
 				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
 
 				if (perguntaSelecionada >= 0) {
@@ -102,38 +99,37 @@ public class PanelConsultaQuestoes extends JPanel {
 				limpaTabelaPerguntas();
 				limpaTabelaAlternativas();
 				PerguntaSeletor perguntaSeletor = new PerguntaSeletor();
-				
+
 				if (Utils.stringValida(textFieldBusca.getText().toString().trim())) {
 					perguntaSeletor.setTexto(Utils.formataEspacoUnico(textFieldBusca.getText().toString()));
 				} else {
 					perguntaSeletor.setTexto("");
 				}
-				
+
 				if (comboCategorias.getSelectedIndex() > 0) {
 					perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
 					int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());
 					perguntaSeletor.setIdCategoria(indexEscolhido);
-					
+
 				} else {
 					perguntaSeletor.setCategoria("");
 				}
-				
+
 				perguntaSeletor.setIdUsuario(usuarioLogado.getIdUsuario());
-				
+
 				try {
 					perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
-					
+
 					if (perguntas.size() != 0 || perguntas != null) {
-						preencherTabelaPerguntas(perguntas);								
-					} 
-					
+						preencherTabelaPerguntas(perguntas);
+					}
+
 				} catch (Exception mensagem) {
 					JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
-				}						
+				}
 			}
-				
-			
+
 		});
 		comboCategorias.setFont(new Font("Tahoma", Font.BOLD, 12));
 		comboCategorias.setModel(new DefaultComboBoxModel(new String[] { "CATEGORIAS" }));
@@ -142,11 +138,11 @@ public class PanelConsultaQuestoes extends JPanel {
 		 * Preenche o combo box com as categorias ao iniciar a tela
 		 * 
 		 */
-		//List<CategoriaVO> categorias = new ArrayList<>();
+		// List<CategoriaVO> categorias = new ArrayList<>();
 		categorias = categoriaController.consultaTodasCategorias(usuarioLogado);
 		for (CategoriaVO categoriaVO : categorias) {
 			comboCategorias.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
-			mapCategorias.put(categoriaVO.getIdCategoria(), categoriaVO.getDescricaoCategoria());			
+			mapCategorias.put(categoriaVO.getIdCategoria(), categoriaVO.getDescricaoCategoria());
 		}
 
 		JPanel panelBotoes = new JPanel();
@@ -172,69 +168,68 @@ public class PanelConsultaQuestoes extends JPanel {
 		textFieldBusca.setColumns(10);
 
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
-									.addGap(50)
-									.addComponent(comboCategorias, 0, 341, Short.MAX_VALUE)))
-							.addContainerGap())
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
-							.addGap(54)
-							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
-							.addGap(26))
-						.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(360, Short.MAX_VALUE))))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+		groupLayout
+				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addContainerGap()
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addGroup(groupLayout.createSequentialGroup()
+												.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 775,
+														Short.MAX_VALUE)
+												.addContainerGap())
+										.addGroup(groupLayout
+												.createSequentialGroup()
+												.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addContainerGap())
+										.addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout
+												.createParallelGroup(Alignment.TRAILING)
+												.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 775,
+														Short.MAX_VALUE)
+												.addGroup(groupLayout.createSequentialGroup()
+														.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 384,
+																Short.MAX_VALUE)
+														.addGap(50)
+														.addComponent(comboCategorias, 0, 341, Short.MAX_VALUE)))
+												.addContainerGap())
+										.addGroup(groupLayout.createSequentialGroup()
+												.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+												.addGap(54)
+												.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128,
+														GroupLayout.PREFERRED_SIZE)
+												.addGap(26))
+										.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 87,
+												GroupLayout.PREFERRED_SIZE)
+										.addGroup(groupLayout.createSequentialGroup()
+												.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 104,
+														GroupLayout.PREFERRED_SIZE)
+												.addContainerGap(360, Short.MAX_VALUE)))));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addContainerGap()
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblTitulo, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(comboCategorias, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(1)
-							.addComponent(textFieldBusca, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
-					.addGap(33)
-					.addComponent(lblPerguntas)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-					.addGap(11)
-					.addComponent(lblAlternativas)
-					.addGap(18)
-					.addComponent(tableAlternativas, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE)
-					.addGap(28)
-					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(comboCategorias, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup().addGap(1).addComponent(textFieldBusca,
+								GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
+				.addGap(33).addComponent(lblPerguntas).addPreferredGap(ComponentPlacement.UNRELATED)
+				.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE).addGap(11)
+				.addComponent(lblAlternativas).addGap(18)
+				.addComponent(tableAlternativas, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE).addGap(28)
+				.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap()));
 		panelBotoes.setLayout(new GridLayout(1, 0, 10, 10));
-		
-		JButton btnGerarXls = new JButton("   Salvar Excel");	
+
+		JButton btnGerarXls = new JButton("   Salvar Excel");
 		btnGerarXls.setBackground(UIManager.getColor("Button.light"));
 		btnGerarXls.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				btnGerarXls.setBackground(new Color(153, 255, 153));
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				btnGerarXls.setBackground(UIManager.getColor("Button.light"));
@@ -245,27 +240,27 @@ public class PanelConsultaQuestoes extends JPanel {
 		panelBotoes.add(btnGerarXls);
 		btnGerarXls.setIcon(new ImageIcon(PanelConsultaQuestoes.class.getResource("/imagens/excel.png")));
 		btnGerarXls.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {				
+			public void actionPerformed(ActionEvent e) {
 				JFileChooser jfc = new JFileChooser();
 				jfc.setDialogTitle("Salvar relatório como...");
-				
+
 				int resultado = jfc.showSaveDialog(null);
 				if (resultado == JFileChooser.APPROVE_OPTION) {
-					String caminhoEscolhido =jfc.getSelectedFile().getAbsolutePath();
+					String caminhoEscolhido = jfc.getSelectedFile().getAbsolutePath();
 					GeradorPlanilha geradorPlanilha = new GeradorPlanilha();
 					try {
 						geradorPlanilha.gerarPlanilhaPerguntas(perguntas, caminhoEscolhido);
 						JOptionPane.showMessageDialog(null, "Planilha gerada com sucesso!", Constants.SUCESSO,
 								JOptionPane.INFORMATION_MESSAGE, null);
-						
+
 					} catch (Exception e2) {
 						JOptionPane.showMessageDialog(null, "Erro ao gerar planilha!", "ATENÇÃO",
 								JOptionPane.ERROR_MESSAGE, null);
 					}
-				}				
+				}
 			}
 		});
-		
+
 		JButton btnExcluir = new JButton("EXCLUIR");
 		formataBotao(btnExcluir);
 
@@ -278,7 +273,7 @@ public class PanelConsultaQuestoes extends JPanel {
 				String[] opcoes = { "Escolha uma opção", "CATEGORIA", "PERGUNTA", "ALTERNATIVA" };
 				String opcaoEscolhida = (String) JOptionPane.showInputDialog(null, null, "ALTERAR",
 						JOptionPane.QUESTION_MESSAGE, null, opcoes, opcoes[0]);
-								
+
 				if (opcaoEscolhida != null && !opcaoEscolhida.equalsIgnoreCase("Escolha uma opção")) {
 
 					switch (opcaoEscolhida) {
@@ -286,11 +281,11 @@ public class PanelConsultaQuestoes extends JPanel {
 					case "CATEGORIA":
 						preparaAlteracaoCategoria();
 						break;
-						
+
 					case "PERGUNTA":
 						preparaAlteracaoPergunta();
 						break;
-						
+
 					case "ALTERNATIVA":
 
 						break;
@@ -304,9 +299,10 @@ public class PanelConsultaQuestoes extends JPanel {
 			private void preparaAlteracaoCategoria() {
 				if (comboCategorias.getSelectedIndex() > 0) {
 					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
-					String categoriaAlterada = Utils.formataEspacoUnico(JOptionPane.showInputDialog(null, categoriaEscolhida,
-							"Digite a alteração desejada!", JOptionPane.QUESTION_MESSAGE).toUpperCase());
-					
+					String categoriaAlterada = Utils
+							.formataEspacoUnico(JOptionPane.showInputDialog(null, categoriaEscolhida,
+									"Digite a alteração desejada!", JOptionPane.QUESTION_MESSAGE).toUpperCase());
+
 					boolean alteracaoConfirmada = categoriaController.alteraCategoria(categoriaEscolhida,
 							categoriaAlterada);
 					if (alteracaoConfirmada) {
@@ -323,54 +319,60 @@ public class PanelConsultaQuestoes extends JPanel {
 				}
 
 			}
-			
-			
+
 			private void preparaAlteracaoPergunta() {
-				
+
 				PerguntaVO pergunta = new PerguntaVO();
 				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
 
-				if (perguntaSelecionada < 1) {
+				if (perguntaSelecionada < 0) {
 					JOptionPane.showMessageDialog(null, "Selecione uma pergunta para alterar", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
-				
+
 				} else {
 					pergunta = perguntas.get(perguntaSelecionada);
-				
-			
-				
-				String textoAlterado = Utils.formataEspacoUnico(JOptionPane.showInputDialog(null, pergunta.getTextoPergunta(),
-						"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE).toUpperCase());
-				
-				CategoriaVO[] categoriasCombo = new CategoriaVO[categorias.size()];
-				
-				int i = 0;
-				for (CategoriaVO categoriaVO : categorias) {
-					categoriasCombo[i] = categoriaVO;
-					i++;
-				}
-				String categoriaAlterada = (String) JOptionPane.showInputDialog(null, null, "ALTERAR",
-						JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0].toString());
-				
+
+					String textoAlterado = Utils
+							.formataEspacoUnico(
+									JOptionPane
+											.showInputDialog(null, pergunta.getTextoPergunta(),
+													"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE)
+											.toUpperCase());
+
+					CategoriaVO[] categoriasCombo = new CategoriaVO[categorias.size()];
+
+					int i = 0;
+					for (CategoriaVO categoriaVO : categorias) {
+						categoriasCombo[i] = categoriaVO;
+						i++;
+					}
+					Object categoriaAlterada = JOptionPane.showInputDialog(null, null, "ALTERAR",
+							JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0]);
+
 //				JDialog telaAlteraPergunta = new JDialog();
 //				telaAlteraPergunta.setBounds(50,50,700,400);
 //				telaAlteraPergunta.setLayout(groupLayout);
 //				telaAlteraPergunta.add(comboCategorias);
 //				telaAlteraPergunta.setVisible(true);
-				
-				
-				
+
 //				CategoriaVO categoriaAlterada = (CategoriaVO) JOptionPane.showInputDialog(null, null, "ALTERAR",
 //						JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0].toString());
-						
-				PerguntaVO perguntaAlterada = new PerguntaVO();
-				perguntaAlterada.setTextoPergunta(textoAlterado);
-				//perguntaAlterada.setCategoria(categoriaAlterada);
+
+					PerguntaVO perguntaAlterada = new PerguntaVO();
+					perguntaAlterada.setTextoPergunta(textoAlterado);
+					perguntaAlterada.setCategoria((CategoriaVO) categoriaAlterada);
+					perguntaAlterada.setIdPergunta(perguntaSelecionada);
+					perguntaAlterada.setIdUsuario(usuarioLogado.getIdUsuario());
+
+					System.out.println(" ID USUÁRIO -> " + perguntaAlterada.getIdUsuario() 
+										+ "\n CATEGORIA -> "+ perguntaAlterada.getCategoria().getDescricaoCategoria()
+										+ "\n ID CATEGORIA -> "+ perguntaAlterada.getCategoria().getIdCategoria()
+										+ "\n ID PERGUNTA -> "+ perguntaAlterada.getIdPergunta()
+										+ "\n PERGUNTA -> "+ perguntaAlterada.getTextoPergunta());
 				}
-				
+
 			}
-			
-			
+
 		});
 		formataBotao(btnAlterar);
 		btnAlterar.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -383,36 +385,36 @@ public class PanelConsultaQuestoes extends JPanel {
 				limpaTabelaPerguntas();
 				limpaTabelaAlternativas();
 				PerguntaSeletor perguntaSeletor = new PerguntaSeletor();
-				
+
 				if (Utils.stringValida(textFieldBusca.getText().toString().trim())) {
 					perguntaSeletor.setTexto(Utils.formataEspacoUnico(textFieldBusca.getText().toString()));
 				} else {
 					perguntaSeletor.setTexto("");
 				}
-				
+
 				if (comboCategorias.getSelectedIndex() > 0) {
 					perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
 					int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());
 					perguntaSeletor.setIdCategoria(indexEscolhido);
-					
+
 				} else {
 					perguntaSeletor.setCategoria("");
 				}
-				
+
 				perguntaSeletor.setIdUsuario(usuarioLogado.getIdUsuario());
-				
+
 				try {
 					perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
-					
+
 					if (perguntas.size() != 0 || perguntas != null) {
-						preencherTabelaPerguntas(perguntas);								
-					} 
-					
+						preencherTabelaPerguntas(perguntas);
+					}
+
 				} catch (Exception mensagem) {
 					JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
 				}
-						
+
 			}
 		});
 		btnConsultar.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -423,9 +425,8 @@ public class PanelConsultaQuestoes extends JPanel {
 		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnSalvar);
 		setLayout(groupLayout);
-		
-	}
 
+	}
 
 	protected void preencherAlternativas(PerguntaVO pergunta) {
 		List<AlternativaVO> alternativas = alternativaController.buscaAlternativas(pergunta);
@@ -439,11 +440,11 @@ public class PanelConsultaQuestoes extends JPanel {
 
 		for (AlternativaVO alternativaVO : alternativas) {
 			Object[] novaLinha = new Object[2];
-			
+
 			novaLinha[0] = alternativaVO.getTexto().toUpperCase();
 			novaLinha[1] = alternativaVO.getAlternativaCorreta().toUpperCase();
 			modeloTabela.addRow(novaLinha);
-		}		
+		}
 	}
 
 	private void limpaTabelaAlternativas() {
@@ -459,11 +460,11 @@ public class PanelConsultaQuestoes extends JPanel {
 
 		for (PerguntaVO perguntaVO : perguntas) {
 			Object[] novaLinha = new Object[2];
-			
+
 			novaLinha[0] = perguntaVO.getTextoPergunta().toUpperCase();
 			novaLinha[1] = perguntaVO.getCategoria().getDescricaoCategoria().toUpperCase();
-			modeloTabela.addRow(novaLinha);			
-		}		
+			modeloTabela.addRow(novaLinha);
+		}
 	}
 
 	private void limpaTabelaPerguntas() {
