@@ -58,7 +58,6 @@ public class PanelConsultaQuestoes extends JPanel {
 	private JComboBox comboCategorias;
 	private JTable tableAlternativas;
 	private int perguntaSelecionada;
-	// private UsuarioVO usuarioLogado;
 	private JLabel lblNomeUsuario;
 	private JTable tableConsulta;
 
@@ -332,36 +331,65 @@ public class PanelConsultaQuestoes extends JPanel {
 				} else {
 					pergunta = perguntas.get(perguntaSelecionada);
 
-					String textoAlterado = Utils
-							.formataEspacoUnico(
-									JOptionPane
-											.showInputDialog(null, pergunta.getTextoPergunta(),
-													"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE)
-											.toUpperCase());
-
-					CategoriaVO[] categoriasCombo = new CategoriaVO[categorias.size()];
-
-					int i = 0;
-					for (CategoriaVO categoriaVO : categorias) {
-						categoriasCombo[i] = categoriaVO;
-						i++;
-					}
-					Object categoriaAlterada = JOptionPane.showInputDialog(null, null, "ALTERAR",
-							JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0]);
-
-//				JDialog telaAlteraPergunta = new JDialog();
-//				telaAlteraPergunta.setBounds(50,50,700,400);
-//				telaAlteraPergunta.setLayout(groupLayout);
-//				telaAlteraPergunta.add(comboCategorias);
-//				telaAlteraPergunta.setVisible(true);
-
-//				CategoriaVO categoriaAlterada = (CategoriaVO) JOptionPane.showInputDialog(null, null, "ALTERAR",
-//						JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0].toString());
-
+					String textoAlterado = Utils.formataEspacoUnico(JOptionPane.showInputDialog(null, pergunta.getTextoPergunta(),
+													"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE).toUpperCase());
+					
+					////////////////////////////////////////////////////////////////////////////////////////////					
+					
+					// Assim funciona, mas não aparece texto no ComboBox
+					
+//					PerguntaVO perguntaAlterada = new PerguntaVO();
+//					
+//					CategoriaVO[] categoriasCombo = new CategoriaVO[categorias.size()];
+//
+//					int i = 0;
+//					for (CategoriaVO categoriaVO : categorias) {
+//						categoriasCombo[i] = categoriaVO;
+//						i++;
+//					}
+//					Object categoriaAlterada = JOptionPane.showInputDialog(null, null, "ALTERAR",
+//							JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0]);
+					
+//					PerguntaVO perguntaAlterada = new PerguntaVO();
+//					perguntaAlterada.setTextoPergunta(textoAlterado);
+//					perguntaAlterada.setCategoria((CategoriaVO) categoriaAlterada);
+//					perguntaAlterada.setIdPergunta(perguntaSelecionada);
+//					perguntaAlterada.setIdUsuario(usuarioLogado.getIdUsuario());
+//
+//					System.out.println(" ID USUÁRIO -> " + perguntaAlterada.getIdUsuario() 
+//										+ "\n CATEGORIA -> "+ perguntaAlterada.getCategoria().getDescricaoCategoria()
+//										+ "\n ID CATEGORIA -> "+ perguntaAlterada.getCategoria().getIdCategoria()
+//										+ "\n ID PERGUNTA -> "+ perguntaAlterada.getIdPergunta()
+//										+ "\n PERGUNTA -> "+ perguntaAlterada.getTextoPergunta());
+					
+					/////////////////////////////////////////////////////////////////////////////////////////////
+					
+					
+					// Talvez usar o MAP que já existe  com <idCategoria, descricaoCategoria>
+					
 					PerguntaVO perguntaAlterada = new PerguntaVO();
+					CategoriaVO categoria = new CategoriaVO();
+					
+					String[] categoriasTexto = new String[categorias.size()+1];
+					
+					int j = 1;
+					categoriasTexto[0] = "Selecione a categoria";
+					for (CategoriaVO categoriaVO : categorias) {
+						categoriasTexto[j] = categoriaVO.getDescricaoCategoria();
+						j++;
+					}
+					
+					String categoriaAlterada2 = (String) JOptionPane.showInputDialog(null, null, "ALTERAR",
+							JOptionPane.QUESTION_MESSAGE, null, categoriasTexto, categoriasTexto[0].toString());
+					
+					if (mapCategorias.containsValue(categoriaAlterada2)) {						
+						categoria.setIdCategoria(getChavePorValor(mapCategorias, categoriaAlterada2));
+						categoria.setDescricaoCategoria(categoriaAlterada2);						
+					}					
+					
 					perguntaAlterada.setTextoPergunta(textoAlterado);
-					perguntaAlterada.setCategoria((CategoriaVO) categoriaAlterada);
-					perguntaAlterada.setIdPergunta(perguntaSelecionada);
+					perguntaAlterada.setCategoria(categoria);
+					perguntaAlterada.setIdPergunta(pergunta.getIdPergunta());
 					perguntaAlterada.setIdUsuario(usuarioLogado.getIdUsuario());
 
 					System.out.println(" ID USUÁRIO -> " + perguntaAlterada.getIdUsuario() 
@@ -369,6 +397,18 @@ public class PanelConsultaQuestoes extends JPanel {
 										+ "\n ID CATEGORIA -> "+ perguntaAlterada.getCategoria().getIdCategoria()
 										+ "\n ID PERGUNTA -> "+ perguntaAlterada.getIdPergunta()
 										+ "\n PERGUNTA -> "+ perguntaAlterada.getTextoPergunta());
+					
+					// JDialog
+//				JDialog telaAlteraPergunta = new JDialog();
+//				telaAlteraPergunta.setBounds(50,50,700,400);
+//				telaAlteraPergunta.setLayout(groupLayout);
+//				telaAlteraPergunta.add(comboCategorias);
+//				telaAlteraPergunta.setVisible(true);
+					
+					
+
+					///////////////////////////////////////////////////////////////////////////
+
 				}
 
 			}
