@@ -37,6 +37,8 @@ public class TelaPrincipal extends JFrame {
 	private JMenuItem menuItemConsultaQuestao;
 	private JMenu menuResolverQuiz;
 	private JMenuItem menuItemResponderQuiz;
+	private JMenu mnNewMenu;
+	private JMenuItem mntmNewMenuItem;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -158,6 +160,24 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		menuCadastroDeUsuarios.add(menuItemCadastrarAluno);
+		
+		mnNewMenu = new JMenu("S A I R");
+		mnNewMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				
+			}
+		});
+		menuBar.add(mnNewMenu);
+		
+		mntmNewMenuItem = new JMenuItem("S A I R ");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaLoginSenha loginSenha = new TelaLoginSenha();
+				loginSenha.setVisible(true);
+				dispose();
+			}
+		});
+		mnNewMenu.add(mntmNewMenuItem);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);		
