@@ -42,7 +42,7 @@ CREATE TABLE USUARIO (
   id_alternativa INT NOT NULL AUTO_INCREMENT
   , id_pergunta INT NOT NULL
   , texto_alternativa TEXT NOT NULL 
-  , alternativa_correta ENUM('CORRETA', 'ERRADA') NOT NULL
+  , alternativa_correta ENUM('CORRETA', '- - -') NOT NULL
   , constraint PK_ALTERNATIVA primary key (id_alternativa)
   , constraint FK_ALTERNATIVA_PERGUNTA foreign key (id_pergunta) references pergunta(id_pergunta)
   );
@@ -67,30 +67,29 @@ INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values(1, 2, 'QU
 INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values(1, 2, 'O QUE É UM PUSH?');
 INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values(1, 3, 'QUAL A FUNÇÃO DOS SELETORES?');
 
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UMA CATEGORIA DE CLASSE JAVA', 'ERRADA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UM TIPO DE ATRIBUTO JAVA', 'ERRADA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', 'ERRADA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UMA CATEGORIA DE CLASSE JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', '- - -');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É QUANDO SE "ABORDA O QUE É RELEVANTE PARA O PROJETO"', 'CORRETA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', 'ERRADA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
 
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'NENHUMA, OS DOIS SÃO A MESMA FERRAMENTA COM NOMES DIFERENTES', 'ERRADA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'NENHUMA, OS DOIS SÃO A MESMA FERRAMENTA COM NOMES DIFERENTES', '- - -');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'GIT É UM SOFTWARE DE VERSIONAMENTO E GITHUB É UM SITE QUE HOSPEDA REPOSITÓRIOS GIT', 'CORRETA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'GITHUB É UM SOFTWARE DE VERSIONAMENTO E GIT É UM SITE QUE HOSPEDA REPOSITÓRIOS GIT', 'ERRADA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'GIT É UM FRAMEWORK JAVA ENQUANTO GITHUB É UM FRAMEWORK JAVASCRIPT', 'ERRADA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'GIT É A LINGUAGEM DE PROGRAMAÇÃO ENQUANTO GITHUB É A IDE QUE SE USA PARA CODIFICAR EM GIT', 'ERRADA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'GITHUB É UM SOFTWARE DE VERSIONAMENTO E GIT É UM SITE QUE HOSPEDA REPOSITÓRIOS GIT', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'GIT É UM FRAMEWORK JAVA ENQUANTO GITHUB É UM FRAMEWORK JAVASCRIPT', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'GIT É A LINGUAGEM DE PROGRAMAÇÃO ENQUANTO GITHUB É A IDE QUE SE USA PARA CODIFICAR EM GIT', '- - -');
 
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'PUSH É QUANDO ENVIAMOS PARA UM REPOSITÓRIO REMOTO AS ALTERAÇÕES FEITAS NO REPOSITÓRIO LOCAL', 'CORRETA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'PUSH É O ERRO QUE DÁ AO FAZERMOS MERGES ENTRE DUAS BRANCHS DIFERENTES', 'ERRADA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'CHAMAMOS DE PUSH O ATO DE TRAZER AS ALTERAÇÕS DO REPOSITÓRIO REMOTO PARA DENTRO DO REPOSITÓRIO LOCAL', 'ERRADA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'CHAMAMOS DE PUSH O ATO DE TRAZER UM PROJETO DO REPOSITÓRIO REMOTO PARA DENTRO DO REPOSITÓRIO LOCAL', 'ERRADA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', 'ERRADA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'PUSH É O ERRO QUE DÁ AO FAZERMOS MERGES ENTRE DUAS BRANCHS DIFERENTES', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'CHAMAMOS DE PUSH O ATO DE TRAZER AS ALTERAÇÕS DO REPOSITÓRIO REMOTO PARA DENTRO DO REPOSITÓRIO LOCAL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'CHAMAMOS DE PUSH O ATO DE TRAZER UM PROJETO DO REPOSITÓRIO REMOTO PARA DENTRO DO REPOSITÓRIO LOCAL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
 
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'APRESENTAR OS DADOS DA CONSULTA EM UMA TABELA', 'ERRADA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'AJUDAR NA IMPLEMENTAÇÃO DE INTERFACES JAVA', 'ERRADA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'AUXILIAR NA APRESENTAÇÃO DO LAYOUT DE UMA JFRAME', 'ERRADA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'APRESENTAR OS DADOS DA CONSULTA EM UMA TABELA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'AJUDAR NA IMPLEMENTAÇÃO DE INTERFACES JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'AUXILIAR NA APRESENTAÇÃO DO LAYOUT DE UMA JFRAME', '- - -');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'POSSIBILITA CONSULTAS SQL MAIS COMPLEXAS DE FORMA MAIS DINÂMICA', 'CORRETA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'INSTANCIAR OBJETOS DE CLASSES ABSTRATAS', 'ERRADA');
-
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'INSTANCIAR OBJETOS DE CLASSES ABSTRATAS', '- - -');
 select 
 	distinct(usuario.id_usuario), categoria.descricao_categoria, pergunta.texto_pergunta
     , alternativa.texto_alternativa, alternativa.alternativa_correta
