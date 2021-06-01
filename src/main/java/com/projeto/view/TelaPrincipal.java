@@ -37,7 +37,7 @@ public class TelaPrincipal extends JFrame {
 	private JMenuItem menuItemConsultaQuestao;
 	private JMenu menuResolverQuiz;
 	private JMenuItem menuItemResponderQuiz;
-	private JMenu mnNewMenu;
+	private JMenu mnSair;
 	private JMenuItem mntmNewMenuItem;
 
 	public static void main(String[] args) {
@@ -64,6 +64,7 @@ public class TelaPrincipal extends JFrame {
 	
 	public TelaPrincipal() {
 		this.TelaPrincipal();
+	
 	}
 //	
 	/**
@@ -75,7 +76,11 @@ public class TelaPrincipal extends JFrame {
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-				
+		
+		contentPane = new Home();
+		setContentPane(contentPane);
+		revalidate();
+		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);		
 
@@ -161,13 +166,8 @@ public class TelaPrincipal extends JFrame {
 		});
 		menuCadastroDeUsuarios.add(menuItemCadastrarAluno);
 		
-		mnNewMenu = new JMenu("S A I R");
-		mnNewMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {				
-				
-			}
-		});
-		menuBar.add(mnNewMenu);
+		mnSair = new JMenu("S A I R");		
+		menuBar.add(mnSair);
 		
 		mntmNewMenuItem = new JMenuItem("S A I R ");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
@@ -177,7 +177,7 @@ public class TelaPrincipal extends JFrame {
 				dispose();
 			}
 		});
-		mnNewMenu.add(mntmNewMenuItem);
+		mnSair.add(mntmNewMenuItem);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);		

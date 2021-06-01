@@ -17,6 +17,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -54,6 +55,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	private AlternativaController alternativaController = new AlternativaController();
 	private CategoriaController categoriaController = new CategoriaController();
 	private PerguntaController perguntaController = new PerguntaController();
+	private List<CategoriaVO> categorias = new ArrayList<>();
 	private List<PerguntaVO> perguntas = new ArrayList<>();
 	private PlaceholderTextField textFieldBusca;
 	private JComboBox comboCategorias;
@@ -140,7 +142,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		 * Preenche o combo box com as categorias ao iniciar a tela
 		 * 
 		 */
-		List<CategoriaVO> categorias = new ArrayList<>();
+		//List<CategoriaVO> categorias = new ArrayList<>();
 		categorias = categoriaController.consultaTodasCategorias(usuarioLogado);
 		for (CategoriaVO categoriaVO : categorias) {
 			comboCategorias.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
@@ -300,7 +302,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			}
 
 			private void preparaAlteracaoCategoria() {
-				if (comboCategorias.getSelectedIndex() != 0) {
+				if (comboCategorias.getSelectedIndex() > 0) {
 					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
 					String categoriaAlterada = Utils.formataEspacoUnico(JOptionPane.showInputDialog(null, categoriaEscolhida,
 							"Digite a alteração desejada!", JOptionPane.QUESTION_MESSAGE).toUpperCase());
@@ -324,29 +326,47 @@ public class PanelConsultaQuestoes extends JPanel {
 			
 			
 			private void preparaAlteracaoPergunta() {
-				PerguntaVO perguntaVO = perguntas.get(perguntaSelecionada);
 				
-				String textoAlterado = Utils.formataEspacoUnico(JOptionPane.showInputDialog(null, perguntaVO.getTextoPergunta(),
+				PerguntaVO pergunta = new PerguntaVO();
+				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
+
+				if (perguntaSelecionada < 1) {
+					JOptionPane.showMessageDialog(null, "Selecione uma pergunta para alterar", Constants.ALERTA,
+							JOptionPane.ERROR_MESSAGE, null);
+				
+				} else {
+					pergunta = perguntas.get(perguntaSelecionada);
+				
+			
+				
+				String textoAlterado = Utils.formataEspacoUnico(JOptionPane.showInputDialog(null, pergunta.getTextoPergunta(),
 						"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE).toUpperCase());
-				CategoriaVO[] categoriasCombo = null;
+				
+				CategoriaVO[] categoriasCombo = new CategoriaVO[categorias.size()];
+				
 				int i = 0;
-//				for (CategoriaVO categoriaVO : categorias) {
-//					categoriasCombo[i] = categoriaVO;
-//					i++;
-//				}
+				for (CategoriaVO categoriaVO : categorias) {
+					categoriasCombo[i] = categoriaVO;
+					i++;
+				}
+				String categoriaAlterada = (String) JOptionPane.showInputDialog(null, null, "ALTERAR",
+						JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0].toString());
 				
-				CategoriaVO categoriaAlterada = (CategoriaVO) JOptionPane.showInputDialog(null, null, "ALTERAR",
-						JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0]);
+//				JDialog telaAlteraPergunta = new JDialog();
+//				telaAlteraPergunta.setBounds(50,50,700,400);
+//				telaAlteraPergunta.setLayout(groupLayout);
+//				telaAlteraPergunta.add(comboCategorias);
+//				telaAlteraPergunta.setVisible(true);
 				
-//				CategoriaVO categoriaAlterada = JOptionPane.showInputDialog(null, null,
-//						"Alterar", JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0]));
 				
+				
+//				CategoriaVO categoriaAlterada = (CategoriaVO) JOptionPane.showInputDialog(null, null, "ALTERAR",
+//						JOptionPane.QUESTION_MESSAGE, null, categoriasCombo, categoriasCombo[0].toString());
+						
 				PerguntaVO perguntaAlterada = new PerguntaVO();
 				perguntaAlterada.setTextoPergunta(textoAlterado);
-				//perguntaAlterada.set
-				
-				System.out.println(perguntaAlterada.getCategoria()+"  "+perguntaAlterada.getTextoPergunta());
-				
+				//perguntaAlterada.setCategoria(categoriaAlterada);
+				}
 				
 			}
 			
