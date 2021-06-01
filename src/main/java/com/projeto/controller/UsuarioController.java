@@ -40,4 +40,9 @@ public class UsuarioController {
 		UsuarioBO usuarioBO = new UsuarioBO();
 		return usuarioBO.relatorioUsuarioSeletorBO(relatorioUsuario);
 	}
+
+	public String excluirUsuarioController(Integer idUsuarioSelecionado) {
+		UsuarioBO usuarioBO = new UsuarioBO();
+		return usuarioBO.excluirUsuarioBO(idUsuarioSelecionado);
+	}
 }

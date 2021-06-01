@@ -26,4 +26,16 @@ public class UsuarioBO {
 		return usuarioDAO.relatorioUsuarioSeletorDAO(relatorioUsuario);
 	}
 
+	public String excluirUsuarioBO(Integer idUsuarioSelecionado) {
+		String retorno = "Erro ao verificar validação de exclusão";
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		
+		if (usuarioDAO.desativarUsuarioDAO(idUsuarioSelecionado)) {
+			retorno = "Usuario excluido com sucesso.";
+		} else {
+			retorno = "Não foi possivel excluir o usuario.";
+		}
+		return retorno;
+	}
+
 }
