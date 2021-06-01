@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
@@ -12,6 +13,7 @@ import com.projeto.model.entity.CoordenadorVO;
 import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Banco;
+import com.projeto.seletor.RelatorioDeUsuarioSeletor;
 
 public class UsuarioDAO{
 	
@@ -132,6 +134,11 @@ public class UsuarioDAO{
 		usuario.setTurno(TurnoEnum.getTurnoEnum(rs.getString("TURNO")));
 		usuario.setTipo(TipoUsuarioEnum.getTipoUsuarioEnum(rs.getString("TIPO")));
 		return usuario;
+	}
+
+	public List<UsuarioVO> relatorioUsuarioSeletorDAO(RelatorioDeUsuarioSeletor relatorioUsuario) {
+		
+		return null;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.projeto.controller;
 
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 import com.projeto.exceptions.LoginNaoInformadoException;
@@ -11,6 +13,7 @@ import com.projeto.model.entity.AlunoVO;
 import com.projeto.model.entity.CoordenadorVO;
 import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
+import com.projeto.seletor.RelatorioDeUsuarioSeletor;
 import com.projeto.view.TelaPrincipal;
 
 public class UsuarioController {
@@ -31,5 +34,10 @@ public class UsuarioController {
 		telaPrincipal.setVisible(true);
 		
 		return usuario;
+	}
+
+	public List<UsuarioVO> relatorioUsuarioController(RelatorioDeUsuarioSeletor relatorioUsuario) {
+		UsuarioBO usuarioBO = new UsuarioBO();
+		return usuarioBO.relatorioUsuarioSeletorBO(relatorioUsuario);
 	}
 }

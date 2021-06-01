@@ -12,9 +12,16 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Component;
 import javax.swing.table.DefaultTableModel;
+
+import com.projeto.controller.UsuarioController;
+import com.projeto.enums.TipoUsuarioEnum;
+import com.projeto.model.entity.UsuarioVO;
+import com.projeto.seletor.RelatorioDeUsuarioSeletor;
 
 public class PanelRelatorioDeUsuario extends JPanel {
 	private JTextField txtNome;
@@ -26,6 +33,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 	private JLabel lblPaginaAtual;
 	private JButton btnProximaPagina;
 	private JPanel panel;
+	private List<UsuarioVO> usuario = new ArrayList<>();
 
 	/** TIPO DE USUARIO, NOME COM LIKE, PESQUISAR TODOS. LEMBRAR DE ACRESCENTAR PAGINAÇÃO e relatório excel.
 	 * Create the panel.
@@ -169,6 +177,20 @@ public class PanelRelatorioDeUsuario extends JPanel {
 	}
 
 	protected void buscarUsuariosSeletores() {
+		RelatorioDeUsuarioSeletor relatorioUsuario = new RelatorioDeUsuarioSeletor();
+		UsuarioController usuarioController = new UsuarioController();
+		
+		if (cbxTipoUsuario.getSelectedItem().equals("ALUNO")) {
+			relatorioUsuario.setTipo(TipoUsuarioEnum.ALUNO);
+		} else if (cbxTipoUsuario.getSelectedItem().equals("PROFESSOR")){
+			relatorioUsuario.setTipo(TipoUsuarioEnum.PROFESSOR);
+		} else if (cbxTipoUsuario.getSelectedItem().equals("COORDENADOR")) {
+			relatorioUsuario.setTipo(TipoUsuarioEnum.COORDENADOR);
+		} else {			
+			relatorioUsuario.setTipo(null);
+		}
+		
+		usuario = usuarioController.relatorioUsuarioController(relatorioUsuario);
 		
 	}
 }
