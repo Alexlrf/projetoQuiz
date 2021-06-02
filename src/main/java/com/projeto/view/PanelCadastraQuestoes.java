@@ -710,13 +710,6 @@ public class PanelCadastraQuestoes extends JPanel {
 		panelBotoes.add(btnSalvar);
 		setLayout(groupLayout);	
 		
-//		List<CategoriaVO> listaCategorias = new ArrayList<>();
-//		listaCategorias = categoriaController.consultaTodasCategorias(usuario);
-//				
-//		for (CategoriaVO categoriaVO : listaCategorias) {
-//			comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
-//			
-//		}		
 	}
 	
 	protected void limpaPreenchimento() {
