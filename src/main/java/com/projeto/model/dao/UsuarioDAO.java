@@ -97,7 +97,7 @@ public class UsuarioDAO{
 				} else if (tipo.equals("PROFESSOR")) {
 					ProfessorVO usuarioProfessor = new ProfessorVO();
 					usuarioProfessor = (ProfessorVO) this.preencherAtributos(usuarioProfessor, rs);
-					usuarioProfessor.setDisciplina(rs.getString("DISCIPLINA"));
+					usuarioProfessor.setIdDisciplina(rs.getInt("ID_DISCIPLINA"));
 					return usuarioProfessor;
 					
 					// Verifica se o usuario é um coordenador
@@ -137,13 +137,7 @@ public class UsuarioDAO{
 		usuario.setAtivo(rs.getBoolean("ATIVO"));
 		return usuario;
 	}
-	
-	/**
-	 * https://stackoverflow.com/questions/36873147/array-list-of-abstract-class
-	 * 
-	 * @param relatorioUsuario
-	 * @return
-	 */
+
 	public List<UsuarioVO> relatorioUsuarioSeletorDAO(RelatorioDeUsuarioSeletor relatorioUsuario) {
 		final List<UsuarioVO> retornoRelatorioUsuario = new ArrayList<>();
 		
@@ -176,7 +170,7 @@ public class UsuarioDAO{
 				} else if (tipo.equals("PROFESSOR")) {
 					ProfessorVO usuarioProfessor = new ProfessorVO();
 					usuarioProfessor = (ProfessorVO) this.preencherAtributos(usuarioProfessor, rs);
-					usuarioProfessor.setDisciplina(rs.getString("DISCIPLINA"));
+					usuarioProfessor.setIdDisciplina(rs.getInt("ID_DISCIPLINA"));
 					retornoRelatorioUsuario.add(usuarioProfessor);
 					
 					// Verifica se o usuario é um coordenador

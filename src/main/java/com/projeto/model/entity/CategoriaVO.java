@@ -3,11 +3,15 @@ package com.projeto.model.entity;
 public class CategoriaVO {
 	
 	private int idCategoria;
+	private int idDisciplina;
+	private UsuarioVO usuario; 
 	private String descricaoCategoria;
 	
-	public CategoriaVO(int idCategoria, String descricaoCategoria) {
+	public CategoriaVO(int idCategoria, int idDisciplina, UsuarioVO usuario, String descricaoCategoria) {
 		super();
 		this.idCategoria = idCategoria;
+		this.idDisciplina = idDisciplina;
+		this.usuario = usuario;
 		this.descricaoCategoria = descricaoCategoria;
 	}
 
@@ -22,6 +26,22 @@ public class CategoriaVO {
 	public void setIdCategoria(int idCategoria) {
 		this.idCategoria = idCategoria;
 	}
+	
+	public int getIdDisciplina() {
+		return idDisciplina;
+	}
+
+	public void setIdDisciplina(int idDisciplina) {
+		this.idDisciplina = idDisciplina;
+	}
+	
+	public UsuarioVO getUsuario() {
+		return usuario;
+	}
+	
+	public void setUsuario(UsuarioVO usuario) {
+		this.usuario = usuario;
+	}
 
 	public String getDescricaoCategoria() {
 		return descricaoCategoria;
@@ -29,6 +49,6 @@ public class CategoriaVO {
 
 	public void setDescricaoCategoria(String descricaoCategoria) {
 		this.descricaoCategoria = descricaoCategoria;
-	}	
+	}
 
 }

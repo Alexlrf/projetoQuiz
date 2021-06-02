@@ -86,7 +86,7 @@ public class AlternativaDAO implements BaseDao<AlternativaVO>{
 			try (Connection conn = Banco.getConnection();
 					PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
 
-				stmt.setInt(1, perguntaVO.getIdPergunta());
+				stmt.setInt(1, perguntaVO.getIdPergunta());			
 				stmt.setString(2, alternativa.getTexto());
 				stmt.setString(3, alternativa.getAlternativaCorreta());
 				stmt.executeUpdate();			

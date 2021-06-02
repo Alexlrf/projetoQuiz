@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Banco;
 import com.projeto.repository.BaseDao;
 import com.projeto.seletor.PerguntaSeletor;
@@ -18,11 +19,13 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 	@Override
 	public CategoriaVO insert(CategoriaVO categoriaVO) throws SQLException {
 		CategoriaVO categoria = new CategoriaVO();
-		String sql = "INSERT INTO categoria (descricao_categoria) VALUES (?);";
+		String sql = "INSERT INTO categoria (descricao_categoria, id_disciplina, id_usuario) VALUES (?, ?, ?);";
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
 			stmt.setString(1, categoriaVO.getDescricaoCategoria());
+			stmt.setInt(2, categoriaVO.getIdDisciplina());
+			stmt.setInt(3, categoriaVO.getUsuario().getIdUsuario());
 			stmt.executeUpdate();
 			
 			ResultSet id = stmt.getGeneratedKeys();
@@ -159,9 +162,28 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 		}catch (SQLException e) {
 			System.out.println("Erro ao consultar categoria por descrição!");
 			
-		}	
+		}
+		return categoriaVO;		
 		
-		return categoriaVO;
+	}
+
+	public boolean alteraCategoria(String categoriaEscolhida, String categoriaAlterada) {
+		boolean alteradaCategoria = true;
+		String sql = "UPDATE categoria SET descricao_categoria = ? WHERE descricao_categoria = ?"; 
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
+			
+			stmt.setString(1, categoriaAlterada);
+			stmt.setString(2, categoriaEscolhida);
+			stmt.executeUpdate();			
+			
+		}catch (SQLException e) {
+			System.out.println("Erro ao alterar categoria por descrição!");
+			alteradaCategoria = false;
+			
+		}			
+		return alteradaCategoria;
 	}
 
 	public CategoriaVO buscaCategoria(PerguntaVO p) {
@@ -192,5 +214,35 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 		}			
 		return categoriaVO;
 	}
+
+	public List<CategoriaVO> buscaCategoriasUsuario(UsuarioVO usuarioLogado) {	
+		List<CategoriaVO> listaCategorias = new ArrayList<>();
+		String sql = "SELECT "
+					+ 		"disciplina.id_disciplina, categoria.id_categoria, categoria.descricao_categoria"
+					+" FROM "
+					+		"usuario"
+					+" INNER JOIN " 
+					+ 		"disciplina ON usuario.id_disciplina = disciplina.id_disciplina"
+					+" INNER JOIN " 
+					+		"categoria on categoria.id_disciplina = disciplina.id_disciplina"
+					+" WHERE "
+					+		"usuario.id_usuario = ?;";		
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
+			
+			stmt.setInt(1, usuarioLogado.getIdUsuario());
+			ResultSet rs = stmt.executeQuery();			
+			while (rs.next()) {
+				CategoriaVO categoriaVO = new CategoriaVO();
+				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
+				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
+				listaCategorias.add(categoriaVO);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro na consulta troca para disciplina!");
+		}
+		return listaCategorias;
+	}	
 	
 }
