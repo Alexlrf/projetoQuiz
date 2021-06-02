@@ -7,7 +7,7 @@ USE DBTESTE;
 CREATE TABLE USUARIO (
   ID_USUARIO INT NOT NULL AUTO_INCREMENT
   , NOME VARCHAR(255) NOT NULL
-  , RG VARCHAR(8) UNIQUE NOT NULL
+  , RG VARCHAR(7) UNIQUE NOT NULL
   , CPF VARCHAR(11) UNIQUE NOT NULL
   , DT_NASCIMENTO DATE NOT NULL
   , SEXO CHAR(1) NOT NULL
@@ -49,13 +49,13 @@ CREATE TABLE USUARIO (
   );
 
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, DISCIPLINA, SENHA, TIPO, ATIVO) 
-	VALUES ('VILMAR', '22222222222', '12345678987', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', 'DESKTOP', MD5('vilmar'), 'PROFESSOR', true);
+	VALUES ('VILMAR', '2222222', '22222222222', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', 'DESKTOP', MD5('vilmar'), 'PROFESSOR', true);
 
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
-	VALUES ('KOGUT', '11111111111', '98765432123', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', MD5('kogut'), 'COORDENADOR', true);
+	VALUES ('KOGUT', '1111111', '11111111111', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', MD5('kogut'), 'COORDENADOR', true);
 
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
-	VALUES ('ALISON', '33333333333', '12345678978', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', MD5('alison'), 'ALUNO', true);
+	VALUES ('ALISON', '3333333', '33333333333', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', MD5('alison'), 'ALUNO', true);
 
 INSERT INTO categoria (id_usuario, descricao_categoria) values(1, 'ORIENTAÇÃO A OBJETOS');
 INSERT INTO categoria (id_usuario, descricao_categoria) values(1, 'GIT / GITHUB');
@@ -92,7 +92,7 @@ INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) va
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'POSSIBILITA CONSULTAS SQL MAIS COMPLEXAS DE FORMA MAIS DINÂMICA', 'CORRETA');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'INSTANCIAR OBJETOS DE CLASSES ABSTRATAS', '- - -');
 select 
-	distinct(usuario.id_usuario), categoria.descricao_categoria, pergunta.texto_pergunta
+	usuario.id_usuario, categoria.descricao_categoria, pergunta.texto_pergunta
     , alternativa.texto_alternativa, alternativa.alternativa_correta
 from 
 	usuario
