@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Banco;
@@ -19,7 +20,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 	CategoriaDAO categoriaDAO = new CategoriaDAO();
 	
 	@Override
-	public PerguntaVO insert(PerguntaVO pergunta) throws SQLException {
+	public PerguntaVO insert(PerguntaVO pergunta) throws SQLException{
 		String sql = "INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values (?, ?, ?);";
 		
 		try (Connection conn = Banco.getConnection();
@@ -139,17 +140,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 				
 				listaPerguntasBuscadas.add(p);
 			}
-			
-			
 
-//			while (rs.next()) {
-//				p = new PerguntaVO();
-//				p.setTextoPergunta(rs.getString("texto_pergunta"));
-//				p.setCategoria(categoriaDAO.findById(perguntaSeletor.getIdCategoria()));
-//				p.setIdPergunta(rs.getInt("id_pergunta"));
-//				
-//				listaPerguntasBuscadas.add(p);
-//			}
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar perguntas com filtros.\nCausa: " + e.getMessage());
 			
@@ -265,4 +256,24 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 		return listaPerguntas;
 	}
 
+	public void alteraPergunta(PerguntaVO perguntaAlterada) throws ErroNoCadastroException {		
+		String sql = "UPDATE pergunta set id_usuario = ?, id_categoria = ?,  texto_pergunta = ? WHERE id_pergunta = ?;";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
+			
+			stmt.setInt(1, perguntaAlterada.getIdUsuario());
+			stmt.setInt(2, perguntaAlterada.getCategoria().getIdCategoria());
+			stmt.setString(3, perguntaAlterada.getTextoPergunta());
+			stmt.setInt(4, perguntaAlterada.getIdPergunta());
+			stmt.executeUpdate();
+			ResultSet id = stmt.getGeneratedKeys();
+			if (id.next()) {				
+				perguntaVO.setIdPergunta(id.getInt(1));
+			}			
+			
+		} catch(SQLException e) {
+			throw new ErroNoCadastroException("Erro ao acessar o Banco de Dados\n Tente Novamente!");
+		}
+	}
 }
