@@ -41,11 +41,11 @@ public class PerguntaVO  {
 		this.idUsuario = idUsuario;
 	}	
 	
-	int getIdDisciplina() {
+	public int getIdDisciplina() {
 		return idDisciplina;
 	}
 
-	void setIdDisciplina(int idDisciplina) {
+	public void setIdDisciplina(int idDisciplina) {
 		this.idDisciplina = idDisciplina;
 	}
 

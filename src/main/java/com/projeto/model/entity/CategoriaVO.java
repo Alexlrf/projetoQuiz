@@ -27,11 +27,11 @@ public class CategoriaVO {
 		this.idCategoria = idCategoria;
 	}
 	
-	int getIdDisciplina() {
+	public int getIdDisciplina() {
 		return idDisciplina;
 	}
 
-	void setIdDisciplina(int idDisciplina) {
+	public void setIdDisciplina(int idDisciplina) {
 		this.idDisciplina = idDisciplina;
 	}
 	

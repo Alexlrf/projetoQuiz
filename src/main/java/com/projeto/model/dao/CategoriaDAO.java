@@ -19,12 +19,13 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 	@Override
 	public CategoriaVO insert(CategoriaVO categoriaVO) throws SQLException {
 		CategoriaVO categoria = new CategoriaVO();
-		String sql = "INSERT INTO categoria (descricao_categoria, id_usuario) VALUES (?, ?);";
+		String sql = "INSERT INTO categoria (descricao_categoria, id_disciplina, id_usuario) VALUES (?, ?, ?);";
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
 			stmt.setString(1, categoriaVO.getDescricaoCategoria());
-			stmt.setInt(2, categoriaVO.getUsuario().getIdUsuario());
+			stmt.setInt(2, categoriaVO.getIdDisciplina());
+			stmt.setInt(3, categoriaVO.getUsuario().getIdUsuario());
 			stmt.executeUpdate();
 			
 			ResultSet id = stmt.getGeneratedKeys();
@@ -214,8 +215,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 		return categoriaVO;
 	}
 
-	public List<CategoriaVO> buscaCategoriasUsuario(UsuarioVO usuarioLogado) {
-		//CategoriaVO categoria = new CategoriaVO();
+	public List<CategoriaVO> buscaCategoriasUsuario(UsuarioVO usuarioLogado) {	
 		List<CategoriaVO> listaCategorias = new ArrayList<>();
 		String sql = "SELECT "
 					+ 		"disciplina.id_disciplina, categoria.id_categoria, categoria.descricao_categoria"
@@ -226,7 +226,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 					+" INNER JOIN " 
 					+		"categoria on categoria.id_disciplina = disciplina.id_disciplina"
 					+" WHERE "
-					+		"Id_usuario = ?;";		
+					+		"usuario.id_usuario = ?;";		
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
@@ -243,6 +243,6 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			System.out.println("Erro na consulta troca para disciplina!");
 		}
 		return listaCategorias;
-	}
+	}	
 	
 }

@@ -21,14 +21,15 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 	
 	@Override
 	public PerguntaVO insert(PerguntaVO pergunta) throws SQLException{
-		String sql = "INSERT INTO pergunta (id_usuario, id_categoria, texto_pergunta) values (?, ?, ?);";
+		String sql = "INSERT INTO pergunta (id_usuario, id_disciplina, id_categoria, texto_pergunta) values (?, ?, ?, ?);";
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
 			
 			stmt.setInt(1, pergunta.getIdUsuario());
-			stmt.setInt(2, pergunta.getCategoria().getIdCategoria());
-			stmt.setString(3, pergunta.getTextoPergunta());
+			stmt.setInt(2, pergunta.getIdDisciplina());
+			stmt.setInt(3, pergunta.getCategoria().getIdCategoria());
+			stmt.setString(4, pergunta.getTextoPergunta());
 			stmt.executeUpdate();
 			ResultSet id = stmt.getGeneratedKeys();
 			if (id.next()) {				
