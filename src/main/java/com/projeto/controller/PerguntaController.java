@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.projeto.exceptions.ErroNaConsultaException;
+import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.PerguntaBO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Constants;
@@ -55,6 +56,27 @@ public class PerguntaController {
 			perguntaValida = false;
 		}
 		return perguntaValida;
+	}
+
+	public void alteraPergunta(PerguntaVO perguntaAlterada) throws ErroNoCadastroException {
+		String mensagem = "";
+
+		if (!Utils.stringValida(perguntaAlterada.getCategoria().getDescricaoCategoria())) {
+			mensagem = "Falha ao encontrar CATEGORIA\n";
+		} else if(!Utils.stringValida(perguntaAlterada.getTextoPergunta())){
+			mensagem += "Falha ao encontrar TEXTO DA PERGUNTA\n";
+		} else if(perguntaAlterada.getIdUsuario() < 1){
+			mensagem += "Falha ao encontrar USUÁRIO\n";
+		} else if(perguntaAlterada.getIdPergunta() < 1){
+			mensagem += "Falha ao encontrar IDENTIFICADOR DA PERGUNTA\n";
+		} else {
+			perguntaBO.alteraPergunta(perguntaAlterada);
+		}
+		
+		if (Utils.stringValida(mensagem)) {
+			throw new ErroNoCadastroException(mensagem);
+		}
+		
 	}
 }
 

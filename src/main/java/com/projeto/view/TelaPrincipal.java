@@ -22,9 +22,6 @@ import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 
 public class TelaPrincipal extends JFrame {
-	public TelaPrincipal() {
-		setExtendedState(Frame.MAXIMIZED_BOTH);
-	}
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
@@ -40,6 +37,8 @@ public class TelaPrincipal extends JFrame {
 	private JMenuItem menuItemConsultaQuestao;
 	private JMenu menuResolverQuiz;
 	private JMenuItem menuItemResponderQuiz;
+	private JMenu mnSair;
+	private JMenuItem mntmNewMenuItem;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -64,6 +63,12 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 
+	public TelaPrincipal() {
+		this.TelaPrincipal();
+		setExtendedState(Frame.MAXIMIZED_BOTH);
+
+	}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -73,7 +78,11 @@ public class TelaPrincipal extends JFrame {
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-				
+		
+		contentPane = new Home();
+		setContentPane(contentPane);
+		revalidate();
+		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);		
 
@@ -95,7 +104,7 @@ public class TelaPrincipal extends JFrame {
 		menuItemCadastraQuestao = new JMenuItem("Cadastrar Questão");
 		menuItemCadastraQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
-				contentPane = new PanelCadastraQuestoes();				
+				contentPane = new PanelCadastraQuestoes(usuario);				
 				setContentPane(contentPane);
 				revalidate();
 			}
@@ -106,7 +115,7 @@ public class TelaPrincipal extends JFrame {
 		menuItemConsultaQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				contentPane = new PanelConsultaQuestoes();
+				contentPane = new PanelConsultaQuestoes(usuario);
 				setContentPane(contentPane);
 				revalidate();
 			}
@@ -158,6 +167,19 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		menuCadastroDeUsuarios.add(menuItemCadastrarAluno);
+		
+		mnSair = new JMenu("S A I R");		
+		menuBar.add(mnSair);
+		
+		mntmNewMenuItem = new JMenuItem("S A I R ");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaLoginSenha loginSenha = new TelaLoginSenha();
+				loginSenha.setVisible(true);
+				dispose();
+			}
+		});
+		mnSair.add(mntmNewMenuItem);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);		

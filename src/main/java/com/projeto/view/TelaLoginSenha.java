@@ -35,6 +35,7 @@ import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
 import javax.swing.JLabel;
+import java.awt.Frame;
 
 public class TelaLoginSenha extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -65,6 +66,7 @@ public class TelaLoginSenha extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaLoginSenha() {
+		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaLoginSenha.class.getResource("/imagens/iconeQuebraCabeca.png")));
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

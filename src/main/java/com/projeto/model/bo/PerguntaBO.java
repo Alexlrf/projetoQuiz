@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.projeto.exceptions.ErroNaConsultaException;
+import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.dao.CategoriaDAO;
 import com.projeto.model.dao.PerguntaDAO;
 import com.projeto.model.entity.CategoriaVO;
@@ -36,8 +37,6 @@ public class PerguntaBO {
 		List<PerguntaVO> listaPerguntas = new ArrayList<>();
 		
 		if (Utils.stringValida(perguntaSeletor.getCategoria())) {
-//			categoriaVO = perguntaDAO.buscaIdcategoria(perguntaSeletor.getCategoria());
-//			perguntaSeletor.setIdCategoria(categoriaVO.getIdCategoria());
 			listaPerguntas = perguntaDAO.buscaComSeletor(perguntaSeletor);	
 			
 		} else {
@@ -53,4 +52,9 @@ public class PerguntaBO {
 		return perguntaDAO.buscaPorTextoDigitado(textoDigitado);
 	}
 
+
+	public void alteraPergunta(PerguntaVO perguntaAlterada) throws ErroNoCadastroException{
+		perguntaDAO.alteraPergunta(perguntaAlterada);			
+		 		
+	}
 }
