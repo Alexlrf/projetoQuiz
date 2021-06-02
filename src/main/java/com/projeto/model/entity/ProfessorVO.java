@@ -7,7 +7,7 @@ import com.projeto.enums.TurnoEnum;
 
 public class ProfessorVO extends UsuarioVO{
 	
-	private String disciplina;
+	private int idDisciplina;
 
 	public ProfessorVO() {
 		super();
@@ -20,12 +20,12 @@ public class ProfessorVO extends UsuarioVO{
 				avito);
 	}
 
-	public String getDisciplina() {
-		return disciplina;
+	public int getIdDisciplina() {
+		return idDisciplina;
 	}
 
-	public void setDisciplina(String disciplina) {
-		this.disciplina = disciplina;
+	public void setIdDisciplina(int idDisciplina) {
+		this.idDisciplina = idDisciplina;
 	}
 	
 }

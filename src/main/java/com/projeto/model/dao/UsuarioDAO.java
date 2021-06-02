@@ -97,7 +97,7 @@ public class UsuarioDAO{
 				} else if (tipo.equals("PROFESSOR")) {
 					ProfessorVO usuarioProfessor = new ProfessorVO();
 					usuarioProfessor = (ProfessorVO) this.preencherAtributos(usuarioProfessor, rs);
-					usuarioProfessor.setDisciplina(rs.getString("DISCIPLINA"));
+					usuarioProfessor.setIdDisciplina(rs.getInt("ID_DISCIPLINA"));
 					return usuarioProfessor;
 					
 					// Verifica se o usuario é um coordenador
@@ -180,7 +180,7 @@ public class UsuarioDAO{
 				} else if (tipo.equals("PROFESSOR")) {
 					ProfessorVO usuarioProfessor = new ProfessorVO();
 					usuarioProfessor = (ProfessorVO) this.preencherAtributos(usuarioProfessor, rs);
-					usuarioProfessor.setDisciplina(rs.getString("DISCIPLINA"));
+					usuarioProfessor.setIdDisciplina(rs.getInt("ID_DISCIPLINA"));
 					relatorioProfessor.add(usuarioProfessor);
 					retornoRelatorioUsuario.addAll(relatorioProfessor);
 					

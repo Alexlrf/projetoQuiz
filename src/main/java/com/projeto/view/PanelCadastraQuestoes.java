@@ -47,7 +47,6 @@ public class PanelCadastraQuestoes extends JPanel {
 
 	private List<AlternativaVO> listaAlternativas = new ArrayList<>();
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JComboBox comboBoxPerguntas = new JComboBox();
 	private JFormattedTextField txtAdicionaCategoria;
 	private	JFormattedTextField txtCadastraPergunta;
 	private	JFormattedTextField txtCadastraResposta1;
@@ -56,6 +55,7 @@ public class PanelCadastraQuestoes extends JPanel {
 	private	JFormattedTextField txtCadastraResposta4;
 	private	JFormattedTextField txtCadastraResposta5;
 	private PerguntaVO perguntaVO = null;
+	private JComboBox comboBoxPerguntas; 
 	public JLabel lblNomeUsuario;
 
 	AlternativaController alternativaController = new AlternativaController();
@@ -67,12 +67,26 @@ public class PanelCadastraQuestoes extends JPanel {
 	 * Create the panel.
 	 * @param usuario 
 	 */
-	public PanelCadastraQuestoes(UsuarioVO usuario) {
+	public PanelCadastraQuestoes(UsuarioVO usuarioLogado) {
 		setBorder(new LineBorder(new Color(250, 128, 114), 6));
 		setBackground(new Color(112, 128, 144));
 
 		JLabel lblTitulo = new JLabel("Cadastrar Questões");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 24));
+		
+		comboBoxPerguntas = new JComboBox();
+		comboBoxPerguntas.setFont(new Font("Tahoma", Font.BOLD, 11));
+		comboBoxPerguntas.setModel(new DefaultComboBoxModel(new String[] { "C A T E G O R I A S" }));
+		
+		/* Preenche o combo de categorias ao iniciar a tela */
+		
+		List<CategoriaVO> listaCategorias = new ArrayList<>();
+		listaCategorias = categoriaController.consultaTodasCategorias(usuarioLogado);
+				
+		for (CategoriaVO categoriaVO : listaCategorias) {
+			comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
+			revalidate();
+		}
 
 		txtAdicionaCategoria = new JFormattedTextField();
 		txtAdicionaCategoria.addFocusListener(new FocusAdapter() {
@@ -134,12 +148,12 @@ public class PanelCadastraQuestoes extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 					
 					categoriaVO.setDescricaoCategoria(Utils.formataEspacoUnico(txtAdicionaCategoria.getText()).toString().toUpperCase());
-					
+					categoriaVO.setUsuario(usuarioLogado);
 					try {
 						categoriaController.cadastraCategoria(categoriaVO);
 						JOptionPane.showMessageDialog(null, "Categoria cadastrada com sucesso!", Constants.SUCESSO,
 								JOptionPane.PLAIN_MESSAGE, null);
-						comboBoxPerguntas.addItem(Utils.formataEspacoUnico(txtAdicionaCategoria.getText().toString()));
+						comboBoxPerguntas.addItem(Utils.formataEspacoUnico(txtAdicionaCategoria.getText().toString().toUpperCase()));
 						txtAdicionaCategoria.setText("Adicionar categoria");
 						
 					} catch (Exception mensagem) {
@@ -148,10 +162,6 @@ public class PanelCadastraQuestoes extends JPanel {
 					}
 			}
 		});
-
-		comboBoxPerguntas = new JComboBox();
-		comboBoxPerguntas.setFont(new Font("Tahoma", Font.BOLD, 11));
-		comboBoxPerguntas.setModel(new DefaultComboBoxModel(new String[] { "C A T E G O R I A S" }));
 
 		txtCadastraResposta1 = new JFormattedTextField();
 		txtCadastraResposta1.addFocusListener(new FocusAdapter() {
@@ -626,6 +636,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				categoriaVO.setDescricaoCategoria(comboBoxPerguntas.getSelectedItem().toString());
 				categoriaVO = categoriaController.buscaCategoriaPorDescricao(comboBoxPerguntas.getSelectedItem().toString());
 				perguntaVO.setCategoria(categoriaVO);
+				perguntaVO.setIdUsuario(usuarioLogado.getIdUsuario());
 				perguntaVO.setTextoPergunta(Utils.formataEspacoUnico(txtCadastraPergunta.getText().toString()));				
 				
 				AlternativaVO alternativa1 = new AlternativaVO();				
@@ -666,7 +677,8 @@ public class PanelCadastraQuestoes extends JPanel {
 					alternativa5.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
 				} else {
 					alternativa5.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
-				}				
+				}
+				
 				listaAlternativas.add(alternativa1);
 				listaAlternativas.add(alternativa2);
 				listaAlternativas.add(alternativa3);
@@ -698,13 +710,6 @@ public class PanelCadastraQuestoes extends JPanel {
 		panelBotoes.add(btnSalvar);
 		setLayout(groupLayout);	
 		
-		List<CategoriaVO> listaCategorias = new ArrayList<>();
-		listaCategorias = categoriaController.consultaTodasCategorias(usuario);
-				
-		for (CategoriaVO categoriaVO : listaCategorias) {
-			comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
-			
-		}		
 	}
 	
 	protected void limpaPreenchimento() {
