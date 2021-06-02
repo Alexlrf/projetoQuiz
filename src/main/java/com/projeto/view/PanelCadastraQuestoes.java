@@ -38,6 +38,7 @@ import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 
@@ -64,8 +65,9 @@ public class PanelCadastraQuestoes extends JPanel {
 
 	/**
 	 * Create the panel.
+	 * @param usuario 
 	 */
-	public PanelCadastraQuestoes() {
+	public PanelCadastraQuestoes(UsuarioVO usuario) {
 		setBorder(new LineBorder(new Color(250, 128, 114), 6));
 		setBackground(new Color(112, 128, 144));
 
@@ -697,7 +699,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		setLayout(groupLayout);	
 		
 		List<CategoriaVO> listaCategorias = new ArrayList<>();
-		listaCategorias = categoriaController.consultaTodasCategorias();
+		listaCategorias = categoriaController.consultaTodasCategorias(usuario);
 				
 		for (CategoriaVO categoriaVO : listaCategorias) {
 			comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());

@@ -7,7 +7,7 @@ import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.CategoriaBO;
 import com.projeto.model.bo.PerguntaBO;
 import com.projeto.model.entity.CategoriaVO;
-import com.projeto.model.entity.PerguntaVO;
+import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Utils;
 
 public class CategoriaController {
@@ -47,10 +47,17 @@ public class CategoriaController {
 		return categoriaValida;
 	}
 
-	public List<CategoriaVO> consultaTodasCategorias() {
+	public List<CategoriaVO> consultaTodasCategorias(UsuarioVO usuarioLogado) {
 		
-		return categoriaBO.consultaTodasCategorias();
+		return categoriaBO.consultaTodasCategorias(usuarioLogado);
 	}
+
+
+	public boolean alteraCategoria(String categoriaEscolhida, String categoriaAlterada) {
+		
+		return categoriaBO.alteraCategoria(categoriaEscolhida, categoriaAlterada);
+	}
+
 
 	public CategoriaVO buscaCategoriaPorDescricao(String descricaoCategoria) {
 				

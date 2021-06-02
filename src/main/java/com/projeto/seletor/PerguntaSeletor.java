@@ -4,6 +4,7 @@ public class PerguntaSeletor {
 	
 	private String categoria;
 	private int idCategoria;
+	private int idUsuario;	
 	private String texto;
 	
 	private int limite;
@@ -29,7 +30,10 @@ public class PerguntaSeletor {
 		}
 		if ((this.texto != null) && (this.texto.trim().length() > 0)) {
 			temFiltro = true;
-		}		
+		}
+		if (this.idUsuario > 0) {
+			temFiltro = true;
+		}
 		return temFiltro;
 	}
 	
@@ -70,6 +74,15 @@ public class PerguntaSeletor {
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
+	
+	public int getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
 
 	public String getTexto() {
 		return texto;
