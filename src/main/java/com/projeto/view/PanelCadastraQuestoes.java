@@ -67,12 +67,22 @@ public class PanelCadastraQuestoes extends JPanel {
 	 * Create the panel.
 	 * @param usuario 
 	 */
-	public PanelCadastraQuestoes(UsuarioVO usuario) {
+	public PanelCadastraQuestoes(UsuarioVO usuarioLogado) {
 		setBorder(new LineBorder(new Color(250, 128, 114), 6));
 		setBackground(new Color(112, 128, 144));
 
 		JLabel lblTitulo = new JLabel("Cadastrar Questões");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 24));
+		
+		/* Preenche o combo de categorias ao iniciar a tela */
+		
+		List<CategoriaVO> listaCategorias = new ArrayList<>();
+		listaCategorias = categoriaController.consultaTodasCategorias(usuarioLogado);
+				
+		for (CategoriaVO categoriaVO : listaCategorias) {
+			comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
+			
+		}
 
 		txtAdicionaCategoria = new JFormattedTextField();
 		txtAdicionaCategoria.addFocusListener(new FocusAdapter() {
@@ -698,13 +708,13 @@ public class PanelCadastraQuestoes extends JPanel {
 		panelBotoes.add(btnSalvar);
 		setLayout(groupLayout);	
 		
-		List<CategoriaVO> listaCategorias = new ArrayList<>();
-		listaCategorias = categoriaController.consultaTodasCategorias(usuario);
-				
-		for (CategoriaVO categoriaVO : listaCategorias) {
-			comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
-			
-		}		
+//		List<CategoriaVO> listaCategorias = new ArrayList<>();
+//		listaCategorias = categoriaController.consultaTodasCategorias(usuario);
+//				
+//		for (CategoriaVO categoriaVO : listaCategorias) {
+//			comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
+//			
+//		}		
 	}
 	
 	protected void limpaPreenchimento() {
