@@ -63,10 +63,7 @@ public class TelaPrincipal extends JFrame {
 		this.TelaPrincipal();
 	}
 	
-	public TelaPrincipal() {
-		this.TelaPrincipal();
-	}
-//	
+
 	/**
 	 * Create the frame.
 	 */
