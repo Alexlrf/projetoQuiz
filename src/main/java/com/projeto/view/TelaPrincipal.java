@@ -86,7 +86,7 @@ public class TelaPrincipal extends JFrame {
 		menuItemResponderQuiz = new JMenuItem("Responder Quiz");
 		menuItemResponderQuiz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Fazer o painel do aluno de resolver as questões
+				// TODO  Fazer painel de resolver questões do Aluno
 				JOptionPane.showMessageDialog(null, "Tela em Construção...");
 			}
 		});
@@ -123,8 +123,9 @@ public class TelaPrincipal extends JFrame {
 		menuItemRelatorioDeUsuarios = new JMenuItem("Relatório de Usuários");
 		menuItemRelatorioDeUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO  Fazer painel de relatórios de usuarios para o coordenador
-				JOptionPane.showMessageDialog(null, "Tela em Construção...");
+				contentPane = new PanelRelatorioDeUsuario();
+				setContentPane(contentPane);
+				revalidate();
 			}
 		});
 		menuRelatorioDeUsuarios.add(menuItemRelatorioDeUsuarios);

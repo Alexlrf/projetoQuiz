@@ -19,10 +19,11 @@ public abstract class UsuarioVO {
 	private TurnoEnum turno;
 	private String senha;
 	private TipoUsuarioEnum tipo;
-	
+	private boolean ativo;
+
 	public UsuarioVO(Integer idUsuario, String nome, String rg, String cpf, LocalDate dataNascimento, char sexo,
 			boolean possuiDeficiencia, String celular, String nacionalidade, TurnoEnum turno, String senha,
-			TipoUsuarioEnum tipo) {
+			TipoUsuarioEnum tipo, boolean avito) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nome = nome;
@@ -36,6 +37,7 @@ public abstract class UsuarioVO {
 		this.turno = turno;
 		this.senha = senha;
 		this.tipo = tipo;
+		this.ativo = avito;
 	}
 
 	public UsuarioVO() {
@@ -136,6 +138,14 @@ public abstract class UsuarioVO {
 	
 	public void setTipo(TipoUsuarioEnum tipo) {
 		this.tipo = tipo;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 
 }

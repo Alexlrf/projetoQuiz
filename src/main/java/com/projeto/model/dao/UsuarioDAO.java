@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
@@ -12,6 +14,7 @@ import com.projeto.model.entity.CoordenadorVO;
 import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Banco;
+import com.projeto.seletor.RelatorioDeUsuarioSeletor;
 
 public class UsuarioDAO{
 	
@@ -116,7 +119,7 @@ public class UsuarioDAO{
 	 * Preenche os atributos em comum entre os usuarios
 	 * @param usuario
 	 * @param rs
-	 * @return usuario com os atributos preenchidos
+	 * @return usuario com os atributos comuns preenchidos
 	 * @throws SQLException
 	 */
 	private UsuarioVO preencherAtributos(UsuarioVO usuario, ResultSet rs) throws SQLException {
@@ -131,7 +134,110 @@ public class UsuarioDAO{
 		usuario.setNacionalidade(rs.getString("NACIONALIDADE"));
 		usuario.setTurno(TurnoEnum.getTurnoEnum(rs.getString("TURNO")));
 		usuario.setTipo(TipoUsuarioEnum.getTipoUsuarioEnum(rs.getString("TIPO")));
+		usuario.setAtivo(rs.getBoolean("ATIVO"));
 		return usuario;
+	}
+	
+	/**
+	 * https://stackoverflow.com/questions/36873147/array-list-of-abstract-class
+	 * 
+	 * @param relatorioUsuario
+	 * @return
+	 */
+	public List<UsuarioVO> relatorioUsuarioSeletorDAO(RelatorioDeUsuarioSeletor relatorioUsuario) {
+		final List<UsuarioVO> retornoRelatorioUsuario = new ArrayList<>();
+		List<AlunoVO> relatorioAluno = new ArrayList<>();
+		List<ProfessorVO> relatorioProfessor = new ArrayList<>();
+		List<CoordenadorVO> relatorioCoordenador = new ArrayList<>();
+		
+		String sql = "SELECT * FROM USUARIO u";
+		
+		if (relatorioUsuario.temFiltro()) {
+			sql = criarFiltros(relatorioUsuario, sql);
+		}
+		
+		if (relatorioUsuario.temPaginacao()) {
+			sql += " LIMIT " + relatorioUsuario.getLimite() + " OFFSET " + relatorioUsuario.getOffset();
+		}
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			// valida se a consulta tenha algum retorno
+			while (rs.next()) {
+				String tipo = rs.getString("TIPO");
+				
+				// Verifica se o usuario é um aluno
+				if(tipo.equals("ALUNO")) {
+					AlunoVO usuarioAluno = new AlunoVO();
+					usuarioAluno = (AlunoVO) preencherAtributos(usuarioAluno, rs);
+					relatorioAluno.add(usuarioAluno);
+					retornoRelatorioUsuario.addAll(relatorioAluno);
+				
+					// Verifica se o usuario é um professor
+				} else if (tipo.equals("PROFESSOR")) {
+					ProfessorVO usuarioProfessor = new ProfessorVO();
+					usuarioProfessor = (ProfessorVO) this.preencherAtributos(usuarioProfessor, rs);
+					usuarioProfessor.setDisciplina(rs.getString("DISCIPLINA"));
+					relatorioProfessor.add(usuarioProfessor);
+					retornoRelatorioUsuario.addAll(relatorioProfessor);
+					
+					// Verifica se o usuario é um coordenador
+				} else if (tipo.equals("COORDENADOR")) {
+					CoordenadorVO usuarioCoordenador = new CoordenadorVO();
+					usuarioCoordenador = (CoordenadorVO) this.preencherAtributos(usuarioCoordenador, rs);
+					relatorioCoordenador.add(usuarioCoordenador);
+					retornoRelatorioUsuario.addAll(relatorioCoordenador);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
+		}
+		return retornoRelatorioUsuario;
+	}
+
+	private String criarFiltros(RelatorioDeUsuarioSeletor seletor, String sql) {
+		sql += " WHERE ";
+		boolean primeiro = true;
+		
+		if ((seletor.getNome() != null) && (seletor.getNome().trim().length() > 0)) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+			sql += "u.NOME LIKE '%" + seletor.getNome() + "%'";
+			primeiro = false;
+		}
+		
+		if ((seletor.getTipo() != null) && (seletor.getTipo().toString().trim().length() > 0)) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+			sql += "u.TIPO = '" + seletor.getTipo() +"'";
+			primeiro = false;
+		}
+		return sql;
+	}
+
+	public boolean desativarUsuarioDAO(Integer idUsuarioSelecionado) {
+		boolean desativarUsuario = false;
+		
+		String sql = " UPDATE USUARIO SET ATIVO = ? WHERE ID_USUARIO = ?";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
+			stmt.setBoolean(1, false);
+			stmt.setInt(2, idUsuarioSelecionado);
+			
+			int quantidadeDeLinhasAfetadas = stmt.executeUpdate();
+			
+			desativarUsuario = quantidadeDeLinhasAfetadas > 0;
+		} catch (SQLException e) {
+			System.out.println("Erro ao desativar usuario: \n " + e.getMessage());
+		}
+
+		return desativarUsuario;
 	}
 
 }

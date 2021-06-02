@@ -17,5 +17,7 @@ public class Constants {
 	public static final String ALTERNATIVA_4 = "4ª alternativa";
 	public static final String ALTERNATIVA_5 = "5ª alternativa";
 	
-
+	public static final char MASCULINO = 'M';
+	public static final char FEMININO = 'F';
+	
 }
