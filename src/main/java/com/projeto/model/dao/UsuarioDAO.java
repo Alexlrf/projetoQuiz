@@ -146,9 +146,6 @@ public class UsuarioDAO{
 	 */
 	public List<UsuarioVO> relatorioUsuarioSeletorDAO(RelatorioDeUsuarioSeletor relatorioUsuario) {
 		final List<UsuarioVO> retornoRelatorioUsuario = new ArrayList<>();
-		List<AlunoVO> relatorioAluno = new ArrayList<>();
-		List<ProfessorVO> relatorioProfessor = new ArrayList<>();
-		List<CoordenadorVO> relatorioCoordenador = new ArrayList<>();
 		
 		String sql = "SELECT * FROM USUARIO u";
 		
@@ -173,23 +170,20 @@ public class UsuarioDAO{
 				if(tipo.equals("ALUNO")) {
 					AlunoVO usuarioAluno = new AlunoVO();
 					usuarioAluno = (AlunoVO) preencherAtributos(usuarioAluno, rs);
-					relatorioAluno.add(usuarioAluno);
-					retornoRelatorioUsuario.addAll(relatorioAluno);
+					retornoRelatorioUsuario.add(usuarioAluno);
 				
 					// Verifica se o usuario é um professor
 				} else if (tipo.equals("PROFESSOR")) {
 					ProfessorVO usuarioProfessor = new ProfessorVO();
 					usuarioProfessor = (ProfessorVO) this.preencherAtributos(usuarioProfessor, rs);
 					usuarioProfessor.setDisciplina(rs.getString("DISCIPLINA"));
-					relatorioProfessor.add(usuarioProfessor);
-					retornoRelatorioUsuario.addAll(relatorioProfessor);
+					retornoRelatorioUsuario.add(usuarioProfessor);
 					
 					// Verifica se o usuario é um coordenador
 				} else if (tipo.equals("COORDENADOR")) {
 					CoordenadorVO usuarioCoordenador = new CoordenadorVO();
 					usuarioCoordenador = (CoordenadorVO) this.preencherAtributos(usuarioCoordenador, rs);
-					relatorioCoordenador.add(usuarioCoordenador);
-					retornoRelatorioUsuario.addAll(relatorioCoordenador);
+					retornoRelatorioUsuario.add(usuarioCoordenador);
 				}
 			}
 		} catch (SQLException e) {

@@ -31,6 +31,8 @@ import com.projeto.seletor.RelatorioDeUsuarioSeletor;
 import com.projeto.repository.Constants;
 
 public class PanelRelatorioDeUsuario extends JPanel {
+	private static final int TAMANHO_PAGINA = 10;
+	
 	private JTextField txtNome;
 	private JTable tblListaDeUsuarios;
 	private JComboBox cbxTipoUsuario;
@@ -43,6 +45,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 	private List<UsuarioVO> usuario = new ArrayList<>();
 	private String[] nomesColunas = {"Nome", "Tipo de Usuario", "Turno", "Sexo", "Possui Deficiência", "RG", "CPF"};
 	private DefaultTableModel model;
+	private int paginaAtual = 1;
 
 	/** TIPO DE USUARIO, NOME COM LIKE, PESQUISAR TODOS. LEMBRAR DE ACRESCENTAR PAGINAÇÃO e relatório excel.
 	 * Create the panel.
@@ -123,22 +126,26 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		btnPaginaAnterior = new JButton("← ");
 		btnPaginaAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO fazer paginação
-				JOptionPane.showMessageDialog(null, "Botão em Construção...");
+				if (paginaAtual > 1) {
+					paginaAtual--;
+				}
+				buscarUsuariosSeletores();
 			}
 		});
 		btnPaginaAnterior.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		lblPaginaAtual = new JLabel("1");
+		lblPaginaAtual = new JLabel("");
+		lblPaginaAtual.setText(paginaAtual + "");
 		
 		btnProximaPagina = new JButton("→");
 		btnProximaPagina.setAlignmentX(0.5f);
 		btnProximaPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO fazer paginação
-				JOptionPane.showMessageDialog(null, "Botão em Construção...");
+					paginaAtual++;
+					buscarUsuariosSeletores();
+				}
 			}
-		});
+		);
 		
 		JButton btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(new ActionListener() {
@@ -241,7 +248,12 @@ public class PanelRelatorioDeUsuario extends JPanel {
 	}
 
 	protected void buscarUsuariosSeletores() {
+		lblPaginaAtual.setText(paginaAtual + "");
+		
 		RelatorioDeUsuarioSeletor relatorioUsuario = new RelatorioDeUsuarioSeletor();
+		
+		relatorioUsuario.setPagina(paginaAtual);
+		relatorioUsuario.setLimite(TAMANHO_PAGINA);
 		
 		UsuarioController usuarioController = new UsuarioController();
 		if (cbxTipoUsuario.getSelectedIndex() > 0) {
