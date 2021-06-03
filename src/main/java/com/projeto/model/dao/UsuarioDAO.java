@@ -48,10 +48,10 @@ public class UsuarioDAO{
 	 * @param senha
 	 * @return
 	 */
-	public boolean verificarSenhaDAO(String senha) {
+	public boolean verificarSenhaDAO(String cpf, String senha) {
 		boolean validar  = false;
 		
-		String sql = "SELECT SENHA FROM USUARIO WHERE SENHA = MD5('" + senha + "')";
+		String sql = "SELECT SENHA FROM USUARIO WHERE cpf = '" + cpf + "' AND senha = MD5('" + senha + "')";
 
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
