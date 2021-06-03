@@ -38,4 +38,9 @@ public class UsuarioBO {
 		return retorno;
 	}
 
+	public int consultarTotalPaginas(RelatorioDeUsuarioSeletor relatorioUsuario) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		return usuarioDAO.consultarTotalPaginas(relatorioUsuario);
+	}
+
 }

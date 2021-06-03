@@ -259,4 +259,36 @@ public class UsuarioDAO{
 		return tipoUsuario;
 	}
 
+	public int consultarTotalPaginas(RelatorioDeUsuarioSeletor relatorioUsuario) {
+		int totalUsuarios = 0;
+		
+		String sql = "SELECT count(*) FROM USUARIO u";
+		
+		if (relatorioUsuario.temFiltro()) {
+			sql = criarFiltros(relatorioUsuario, sql);
+		}
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				totalUsuarios = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao consultar total de paginas: " + e.getMessage());
+		} 
+		
+		int totalPaginas = totalUsuarios / relatorioUsuario.getLimite();
+		int resto = totalUsuarios % relatorioUsuario.getLimite();
+		
+		if (resto > 0) {
+			totalPaginas++;
+		}
+		
+		return totalPaginas;
+	}
+
 }

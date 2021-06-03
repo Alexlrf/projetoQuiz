@@ -3,17 +3,12 @@ package com.projeto.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import com.projeto.exceptions.LoginNaoInformadoException;
 import com.projeto.exceptions.SenhaIncorretaException;
 import com.projeto.exceptions.SenhaNaoInformadaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
 import com.projeto.model.bo.UsuarioBO;
 import com.projeto.model.dao.UsuarioDAO;
-import com.projeto.model.entity.AlunoVO;
-import com.projeto.model.entity.CoordenadorVO;
-import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.seletor.RelatorioDeUsuarioSeletor;
 import com.projeto.view.TelaPrincipal;
@@ -51,6 +46,11 @@ public class UsuarioController {
 	public ArrayList<String> consultarTipoUsuarioController() {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		return usuarioDAO.consultarTipoUsuarioDAO();
+	}
+
+	public int consultarTotalPaginas(RelatorioDeUsuarioSeletor relatorioUsuario) {
+		UsuarioBO usuarioBO = new UsuarioBO();
+		return usuarioBO.consultarTotalPaginas(relatorioUsuario);
 	}
 
 }
