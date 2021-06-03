@@ -202,7 +202,15 @@ public class UsuarioDAO{
 			if (!primeiro) {
 				sql += " AND ";
 			}
-			sql += "u.TIPO = '" + seletor.getTipo() +"'";
+			sql += "u.TIPO = '" + seletor.getTipo() + "'";
+			primeiro = false;
+		}
+		
+		if ((seletor.getTurno() != null) && (seletor.getTurno().toString().trim().length() > 0)) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+			sql += "u.TURNO = '" + seletor.getTurno() + "'";
 			primeiro = false;
 		}
 		return sql;
@@ -226,6 +234,29 @@ public class UsuarioDAO{
 		}
 
 		return desativarUsuario;
+	}
+
+	public ArrayList<String> consultarTipoUsuarioDAO() {
+		ArrayList<String> tipoUsuario = new ArrayList<>();
+		tipoUsuario.add("SELECIONE O TIPO");
+		
+		String sql = "SELECT DISTINCT TIPO FROM USUARIO";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				String tipo = rs.getString("TIPO");
+				tipoUsuario.add(tipo);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao consultar Tipo de Usuario: " + e.getMessage());
+		}
+		
+		return tipoUsuario;
 	}
 
 }

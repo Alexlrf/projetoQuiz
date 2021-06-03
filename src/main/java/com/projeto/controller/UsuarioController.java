@@ -1,5 +1,6 @@
 package com.projeto.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -9,6 +10,7 @@ import com.projeto.exceptions.SenhaIncorretaException;
 import com.projeto.exceptions.SenhaNaoInformadaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
 import com.projeto.model.bo.UsuarioBO;
+import com.projeto.model.dao.UsuarioDAO;
 import com.projeto.model.entity.AlunoVO;
 import com.projeto.model.entity.CoordenadorVO;
 import com.projeto.model.entity.ProfessorVO;
@@ -45,4 +47,10 @@ public class UsuarioController {
 		UsuarioBO usuarioBO = new UsuarioBO();
 		return usuarioBO.excluirUsuarioBO(idUsuarioSelecionado);
 	}
+
+	public ArrayList<String> consultarTipoUsuarioController() {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		return usuarioDAO.consultarTipoUsuarioDAO();
+	}
+
 }
