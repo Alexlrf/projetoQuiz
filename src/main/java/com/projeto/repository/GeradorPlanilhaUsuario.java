@@ -9,15 +9,14 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import com.projeto.model.entity.UsuarioVO;
 
-import com.projeto.model.entity.PerguntaVO;
+public class GeradorPlanilhaUsuario {
 
-public class GeradorPlanilha {
-	
-	public void gerarPlanilhaPerguntas(List<PerguntaVO> perguntas, String caminho){
-		String[] nomeColunas = {"PERGUNTA", "CATEGORIA"}; 
+	public void gerarPlanilhaUsuarios(List<UsuarioVO> usuario, String caminhoEscolhido) {
+		String[] nomeColunas = {"Nome", "Tipo de Usuario", "Turno", "Sexo", "Possui Deficiência", "RG", "CPF"}; 
 		HSSFWorkbook planilha = new HSSFWorkbook();
-		HSSFSheet aba = planilha.createSheet("planilha 1");
+		HSSFSheet aba = planilha.createSheet("Relatório de Usuarios");
 		
 		Row headerRow = aba.createRow(0);
 		
@@ -29,11 +28,26 @@ public class GeradorPlanilha {
 		
 		// Cria linhas
 		int rowNum = 0;
-		for (PerguntaVO pergunta : perguntas) {
+		for (UsuarioVO usu : usuario) {
 			Row novaLinha = aba.createRow(rowNum++);
-			novaLinha.createCell(0).setCellValue(pergunta.getTextoPergunta());
-			novaLinha.createCell(1).setCellValue(pergunta.getCategoria().getDescricaoCategoria());
+			novaLinha.createCell(0).setCellValue(usu.getNome());
+			novaLinha.createCell(1).setCellValue(usu.getTipo().toString());
+			novaLinha.createCell(2).setCellValue(usu.getTurno().toString());
 			
+			if (usu.getSexo() == Constants.MASCULINO) {
+				novaLinha.createCell(3).setCellValue("Masculino");
+			} else {
+				novaLinha.createCell(3).setCellValue("Feminino");
+			}
+			
+			if (usu.isPossuiDeficiencia()) {
+				novaLinha.createCell(4).setCellValue("Sim");
+			} else {
+				novaLinha.createCell(4).setCellValue("Não");
+			}
+			
+			novaLinha.createCell(5).setCellValue(usu.getRg());
+			novaLinha.createCell(6).setCellValue(usu.getCpf());
 		}
 		
 		// Ajusta o tamanho das colunas de acordo com seu conteúdo
@@ -45,7 +59,7 @@ public class GeradorPlanilha {
 		FileOutputStream fileOut = null;
 		
 		try {
-			fileOut = new FileOutputStream(caminho + ".xls");
+			fileOut = new FileOutputStream(caminhoEscolhido + ".xls");
 			planilha.write(fileOut);
 			
 		} catch (FileNotFoundException e) {
@@ -61,6 +75,8 @@ public class GeradorPlanilha {
 					e.getMessage();
 				}
 			}
-		}		
+		}
+		
 	}
+
 }
