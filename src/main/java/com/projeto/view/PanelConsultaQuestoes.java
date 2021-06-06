@@ -17,6 +17,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -44,7 +45,6 @@ import com.projeto.repository.Constants;
 import com.projeto.repository.GeradorPlanilha;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
-import javax.swing.JCheckBox;
 
 public class PanelConsultaQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -382,8 +382,7 @@ public class PanelConsultaQuestoes extends JPanel {
 					} catch (ErroNoCadastroException mensagem) {
 						JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 								JOptionPane.ERROR_MESSAGE, null);
-					}
-					
+					}					
 				}
 			}
 		});

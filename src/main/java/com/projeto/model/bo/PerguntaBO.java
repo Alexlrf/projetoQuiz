@@ -1,6 +1,5 @@
 package com.projeto.model.bo;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class PerguntaBO {
 	 * 
 	 * @param perguntaSeletor
 	 * @return lista de perguntas
-	 * @throws SQLException
+	 * @throws ErroNaConsultaException
 	 */
 	
 	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws ErroNaConsultaException{	
@@ -43,7 +42,7 @@ public class PerguntaBO {
 			perguntaSeletor.setIdUsuario(0);
 		} else {
 			perguntaSeletor.setIdDisciplina(0);
-			//perguntaSeletor.setIdUsuario(0);
+			
 		}
 		
 		if (Utils.stringValida(perguntaSeletor.getCategoria())) {
