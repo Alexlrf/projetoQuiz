@@ -420,8 +420,7 @@ public class PanelConsultaQuestoes extends JPanel {
 					perguntaSeletor.setPerguntasUsuario(false);
 				}
 				
-				perguntaSeletor.setIdUsuario(usuarioLogado.getIdUsuario());
-				
+				perguntaSeletor.setIdUsuario(usuarioLogado.getIdUsuario());				
 
 				try {
 					perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
@@ -433,7 +432,7 @@ public class PanelConsultaQuestoes extends JPanel {
 				} catch (Exception mensagem) {
 					JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
-					}
+				}
 			}
 		});
 		btnConsultar.setFont(new Font("Tahoma", Font.BOLD, 11));
