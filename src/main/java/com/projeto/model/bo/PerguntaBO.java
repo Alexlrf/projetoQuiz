@@ -7,6 +7,7 @@ import java.util.List;
 import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.dao.CategoriaDAO;
+import com.projeto.model.dao.DisciplinaDAO;
 import com.projeto.model.dao.PerguntaDAO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
@@ -17,6 +18,7 @@ public class PerguntaBO {
 	PerguntaDAO perguntaDAO = new PerguntaDAO();
 	CategoriaDAO categoriaDAO = new CategoriaDAO();
 	CategoriaVO categoriaVO = new CategoriaVO();
+	DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 	
 	public List<PerguntaVO> buscaPorCategoriaEscolhida(String categoriaEscolhida) {		
 		int idCategoria =  categoriaDAO.buscaIdCategoria(categoriaEscolhida);
@@ -35,6 +37,14 @@ public class PerguntaBO {
 	
 	public List<PerguntaVO> buscaComSeletor(PerguntaSeletor perguntaSeletor) throws ErroNaConsultaException{	
 		List<PerguntaVO> listaPerguntas = new ArrayList<>();
+		
+		if (!perguntaSeletor.isPerguntasUsuario() ) {
+			perguntaSeletor.setIdDisciplina(disciplinaDAO.buscaIdDisciplina(perguntaSeletor.getIdUsuario()));
+			perguntaSeletor.setIdUsuario(0);
+		} else {
+			perguntaSeletor.setIdDisciplina(0);
+			//perguntaSeletor.setIdUsuario(0);
+		}
 		
 		if (Utils.stringValida(perguntaSeletor.getCategoria())) {
 			listaPerguntas = perguntaDAO.buscaComSeletor(perguntaSeletor);	

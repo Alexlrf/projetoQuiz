@@ -2,9 +2,11 @@ package com.projeto.seletor;
 
 public class PerguntaSeletor {
 	
+	private boolean perguntasUsuario;
+	private int idDisciplina;	
 	private String categoria;
 	private int idCategoria;
-	private int idUsuario;	
+	private int idUsuario;
 	private String texto;
 	
 	private int limite;
@@ -32,6 +34,12 @@ public class PerguntaSeletor {
 			temFiltro = true;
 		}
 		if (this.idUsuario > 0) {
+			temFiltro = true;
+		}
+		if (this.idDisciplina > 0) {
+			temFiltro = true;
+		}
+		if (this.perguntasUsuario = true) {
 			temFiltro = true;
 		}
 		return temFiltro;
@@ -82,7 +90,14 @@ public class PerguntaSeletor {
 	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
 	}
+	
+	public int getIdDisciplina() {
+		return idDisciplina;
+	}
 
+	public void setIdDisciplina(int idDisciplina) {
+		this.idDisciplina = idDisciplina;
+	}
 
 	public String getTexto() {
 		return texto;
@@ -107,4 +122,13 @@ public class PerguntaSeletor {
 	public void setPagina(int pagina) {
 		this.pagina = pagina;
 	}
+
+	public boolean isPerguntasUsuario() {
+		return perguntasUsuario;
+	}
+
+	public void setPerguntasUsuario(boolean perguntasUsuario) {
+		this.perguntasUsuario = perguntasUsuario;
+	}	
+	
 }
