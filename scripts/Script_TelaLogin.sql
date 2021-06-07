@@ -1,4 +1,3 @@
-
 DROP DATABASE IF EXISTS DBTESTE;
 
 CREATE DATABASE DBTESTE;
@@ -22,7 +21,7 @@ CREATE TABLE USUARIO (
   , POSSUI_DEFICIENCIA BOOLEAN NOT NULL
   , CELULAR VARCHAR(11)
   , NACIONALIDADE VARCHAR(50) NOT NULL
-  , TURNO ENUM('MATUTINO', 'VESPERTINO', 'NOTURNO', 'MATUTINO_E_VERSPERTINO', 'MATUTINO_E_NOTURNO', 'VESPERTINO_E_NOTURNO') NOT NULL  
+  , TURNO ENUM('MATUTINO', 'VESPERTINO', 'NOTURNO') NOT NULL  
   , SENHA VARCHAR(50) NOT NULL
   , TIPO ENUM('PROFESSOR', 'ALUNO', 'COORDENADOR') NOT NULL
   , ATIVO BOOLEAN NOT NULL
@@ -32,7 +31,6 @@ CREATE TABLE USUARIO (
  CREATE TABLE categoria (
   id_categoria INT NOT NULL AUTO_INCREMENT
   , id_disciplina int not null
-  , ID_USUARIO INT NOT NULL
   , descricao_categoria VARCHAR(50) NOT NULL
   , constraint PK_CATEGORIA primary key (id_categoria)
   );
@@ -71,7 +69,7 @@ INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CE
 	VALUES ('KOGUT', '1111111', '11111111111', '2020-05-05', 'M', false, '45987456311', 'BRASILEIRO', 'MATUTINO', MD5('kogut'), 'COORDENADOR', true);
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
 	VALUES ('JOÃO', '5656565', '56565656565', '2020-05-05', 'M', false, '45987456351', 'BRASILEIRO', 'NOTURNO', MD5('joao'), 'COORDENADOR', true);
-
+    
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
 	VALUES ('ALISON', '3333333', '33333333333', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', MD5('alison'), 'ALUNO', true);
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
@@ -83,44 +81,21 @@ INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CE
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
 	VALUES ('PELÉ', '9999999', '99999999999', '2020-01-05', 'M', false, '45987956321', 'BRASILEIRO', 'MATUTINO', MD5('pele'), 'ALUNO', true);
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
-	VALUES ('WAGNER', '1010101', '10101010101', '2020-10-05', 'M', false, '44983456321', 'BRASILEIRO', 'NOTURNO', MD5('wagner'), 'ALUNO', true);
+	VALUES ('WAGNER', '1010101', '10101010101', '2020-10-05', 'M', false, '45983456321', 'BRASILEIRO', 'NOTURNO', MD5('wagner'), 'ALUNO', true);
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
-	VALUES ('PATETA', '1313131', '13131313131', '2020-05-05', 'M', false, '48987456321', 'BRASILEIRO', 'MATUTINO', MD5('pateta'), 'ALUNO', true);
-INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
-	VALUES ('TOM', '3131313', '31313131313', '2020-05-05', 'M', false, '47987456321', 'BRASILEIRO', 'MATUTINO', MD5('tom'), 'ALUNO', true);
-INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
-	VALUES ('WILL', '5151515', '51515151515', '2020-05-05', 'M', false, '46987456321', 'BRASILEIRO', 'MATUTINO', MD5('will'), 'ALUNO', true);
-INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
-	VALUES ('JASON', '1919191', '19191919191', '2020-05-05', 'M', false, '42987456321', 'BRASILEIRO', 'MATUTINO', MD5('jason'), 'ALUNO', true);
-INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
-	VALUES ('HEITOR', '9191919', '91919191919', '2020-05-05', 'M', false, '45777456321', 'BRASILEIRO', 'MATUTINO', MD5('heitor'), 'ALUNO', true);
-INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
-	VALUES ('CELSO', '1717171', '17171717171', '2020-05-05', 'M', false, '45988456321', 'BRASILEIRO', 'MATUTINO', MD5('celso'), 'ALUNO', true);
+	VALUES ('ALISON', '3333333', '33333333333', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', MD5('alison'), 'ALUNO', true);
 
 
+INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'ORIENTAÇÃO A OBJETOS');
+INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'GIT / GITHUB');
+INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'SELETORES');
+INSERT INTO categoria (id_disciplina, descricao_categoria) values(2, 'INTERFACES');
+INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'EXCEÇÕES');
 
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'GIT / GITHUB');
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'SELETORES');
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'INTERFACES');
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'EXCEÇÕES');
-
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 2, 'ORIENTAÇÃO A OBJETOS');
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 2, 'POLIMORFISMO');
-
-
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(2, 3, 'TIPOS DE SISTEMAS ');
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(2, 3, 'AMBIENTES OPERACIONAIS');
-
-
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(2, 5, 1, 'O QUE É ABSTRAÇÃO?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 1, 1, 'QUAL A DIFERENÇA ENTRE GIT E GITHUB?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 1, 1, 'O QUE É UM PUSH?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 2, 1, 'QUAL A FUNÇÃO DOS SELETORES?');
-
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(2, 6, 1, 'O QUE É POLIMORFISMO?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(3, 8, 2, 'O QUE É AMBIENTE OPERACIONAL?');
-
-
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 1, 1, 'O QUE É ABSTRAÇÃO?');
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 2, 1, 'QUAL A DIFERENÇA ENTRE GIT E GITHUB?');
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 2, 1, 'O QUE É UM PUSH?');
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 3, 1, 'QUAL A FUNÇÃO DOS SELETORES?');
 
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UMA CATEGORIA DE CLASSE JAVA', '- - -');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
@@ -145,15 +120,3 @@ INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) va
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'AUXILIAR NA APRESENTAÇÃO DO LAYOUT DE UMA JFRAME', '- - -');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'POSSIBILITA CONSULTAS SQL MAIS COMPLEXAS DE FORMA MAIS DINÂMICA', 'CORRETA');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'INSTANCIAR OBJETOS DE CLASSES ABSTRATAS', '- - -');
-
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UMA CATEGORIA DE CLASSE JAVA', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É QUANDO TIPOS DE CLASSES MAIS ABSTRATAS REPRESENTAM O COMPORTAMENTO DAS CLASSES CONCRETAS QUE REFERENCIAM', 'CORRETA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
-
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UMA CATEGORIA DE SISTEMA ORGANIZACIONAL', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UM TIPO DE PROCESSO INTERNO DE RH', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UMA ÁREA INSERIDA DENTRO DA CORPORAÇÃO', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'SÃO FATORES E CONDIÇÕES EXTERNAS QUE TÊM RELEVÂNCIA IMEDIATA PARA A ORGANIZAÇÃO', 'CORRETA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');

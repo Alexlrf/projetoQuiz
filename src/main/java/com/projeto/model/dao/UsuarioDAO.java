@@ -48,10 +48,10 @@ public class UsuarioDAO{
 	 * @param senha
 	 * @return
 	 */
-	public boolean verificarSenhaDAO(String senha) {
+	public boolean verificarSenhaDAO(String cpf, String senha) {
 		boolean validar  = false;
 		
-		String sql = "SELECT SENHA FROM USUARIO WHERE SENHA = MD5('" + senha + "')";
+		String sql = "SELECT SENHA FROM USUARIO WHERE cpf = '" + cpf + "' AND senha = MD5('" + senha + "')";
 
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
@@ -137,18 +137,9 @@ public class UsuarioDAO{
 		usuario.setAtivo(rs.getBoolean("ATIVO"));
 		return usuario;
 	}
-	
-	/**
-	 * https://stackoverflow.com/questions/36873147/array-list-of-abstract-class
-	 * 
-	 * @param relatorioUsuario
-	 * @return
-	 */
+
 	public List<UsuarioVO> relatorioUsuarioSeletorDAO(RelatorioDeUsuarioSeletor relatorioUsuario) {
 		final List<UsuarioVO> retornoRelatorioUsuario = new ArrayList<>();
-		List<AlunoVO> relatorioAluno = new ArrayList<>();
-		List<ProfessorVO> relatorioProfessor = new ArrayList<>();
-		List<CoordenadorVO> relatorioCoordenador = new ArrayList<>();
 		
 		String sql = "SELECT * FROM USUARIO u";
 		
@@ -173,23 +164,20 @@ public class UsuarioDAO{
 				if(tipo.equals("ALUNO")) {
 					AlunoVO usuarioAluno = new AlunoVO();
 					usuarioAluno = (AlunoVO) preencherAtributos(usuarioAluno, rs);
-					relatorioAluno.add(usuarioAluno);
-					retornoRelatorioUsuario.addAll(relatorioAluno);
+					retornoRelatorioUsuario.add(usuarioAluno);
 				
 					// Verifica se o usuario é um professor
 				} else if (tipo.equals("PROFESSOR")) {
 					ProfessorVO usuarioProfessor = new ProfessorVO();
 					usuarioProfessor = (ProfessorVO) this.preencherAtributos(usuarioProfessor, rs);
 					usuarioProfessor.setIdDisciplina(rs.getInt("ID_DISCIPLINA"));
-					relatorioProfessor.add(usuarioProfessor);
-					retornoRelatorioUsuario.addAll(relatorioProfessor);
+					retornoRelatorioUsuario.add(usuarioProfessor);
 					
 					// Verifica se o usuario é um coordenador
 				} else if (tipo.equals("COORDENADOR")) {
 					CoordenadorVO usuarioCoordenador = new CoordenadorVO();
 					usuarioCoordenador = (CoordenadorVO) this.preencherAtributos(usuarioCoordenador, rs);
-					relatorioCoordenador.add(usuarioCoordenador);
-					retornoRelatorioUsuario.addAll(relatorioCoordenador);
+					retornoRelatorioUsuario.add(usuarioCoordenador);
 				}
 			}
 		} catch (SQLException e) {
@@ -214,7 +202,15 @@ public class UsuarioDAO{
 			if (!primeiro) {
 				sql += " AND ";
 			}
-			sql += "u.TIPO = '" + seletor.getTipo() +"'";
+			sql += "u.TIPO = '" + seletor.getTipo() + "'";
+			primeiro = false;
+		}
+		
+		if ((seletor.getTurno() != null) && (seletor.getTurno().toString().trim().length() > 0)) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+			sql += "u.TURNO = '" + seletor.getTurno() + "'";
 			primeiro = false;
 		}
 		return sql;
@@ -238,6 +234,61 @@ public class UsuarioDAO{
 		}
 
 		return desativarUsuario;
+	}
+
+	public ArrayList<String> consultarTipoUsuarioDAO() {
+		ArrayList<String> tipoUsuario = new ArrayList<>();
+		tipoUsuario.add("SELECIONE O TIPO");
+		
+		String sql = "SELECT DISTINCT TIPO FROM USUARIO";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				String tipo = rs.getString("TIPO");
+				tipoUsuario.add(tipo);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao consultar Tipo de Usuario: " + e.getMessage());
+		}
+		
+		return tipoUsuario;
+	}
+
+	public int consultarTotalPaginas(RelatorioDeUsuarioSeletor relatorioUsuario) {
+		int totalUsuarios = 0;
+		
+		String sql = "SELECT count(*) FROM USUARIO u";
+		
+		if (relatorioUsuario.temFiltro()) {
+			sql = criarFiltros(relatorioUsuario, sql);
+		}
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				totalUsuarios = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao consultar total de paginas: " + e.getMessage());
+		} 
+		
+		int totalPaginas = totalUsuarios / relatorioUsuario.getLimite();
+		int resto = totalUsuarios % relatorioUsuario.getLimite();
+		
+		if (resto > 0) {
+			totalPaginas++;
+		}
+		
+		return totalPaginas;
 	}
 
 }

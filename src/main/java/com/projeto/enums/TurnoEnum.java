@@ -4,10 +4,7 @@ public enum TurnoEnum {
 	
 	MATUTINO
 	, VESPERTINO
-	, NOTURNO
-	, MATUTINO_E_VERSPERTINO
-	, MATUTINO_E_NOTURNO
-	, VESPERTINO_E_NOTURNO;
+	, NOTURNO;
 	
 	/**
 	 * Converte o enum em String.

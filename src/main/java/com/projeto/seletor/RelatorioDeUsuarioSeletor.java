@@ -7,7 +7,7 @@ import com.projeto.enums.TurnoEnum;
 
 public class RelatorioDeUsuarioSeletor {
 
-	private Integer idUsuario;
+	private TurnoEnum turno;
 	private String nome;
 	private TipoUsuarioEnum tipo;
 	
@@ -29,13 +29,13 @@ public class RelatorioDeUsuarioSeletor {
 		return ((this.limite > 0) && (this.pagina > -1));
 	}
 	
-	public RelatorioDeUsuarioSeletor(Integer idUsuario, String nome, TipoUsuarioEnum tipo) {
+	public RelatorioDeUsuarioSeletor(TurnoEnum turno, String nome, TipoUsuarioEnum tipo) {
 		super();
-		this.idUsuario = idUsuario;
+		this.turno = turno;
 		this.nome = nome;
 		this.tipo = tipo;
 	}
-	
+
 	/**
 	 * Verifica se este seletor tem algum campo preenchido
 	 *
@@ -52,6 +52,10 @@ public class RelatorioDeUsuarioSeletor {
 			retorno = true;
 		}
 		
+		if ((this.turno != null) && (this.turno.toString().trim().length() > 0)) {
+			retorno = true;
+		}
+		
 		return retorno;
 	}
 
@@ -63,13 +67,13 @@ public class RelatorioDeUsuarioSeletor {
 	public int getOffset() {
 		return (this.limite * (this.pagina - 1));
 	}
-	
-	public Integer getIdUsuario() {
-		return idUsuario;
+
+	public TurnoEnum getTurno() {
+		return turno;
 	}
 
-	public void setIdUsuario(Integer idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setTurno(TurnoEnum turno) {
+		this.turno = turno;
 	}
 
 	public String getNome() {

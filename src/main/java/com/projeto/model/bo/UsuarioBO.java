@@ -14,7 +14,7 @@ public class UsuarioBO {
 		UsuarioDAO verificarCpfSenha = new UsuarioDAO();
 		if (!verificarCpfSenha.verificarCpfDAO(cpf)) {
 			throw new UsuarioNaoExistenteException("Usuario não cadastrado");
-		} else if (!verificarCpfSenha.verificarSenhaDAO(senha)){
+		} else if (!verificarCpfSenha.verificarSenhaDAO(cpf, senha)){
 			throw new SenhaIncorretaException("Senha incorreta");
 		}else {
 			return verificarCpfSenha.verificarCpfSenhaDAO(cpf, senha);
@@ -36,6 +36,11 @@ public class UsuarioBO {
 			retorno = "Não foi possivel excluir o usuario.";
 		}
 		return retorno;
+	}
+
+	public int consultarTotalPaginas(RelatorioDeUsuarioSeletor relatorioUsuario) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		return usuarioDAO.consultarTotalPaginas(relatorioUsuario);
 	}
 
 }

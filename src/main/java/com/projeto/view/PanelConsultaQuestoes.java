@@ -42,7 +42,7 @@ import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Constants;
-import com.projeto.repository.GeradorPlanilha;
+import com.projeto.repository.GeradorPlanilhaQuestoes;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
 
@@ -263,7 +263,7 @@ public class PanelConsultaQuestoes extends JPanel {
 					int resultado = jfc.showSaveDialog(null);
 					if (resultado == JFileChooser.APPROVE_OPTION) {
 						String caminhoEscolhido = jfc.getSelectedFile().getAbsolutePath();
-						GeradorPlanilha geradorPlanilha = new GeradorPlanilha();
+						GeradorPlanilhaQuestoes geradorPlanilha = new GeradorPlanilhaQuestoes();
 						try {
 							geradorPlanilha.gerarPlanilhaPerguntas(perguntas, caminhoEscolhido);
 							JOptionPane.showMessageDialog(null, "Planilha gerada com sucesso!", Constants.SUCESSO,
