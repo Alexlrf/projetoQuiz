@@ -192,6 +192,14 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			primeiro = false;
 		}
 		
+		if (perguntaSeletor.getIdDisciplina() > 0) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+			sql += "p.id_disciplina = " + perguntaSeletor.getIdDisciplina() ;
+			primeiro = false;
+		}
+		
 		if (perguntaSeletor.getIdUsuario() > 0) {
 			if (!primeiro) {
 				sql += " AND ";
