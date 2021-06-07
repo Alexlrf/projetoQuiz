@@ -316,9 +316,15 @@ public class PanelConsultaQuestoes extends JPanel {
 			private void preparaAlteracaoCategoria() {
 				if (comboCategorias.getSelectedIndex() > 0) {
 					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
-					String categoriaAlterada = Utils
-							.formataEspacoUnico(JOptionPane.showInputDialog(null, categoriaEscolhida,
-									"Digite a alteração desejada!", JOptionPane.QUESTION_MESSAGE).toUpperCase());
+					String categoriaAlterada = JOptionPane.showInputDialog(null, categoriaEscolhida,
+									"Digite a alteração desejada!", JOptionPane.QUESTION_MESSAGE);
+					
+					if (!Utils.stringValida(categoriaAlterada)) {
+						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
+						
+					} else {
+						categoriaAlterada = Utils.formataEspacoUnico(categoriaAlterada).toUpperCase();
+					}
 
 					boolean alteracaoConfirmada = categoriaController.alteraCategoria(categoriaEscolhida,
 							categoriaAlterada);
@@ -340,6 +346,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			private void preparaAlteracaoPergunta() {
 				PerguntaVO pergunta = new PerguntaVO();
 				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
+				PerguntaVO perguntaAlterada = new PerguntaVO();
 
 				if (perguntaSelecionada < 0) {
 					JOptionPane.showMessageDialog(null, "Selecione uma pergunta para alterar", Constants.ALERTA,
@@ -349,54 +356,53 @@ public class PanelConsultaQuestoes extends JPanel {
 					String textoAlterado = "";
 					String categoriaAlterada2;
 
-					textoAlterado = Utils.formataEspacoUnico(JOptionPane.showInputDialog(null, pergunta.getTextoPergunta(),
-													"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE).toUpperCase());
-					if (!Utils.stringValida(textoAlterado) || textoAlterado == null) {
-						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
+					textoAlterado = JOptionPane.showInputDialog(null, pergunta.getTextoPergunta(),
+													"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE);					
+											
+					if (Utils.stringValida(textoAlterado)) {
+						String[] categoriasTexto = new String[categorias.size()+1];
+						CategoriaVO categoria = new CategoriaVO();					
 						
-					}
-					
-					String[] categoriasTexto = new String[categorias.size()+1];
-					PerguntaVO perguntaAlterada = new PerguntaVO();
-					CategoriaVO categoria = new CategoriaVO();					
-					
-					int j = 1;
-					categoriasTexto[0] = "Selecione a categoria";
-					for (CategoriaVO categoriaVO : categorias) {
-						categoriasTexto[j] = categoriaVO.getDescricaoCategoria();												
-						j++;
-					}
-					
-					categoriaAlterada2 = Utils.formataEspacoUnico((String) (JOptionPane.showInputDialog(null, null, "ALTERAR",
-							JOptionPane.QUESTION_MESSAGE, null, categoriasTexto, categoriasTexto[0].toString()))).toUpperCase();
-				
-					
-					if (!Utils.stringValida(categoriaAlterada2) || categoriaAlterada2 == null) {
-						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
+						int j = 1;
+						categoriasTexto[0] = "Selecione a categoria";
+						for (CategoriaVO categoriaVO : categorias) {
+							categoriasTexto[j] = categoriaVO.getDescricaoCategoria();												
+							j++;
+						}
+						
+						categoriaAlterada2 = (String) JOptionPane.showInputDialog(null, null, "ALTERAR",
+								JOptionPane.QUESTION_MESSAGE, null, categoriasTexto, categoriasTexto[0]);
+						
+						if (!Utils.stringValida(categoriaAlterada2)) {
+							JOptionPane.showMessageDialog(null, "Alteração cancelada!");
+							
+						} else {
+							categoriaAlterada2 = Utils.formataEspacoUnico(categoriaAlterada2);
+							for (CategoriaVO categoriaVO : categorias) {
+								if (categoriaVO.getDescricaoCategoria().trim().equalsIgnoreCase(categoriaAlterada2.trim())) {
+									categoria = categoriaVO;							
+								}						
+								j++;
+							}					
+							perguntaAlterada.setIdUsuario(usuarioLogado.getIdUsuario());
+							perguntaAlterada.setIdPergunta(pergunta.getIdPergunta());
+							perguntaAlterada.setTextoPergunta(Utils.formataEspacoUnico(textoAlterado.toUpperCase()).toString());					
+							perguntaAlterada.setCategoria(categoria);					
+						}
+						
+						try {
+							perguntaController.alteraPergunta(perguntaAlterada);
+							JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
+									JOptionPane.INFORMATION_MESSAGE);						
+						} catch (ErroNoCadastroException mensagem) {
+							JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
+									JOptionPane.ERROR_MESSAGE, null);
+						}
 						
 					} else {
-						for (CategoriaVO categoriaVO : categorias) {
-							if (categoriaVO.getDescricaoCategoria().trim().equalsIgnoreCase(categoriaAlterada2.trim())) {
-								categoria = categoriaVO;							
-							}						
-							j++;
-						}					
+						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
 						
-						perguntaAlterada.setIdUsuario(usuarioLogado.getIdUsuario());
-						perguntaAlterada.setIdPergunta(pergunta.getIdPergunta());
-						perguntaAlterada.setTextoPergunta(textoAlterado);					
-						perguntaAlterada.setCategoria(categoria);					
 					}
-					
-					
-					try {
-						perguntaController.alteraPergunta(perguntaAlterada);
-						JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
-								JOptionPane.INFORMATION_MESSAGE);						
-					} catch (ErroNoCadastroException mensagem) {
-						JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
-								JOptionPane.ERROR_MESSAGE, null);
-					}					
 				}
 			}
 		});
