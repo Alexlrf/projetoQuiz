@@ -1,3 +1,4 @@
+
 DROP DATABASE IF EXISTS DBTESTE;
 
 CREATE DATABASE DBTESTE;
@@ -31,6 +32,7 @@ CREATE TABLE USUARIO (
  CREATE TABLE categoria (
   id_categoria INT NOT NULL AUTO_INCREMENT
   , id_disciplina int not null
+  , ID_USUARIO INT NOT NULL
   , descricao_categoria VARCHAR(50) NOT NULL
   , constraint PK_CATEGORIA primary key (id_categoria)
   );
@@ -73,16 +75,30 @@ INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CE
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
 	VALUES ('ALISON', '3333333', '33333333333', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', MD5('alison'), 'ALUNO', true);
 
-INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'ORIENTAÇÃO A OBJETOS');
-INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'GIT / GITHUB');
-INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'SELETORES');
-INSERT INTO categoria (id_disciplina, descricao_categoria) values(2, 'INTERFACES');
-INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'EXCEÇÕES');
 
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 1, 1, 'O QUE É ABSTRAÇÃO?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 2, 1, 'QUAL A DIFERENÇA ENTRE GIT E GITHUB?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 2, 1, 'O QUE É UM PUSH?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 3, 1, 'QUAL A FUNÇÃO DOS SELETORES?');
+
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'GIT / GITHUB');
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'SELETORES');
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'INTERFACES');
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'EXCEÇÕES');
+
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 2, 'ORIENTAÇÃO A OBJETOS');
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 2, 'POLIMORFISMO');
+
+
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(2, 3, 'TIPOS DE SISTEMAS ');
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(2, 3, 'AMBIENTES OPERACIONAIS');
+
+
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(2, 5, 1, 'O QUE É ABSTRAÇÃO?');
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 1, 1, 'QUAL A DIFERENÇA ENTRE GIT E GITHUB?');
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 1, 1, 'O QUE É UM PUSH?');
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 2, 1, 'QUAL A FUNÇÃO DOS SELETORES?');
+
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(2, 6, 1, 'O QUE É POLIMORFISMO?');
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(3, 8, 2, 'O QUE É AMBIENTE OPERACIONAL?');
+
+
 
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UMA CATEGORIA DE CLASSE JAVA', '- - -');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
@@ -108,11 +124,14 @@ INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) va
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'POSSIBILITA CONSULTAS SQL MAIS COMPLEXAS DE FORMA MAIS DINÂMICA', 'CORRETA');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'INSTANCIAR OBJETOS DE CLASSES ABSTRATAS', '- - -');
 
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UMA CATEGORIA DE CLASSE JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É QUANDO TIPOS DE CLASSES MAIS ABSTRATAS REPRESENTAM O COMPORTAMENTO DAS CLASSES CONCRETAS QUE REFERENCIAM', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
 
-
-    
-    
-   
-    
-
-    
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UMA CATEGORIA DE SISTEMA ORGANIZACIONAL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UM TIPO DE PROCESSO INTERNO DE RH', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UMA ÁREA INSERIDA DENTRO DA CORPORAÇÃO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'SÃO FATORES E CONDIÇÕES EXTERNAS QUE TÊM RELEVÂNCIA IMEDIATA PARA A ORGANIZAÇÃO', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
