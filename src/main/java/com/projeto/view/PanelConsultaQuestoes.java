@@ -346,9 +346,15 @@ public class PanelConsultaQuestoes extends JPanel {
 							JOptionPane.ERROR_MESSAGE, null);
 				} else {
 					pergunta = perguntas.get(perguntaSelecionada);
+					String textoAlterado = "";
+					String categoriaAlterada2;
 
-					String textoAlterado = Utils.formataEspacoUnico(JOptionPane.showInputDialog(null, pergunta.getTextoPergunta(),
+					textoAlterado = Utils.formataEspacoUnico(JOptionPane.showInputDialog(null, pergunta.getTextoPergunta(),
 													"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE).toUpperCase());
+					if (!Utils.stringValida(textoAlterado) || textoAlterado == null) {
+						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
+						
+					}
 					
 					String[] categoriasTexto = new String[categorias.size()+1];
 					PerguntaVO perguntaAlterada = new PerguntaVO();
@@ -357,28 +363,36 @@ public class PanelConsultaQuestoes extends JPanel {
 					int j = 1;
 					categoriasTexto[0] = "Selecione a categoria";
 					for (CategoriaVO categoriaVO : categorias) {
-						categoriasTexto[j] = categoriaVO.getDescricaoCategoria();
+						categoriasTexto[j] = categoriaVO.getDescricaoCategoria();												
 						j++;
 					}
 					
-					String categoriaAlterada2 = Utils.formataEspacoUnico((String) (JOptionPane.showInputDialog(null, null, "ALTERAR",
+					categoriaAlterada2 = Utils.formataEspacoUnico((String) (JOptionPane.showInputDialog(null, null, "ALTERAR",
 							JOptionPane.QUESTION_MESSAGE, null, categoriasTexto, categoriasTexto[0].toString()))).toUpperCase();
+				
 					
-					if (mapCategorias.containsValue(categoriaAlterada2)) {						
-						categoria.setIdCategoria(getChavePorValor(mapCategorias, categoriaAlterada2));
-						categoria.setDescricaoCategoria(categoriaAlterada2);						
-					}					
+					if (!Utils.stringValida(categoriaAlterada2) || categoriaAlterada2 == null) {
+						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
+						
+					} else {
+						for (CategoriaVO categoriaVO : categorias) {
+							if (categoriaVO.getDescricaoCategoria().trim().equalsIgnoreCase(categoriaAlterada2.trim())) {
+								categoria = categoriaVO;							
+							}						
+							j++;
+						}					
+						
+						perguntaAlterada.setIdUsuario(usuarioLogado.getIdUsuario());
+						perguntaAlterada.setIdPergunta(pergunta.getIdPergunta());
+						perguntaAlterada.setTextoPergunta(textoAlterado);					
+						perguntaAlterada.setCategoria(categoria);					
+					}
 					
-					perguntaAlterada.setTextoPergunta(textoAlterado);
-					perguntaAlterada.setCategoria(categoria);
-					perguntaAlterada.setIdPergunta(pergunta.getIdPergunta());
-					perguntaAlterada.setIdUsuario(usuarioLogado.getIdUsuario());
 					
 					try {
 						perguntaController.alteraPergunta(perguntaAlterada);
 						JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
-								JOptionPane.INFORMATION_MESSAGE);
-						
+								JOptionPane.INFORMATION_MESSAGE);						
 					} catch (ErroNoCadastroException mensagem) {
 						JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 								JOptionPane.ERROR_MESSAGE, null);
