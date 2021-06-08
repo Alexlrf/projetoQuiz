@@ -44,7 +44,6 @@ public class AlternativaBO {
 	}
 
 	public List<AlternativaVO> buscaAlternativas(PerguntaVO pergunta) {
-		// TODO Auto-generated method stub
 		return alternativaDAO.buscaAlternativas(pergunta);
 	}
 

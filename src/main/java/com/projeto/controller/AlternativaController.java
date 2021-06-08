@@ -24,8 +24,19 @@ public class AlternativaController {
 	}	
 
 
-	public List<AlternativaVO> buscaAlternativas(PerguntaVO pergunta) {
+	public List<AlternativaVO> buscaAlternativas(PerguntaVO pergunta) {	
  		return alternativaBO.buscaAlternativas(pergunta);
+	}
+
+	public boolean alteraAlternativa(AlternativaVO alternativaVO) throws ErroNoCadastroException{
+		
+		
+		
+		
+		System.out.println("IdPergunta : "+alternativaVO.getIdPergunta()+ "\nIdAlternativa : "+alternativaVO.getIdAlternativa()
+							+"\nTexto : "+alternativaVO.getTexto()+"\nStatus : "+alternativaVO.getAlternativaCorreta());
+		return false;
+		
 	}	
 
 }

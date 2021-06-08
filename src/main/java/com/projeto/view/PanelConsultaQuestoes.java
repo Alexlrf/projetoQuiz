@@ -57,7 +57,9 @@ public class PanelConsultaQuestoes extends JPanel {
 	private List<CategoriaVO> categorias = new ArrayList<>();
 	private List<PerguntaVO> perguntas = new ArrayList<>();
 	private PlaceholderTextField textFieldBusca;
+	private List<AlternativaVO> alternativas;
 	private JCheckBox chckbxMinhasPerguntas;
+	private int alternativaSelecionada;
 	private JComboBox comboCategorias;
 	private JTable tableAlternativas;
 	private int perguntaSelecionada;
@@ -149,6 +151,13 @@ public class PanelConsultaQuestoes extends JPanel {
 		panelBotoes.setBackground(new Color(112, 128, 144));
 
 		tableAlternativas = new JTable();
+		tableAlternativas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				alternativaSelecionada = tableAlternativas.getSelectedRow() - 1;
+			}
+		});
 		tableAlternativas.setModel(new DefaultTableModel(new Object[][] {}, new String[] {}));
 
 		limpaTabelaAlternativas();
@@ -166,72 +175,72 @@ public class PanelConsultaQuestoes extends JPanel {
 		textFieldBusca = new PlaceholderTextField();
 		textFieldBusca.setPlaceholder("Digite o texto para busca");
 		textFieldBusca.setColumns(10);
-		
+
 		chckbxMinhasPerguntas = new JCheckBox("Minhas Perguntas");
 		chckbxMinhasPerguntas.setFont(new Font("Tahoma", Font.BOLD, 11));
 		chckbxMinhasPerguntas.setBackground(new Color(112, 128, 144));
 
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
-									.addGap(50)
-									.addComponent(comboCategorias, 0, 341, Short.MAX_VALUE)))
-							.addContainerGap())
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
-							.addGap(54)
-							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
-							.addGap(26))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(chckbxMinhasPerguntas, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+		groupLayout
+				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addContainerGap()
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addGroup(groupLayout.createSequentialGroup()
+												.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 775,
+														Short.MAX_VALUE)
+												.addContainerGap())
+										.addGroup(groupLayout
+												.createSequentialGroup()
+												.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addContainerGap())
+										.addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout
+												.createParallelGroup(Alignment.TRAILING)
+												.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 775,
+														Short.MAX_VALUE)
+												.addGroup(groupLayout.createSequentialGroup()
+														.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 384,
+																Short.MAX_VALUE)
+														.addGap(50)
+														.addComponent(comboCategorias, 0, 341, Short.MAX_VALUE)))
+												.addContainerGap())
+										.addGroup(groupLayout.createSequentialGroup()
+												.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+												.addGap(54)
+												.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128,
+														GroupLayout.PREFERRED_SIZE)
+												.addGap(26))
+										.addGroup(groupLayout.createSequentialGroup()
+												.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 87,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.UNRELATED)
+												.addComponent(chckbxMinhasPerguntas, GroupLayout.PREFERRED_SIZE, 153,
+														GroupLayout.PREFERRED_SIZE)
+												.addContainerGap())
+										.addGroup(groupLayout
+												.createSequentialGroup().addComponent(lblAlternativas,
+														GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+												.addContainerGap()))));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addContainerGap()
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblTitulo, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(comboCategorias, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(1)
-							.addComponent(textFieldBusca, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
-					.addGap(33)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblPerguntas)
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(comboCategorias, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup().addGap(1).addComponent(textFieldBusca,
+								GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
+				.addGap(33)
+				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(lblPerguntas)
 						.addComponent(chckbxMinhasPerguntas))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-					.addGap(11)
-					.addComponent(lblAlternativas)
-					.addGap(18)
-					.addComponent(tableAlternativas, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE)
-					.addGap(28)
-					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE).addGap(11)
+				.addComponent(lblAlternativas).addGap(18)
+				.addComponent(tableAlternativas, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE).addGap(28)
+				.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap()));
 		panelBotoes.setLayout(new GridLayout(1, 0, 10, 10));
 
 		JButton btnGerarXls = new JButton("   Salvar Excel");
@@ -241,6 +250,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			public void mouseEntered(MouseEvent e) {
 				btnGerarXls.setBackground(new Color(153, 255, 153));
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				btnGerarXls.setBackground(UIManager.getColor("Button.light"));
@@ -252,14 +262,14 @@ public class PanelConsultaQuestoes extends JPanel {
 		btnGerarXls.setIcon(new ImageIcon(PanelConsultaQuestoes.class.getResource("/imagens/excel.png")));
 		btnGerarXls.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				if (tableConsulta.getRowCount() <= 1) {
 					JOptionPane.showMessageDialog(null, "Não existem perguntas para salvar em planilha!", "ATENÇÃO",
 							JOptionPane.ERROR_MESSAGE, null);
 				} else {
 					JFileChooser jfc = new JFileChooser();
-					jfc.setDialogTitle("Salvar relatório como...");				
-					
+					jfc.setDialogTitle("Salvar relatório como...");
+
 					int resultado = jfc.showSaveDialog(null);
 					if (resultado == JFileChooser.APPROVE_OPTION) {
 						String caminhoEscolhido = jfc.getSelectedFile().getAbsolutePath();
@@ -304,7 +314,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						break;
 
 					case "ALTERNATIVA":
-
+						preparaAlteracaoAlternativa();
 						break;
 
 					default:
@@ -313,22 +323,64 @@ public class PanelConsultaQuestoes extends JPanel {
 				}
 			}
 
+			private void preparaAlteracaoAlternativa() {
+				AlternativaVO alternativaVO = new AlternativaVO();
+				if (alternativaSelecionada < 0) {
+					JOptionPane.showMessageDialog(null, "Selecione uma ALTERNATIVA para alterar", Constants.ALERTA,
+							JOptionPane.ERROR_MESSAGE, null);
+				} else {
+					alternativaVO = alternativas.get(alternativaSelecionada);
+
+					String alternativaAlterada = JOptionPane.showInputDialog(null, alternativaVO.getTexto(),
+							"Digite a ALTERNATIVA desejada!", JOptionPane.QUESTION_MESSAGE);
+
+					if (Utils.stringValida(alternativaAlterada)) {
+						alternativaVO.setTexto(Utils.formataEspacoUnico(alternativaAlterada.toUpperCase()).toString());
+
+						int opcao = JOptionPane.showConfirmDialog(null, "Esta é a alternativa correta?", "ALTERAÇÃO DE ALTERNATIVA",
+								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+
+					
+
+						if (opcao != JOptionPane.YES_OPTION) {
+							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
+							
+						} else if (opcao == JOptionPane.YES_OPTION) {	
+							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
+						}
+							
+							try {
+								alternativaController.alteraAlternativa(alternativaVO);
+								JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
+										JOptionPane.INFORMATION_MESSAGE);
+							} catch (ErroNoCadastroException mensagem) {
+								JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
+										JOptionPane.ERROR_MESSAGE, null);
+							}
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
+
+					}
+				}
+			}
+
 			private void preparaAlteracaoCategoria() {
 				if (comboCategorias.getSelectedIndex() > 0) {
 					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
 					String categoriaAlterada = JOptionPane.showInputDialog(null, categoriaEscolhida,
-									"Digite a alteração desejada!", JOptionPane.QUESTION_MESSAGE);
-					
+							"Digite a alteração desejada!", JOptionPane.QUESTION_MESSAGE);
+
 					if (!Utils.stringValida(categoriaAlterada)) {
 						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
-						
+
 					} else {
 						categoriaAlterada = Utils.formataEspacoUnico(categoriaAlterada).toUpperCase();
 					}
 
 					boolean alteracaoConfirmada = categoriaController.alteraCategoria(categoriaEscolhida,
 							categoriaAlterada);
-					if (alteracaoConfirmada) {						
+					if (alteracaoConfirmada) {
 						JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
 								JOptionPane.INFORMATION_MESSAGE);
 						comboCategorias.revalidate();
@@ -349,7 +401,7 @@ public class PanelConsultaQuestoes extends JPanel {
 				PerguntaVO perguntaAlterada = new PerguntaVO();
 
 				if (perguntaSelecionada < 0) {
-					JOptionPane.showMessageDialog(null, "Selecione uma pergunta para alterar", Constants.ALERTA,
+					JOptionPane.showMessageDialog(null, "Selecione uma PERGUNTA para alterar", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
 				} else {
 					pergunta = perguntas.get(perguntaSelecionada);
@@ -357,51 +409,53 @@ public class PanelConsultaQuestoes extends JPanel {
 					String categoriaAlterada2;
 
 					textoAlterado = JOptionPane.showInputDialog(null, pergunta.getTextoPergunta(),
-													"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE);					
-											
+							"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE);
+
 					if (Utils.stringValida(textoAlterado)) {
-						String[] categoriasTexto = new String[categorias.size()+1];
-						CategoriaVO categoria = new CategoriaVO();					
-						
+						String[] categoriasTexto = new String[categorias.size() + 1];
+						CategoriaVO categoria = new CategoriaVO();
+
 						int j = 1;
 						categoriasTexto[0] = "Selecione a categoria";
 						for (CategoriaVO categoriaVO : categorias) {
-							categoriasTexto[j] = categoriaVO.getDescricaoCategoria();												
+							categoriasTexto[j] = categoriaVO.getDescricaoCategoria();
 							j++;
 						}
-						
+
 						categoriaAlterada2 = (String) JOptionPane.showInputDialog(null, null, "ALTERAR",
 								JOptionPane.QUESTION_MESSAGE, null, categoriasTexto, categoriasTexto[0]);
-						
+
 						if (!Utils.stringValida(categoriaAlterada2)) {
 							JOptionPane.showMessageDialog(null, "Alteração cancelada!");
-							
+
 						} else {
 							categoriaAlterada2 = Utils.formataEspacoUnico(categoriaAlterada2);
 							for (CategoriaVO categoriaVO : categorias) {
-								if (categoriaVO.getDescricaoCategoria().trim().equalsIgnoreCase(categoriaAlterada2.trim())) {
-									categoria = categoriaVO;							
-								}						
+								if (categoriaVO.getDescricaoCategoria().trim()
+										.equalsIgnoreCase(categoriaAlterada2.trim())) {
+									categoria = categoriaVO;
+								}
 								j++;
-							}					
+							}
 							perguntaAlterada.setIdUsuario(usuarioLogado.getIdUsuario());
 							perguntaAlterada.setIdPergunta(pergunta.getIdPergunta());
-							perguntaAlterada.setTextoPergunta(Utils.formataEspacoUnico(textoAlterado.toUpperCase()).toString());					
-							perguntaAlterada.setCategoria(categoria);					
+							perguntaAlterada
+									.setTextoPergunta(Utils.formataEspacoUnico(textoAlterado.toUpperCase()).toString());
+							perguntaAlterada.setCategoria(categoria);
 						}
-						
+
 						try {
 							perguntaController.alteraPergunta(perguntaAlterada);
 							JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
-									JOptionPane.INFORMATION_MESSAGE);						
+									JOptionPane.INFORMATION_MESSAGE);
 						} catch (ErroNoCadastroException mensagem) {
 							JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 									JOptionPane.ERROR_MESSAGE, null);
 						}
-						
+
 					} else {
 						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
-						
+
 					}
 				}
 			}
@@ -423,7 +477,7 @@ public class PanelConsultaQuestoes extends JPanel {
 				} else {
 					perguntaSeletor.setTexto("");
 				}
-				
+
 				if (comboCategorias.getSelectedIndex() > 0) {
 					perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
 					int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());
@@ -432,19 +486,19 @@ public class PanelConsultaQuestoes extends JPanel {
 				} else {
 					perguntaSeletor.setCategoria("");
 				}
-				
+
 				if (chckbxMinhasPerguntas.isSelected()) {
 					perguntaSeletor.setPerguntasUsuario(true);
-					
+
 				} else {
 					perguntaSeletor.setPerguntasUsuario(false);
 				}
-				
-				perguntaSeletor.setIdUsuario(usuarioLogado.getIdUsuario());				
+
+				perguntaSeletor.setIdUsuario(usuarioLogado.getIdUsuario());
 
 				try {
 					perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
-					
+
 					if (perguntas.size() != 0 || perguntas != null) {
 						preencherTabelaPerguntas(perguntas);
 					}
@@ -467,7 +521,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	}
 
 	protected void preencherAlternativas(PerguntaVO pergunta) {
-		List<AlternativaVO> alternativas = alternativaController.buscaAlternativas(pergunta);
+		alternativas = alternativaController.buscaAlternativas(pergunta);
 		preencherTabelaAlternativas(alternativas);
 	}
 
