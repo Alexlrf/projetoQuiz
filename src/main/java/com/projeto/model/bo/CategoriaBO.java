@@ -52,7 +52,8 @@ public class CategoriaBO {
 			mensagem = "Categoria não encontrada!";			
 			
 		} else if (categoria.getIdUsuario() != idUsuario){
-			mensagem = "Não é possível alterar categoria de outro usuário!";	
+			mensagem = "Não é possível alterar CATEGORIA de outro usuário!";
+			
 		} else {
 			boolean alteradaCategoria = categoriaDAO.alteraCategoria(categoriaEscolhida, categoriaAlterada);
 			
@@ -60,10 +61,8 @@ public class CategoriaBO {
 				mensagem = "Categoria alterada!!";
 			} else {
 				mensagem = "Não foi possível alterar categoria!";
-			}
-			
-		}
-		
+			}			
+		}		
 		return mensagem;
 	}
 	

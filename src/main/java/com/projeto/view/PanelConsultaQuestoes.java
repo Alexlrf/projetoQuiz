@@ -364,7 +364,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						}
 							
 							try {
-								alternativaController.alteraAlternativa(alternativaVO);
+								alternativaController.alteraAlternativa(alternativaVO, usuarioLogado);
 								JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
 										JOptionPane.INFORMATION_MESSAGE);
 							} catch (ErroNoCadastroException mensagem) {
@@ -391,7 +391,6 @@ public class PanelConsultaQuestoes extends JPanel {
 					} else {
 						categoriaAlterada = Utils.formataEspacoUnico(categoriaAlterada).toUpperCase();
 					}
-
 					
 					try {
 						String mensagem = categoriaController.alteraCategoria(categoriaEscolhida,
@@ -404,19 +403,6 @@ public class PanelConsultaQuestoes extends JPanel {
 						JOptionPane.showMessageDialog(null, "Alteração NÃO realizada!", Constants.ALERTA,
 								JOptionPane.ERROR_MESSAGE, null);					
 					}
-					
-					
-//					
-//					boolean alteracaoConfirmada = categoriaController.alteraCategoria(categoriaEscolhida,
-//							categoriaAlterada);
-//					if (alteracaoConfirmada) {
-//						JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
-//								JOptionPane.INFORMATION_MESSAGE);
-//						comboCategorias.revalidate();
-//					} else {
-//						JOptionPane.showMessageDialog(null, "Alteração NÃO realizada!", Constants.ALERTA,
-//								JOptionPane.ERROR_MESSAGE, null);
-//					}
 
 				} else {
 					JOptionPane.showMessageDialog(null, "Escolha uma categoria!", Constants.ALERTA,
@@ -474,7 +460,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						}
 
 						try {
-							perguntaController.alteraPergunta(perguntaAlterada);
+							perguntaController.alteraPergunta(perguntaAlterada, usuarioLogado);
 							JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
 									JOptionPane.INFORMATION_MESSAGE);
 						} catch (ErroNoCadastroException mensagem) {
