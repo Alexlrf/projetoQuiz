@@ -325,12 +325,15 @@ public class PanelConsultaQuestoes extends JPanel {
 
 			private void preparaAlteracaoAlternativa() {
 				AlternativaVO alternativaVO = new AlternativaVO();
-				if (alternativaSelecionada < 0) {
+				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
+				alternativaSelecionada = tableAlternativas.getSelectedRow() - 1;
+				
+				if (alternativaSelecionada < 0 || perguntaSelecionada < 0) {
 					JOptionPane.showMessageDialog(null, "Selecione uma ALTERNATIVA para alterar", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
 				} else {
 					alternativaVO = alternativas.get(alternativaSelecionada);
-
+							
 					String alternativaAlterada = JOptionPane.showInputDialog(null, alternativaVO.getTexto(),
 							"Digite a ALTERNATIVA desejada!", JOptionPane.QUESTION_MESSAGE);
 
@@ -338,15 +341,21 @@ public class PanelConsultaQuestoes extends JPanel {
 						alternativaVO.setTexto(Utils.formataEspacoUnico(alternativaAlterada.toUpperCase()).toString());
 
 						int opcao = JOptionPane.showConfirmDialog(null, "Esta é a alternativa correta?", "ALTERAÇÃO DE ALTERNATIVA",
-								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
-
-					
+								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);					
 
 						if (opcao != JOptionPane.YES_OPTION) {
 							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
 							
 						} else if (opcao == JOptionPane.YES_OPTION) {	
 							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
+							
+							for (AlternativaVO alternativaVO2 : alternativas) {
+								if (alternativaVO2.getAlternativaCorreta().equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
+									JOptionPane.showMessageDialog(null, "Verifique! \nJá existe uma alternativa correta!", Constants.ALERTA,
+											JOptionPane.INFORMATION_MESSAGE);
+									break;
+								}
+							}
 						}
 							
 							try {
