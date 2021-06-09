@@ -302,7 +302,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			ResultSet rs = stmt.executeQuery();
 			
 			if (rs.next()) {
-				id = rs.getInt(sql);				
+				id = rs.getInt("pergunta.id_usuario");				
 			}
 			
 		} catch (Exception e) {

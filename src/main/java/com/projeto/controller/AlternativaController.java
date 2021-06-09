@@ -39,13 +39,23 @@ public class AlternativaController {
 		
 		if (alternativaVO.getIdPergunta() == 0) {
 			mensagem = "Erro ao encontrar pergunta da alternativa!\n";
+			retorno = false;
 		} else if (!Utils.stringValida(alternativaVO.getTexto())) {
 			mensagem = "Erro ao encontrar TEXTO da alternativa!\n";
+			retorno = false;
 		} else if (!Utils.stringValida(alternativaVO.getAlternativaCorreta())) {
 			mensagem = "Erro ao encontrar STATUS da alternativa!\n";
-		} else if (idBuscado == usuarioLogado.getIdUsuario()) {
+			retorno = false;
+		} else if (idBuscado != usuarioLogado.getIdUsuario()) {
 			mensagem = "Não é possível alterar ALTERNATIVA de outro usuário!\n";
-		}			
+			retorno = false;
+		} else {
+			alternativaBO.alteraAlternativa(alternativaVO);
+		}
+		
+		if (Utils.stringValida(mensagem)) {
+			throw new ErroNoCadastroException(mensagem);
+		}		
 		return retorno;		
 	}	
 
