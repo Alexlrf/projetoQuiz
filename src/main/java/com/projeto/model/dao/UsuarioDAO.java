@@ -138,7 +138,7 @@ public class UsuarioDAO{
 		return usuario;
 	}
 
-	public List<UsuarioVO> relatorioUsuarioSeletorDAO(RelatorioDeUsuarioSeletor relatorioUsuario) {
+	public List<UsuarioVO> pesquisarPorSeletor(RelatorioDeUsuarioSeletor relatorioUsuario) {
 		final List<UsuarioVO> retornoRelatorioUsuario = new ArrayList<>();
 		
 		String sql = "SELECT * FROM USUARIO u";
@@ -290,5 +290,88 @@ public class UsuarioDAO{
 		
 		return totalPaginas;
 	}
+	
+	public UsuarioVO cadastrar(UsuarioVO usuario) {
+		String sql = "INSERT INTO USUARIO (NOME, RG, CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, "
+				+ " NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO, ID_DISCIPLINA) "
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql);){
+			
+			stmt.setString(1, usuario.getNome());
+			stmt.setString(2, usuario.getRg());
+			stmt.setString(3, usuario.getCpf());
+			stmt.setDate(4, java.sql.Date.valueOf(usuario.getDataNascimento()));
+			stmt.setString(5, usuario.getSexo() + "");
+			stmt.setBoolean(6, usuario.isPossuiDeficiencia());
+			stmt.setString(7, usuario.getCelular());
+			stmt.setString(8, usuario.getNacionalidade());
+			stmt.setString(9, usuario.getTurno().toString());
+			stmt.setString(10, usuario.getSenha());
+			stmt.setString(11, usuario.getTipo().toString());
+			stmt.setBoolean(12, true);
+			
+			Integer idDisciplina = null;
+			if (usuario.getTipo().equals(TipoUsuarioEnum.PROFESSOR)) {
+				idDisciplina = ((ProfessorVO)usuario).getIdDisciplina();
+			}
+			stmt.setInt(13, idDisciplina);
+			
+			stmt.executeUpdate();
+			
+			ResultSet rs = stmt.getGeneratedKeys();
+			
+			if (rs.next()) {
+				usuario.setIdUsuario(rs.getInt(1));
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao cadastrar usuario: " + e.getMessage());
+		}
+		
+		return usuario;
+	}
 
+	public boolean alterar(UsuarioVO usuario) {
+		
+		boolean atualizou = false;
+		
+		String sql = " UPDATE USUARIO SET NOME = ?, RG = ?, CPF = ?, DT_NASCIMENTO = ?,"
+				+ " SEXO = ?, POSSUI_DEFICIENCIA = ?, CELULAR = ?, NACIONALIDADE = ?,"
+				+ " TURNO = ?, SENHA = ?, TIPO = ?, ATIVO = ?, ID_DISCIPLINA = ? WHERE ID_USUARIO = ?";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql);){
+			
+			stmt.setString(1, usuario.getNome());
+			stmt.setString(2, usuario.getRg());
+			stmt.setString(3, usuario.getCpf());
+			stmt.setDate(4, java.sql.Date.valueOf(usuario.getDataNascimento()));
+			stmt.setString(5, usuario.getSexo() + "");
+			stmt.setBoolean(6, usuario.isPossuiDeficiencia());
+			stmt.setString(7, usuario.getCelular());
+			stmt.setString(8, usuario.getNacionalidade());
+			stmt.setString(9, usuario.getTurno().toString());
+			stmt.setString(10, usuario.getSenha());
+			stmt.setString(11, usuario.getTipo().toString());
+			stmt.setBoolean(12, true);
+			
+			Integer idDisciplina = null;
+			if (usuario.getTipo().equals(TipoUsuarioEnum.PROFESSOR)) {
+				idDisciplina = ((ProfessorVO)usuario).getIdDisciplina();
+			}
+			stmt.setInt(13, idDisciplina);
+			stmt.setInt(14, usuario.getIdUsuario());
+			
+			int linhasAfetadas = stmt.executeUpdate();
+			
+			atualizou = linhasAfetadas > 0;
+			
+			} catch (Exception e) {
+				System.out.println("Erro ao cadastrar usuario: " + e.getMessage());
+			}
+		
+		return atualizou;
+	}
 }
