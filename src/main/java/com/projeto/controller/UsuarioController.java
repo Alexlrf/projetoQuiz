@@ -52,5 +52,15 @@ public class UsuarioController {
 		UsuarioBO usuarioBO = new UsuarioBO();
 		return usuarioBO.consultarTotalPaginas(relatorioUsuario);
 	}
+	
+	public UsuarioVO cadastrar(UsuarioVO usuario) {
+		UsuarioBO usuarioBO = new UsuarioBO();
+		return usuarioBO.cadastrar(usuario);
+	}
+
+	public boolean alterar(UsuarioVO prof) {
+		UsuarioBO usuarioBO = new UsuarioBO();
+		return usuarioBO.alterar(prof);
+	}
 
 }

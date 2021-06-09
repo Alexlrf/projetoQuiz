@@ -2,6 +2,8 @@ package com.projeto.model.bo;
 
 import java.util.List;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import com.projeto.exceptions.SenhaIncorretaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
 import com.projeto.model.dao.UsuarioDAO;
@@ -23,7 +25,7 @@ public class UsuarioBO {
 
 	public List<UsuarioVO> relatorioUsuarioSeletorBO(RelatorioDeUsuarioSeletor relatorioUsuario) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		return usuarioDAO.relatorioUsuarioSeletorDAO(relatorioUsuario);
+		return usuarioDAO.pesquisarPorSeletor(relatorioUsuario);
 	}
 
 	public String excluirUsuarioBO(Integer idUsuarioSelecionado) {
@@ -41,6 +43,16 @@ public class UsuarioBO {
 	public int consultarTotalPaginas(RelatorioDeUsuarioSeletor relatorioUsuario) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		return usuarioDAO.consultarTotalPaginas(relatorioUsuario);
+	}
+	
+	public UsuarioVO cadastrar(UsuarioVO usuario) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		return usuarioDAO.cadastrar(usuario);
+	}
+
+	public boolean alterar(UsuarioVO prof) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		return usuarioDAO.alterar(prof);
 	}
 
 }
