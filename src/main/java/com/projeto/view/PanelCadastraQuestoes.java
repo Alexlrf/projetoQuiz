@@ -34,6 +34,7 @@ import javax.swing.border.LineBorder;
 import com.projeto.controller.AlternativaController;
 import com.projeto.controller.CategoriaController;
 import com.projeto.controller.PerguntaController;
+import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
@@ -81,12 +82,17 @@ public class PanelCadastraQuestoes extends JPanel {
 		/* Preenche o combo de categorias ao iniciar a tela */
 		
 		List<CategoriaVO> listaCategorias = new ArrayList<>();
-		listaCategorias = categoriaController.consultaTodasCategorias(usuarioLogado);
-				
-		for (CategoriaVO categoriaVO : listaCategorias) {
-			comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
-			revalidate();
+		try {
+			listaCategorias = categoriaController.consultaTodasCategorias(usuarioLogado);
+			for (CategoriaVO categoriaVO : listaCategorias) {
+				comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
+				revalidate();
+			}
+			
+		} catch (ErroNaConsultaException e1) {
+			JOptionPane.showMessageDialog(null, "Erro ao consultar categorias!");
 		}
+				
 
 		txtAdicionaCategoria = new JFormattedTextField();
 		txtAdicionaCategoria.addFocusListener(new FocusAdapter() {
@@ -148,7 +154,7 @@ public class PanelCadastraQuestoes extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 					
 					categoriaVO.setDescricaoCategoria(Utils.formataEspacoUnico(txtAdicionaCategoria.getText()).toString().toUpperCase());
-					categoriaVO.setUsuario(usuarioLogado);
+					categoriaVO.setIdUsuario(usuarioLogado.getIdUsuario());
 					try {
 						categoriaController.cadastraCategoria(categoriaVO);
 						JOptionPane.showMessageDialog(null, "Categoria cadastrada com sucesso!", Constants.SUCESSO,

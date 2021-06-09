@@ -3,6 +3,7 @@ package com.projeto.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.CategoriaBO;
 import com.projeto.model.bo.PerguntaBO;
@@ -47,15 +48,15 @@ public class CategoriaController {
 		return categoriaValida;
 	}
 
-	public List<CategoriaVO> consultaTodasCategorias(UsuarioVO usuarioLogado) {
+	public List<CategoriaVO> consultaTodasCategorias(UsuarioVO usuarioLogado) throws ErroNaConsultaException {
 		
 		return categoriaBO.consultaTodasCategorias(usuarioLogado);
 	}
 
 
-	public boolean alteraCategoria(String categoriaEscolhida, String categoriaAlterada) {
+	public String alteraCategoria(String categoriaEscolhida, String categoriaAlterada, Integer idUsuario) {
 		
-		return categoriaBO.alteraCategoria(categoriaEscolhida, categoriaAlterada);
+		return categoriaBO.alteraCategoria(categoriaEscolhida, categoriaAlterada, idUsuario);
 	}
 
 

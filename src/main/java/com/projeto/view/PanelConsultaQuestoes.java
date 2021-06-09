@@ -35,6 +35,7 @@ import org.apache.commons.collections4.map.HashedMap;
 import com.projeto.controller.AlternativaController;
 import com.projeto.controller.CategoriaController;
 import com.projeto.controller.PerguntaController;
+import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
@@ -140,11 +141,15 @@ public class PanelConsultaQuestoes extends JPanel {
 		 * Preenche o combo box com as categorias ao iniciar a tela
 		 * 
 		 */
-		categorias = categoriaController.consultaTodasCategorias(usuarioLogado);
-		for (CategoriaVO categoriaVO : categorias) {
-			comboCategorias.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
-			revalidate();
-			mapCategorias.put(categoriaVO.getIdCategoria(), categoriaVO.getDescricaoCategoria());
+		try {
+			categorias = categoriaController.consultaTodasCategorias(usuarioLogado);
+			for (CategoriaVO categoriaVO : categorias) {
+				comboCategorias.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
+				revalidate();
+				mapCategorias.put(categoriaVO.getIdCategoria(), categoriaVO.getDescricaoCategoria());
+			}
+		} catch (ErroNaConsultaException e1) {
+			JOptionPane.showMessageDialog(null, "Não foi possível consultar as categorias!");
 		}
 
 		JPanel panelBotoes = new JPanel();
@@ -305,7 +310,7 @@ public class PanelConsultaQuestoes extends JPanel {
 
 					switch (opcaoEscolhida) {
 
-					case "CATEGORIA":
+					case "CATEGORIA":										
 						preparaAlteracaoCategoria();
 						break;
 
@@ -387,16 +392,31 @@ public class PanelConsultaQuestoes extends JPanel {
 						categoriaAlterada = Utils.formataEspacoUnico(categoriaAlterada).toUpperCase();
 					}
 
-					boolean alteracaoConfirmada = categoriaController.alteraCategoria(categoriaEscolhida,
-							categoriaAlterada);
-					if (alteracaoConfirmada) {
-						JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
-								JOptionPane.INFORMATION_MESSAGE);
-						comboCategorias.revalidate();
-					} else {
+					
+					try {
+						String mensagem = categoriaController.alteraCategoria(categoriaEscolhida,
+								categoriaAlterada, usuarioLogado.getIdUsuario());
+						
+							JOptionPane.showMessageDialog(null, mensagem, Constants.SUCESSO,
+									JOptionPane.INFORMATION_MESSAGE);
+						
+					} catch (Exception e) {
 						JOptionPane.showMessageDialog(null, "Alteração NÃO realizada!", Constants.ALERTA,
-								JOptionPane.ERROR_MESSAGE, null);
+								JOptionPane.ERROR_MESSAGE, null);					
 					}
+					
+					
+//					
+//					boolean alteracaoConfirmada = categoriaController.alteraCategoria(categoriaEscolhida,
+//							categoriaAlterada);
+//					if (alteracaoConfirmada) {
+//						JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
+//								JOptionPane.INFORMATION_MESSAGE);
+//						comboCategorias.revalidate();
+//					} else {
+//						JOptionPane.showMessageDialog(null, "Alteração NÃO realizada!", Constants.ALERTA,
+//								JOptionPane.ERROR_MESSAGE, null);
+//					}
 
 				} else {
 					JOptionPane.showMessageDialog(null, "Escolha uma categoria!", Constants.ALERTA,
