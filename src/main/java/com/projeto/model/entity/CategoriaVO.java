@@ -6,15 +6,17 @@ public class CategoriaVO {
 	private int idDisciplina;
 	private int idUsuario; 
 	private String descricaoCategoria;
-	
-	public CategoriaVO(int idCategoria, int idDisciplina, int idUsuario, String descricaoCategoria) {
+	private boolean ativada;
+			
+	public CategoriaVO(int idCategoria, int idDisciplina, int idUsuario, String descricaoCategoria, boolean ativada) {
 		super();
 		this.idCategoria = idCategoria;
 		this.idDisciplina = idDisciplina;
 		this.idUsuario = idUsuario;
 		this.descricaoCategoria = descricaoCategoria;
+		this.ativada = ativada;
 	}
-
+	
 	public CategoriaVO() {
 		super();
 	}
@@ -26,7 +28,7 @@ public class CategoriaVO {
 	public void setIdCategoria(int idCategoria) {
 		this.idCategoria = idCategoria;
 	}
-	
+
 	public int getIdDisciplina() {
 		return idDisciplina;
 	}
@@ -34,11 +36,11 @@ public class CategoriaVO {
 	public void setIdDisciplina(int idDisciplina) {
 		this.idDisciplina = idDisciplina;
 	}
-	
+
 	public int getIdUsuario() {
 		return idUsuario;
 	}
-	
+
 	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
 	}
@@ -51,4 +53,12 @@ public class CategoriaVO {
 		this.descricaoCategoria = descricaoCategoria;
 	}
 
+	public boolean isAtivada() {
+		return ativada;
+	}
+
+	public void setAtivada(boolean ativada) {
+		this.ativada = ativada;
+	}
+	
 }

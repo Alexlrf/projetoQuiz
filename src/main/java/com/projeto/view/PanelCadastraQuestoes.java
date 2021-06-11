@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
@@ -39,6 +40,7 @@ import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
@@ -57,7 +59,8 @@ public class PanelCadastraQuestoes extends JPanel {
 	private	JFormattedTextField txtCadastraResposta5;
 	private PerguntaVO perguntaVO = null;
 	private JComboBox comboBoxPerguntas; 
-	public JLabel lblNomeUsuario;
+//	public JLabel lblNomeUsuario;
+	private JLabel lblNomeUsuarioLogado;
 
 	AlternativaController alternativaController = new AlternativaController();
 	CategoriaController categoriaController = new CategoriaController();
@@ -68,9 +71,13 @@ public class PanelCadastraQuestoes extends JPanel {
 	 * Create the panel.
 	 * @param usuario 
 	 */
-	public PanelCadastraQuestoes(UsuarioVO usuarioLogado) {
+	public PanelCadastraQuestoes(ProfessorVO usuarioLogado) {
 		setBorder(new LineBorder(new Color(250, 128, 114), 6));
 		setBackground(new Color(112, 128, 144));
+		
+		lblNomeUsuarioLogado = new JLabel(usuarioLogado.getNome());
+		lblNomeUsuarioLogado.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNomeUsuarioLogado.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		JLabel lblTitulo = new JLabel("Cadastrar Questões");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -152,9 +159,10 @@ public class PanelCadastraQuestoes extends JPanel {
 		btnAdicionaCategoria.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnAdicionaCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					
-					categoriaVO.setDescricaoCategoria(Utils.formataEspacoUnico(txtAdicionaCategoria.getText()).toString().toUpperCase());
-					categoriaVO.setIdUsuario(usuarioLogado.getIdUsuario());
+				categoriaVO.setDescricaoCategoria(Utils.formataEspacoUnico(txtAdicionaCategoria.getText()).toString().toUpperCase());
+				categoriaVO.setIdDisciplina(usuarioLogado.getIdDisciplina());
+				categoriaVO.setIdUsuario(usuarioLogado.getIdUsuario());
+				categoriaVO.setAtivada(true);
 					try {
 						categoriaController.cadastraCategoria(categoriaVO);
 						JOptionPane.showMessageDialog(null, "Categoria cadastrada com sucesso!", Constants.SUCESSO,
@@ -495,9 +503,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		rdbtnOpcaoCorreta5.setFont(new Font("Tahoma", Font.BOLD, 11));
 		buttonGroup.add(rdbtnOpcaoCorreta5);
 		rdbtnOpcaoCorreta5.setBackground(new Color(112, 128, 144));
-
-		lblNomeUsuario = new JLabel("Nome Usuário");
-		lblNomeUsuario.setFont(new Font("Tahoma", Font.BOLD, 14));
+				
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout
 				.createSequentialGroup()
@@ -516,7 +522,7 @@ public class PanelCadastraQuestoes extends JPanel {
 										.addGap(18).addComponent(comboBoxPerguntas, 0, 220, Short.MAX_VALUE))
 								.addGroup(groupLayout.createSequentialGroup()
 										.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-										.addGap(18).addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 212,
+										.addGap(18).addComponent(lblNomeUsuarioLogado, GroupLayout.PREFERRED_SIZE, 212,
 												GroupLayout.PREFERRED_SIZE))))
 						.addGroup(groupLayout.createSequentialGroup().addContainerGap()
 								.addComponent(txtCadastraPergunta, GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE))
@@ -548,7 +554,7 @@ public class PanelCadastraQuestoes extends JPanel {
 								groupLayout.createParallelGroup(Alignment.BASELINE)
 										.addComponent(lblTitulo, GroupLayout.PREFERRED_SIZE, 31,
 												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 29,
+										.addComponent(lblNomeUsuarioLogado, GroupLayout.PREFERRED_SIZE, 29,
 												GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup().addGap(70).addGroup(groupLayout
 								.createParallelGroup(Alignment.LEADING)

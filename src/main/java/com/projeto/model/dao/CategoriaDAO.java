@@ -19,13 +19,14 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 	@Override
 	public CategoriaVO insert(CategoriaVO categoriaVO) throws SQLException {
 		CategoriaVO categoria = new CategoriaVO();
-		String sql = "INSERT INTO categoria (descricao_categoria, id_disciplina, id_usuario) VALUES (?, ?, ?);";
+		String sql = "INSERT INTO categoria (descricao_categoria, id_disciplina, id_usuario, ativada) VALUES (?, ?, ?, ?);";
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
 			stmt.setString(1, categoriaVO.getDescricaoCategoria());
 			stmt.setInt(2, categoriaVO.getIdDisciplina());
 			stmt.setInt(3, categoriaVO.getIdUsuario());
+			stmt.setBoolean(4, true);
 			stmt.executeUpdate();
 			
 			ResultSet id = stmt.getGeneratedKeys();
@@ -96,7 +97,8 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 		CategoriaVO categoriaVO = new CategoriaVO();
 		categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
 		categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
-		
+		categoriaVO.setIdDisciplina(rs.getInt("id_disciplina"));
+		//categoriaVO.setAtivada(rs.getBoolean("ativada"));		
 		return categoriaVO;
 	}
 
@@ -154,9 +156,12 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			
 			if (rs.next()) {
 				
-				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
-				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
-				categoriaVO.setIdUsuario(rs.getInt("id_usuario"));
+				categoriaVO = completeResultset(rs);
+//				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
+//				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
+//				categoriaVO.setIdUsuario(rs.getInt("id_usuario"));
+//				categoriaVO.setIdDisciplina(rs.getInt("id_disciplina"));
+//				categoriaVO.setAtivada(rs.getBoolean("ativada"));
 				
 			}
 			
@@ -205,8 +210,9 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			
 			if (rs.next()) {
 				
-				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
-				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));				
+				categoriaVO = completeResultset(rs);
+//				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
+//				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));				
 			}
 			
 		}catch (SQLException e) {
@@ -227,7 +233,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 					+" INNER JOIN " 
 					+		"categoria on categoria.id_disciplina = disciplina.id_disciplina"
 					+" WHERE "
-					+		"usuario.id_usuario = ?;";		
+					+		"usuario.id_usuario = ? AND categoria.ativada = true;";		
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
@@ -236,8 +242,9 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			ResultSet rs = stmt.executeQuery();			
 			while (rs.next()) {
 				CategoriaVO categoriaVO = new CategoriaVO();
-				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
-				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
+				categoriaVO = completeResultset(rs);
+//				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
+//				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
 				listaCategorias.add(categoriaVO);
 			}
 		} catch (SQLException e) {

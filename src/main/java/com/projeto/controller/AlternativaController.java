@@ -49,6 +49,9 @@ public class AlternativaController {
 		} else if (idBuscado != usuarioLogado.getIdUsuario()) {
 			mensagem = "Não é possível alterar ALTERNATIVA de outro usuário!\n";
 			retorno = false;
+		} else if (idBuscado != usuarioLogado.getIdUsuario()) {
+			mensagem = "Não é possível alterar ALTERNATIVA de outro usuário!\n";
+			retorno = false;
 		} else {
 			alternativaBO.alteraAlternativa(alternativaVO);
 		}
