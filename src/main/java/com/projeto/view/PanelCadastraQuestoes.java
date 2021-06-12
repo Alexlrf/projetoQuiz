@@ -27,18 +27,20 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.UIManager;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
 import com.projeto.controller.AlternativaController;
 import com.projeto.controller.CategoriaController;
 import com.projeto.controller.PerguntaController;
+import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
-import com.projeto.model.entity.UsuarioVO;
+import com.projeto.model.entity.ProfessorVO;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 
@@ -56,7 +58,8 @@ public class PanelCadastraQuestoes extends JPanel {
 	private	JFormattedTextField txtCadastraResposta5;
 	private PerguntaVO perguntaVO = null;
 	private JComboBox comboBoxPerguntas; 
-	public JLabel lblNomeUsuario;
+//	public JLabel lblNomeUsuario;
+	private JLabel lblNomeUsuarioLogado;
 
 	AlternativaController alternativaController = new AlternativaController();
 	CategoriaController categoriaController = new CategoriaController();
@@ -67,9 +70,13 @@ public class PanelCadastraQuestoes extends JPanel {
 	 * Create the panel.
 	 * @param usuario 
 	 */
-	public PanelCadastraQuestoes(UsuarioVO usuarioLogado) {
+	public PanelCadastraQuestoes(ProfessorVO usuarioLogado) {
 		setBorder(new LineBorder(new Color(250, 128, 114), 6));
 		setBackground(new Color(112, 128, 144));
+		
+		lblNomeUsuarioLogado = new JLabel(usuarioLogado.getNome());
+		lblNomeUsuarioLogado.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNomeUsuarioLogado.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		JLabel lblTitulo = new JLabel("Cadastrar Questões");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -81,12 +88,17 @@ public class PanelCadastraQuestoes extends JPanel {
 		/* Preenche o combo de categorias ao iniciar a tela */
 		
 		List<CategoriaVO> listaCategorias = new ArrayList<>();
-		listaCategorias = categoriaController.consultaTodasCategorias(usuarioLogado);
-				
-		for (CategoriaVO categoriaVO : listaCategorias) {
-			comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
-			revalidate();
+		try {
+			listaCategorias = categoriaController.consultaTodasCategorias(usuarioLogado);
+			for (CategoriaVO categoriaVO : listaCategorias) {
+				comboBoxPerguntas.addItem(categoriaVO.getDescricaoCategoria().toUpperCase());
+				revalidate();
+			}
+			
+		} catch (ErroNaConsultaException e1) {
+			JOptionPane.showMessageDialog(null, "Erro ao consultar categorias!");
 		}
+				
 
 		txtAdicionaCategoria = new JFormattedTextField();
 		txtAdicionaCategoria.addFocusListener(new FocusAdapter() {
@@ -146,9 +158,10 @@ public class PanelCadastraQuestoes extends JPanel {
 		btnAdicionaCategoria.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnAdicionaCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					
-					categoriaVO.setDescricaoCategoria(Utils.formataEspacoUnico(txtAdicionaCategoria.getText()).toString().toUpperCase());
-					categoriaVO.setUsuario(usuarioLogado);
+				categoriaVO.setDescricaoCategoria(Utils.formataEspacoUnico(txtAdicionaCategoria.getText()).toString().toUpperCase());
+				categoriaVO.setIdDisciplina(usuarioLogado.getIdDisciplina());
+				categoriaVO.setIdUsuario(usuarioLogado.getIdUsuario());
+				categoriaVO.setAtivada(true);
 					try {
 						categoriaController.cadastraCategoria(categoriaVO);
 						JOptionPane.showMessageDialog(null, "Categoria cadastrada com sucesso!", Constants.SUCESSO,
@@ -489,9 +502,7 @@ public class PanelCadastraQuestoes extends JPanel {
 		rdbtnOpcaoCorreta5.setFont(new Font("Tahoma", Font.BOLD, 11));
 		buttonGroup.add(rdbtnOpcaoCorreta5);
 		rdbtnOpcaoCorreta5.setBackground(new Color(112, 128, 144));
-
-		lblNomeUsuario = new JLabel("Nome Usuário");
-		lblNomeUsuario.setFont(new Font("Tahoma", Font.BOLD, 14));
+				
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout
 				.createSequentialGroup()
@@ -510,7 +521,7 @@ public class PanelCadastraQuestoes extends JPanel {
 										.addGap(18).addComponent(comboBoxPerguntas, 0, 220, Short.MAX_VALUE))
 								.addGroup(groupLayout.createSequentialGroup()
 										.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-										.addGap(18).addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 212,
+										.addGap(18).addComponent(lblNomeUsuarioLogado, GroupLayout.PREFERRED_SIZE, 212,
 												GroupLayout.PREFERRED_SIZE))))
 						.addGroup(groupLayout.createSequentialGroup().addContainerGap()
 								.addComponent(txtCadastraPergunta, GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE))
@@ -542,7 +553,7 @@ public class PanelCadastraQuestoes extends JPanel {
 								groupLayout.createParallelGroup(Alignment.BASELINE)
 										.addComponent(lblTitulo, GroupLayout.PREFERRED_SIZE, 31,
 												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 29,
+										.addComponent(lblNomeUsuarioLogado, GroupLayout.PREFERRED_SIZE, 29,
 												GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup().addGap(70).addGroup(groupLayout
 								.createParallelGroup(Alignment.LEADING)
@@ -568,15 +579,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				.addComponent(txtCadastraResposta5, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
 				.addGap(45).addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 				.addGap(9)));
-		panelBotoes.setLayout(new GridLayout(1, 0, 10, 5));
-
-		JButton btnNewButton_4 = new JButton("New button");		
-		formataBotao(btnNewButton_4);
-		panelBotoes.add(btnNewButton_4);
-
-		JButton btnNewButton_3 = new JButton("New button");
-		formataBotao(btnNewButton_3);
-		panelBotoes.add(btnNewButton_3);
+		panelBotoes.setLayout(new GridLayout(1, 0, 20, 20));
 
 		JButton btnNewButton_2 = new JButton("Limpar");
 		formataBotao(btnNewButton_2);

@@ -285,4 +285,29 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			throw new ErroNoCadastroException("Erro ao acessar o Banco de Dados\n Tente Novamente!");
 		}
 	}
+
+	public int buscaIdUsuario(int idPergunta) {
+		int id = 0;
+		String sql = "SELECT "
+				+		 "pergunta.id_pergunta, pergunta.id_usuario"
+				+ " FROM "
+				+ 		 "pergunta"
+				+ " INNER JOIN "
+				+ 		"usuario ON pergunta.id_usuario = usuario.id_usuario"
+				+ " WHERE pergunta.id_pergunta = ?";
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
+			
+			stmt.setInt(1, idPergunta);
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				id = rs.getInt("pergunta.id_usuario");				
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao consultar por texto digitado!\n"+e.getMessage());
+		}		
+		return id;
+	}
 }

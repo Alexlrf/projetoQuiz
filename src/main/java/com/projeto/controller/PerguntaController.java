@@ -7,6 +7,7 @@ import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.bo.PerguntaBO;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 import com.projeto.seletor.PerguntaSeletor;
@@ -57,17 +58,19 @@ public class PerguntaController {
 		return perguntaValida;
 	}
 
-	public void alteraPergunta(PerguntaVO perguntaAlterada) throws ErroNoCadastroException {
+	public void alteraPergunta(PerguntaVO perguntaAlterada, UsuarioVO usuarioLogado) throws ErroNoCadastroException {
 		String mensagem = "";
 
 		if (!Utils.stringValida(perguntaAlterada.getCategoria().getDescricaoCategoria())) {
 			mensagem = "Falha ao encontrar CATEGORIA\n";
-		} else if(!Utils.stringValida(perguntaAlterada.getTextoPergunta())){
+		} else if (!Utils.stringValida(perguntaAlterada.getTextoPergunta())){
 			mensagem += "Falha ao encontrar TEXTO DA PERGUNTA\n";
-		} else if(perguntaAlterada.getIdUsuario() < 1){
+		} else if (perguntaAlterada.getIdUsuario() < 1){
 			mensagem += "Falha ao encontrar USUÁRIO\n";
-		} else if(perguntaAlterada.getIdPergunta() < 1){
+		} else if (perguntaAlterada.getIdPergunta() < 1){
 			mensagem += "Falha ao encontrar IDENTIFICADOR DA PERGUNTA\n";
+		} else if (perguntaAlterada.getIdPergunta() != usuarioLogado.getIdUsuario()){
+			mensagem += "Não é possível alterar PERGUNTA de outro usuário\n";
 		} else {
 			perguntaBO.alteraPergunta(perguntaAlterada);
 		}

@@ -12,20 +12,20 @@ import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Banco;
 import com.projeto.repository.BaseDao;
-import com.projeto.seletor.PerguntaSeletor;
 
 public class CategoriaDAO implements BaseDao<CategoriaVO>{
 
 	@Override
 	public CategoriaVO insert(CategoriaVO categoriaVO) throws SQLException {
 		CategoriaVO categoria = new CategoriaVO();
-		String sql = "INSERT INTO categoria (descricao_categoria, id_disciplina, id_usuario) VALUES (?, ?, ?);";
+		String sql = "INSERT INTO categoria (descricao_categoria, id_disciplina, id_usuario, ativada) VALUES (?, ?, ?, ?);";
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
 			stmt.setString(1, categoriaVO.getDescricaoCategoria());
 			stmt.setInt(2, categoriaVO.getIdDisciplina());
-			stmt.setInt(3, categoriaVO.getUsuario().getIdUsuario());
+			stmt.setInt(3, categoriaVO.getIdUsuario());
+			stmt.setBoolean(4, true);
 			stmt.executeUpdate();
 			
 			ResultSet id = stmt.getGeneratedKeys();
@@ -95,8 +95,9 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 	public CategoriaVO completeResultset(ResultSet rs) throws SQLException {
 		CategoriaVO categoriaVO = new CategoriaVO();
 		categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
+		categoriaVO.setIdUsuario(rs.getInt("id_usuario"));
 		categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
-		
+		categoriaVO.setIdDisciplina(rs.getInt("id_disciplina"));
 		return categoriaVO;
 	}
 
@@ -152,11 +153,8 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			stmt.setString(1, descricaoCategoria);
 			ResultSet rs = stmt.executeQuery();
 			
-			if (rs.next()) {
-				
-				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
-				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
-				
+			if (rs.next()) {				
+				categoriaVO = completeResultset(rs);			
 			}
 			
 		}catch (SQLException e) {
@@ -202,10 +200,8 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			stmt.setInt(1, p.getIdPergunta());
 			ResultSet rs = stmt.executeQuery();
 			
-			if (rs.next()) {
-				
-				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
-				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));				
+			if (rs.next()) {				
+				categoriaVO = completeResultset(rs);			
 			}
 			
 		}catch (SQLException e) {
@@ -218,7 +214,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 	public List<CategoriaVO> buscaCategoriasUsuario(UsuarioVO usuarioLogado) {	
 		List<CategoriaVO> listaCategorias = new ArrayList<>();
 		String sql = "SELECT "
-					+ 		"disciplina.id_disciplina, categoria.id_categoria, categoria.descricao_categoria"
+					+ 		"disciplina.id_disciplina, categoria.id_categoria, categoria.descricao_categoria, usuario.id_usuario"
 					+" FROM "
 					+		"usuario"
 					+" INNER JOIN " 
@@ -226,7 +222,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 					+" INNER JOIN " 
 					+		"categoria on categoria.id_disciplina = disciplina.id_disciplina"
 					+" WHERE "
-					+		"usuario.id_usuario = ?;";		
+					+		"usuario.id_usuario = ? AND categoria.ativada = true;";		
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
@@ -235,14 +231,30 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			ResultSet rs = stmt.executeQuery();			
 			while (rs.next()) {
 				CategoriaVO categoriaVO = new CategoriaVO();
-				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
-				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
+				categoriaVO = completeResultset(rs);
 				listaCategorias.add(categoriaVO);
 			}
 		} catch (SQLException e) {
 			System.out.println("Erro na consulta troca para disciplina!");
 		}
 		return listaCategorias;
+	}
+
+	public boolean excluiCategoria(String categoriaEscolhida) {
+		boolean categoriaExcluida = true;
+		String sql = "UPDATE categoria SET ativada = false WHERE descricao_categoria = ?";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
+			
+			stmt.setString(1, categoriaEscolhida);
+			stmt.executeUpdate();			
+			
+		} catch (SQLException e) {
+			System.out.println("Erro na exclusão de categoria!");
+			categoriaExcluida = false;
+		}		
+		return categoriaExcluida;
 	}	
 	
 }

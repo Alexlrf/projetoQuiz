@@ -47,7 +47,7 @@ public class AlternativaDAO implements BaseDao<AlternativaVO>{
 	@Override
 	public AlternativaVO completeResultset(ResultSet rs) throws SQLException {
 		AlternativaVO alternativaVO = new AlternativaVO();
-		
+		alternativaVO.setIdAlternativa(rs.getInt("id_alternativa"));
 		alternativaVO.setIdPergunta(rs.getInt("id_pergunta"));
 		alternativaVO.setTexto(rs.getString("texto_alternativa"));
 		alternativaVO.setAlternativaCorreta(rs.getString("alternativa_correta"));

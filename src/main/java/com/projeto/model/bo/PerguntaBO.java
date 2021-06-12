@@ -66,4 +66,9 @@ public class PerguntaBO {
 		perguntaDAO.alteraPergunta(perguntaAlterada);			
 		 		
 	}
+
+
+	public int buscaIdUsuario(int idPergunta) {
+		return perguntaDAO.buscaIdUsuario(idPergunta);
+	}
 }

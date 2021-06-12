@@ -3,6 +3,8 @@ package com.projeto.model.bo;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import com.projeto.model.dao.AlternativaDAO;
 import com.projeto.model.dao.DisciplinaDAO;
 import com.projeto.model.dao.PerguntaDAO;
@@ -44,8 +46,11 @@ public class AlternativaBO {
 	}
 
 	public List<AlternativaVO> buscaAlternativas(PerguntaVO pergunta) {
-		// TODO Auto-generated method stub
 		return alternativaDAO.buscaAlternativas(pergunta);
+	}
+
+	public void alteraAlternativa(AlternativaVO alternativaVO) {
+		JOptionPane.showMessageDialog(null, "Certo!\n Desenvolver a partir da BO");		
 	}
 
 }
