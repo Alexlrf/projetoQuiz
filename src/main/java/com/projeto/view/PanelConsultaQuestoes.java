@@ -294,6 +294,64 @@ public class PanelConsultaQuestoes extends JPanel {
 		});
 
 		JButton btnExcluir = new JButton("EXCLUIR");
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String[] opcoes = { "Escolha uma opção", "CATEGORIA", "PERGUNTA" };
+				String opcaoEscolhida = (String) JOptionPane.showInputDialog(null, null, "ECLUIR",
+						JOptionPane.QUESTION_MESSAGE, null, opcoes, opcoes[0]);
+
+				if (opcaoEscolhida != null && !opcaoEscolhida.equalsIgnoreCase("Escolha uma opção")) {
+
+					switch (opcaoEscolhida) {
+
+					case "CATEGORIA":
+						preparaExclusaoCategoria();
+						break;
+
+					case "PERGUNTA":
+						preparaExclusaoPergunta();
+						break;
+					default:
+						break;
+					}
+				}
+			}
+
+			private void preparaExclusaoPergunta() {
+				// TODO Auto-generated method stub
+
+			}
+
+			private void preparaExclusaoCategoria() {
+				if (comboCategorias.getSelectedIndex() > 0) {
+					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
+					
+					int opcaoEscolhida = JOptionPane.showConfirmDialog(null, "Deseja DELETAR a categoria?\n"+categoriaEscolhida,
+							"EXCLUSÃO DE CATEGORIA", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+							null);
+
+					if (opcaoEscolhida != JOptionPane.YES_OPTION) {
+						JOptionPane.showMessageDialog(null, "Exclusão cancelada!");
+
+					} else if (opcaoEscolhida == JOptionPane.YES_OPTION) { 					
+					
+						try {
+							categoriaController.excluiCategoria(categoriaEscolhida, usuarioLogado.getIdUsuario());
+							JOptionPane.showMessageDialog(null, "Exclusão realizada", Constants.SUCESSO,
+									JOptionPane.INFORMATION_MESSAGE);
+						} catch (ErroNoCadastroException mensagem) {
+							JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
+									JOptionPane.ERROR_MESSAGE, null);
+						}
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Selecione uma CATEGORIA para excluir", Constants.ALERTA,
+							JOptionPane.ERROR_MESSAGE, null);
+					
+				}
+			}
+		});
 		formataBotao(btnExcluir);
 
 		btnExcluir.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -310,7 +368,7 @@ public class PanelConsultaQuestoes extends JPanel {
 
 					switch (opcaoEscolhida) {
 
-					case "CATEGORIA":										
+					case "CATEGORIA":
 						preparaAlteracaoCategoria();
 						break;
 
@@ -332,45 +390,48 @@ public class PanelConsultaQuestoes extends JPanel {
 				AlternativaVO alternativaVO = new AlternativaVO();
 				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
 				alternativaSelecionada = tableAlternativas.getSelectedRow() - 1;
-				
+
 				if (alternativaSelecionada < 0 || perguntaSelecionada < 0) {
 					JOptionPane.showMessageDialog(null, "Selecione uma ALTERNATIVA para alterar", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
 				} else {
 					alternativaVO = alternativas.get(alternativaSelecionada);
-							
+
 					String alternativaAlterada = JOptionPane.showInputDialog(null, alternativaVO.getTexto(),
 							"Digite a ALTERNATIVA desejada!", JOptionPane.QUESTION_MESSAGE);
 
 					if (Utils.stringValida(alternativaAlterada)) {
 						alternativaVO.setTexto(Utils.formataEspacoUnico(alternativaAlterada.toUpperCase()).toString());
 
-						int opcao = JOptionPane.showConfirmDialog(null, "Esta é a alternativa correta?", "ALTERAÇÃO DE ALTERNATIVA",
-								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);					
+						int opcao = JOptionPane.showConfirmDialog(null, "Esta é a alternativa correta?",
+								"ALTERAÇÃO DE ALTERNATIVA", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+								null);
 
 						if (opcao != JOptionPane.YES_OPTION) {
 							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
-							
-						} else if (opcao == JOptionPane.YES_OPTION) {	
+
+						} else if (opcao == JOptionPane.YES_OPTION) {
 							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
-							
+
 							for (AlternativaVO alternativaVO2 : alternativas) {
-								if (alternativaVO2.getAlternativaCorreta().equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
-									JOptionPane.showMessageDialog(null, "Verifique! \nJá existe uma alternativa correta!", Constants.ALERTA,
+								if (alternativaVO2.getAlternativaCorreta()
+										.equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
+									JOptionPane.showMessageDialog(null,
+											"Verifique! \nJá existe uma alternativa correta!", Constants.ALERTA,
 											JOptionPane.INFORMATION_MESSAGE);
 									break;
 								}
 							}
 						}
-							
-							try {
-								alternativaController.alteraAlternativa(alternativaVO, usuarioLogado);
-								JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
-										JOptionPane.INFORMATION_MESSAGE);
-							} catch (ErroNoCadastroException mensagem) {
-								JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
-										JOptionPane.ERROR_MESSAGE, null);
-							}
+
+						try {
+							alternativaController.alteraAlternativa(alternativaVO, usuarioLogado);
+							JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
+									JOptionPane.INFORMATION_MESSAGE);
+						} catch (ErroNoCadastroException mensagem) {
+							JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
+									JOptionPane.ERROR_MESSAGE, null);
+						}
 
 					} else {
 						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
@@ -391,17 +452,17 @@ public class PanelConsultaQuestoes extends JPanel {
 					} else {
 						categoriaAlterada = Utils.formataEspacoUnico(categoriaAlterada).toUpperCase();
 					}
-					
+
 					try {
-						String mensagem = categoriaController.alteraCategoria(categoriaEscolhida,
-								categoriaAlterada, usuarioLogado.getIdUsuario());
-						
-							JOptionPane.showMessageDialog(null, mensagem, Constants.SUCESSO,
-									JOptionPane.INFORMATION_MESSAGE);
-						
+						String mensagem = categoriaController.alteraCategoria(categoriaEscolhida, categoriaAlterada,
+								usuarioLogado.getIdUsuario());
+
+						JOptionPane.showMessageDialog(null, mensagem, Constants.SUCESSO,
+								JOptionPane.INFORMATION_MESSAGE);
+
 					} catch (Exception e) {
 						JOptionPane.showMessageDialog(null, "Alteração NÃO realizada!", Constants.ALERTA,
-								JOptionPane.ERROR_MESSAGE, null);					
+								JOptionPane.ERROR_MESSAGE, null);
 					}
 
 				} else {

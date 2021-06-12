@@ -71,4 +71,25 @@ public class CategoriaBO {
  		return categoriaDAO.buscaCategoriaPorDescricao(descricaoCategoria);
 	}
 
+	public boolean excluiCategoria(String categoriaEscolhida, Integer idUsuario) throws ErroNoCadastroException {
+		String mensagem = "";
+		boolean retorno = true;
+		categoria = categoriaDAO.buscaCategoriaPorDescricao(categoriaEscolhida);
+		if (categoria.getIdUsuario() != idUsuario) {
+			mensagem = "Não é possível excluir categoria cadastrada por outro usuário!";
+			retorno = false;
+			
+		} else if (!categoriaDAO.excluiCategoria(categoriaEscolhida)){
+			mensagem = "Não foi possível excluir categoria!";
+			retorno = false;
+		} else {
+			
+		}
+		
+		if (Utils.stringValida(mensagem)) {
+			throw new ErroNoCadastroException(mensagem);
+		}		
+		return retorno;
+	}
+
 }

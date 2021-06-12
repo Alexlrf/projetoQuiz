@@ -64,4 +64,20 @@ public class CategoriaController {
 				
 		return categoriaBO.buscaCategoriaPorDescricao(descricaoCategoria);
 	}
+
+	public void excluiCategoria(String categoriaEscolhida, Integer idUsuario) throws ErroNoCadastroException {
+		String mensagem = "";
+		
+		if (!Utils.stringValida(categoriaEscolhida)) {
+			mensagem = "Erro ao encontrar CATEGORIA!";
+		} else {
+			if (!categoriaBO.excluiCategoria(categoriaEscolhida, idUsuario)) {
+				mensagem = "Erro ao excluir CATEGORIA!";
+			}
+		}
+		
+		if (Utils.stringValida(mensagem)) {
+			throw new ErroNoCadastroException(mensagem);
+		}
+	}
 }

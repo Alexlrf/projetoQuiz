@@ -96,9 +96,9 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 	public CategoriaVO completeResultset(ResultSet rs) throws SQLException {
 		CategoriaVO categoriaVO = new CategoriaVO();
 		categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
+		categoriaVO.setIdUsuario(rs.getInt("id_usuario"));
 		categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
 		categoriaVO.setIdDisciplina(rs.getInt("id_disciplina"));
-		//categoriaVO.setAtivada(rs.getBoolean("ativada"));		
 		return categoriaVO;
 	}
 
@@ -154,15 +154,8 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			stmt.setString(1, descricaoCategoria);
 			ResultSet rs = stmt.executeQuery();
 			
-			if (rs.next()) {
-				
-				categoriaVO = completeResultset(rs);
-//				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
-//				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
-//				categoriaVO.setIdUsuario(rs.getInt("id_usuario"));
-//				categoriaVO.setIdDisciplina(rs.getInt("id_disciplina"));
-//				categoriaVO.setAtivada(rs.getBoolean("ativada"));
-				
+			if (rs.next()) {				
+				categoriaVO = completeResultset(rs);			
 			}
 			
 		}catch (SQLException e) {
@@ -208,11 +201,8 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			stmt.setInt(1, p.getIdPergunta());
 			ResultSet rs = stmt.executeQuery();
 			
-			if (rs.next()) {
-				
-				categoriaVO = completeResultset(rs);
-//				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
-//				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));				
+			if (rs.next()) {				
+				categoriaVO = completeResultset(rs);			
 			}
 			
 		}catch (SQLException e) {
@@ -225,7 +215,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 	public List<CategoriaVO> buscaCategoriasUsuario(UsuarioVO usuarioLogado) {	
 		List<CategoriaVO> listaCategorias = new ArrayList<>();
 		String sql = "SELECT "
-					+ 		"disciplina.id_disciplina, categoria.id_categoria, categoria.descricao_categoria"
+					+ 		"disciplina.id_disciplina, categoria.id_categoria, categoria.descricao_categoria, usuario.id_usuario"
 					+" FROM "
 					+		"usuario"
 					+" INNER JOIN " 
@@ -243,14 +233,29 @@ public class CategoriaDAO implements BaseDao<CategoriaVO>{
 			while (rs.next()) {
 				CategoriaVO categoriaVO = new CategoriaVO();
 				categoriaVO = completeResultset(rs);
-//				categoriaVO.setIdCategoria(rs.getInt("id_categoria"));
-//				categoriaVO.setDescricaoCategoria(rs.getString("descricao_categoria"));
 				listaCategorias.add(categoriaVO);
 			}
 		} catch (SQLException e) {
 			System.out.println("Erro na consulta troca para disciplina!");
 		}
 		return listaCategorias;
+	}
+
+	public boolean excluiCategoria(String categoriaEscolhida) {
+		boolean categoriaExcluida = true;
+		String sql = "UPDATE categoria SET ativada = false WHERE descricao_categoria = ?";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
+			
+			stmt.setString(1, categoriaEscolhida);
+			stmt.executeUpdate();			
+			
+		} catch (SQLException e) {
+			System.out.println("Erro na exclusão de categoria!");
+			categoriaExcluida = false;
+		}		
+		return categoriaExcluida;
 	}	
 	
 }
