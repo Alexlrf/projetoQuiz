@@ -310,4 +310,36 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 		}		
 		return id;
 	}
+
+	public int consultarTotalPaginas(PerguntaSeletor perguntaSeletor) {
+		int totalPerguntas = 0;
+		
+		String sql = "SELECT count(*) FROM pergunta p";
+		
+		if (perguntaSeletor.temFiltro()) {
+			sql = criarFiltros(perguntaSeletor, sql);
+		}
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				totalPerguntas = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao consultar total de paginas: " + e.getMessage());
+		} 
+		
+		int totalPaginas = totalPerguntas / perguntaSeletor.getLimite();
+		int resto = totalPerguntas % perguntaSeletor.getLimite();
+		
+		if (resto > 0) {
+			totalPaginas++;
+		}
+		
+		return totalPaginas;
+	}
 }

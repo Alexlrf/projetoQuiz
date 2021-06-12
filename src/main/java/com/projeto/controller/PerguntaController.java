@@ -80,6 +80,10 @@ public class PerguntaController {
 		}
 		
 	}
+
+	public int consultarTotalPaginas(PerguntaSeletor perguntaSeletor) {
+		return perguntaBO.consultarTotalPaginas(perguntaSeletor);
+	}
 }
 
 

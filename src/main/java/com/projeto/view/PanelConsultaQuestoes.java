@@ -49,6 +49,7 @@ import com.projeto.seletor.PerguntaSeletor;
 
 public class PanelConsultaQuestoes extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private static final int TAMANHO_PAGINA = 10;
 
 	private String[] nomeColunasAlternativas = { "A L T E R N A T I V A ", "S T A T U S" };
 	private String[] nomeColunasPerguntas = { "P E R G U N T A", "C A T E G O R I A" };
@@ -64,8 +65,13 @@ public class PanelConsultaQuestoes extends JPanel {
 	private JComboBox comboCategorias;
 	private JTable tableAlternativas;
 	private int perguntaSelecionada;
+	private JButton btnAvancaPagina;
+	private JButton btnVoltaPagina;
 	private JLabel lblNomeUsuario;
 	private JTable tableConsulta;
+	private int paginaAtual = 1;
+	private JLabel lblPagina;
+	private int paginas;
 
 	Map<Integer, String> mapCategorias = new HashedMap<>();
 
@@ -184,68 +190,99 @@ public class PanelConsultaQuestoes extends JPanel {
 		chckbxMinhasPerguntas = new JCheckBox("Minhas Perguntas");
 		chckbxMinhasPerguntas.setFont(new Font("Tahoma", Font.BOLD, 11));
 		chckbxMinhasPerguntas.setBackground(new Color(112, 128, 144));
+		
+		btnAvancaPagina = new JButton("->");
+		btnAvancaPagina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAvancaPagina.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		btnVoltaPagina = new JButton("<-");
+		btnVoltaPagina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnVoltaPagina.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		lblPagina = new JLabel("      ");
+		lblPagina.setFont(new Font("Tahoma", Font.BOLD, 11));
 
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout
-				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createSequentialGroup()
-												.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 775,
-														Short.MAX_VALUE)
-												.addContainerGap())
-										.addGroup(groupLayout
-												.createSequentialGroup()
-												.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addContainerGap())
-										.addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout
-												.createParallelGroup(Alignment.TRAILING)
-												.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 775,
-														Short.MAX_VALUE)
-												.addGroup(groupLayout.createSequentialGroup()
-														.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 384,
-																Short.MAX_VALUE)
-														.addGap(50)
-														.addComponent(comboCategorias, 0, 341, Short.MAX_VALUE)))
-												.addContainerGap())
-										.addGroup(groupLayout.createSequentialGroup()
-												.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
-												.addGap(54)
-												.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128,
-														GroupLayout.PREFERRED_SIZE)
-												.addGap(26))
-										.addGroup(groupLayout.createSequentialGroup()
-												.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 87,
-														GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.UNRELATED)
-												.addComponent(chckbxMinhasPerguntas, GroupLayout.PREFERRED_SIZE, 153,
-														GroupLayout.PREFERRED_SIZE)
-												.addContainerGap())
-										.addGroup(groupLayout
-												.createSequentialGroup().addComponent(lblAlternativas,
-														GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-												.addContainerGap()))));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup().addContainerGap()
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+							.addGap(54)
+							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
+							.addGap(26))
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(chckbxMinhasPerguntas, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 471, Short.MAX_VALUE)
+							.addComponent(btnVoltaPagina)
+							.addGap(13)
+							.addComponent(lblPagina)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnAvancaPagina)
+							.addGap(28))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+									.addGap(50)
+									.addComponent(comboCategorias, 0, 341, Short.MAX_VALUE)))
+							.addContainerGap())))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblTitulo, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(comboCategorias, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup().addGap(1).addComponent(textFieldBusca,
-								GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
-				.addGap(33)
-				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(lblPerguntas)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(comboCategorias, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(1)
+							.addComponent(textFieldBusca, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
+					.addGap(33)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblPerguntas)
 						.addComponent(chckbxMinhasPerguntas))
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE).addGap(11)
-				.addComponent(lblAlternativas).addGap(18)
-				.addComponent(tableAlternativas, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE).addGap(28)
-				.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap()));
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+					.addGap(18)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnAvancaPagina)
+								.addComponent(btnVoltaPagina)
+								.addComponent(lblPagina, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
+							.addGap(18))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblAlternativas)
+							.addPreferredGap(ComponentPlacement.UNRELATED)))
+					.addComponent(tableAlternativas, GroupLayout.PREFERRED_SIZE, 36, Short.MAX_VALUE)
+					.addGap(28)
+					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
 		panelBotoes.setLayout(new GridLayout(1, 0, 10, 10));
 
 		JButton btnGerarXls = new JButton("   Salvar Excel");
@@ -547,6 +584,8 @@ public class PanelConsultaQuestoes extends JPanel {
 				limpaTabelaPerguntas();
 				limpaTabelaAlternativas();
 				PerguntaSeletor perguntaSeletor = new PerguntaSeletor();
+				perguntaSeletor.setPagina(paginaAtual);
+				perguntaSeletor.setLimite(TAMANHO_PAGINA);
 
 				if (Utils.stringValida(textFieldBusca.getText().toString().trim())) {
 					perguntaSeletor.setTexto(Utils.formataEspacoUnico(textFieldBusca.getText().toString()));
@@ -574,6 +613,7 @@ public class PanelConsultaQuestoes extends JPanel {
 
 				try {
 					perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
+					paginas = perguntaController.consultarTotalPaginas(perguntaSeletor);
 
 					if (perguntas.size() != 0 || perguntas != null) {
 						preencherTabelaPerguntas(perguntas);
@@ -640,6 +680,11 @@ public class PanelConsultaQuestoes extends JPanel {
 		tableConsulta.getColumnModel().getColumn(0).setPreferredWidth(650);
 		Font f1 = new Font(Font.SERIF, Font.PLAIN, 14);
 
+	}
+	
+	private void verificarBotoesPaginas() {
+		btnVoltaPagina.setEnabled(paginaAtual > 1);
+		btnAvancaPagina.setEnabled(paginaAtual < paginas);
 	}
 
 	public static <T, E> T getChavePorValor(Map<T, E> map, E value) {

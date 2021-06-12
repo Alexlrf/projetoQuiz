@@ -71,4 +71,9 @@ public class PerguntaBO {
 	public int buscaIdUsuario(int idPergunta) {
 		return perguntaDAO.buscaIdUsuario(idPergunta);
 	}
+
+
+	public int consultarTotalPaginas(PerguntaSeletor perguntaSeletor) {
+		return perguntaDAO.consultarTotalPaginas(perguntaSeletor);
+	}
 }
