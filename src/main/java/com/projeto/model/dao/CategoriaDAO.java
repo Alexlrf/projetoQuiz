@@ -12,7 +12,6 @@ import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Banco;
 import com.projeto.repository.BaseDao;
-import com.projeto.seletor.PerguntaSeletor;
 
 public class CategoriaDAO implements BaseDao<CategoriaVO>{
 

@@ -27,9 +27,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 
 import com.projeto.controller.AlternativaController;
@@ -41,7 +41,6 @@ import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.CategoriaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.ProfessorVO;
-import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 
@@ -580,15 +579,7 @@ public class PanelCadastraQuestoes extends JPanel {
 				.addComponent(txtCadastraResposta5, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
 				.addGap(45).addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 				.addGap(9)));
-		panelBotoes.setLayout(new GridLayout(1, 0, 10, 5));
-
-		JButton btnNewButton_4 = new JButton("New button");		
-		formataBotao(btnNewButton_4);
-		panelBotoes.add(btnNewButton_4);
-
-		JButton btnNewButton_3 = new JButton("New button");
-		formataBotao(btnNewButton_3);
-		panelBotoes.add(btnNewButton_3);
+		panelBotoes.setLayout(new GridLayout(1, 0, 20, 20));
 
 		JButton btnNewButton_2 = new JButton("Limpar");
 		formataBotao(btnNewButton_2);
