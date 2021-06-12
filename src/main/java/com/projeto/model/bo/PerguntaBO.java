@@ -71,4 +71,9 @@ public class PerguntaBO {
 	public int buscaIdUsuario(int idPergunta) {
 		return perguntaDAO.buscaIdUsuario(idPergunta);
 	}
+
+
+	public boolean excluiPergunta(PerguntaVO perguntaExcluida) {		
+		return perguntaDAO.excluiPergunta(perguntaExcluida.getIdPergunta());
+	}
 }

@@ -71,6 +71,8 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 	public PerguntaVO completeResultset(ResultSet rs) throws SQLException {
 		PerguntaVO perguntaVO = new PerguntaVO();
 		
+		perguntaVO.setIdDisciplina(rs.getInt("id_disciplina"));
+		perguntaVO.setIdUsuario(rs.getInt("id_usuario"));
 		perguntaVO.setTextoPergunta(rs.getString("texto_pergunta"));				
 		perguntaVO.setIdPergunta(rs.getInt("id_pergunta"));
 		return perguntaVO;		
@@ -87,8 +89,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 				+ " INNER JOIN	"
 						+ "categoria on categoria.id_categoria = pergunta.id_categoria"
 				+ "	WHERE "
-						+ "pergunta.id_categoria = ?";
-		String sqlCategoria = "";
+						+ "pergunta.id_categoria = ? AND pergunta.pergunta_ativada = true;";
 				
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
@@ -207,7 +208,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			sql += "p.id_usuario = " + perguntaSeletor.getIdUsuario() ;
 			primeiro = false;
 		}		
-		return sql;
+		return sql+ " AND pergunta_ativada = true;";
 	}
 
 	public CategoriaVO buscaIdcategoria(String categoria) {
@@ -309,5 +310,22 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			System.out.println("Erro ao consultar por texto digitado!\n"+e.getMessage());
 		}		
 		return id;
+	}
+
+	public boolean excluiPergunta(int idPergunta) {
+		boolean perguntaExcluida = true;
+		String sql = "UPDATE pergunta SET pergunta_ativada = false WHERE id_pergunta = ?;";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
+			
+			stmt.setInt(1, idPergunta);
+			stmt.executeUpdate();			
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao EXCLUIR pergunta\n"+e.getMessage());
+			perguntaExcluida = false;
+		}		
+		return perguntaExcluida;
 	}
 }
