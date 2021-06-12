@@ -101,17 +101,17 @@ INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CE
 
 
 
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'GIT / GITHUB', true);
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'SELETORES', true);
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'INTERFACES', true);
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'EXCEÇÕES', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'GIT / GITHUB', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'SELETORES', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'INTERFACES', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'EXCEÇÕES', true);
 
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 2, 'ORIENTAÇÃO A OBJETOS', true);
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 2, 'POLIMORFISMO', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 2, 'ORIENTAÇÃO A OBJETOS', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 2, 'POLIMORFISMO', true);
 
 
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(2, 3, 'TIPOS DE SISTEMAS ', true);
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(2, 3, 'AMBIENTES OPERACIONAIS', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(2, 3, 'TIPOS DE SISTEMAS ', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(2, 3, 'AMBIENTES OPERACIONAIS', true);
 
 
 INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 5, 1, 'O QUE É ABSTRAÇÃO?', true);
