@@ -335,7 +335,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				String[] opcoes = { "Escolha uma opção", "CATEGORIA", "PERGUNTA" };
-				String opcaoEscolhida = (String) JOptionPane.showInputDialog(null, null, "ECLUIR",
+				String opcaoEscolhida = (String) JOptionPane.showInputDialog(null, null, "EXCLUIR",
 						JOptionPane.QUESTION_MESSAGE, null, opcoes, opcoes[0]);
 
 				if (opcaoEscolhida != null && !opcaoEscolhida.equalsIgnoreCase("Escolha uma opção")) {
@@ -356,9 +356,26 @@ public class PanelConsultaQuestoes extends JPanel {
 			}
 
 			private void preparaExclusaoPergunta() {
-				// TODO Auto-generated method stub
+				PerguntaVO perguntaExcluida = new PerguntaVO();
+				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
 
+				if (perguntaSelecionada < 0) {
+					JOptionPane.showMessageDialog(null, "Selecione uma PERGUNTA para excluir", Constants.ALERTA,
+							JOptionPane.ERROR_MESSAGE, null);
+				} else {
+					
+					try {
+						perguntaExcluida = perguntas.get(perguntaSelecionada);
+						perguntaController.excluiPergunta(perguntaExcluida , usuarioLogado.getIdUsuario());
+						JOptionPane.showMessageDialog(null, "Exclusão realizada", Constants.SUCESSO,
+								JOptionPane.INFORMATION_MESSAGE);
+					} catch (ErroNoCadastroException mensagem) {
+						JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
+								JOptionPane.ERROR_MESSAGE, null);
+					}
+				}
 			}
+				
 
 			private void preparaExclusaoCategoria() {
 				if (comboCategorias.getSelectedIndex() > 0) {
@@ -509,7 +526,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			}
 
 			private void preparaAlteracaoPergunta() {
-				PerguntaVO pergunta = new PerguntaVO();
+				PerguntaVO perguntaOriginal = new PerguntaVO();
 				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
 				PerguntaVO perguntaAlterada = new PerguntaVO();
 
@@ -517,11 +534,11 @@ public class PanelConsultaQuestoes extends JPanel {
 					JOptionPane.showMessageDialog(null, "Selecione uma PERGUNTA para alterar", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
 				} else {
-					pergunta = perguntas.get(perguntaSelecionada);
+					perguntaOriginal = perguntas.get(perguntaSelecionada);
 					String textoAlterado = "";
 					String categoriaAlterada2;
 
-					textoAlterado = JOptionPane.showInputDialog(null, pergunta.getTextoPergunta(),
+					textoAlterado = JOptionPane.showInputDialog(null, perguntaOriginal.getTextoPergunta(),
 							"Digite a PERGUNTA desejada!", JOptionPane.QUESTION_MESSAGE);
 
 					if (Utils.stringValida(textoAlterado)) {
@@ -551,14 +568,14 @@ public class PanelConsultaQuestoes extends JPanel {
 								j++;
 							}
 							perguntaAlterada.setIdUsuario(usuarioLogado.getIdUsuario());
-							perguntaAlterada.setIdPergunta(pergunta.getIdPergunta());
+							perguntaAlterada.setIdPergunta(perguntaOriginal.getIdPergunta());
 							perguntaAlterada
 									.setTextoPergunta(Utils.formataEspacoUnico(textoAlterado.toUpperCase()).toString());
 							perguntaAlterada.setCategoria(categoria);
 						}
 
 						try {
-							perguntaController.alteraPergunta(perguntaAlterada, usuarioLogado);
+							perguntaController.alteraPergunta(perguntaAlterada, perguntaOriginal, usuarioLogado);
 							JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
 									JOptionPane.INFORMATION_MESSAGE);
 						} catch (ErroNoCadastroException mensagem) {

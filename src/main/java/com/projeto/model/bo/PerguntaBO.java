@@ -75,5 +75,10 @@ public class PerguntaBO {
 
 	public int consultarTotalPaginas(PerguntaSeletor perguntaSeletor) {
 		return perguntaDAO.consultarTotalPaginas(perguntaSeletor);
+		
+	}	
+	
+	public boolean excluiPergunta(PerguntaVO perguntaExcluida) {		
+		return perguntaDAO.excluiPergunta(perguntaExcluida.getIdPergunta());
 	}
 }

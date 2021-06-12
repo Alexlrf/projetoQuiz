@@ -98,8 +98,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO> {
 		return categoriaVO;
 	}
 
-	public boolean consultaCategoriaExistente(CategoriaVO categoriaVO) {
-		CategoriaVO categoria = new CategoriaVO();
+	public boolean consultaCategoriaExistente(CategoriaVO categoriaVO) {		
 		boolean retorno = false;
 		String sql = "SELECT * FROM categoria WHERE descricao_categoria = ?";
 		try (Connection conn = Banco.getConnection(); PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
@@ -108,6 +107,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO> {
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
+				CategoriaVO categoria = new CategoriaVO();
 				categoria = completeResultset(rs);
 				retorno = true;
 			}
@@ -179,12 +179,17 @@ public class CategoriaDAO implements BaseDao<CategoriaVO> {
 
 	public CategoriaVO buscaCategoria(PerguntaVO p) {
 		CategoriaVO categoriaVO = new CategoriaVO();
-		String sql = "SELECT categoria.descricao_categoria, categoria.id_categoria, categoria.id_disciplina, pergunta.id_usuario" + " FROM"
-				+ " pergunta" + " inner join" + " categoria on categoria.id_categoria = pergunta.id_categoria"
-				+ " WHERE" + " pergunta.id_pergunta = ?";
-
-		try (Connection conn = Banco.getConnection(); PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
-
+		String sql = "SELECT categoria.descricao_categoria, categoria.id_categoria, pergunta.id_usuario, categoria.id_disciplina"
+				+ " FROM"
+				+ 		" pergunta"
+				+ " inner join"
+				+ 		" categoria on categoria.id_categoria = pergunta.id_categoria"
+				+ " WHERE"
+				+		 " pergunta.id_pergunta = ?";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
+			
 			stmt.setInt(1, p.getIdPergunta());
 			ResultSet rs = stmt.executeQuery();
 
