@@ -72,6 +72,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	private int paginaAtual = 1;
 	private JLabel lblPagina;
 	private int paginas;
+	private UsuarioVO usuario;
 
 	Map<Integer, String> mapCategorias = new HashedMap<>();
 
@@ -79,6 +80,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelConsultaQuestoes(UsuarioVO usuarioLogado) {
+		usuario = usuarioLogado;
 		setBackground(new Color(112, 128, 144));
 		setBorder(new LineBorder(new Color(250, 128, 114), 5));
 
@@ -194,6 +196,8 @@ public class PanelConsultaQuestoes extends JPanel {
 		btnAvancaPagina = new JButton("->");
 		btnAvancaPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				paginaAtual++;
+				consultaSeletor();
 			}
 		});
 		btnAvancaPagina.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -201,12 +205,18 @@ public class PanelConsultaQuestoes extends JPanel {
 		btnVoltaPagina = new JButton("<-");
 		btnVoltaPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (paginaAtual > 1) {
+					paginaAtual--;
+				}
+				consultaSeletor();
+			
 			}
 		});
 		btnVoltaPagina.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		lblPagina = new JLabel("      ");
 		lblPagina.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblPagina.setText(String.valueOf(paginaAtual));
 
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -598,48 +608,9 @@ public class PanelConsultaQuestoes extends JPanel {
 		formataBotao(btnConsultar);
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				limpaTabelaPerguntas();
-				limpaTabelaAlternativas();
-				PerguntaSeletor perguntaSeletor = new PerguntaSeletor();
-				perguntaSeletor.setPagina(paginaAtual);
-				perguntaSeletor.setLimite(TAMANHO_PAGINA);
+				
+				consultaSeletor();
 
-				if (Utils.stringValida(textFieldBusca.getText().toString().trim())) {
-					perguntaSeletor.setTexto(Utils.formataEspacoUnico(textFieldBusca.getText().toString()));
-				} else {
-					perguntaSeletor.setTexto("");
-				}
-
-				if (comboCategorias.getSelectedIndex() > 0) {
-					perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
-					int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());
-					perguntaSeletor.setIdCategoria(indexEscolhido);
-
-				} else {
-					perguntaSeletor.setCategoria("");
-				}
-
-				if (chckbxMinhasPerguntas.isSelected()) {
-					perguntaSeletor.setPerguntasUsuario(true);
-
-				} else {
-					perguntaSeletor.setPerguntasUsuario(false);
-				}
-
-				perguntaSeletor.setIdUsuario(usuarioLogado.getIdUsuario());
-
-				try {
-					perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
-					paginas = perguntaController.consultarTotalPaginas(perguntaSeletor);
-
-					if (perguntas.size() != 0 || perguntas != null) {
-						preencherTabelaPerguntas(perguntas);
-					}
-
-				} catch (Exception mensagem) {
-					JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
-							JOptionPane.ERROR_MESSAGE, null);
-				}
 			}
 		});
 		btnConsultar.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -651,6 +622,55 @@ public class PanelConsultaQuestoes extends JPanel {
 		panelBotoes.add(btnSalvar);
 		setLayout(groupLayout);
 
+	}
+
+	protected void consultaSeletor() {
+		limpaTabelaPerguntas();
+		limpaTabelaAlternativas();
+		PerguntaSeletor perguntaSeletor = new PerguntaSeletor();
+		perguntaSeletor.setPagina(paginaAtual);
+		perguntaSeletor.setLimite(TAMANHO_PAGINA);
+
+		if (Utils.stringValida(textFieldBusca.getText().toString().trim())) {
+			perguntaSeletor.setTexto(Utils.formataEspacoUnico(textFieldBusca.getText().toString()));
+		} else {
+			perguntaSeletor.setTexto("");
+		}
+
+		if (comboCategorias.getSelectedIndex() > 0) {
+			perguntaSeletor.setCategoria(comboCategorias.getSelectedItem().toString());
+			int indexEscolhido = getChavePorValor(mapCategorias, perguntaSeletor.getCategoria());
+			perguntaSeletor.setIdCategoria(indexEscolhido);
+
+		} else {
+			perguntaSeletor.setCategoria("");
+		}
+
+		if (chckbxMinhasPerguntas.isSelected()) {
+			perguntaSeletor.setPerguntasUsuario(true);
+
+		} else {
+			perguntaSeletor.setPerguntasUsuario(false);
+		}
+		
+		perguntaSeletor.setIdUsuario(usuario.getIdUsuario());
+
+		try {
+			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
+			paginas = perguntaController.consultarTotalPaginas(perguntaSeletor);
+
+		//	if (perguntas.size() != 0 || perguntas != null) {
+				lblPagina.setText(String.valueOf(paginaAtual));
+				
+				verificarBotoesPaginas();
+				preencherTabelaPerguntas(perguntas);
+		//	}
+
+		} catch (Exception mensagem) {
+			JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
+					JOptionPane.ERROR_MESSAGE, null);
+		}
+		
 	}
 
 	protected void preencherAlternativas(PerguntaVO pergunta) {
