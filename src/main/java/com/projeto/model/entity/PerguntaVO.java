@@ -8,15 +8,18 @@ public class PerguntaVO  {
 	private int idUsuario;
 	private int idDisciplina;
 	private String textoPergunta;
+	private boolean perguntaAtiva;
 	private CategoriaVO categoria;
 	private List<AlternativaVO> listaAlternativas;
 	
-	public PerguntaVO(int idPergunta, int idUsuario, int idDisciplina, String textoPergunta, CategoriaVO categoria, List<AlternativaVO> listaAlternativas) {
+	public PerguntaVO(int idPergunta, int idUsuario, int idDisciplina, String textoPergunta, boolean perguntaAtiva,
+			CategoriaVO categoria, List<AlternativaVO> listaAlternativas) {
 		super();
 		this.idPergunta = idPergunta;
 		this.idUsuario = idUsuario;
 		this.idDisciplina = idDisciplina;
 		this.textoPergunta = textoPergunta;
+		this.perguntaAtiva = perguntaAtiva;
 		this.categoria = categoria;
 		this.listaAlternativas = listaAlternativas;
 	}
@@ -32,15 +35,15 @@ public class PerguntaVO  {
 	public void setIdPergunta(int idPergunta) {
 		this.idPergunta = idPergunta;
 	}
-		
+
 	public int getIdUsuario() {
 		return idUsuario;
 	}
 
 	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
-	}	
-	
+	}
+
 	public int getIdDisciplina() {
 		return idDisciplina;
 	}
@@ -57,6 +60,14 @@ public class PerguntaVO  {
 		this.textoPergunta = textoPergunta;
 	}
 
+	public boolean isPerguntaAtiva() {
+		return perguntaAtiva;
+	}
+
+	public void setPerguntaAtiva(boolean perguntaAtiva) {
+		this.perguntaAtiva = perguntaAtiva;
+	}
+
 	public CategoriaVO getCategoria() {
 		return categoria;
 	}
@@ -71,5 +82,5 @@ public class PerguntaVO  {
 
 	public void setListaAlternativas(List<AlternativaVO> listaAlternativas) {
 		this.listaAlternativas = listaAlternativas;
-	}	    
+	}	
 }

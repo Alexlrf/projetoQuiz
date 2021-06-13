@@ -21,7 +21,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 	
 	@Override
 	public PerguntaVO insert(PerguntaVO pergunta) throws SQLException{
-		String sql = "INSERT INTO pergunta (id_usuario, id_disciplina, id_categoria, texto_pergunta) values (?, ?, ?, ?);";
+		String sql = "INSERT INTO pergunta (id_usuario, id_disciplina, id_categoria, texto_pergunta, pergunta_ativada) values (?, ?, ?, ?, true);";
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
@@ -71,6 +71,8 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 	public PerguntaVO completeResultset(ResultSet rs) throws SQLException {
 		PerguntaVO perguntaVO = new PerguntaVO();
 		
+		perguntaVO.setIdDisciplina(rs.getInt("id_disciplina"));
+		perguntaVO.setIdUsuario(rs.getInt("id_usuario"));
 		perguntaVO.setTextoPergunta(rs.getString("texto_pergunta"));				
 		perguntaVO.setIdPergunta(rs.getInt("id_pergunta"));
 		return perguntaVO;		
@@ -87,8 +89,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 				+ " INNER JOIN	"
 						+ "categoria on categoria.id_categoria = pergunta.id_categoria"
 				+ "	WHERE "
-						+ "pergunta.id_categoria = ?";
-		String sqlCategoria = "";
+						+ "pergunta.id_categoria = ? AND pergunta.pergunta_ativada = true;";
 				
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
@@ -121,6 +122,10 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 		
 		if (perguntaSeletor.temFiltro()) {
 			sql = criarFiltros(perguntaSeletor, sql);
+		}
+		
+		if (perguntaSeletor.temPaginacao()) {
+			sql += " LIMIT " + perguntaSeletor.getLimite() + " OFFSET " + perguntaSeletor.getOffset();
 		}
 		
 		try (Connection conn = Banco.getConnection();
@@ -207,7 +212,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			sql += "p.id_usuario = " + perguntaSeletor.getIdUsuario() ;
 			primeiro = false;
 		}		
-		return sql;
+		return sql+ " AND pergunta_ativada = true";
 	}
 
 	public CategoriaVO buscaIdcategoria(String categoria) {
@@ -309,5 +314,54 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			System.out.println("Erro ao consultar por texto digitado!\n"+e.getMessage());
 		}		
 		return id;
+	}
+
+	public int consultarTotalPaginas(PerguntaSeletor perguntaSeletor) {
+		int totalPerguntas = 0;
+		
+		String sql = "SELECT count(*) FROM pergunta p";
+		
+		if (perguntaSeletor.temFiltro()) {
+			sql = criarFiltros(perguntaSeletor, sql);
+		}
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				totalPerguntas = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao consultar total de paginas: " + e.getMessage());
+		} 
+		
+		int totalPaginas = totalPerguntas / perguntaSeletor.getLimite();
+		int resto = totalPerguntas % perguntaSeletor.getLimite();
+		
+		if (resto > 0) {
+			totalPaginas++;
+		}
+		
+		return totalPaginas;
+	}
+
+	public boolean excluiPergunta(int idPergunta) {
+		boolean perguntaExcluida = true;
+		String sql = "UPDATE pergunta SET pergunta_ativada = false WHERE id_pergunta = ?;";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
+			
+			stmt.setInt(1, idPergunta);
+			stmt.executeUpdate();			
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao EXCLUIR pergunta\n"+e.getMessage());
+			perguntaExcluida = false;
+		}		
+		return perguntaExcluida;
 	}
 }

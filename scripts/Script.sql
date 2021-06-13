@@ -32,7 +32,8 @@ CREATE TABLE USUARIO (
  CREATE TABLE categoria (
   id_categoria INT NOT NULL AUTO_INCREMENT
   , id_disciplina int not null
-  , ID_USUARIO INT NOT NULL
+  , id_usuario INT NOT NULL
+  , ativada boolean not null
   , descricao_categoria VARCHAR(50) NOT NULL
   , constraint PK_CATEGORIA primary key (id_categoria)
   );
@@ -42,7 +43,8 @@ CREATE TABLE USUARIO (
   , id_usuario INT NOT NULL
   , id_categoria INT NOT NULL
   , id_disciplina int not null
-  , texto_pergunta TEXT NOT NULL  
+  , texto_pergunta TEXT NOT NULL
+  , pergunta_ativada boolean not null
   , constraint PK_PERGUNTA primary key (id_pergunta)
   , constraint FK_PERGUNTA_USUARIO foreign key (id_usuario) references usuario(id_usuario)
    , constraint FK_PERGUNTA_CATEGORIA foreign key (id_categoria) references categoria(id_categoria)
@@ -99,26 +101,26 @@ INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CE
 
 
 
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'GIT / GITHUB');
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'SELETORES');
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'INTERFACES');
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 1, 'EXCEÇÕES');
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'GIT / GITHUB', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'SELETORES', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'INTERFACES', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'EXCEÇÕES', true);
 
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 2, 'ORIENTAÇÃO A OBJETOS');
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(1, 2, 'POLIMORFISMO');
-
-
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(2, 3, 'TIPOS DE SISTEMAS ');
-INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria) values(2, 3, 'AMBIENTES OPERACIONAIS');
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 2, 'ORIENTAÇÃO A OBJETOS', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 2, 'POLIMORFISMO', true);
 
 
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(2, 5, 1, 'O QUE É ABSTRAÇÃO?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 1, 1, 'QUAL A DIFERENÇA ENTRE GIT E GITHUB?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 1, 1, 'O QUE É UM PUSH?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 2, 1, 'QUAL A FUNÇÃO DOS SELETORES?');
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(2, 3, 'TIPOS DE SISTEMAS ', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(2, 3, 'AMBIENTES OPERACIONAIS', true);
 
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(2, 6, 1, 'O QUE É POLIMORFISMO?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(3, 8, 2, 'O QUE É AMBIENTE OPERACIONAL?');
+
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 5, 1, 'O QUE É ABSTRAÇÃO?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 1, 1, 'QUAL A DIFERENÇA ENTRE GIT E GITHUB?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 1, 1, 'O QUE É UM PUSH?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 2, 1, 'QUAL A FUNÇÃO DOS SELETORES?', true);
+
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 6, 1, 'O QUE É POLIMORFISMO?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(3, 8, 2, 'O QUE É AMBIENTE OPERACIONAL?', true);
 
 
 

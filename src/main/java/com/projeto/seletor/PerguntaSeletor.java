@@ -59,13 +59,12 @@ public class PerguntaSeletor {
 	 *
 	 * @return offset
 	 */
-	
-	
-	// Getters and Setters	
-	
 	public int getOffset() {
 		return (this.limite * (this.pagina - 1));
 	}
+	
+	
+	// Getters and Setters	
 
 	public int getIdCategoria() {
 		return idCategoria;
@@ -107,21 +106,6 @@ public class PerguntaSeletor {
 		this.texto = texto;
 	}
 
-	public int getLimite() {
-		return limite;
-	}
-
-	public void setLimite(int limite) {
-		this.limite = limite;
-	}
-
-	public int getPagina() {
-		return pagina;
-	}
-
-	public void setPagina(int pagina) {
-		this.pagina = pagina;
-	}
 
 	public boolean isPerguntasUsuario() {
 		return perguntasUsuario;
@@ -131,4 +115,19 @@ public class PerguntaSeletor {
 		this.perguntasUsuario = perguntasUsuario;
 	}	
 	
+	public int getLimite() {
+		return limite;
+	}
+	
+	public void setLimite(int limite) {
+		this.limite = limite;
+	}
+	
+	public int getPagina() {
+		return pagina;
+	}
+	
+	public void setPagina(int pagina) {
+		this.pagina = pagina;
+	}
 }
