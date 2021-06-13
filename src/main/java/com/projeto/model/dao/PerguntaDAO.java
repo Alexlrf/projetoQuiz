@@ -21,7 +21,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 	
 	@Override
 	public PerguntaVO insert(PerguntaVO pergunta) throws SQLException{
-		String sql = "INSERT INTO pergunta (id_usuario, id_disciplina, id_categoria, texto_pergunta) values (?, ?, ?, ?);";
+		String sql = "INSERT INTO pergunta (id_usuario, id_disciplina, id_categoria, texto_pergunta, pergunta_ativada) values (?, ?, ?, ?, true);";
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql)){
@@ -124,6 +124,10 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			sql = criarFiltros(perguntaSeletor, sql);
 		}
 		
+		if (perguntaSeletor.temPaginacao()) {
+			sql += " LIMIT " + perguntaSeletor.getLimite() + " OFFSET " + perguntaSeletor.getOffset();
+		}
+		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)){
 			ResultSet rs = stmt.executeQuery();
@@ -208,7 +212,7 @@ public class PerguntaDAO implements BaseDao<PerguntaVO> {
 			sql += "p.id_usuario = " + perguntaSeletor.getIdUsuario() ;
 			primeiro = false;
 		}		
-		return sql+ " AND pergunta_ativada = true;";
+		return sql+ " AND pergunta_ativada = true";
 	}
 
 	public CategoriaVO buscaIdcategoria(String categoria) {

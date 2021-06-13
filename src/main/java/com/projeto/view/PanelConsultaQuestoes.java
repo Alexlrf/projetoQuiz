@@ -164,6 +164,8 @@ public class PanelConsultaQuestoes extends JPanel {
 		panelBotoes.setBackground(new Color(112, 128, 144));
 
 		tableAlternativas = new JTable();
+		tableAlternativas.setColumnSelectionAllowed(true);
+		tableAlternativas.setCellSelectionEnabled(true);
 		tableAlternativas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -193,23 +195,27 @@ public class PanelConsultaQuestoes extends JPanel {
 		chckbxMinhasPerguntas.setFont(new Font("Tahoma", Font.BOLD, 11));
 		chckbxMinhasPerguntas.setBackground(new Color(112, 128, 144));
 		
-		btnAvancaPagina = new JButton("->");
+		btnAvancaPagina = new JButton(" >> ");
 		btnAvancaPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				paginaAtual++;
-				consultaSeletor();
+				
+				if(paginaAtual < paginas) {
+					paginaAtual++;
+					lblPagina.setText(String.valueOf(paginaAtual));
+					consultaSeletor();
+				}
 			}
 		});
 		btnAvancaPagina.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
-		btnVoltaPagina = new JButton("<-");
+		btnVoltaPagina = new JButton(" << ");
 		btnVoltaPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (paginaAtual > 1) {
 					paginaAtual--;
-				}
-				consultaSeletor();
-			
+					lblPagina.setText(String.valueOf(paginaAtual));
+					consultaSeletor();
+				}			
 			}
 		});
 		btnVoltaPagina.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -225,24 +231,24 @@ public class PanelConsultaQuestoes extends JPanel {
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
+							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
 							.addGap(54)
 							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
 							.addGap(26))
 						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 							.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(chckbxMinhasPerguntas, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 471, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 490, Short.MAX_VALUE)
 							.addComponent(btnVoltaPagina)
 							.addGap(13)
 							.addComponent(lblPagina)
@@ -251,11 +257,11 @@ public class PanelConsultaQuestoes extends JPanel {
 							.addGap(28))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
+								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
 									.addGap(50)
-									.addComponent(comboCategorias, 0, 341, Short.MAX_VALUE)))
+									.addComponent(comboCategorias, 0, 344, Short.MAX_VALUE)))
 							.addContainerGap())))
 		);
 		groupLayout.setVerticalGroup(
@@ -276,7 +282,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						.addComponent(lblPerguntas)
 						.addComponent(chckbxMinhasPerguntas))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+					.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -288,7 +294,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblAlternativas)
 							.addPreferredGap(ComponentPlacement.UNRELATED)))
-					.addComponent(tableAlternativas, GroupLayout.PREFERRED_SIZE, 36, Short.MAX_VALUE)
+					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
 					.addGap(28)
 					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
@@ -659,12 +665,10 @@ public class PanelConsultaQuestoes extends JPanel {
 			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
 			paginas = perguntaController.consultarTotalPaginas(perguntaSeletor);
 
-		//	if (perguntas.size() != 0 || perguntas != null) {
-				lblPagina.setText(String.valueOf(paginaAtual));
+			lblPagina.setText(String.valueOf(paginaAtual));
 				
-				verificarBotoesPaginas();
-				preencherTabelaPerguntas(perguntas);
-		//	}
+			verificarBotoesPaginas();
+			preencherTabelaPerguntas(perguntas);
 
 		} catch (Exception mensagem) {
 			JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
@@ -715,8 +719,6 @@ public class PanelConsultaQuestoes extends JPanel {
 	private void limpaTabelaPerguntas() {
 		tableConsulta.setModel(new DefaultTableModel(new Object[][] { nomeColunasPerguntas }, nomeColunasPerguntas));
 		tableConsulta.getColumnModel().getColumn(0).setPreferredWidth(650);
-		Font f1 = new Font(Font.SERIF, Font.PLAIN, 14);
-
 	}
 	
 	private void verificarBotoesPaginas() {
