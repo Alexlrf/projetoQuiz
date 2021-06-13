@@ -49,8 +49,9 @@ public class AlternativaBO {
 		return alternativaDAO.buscaAlternativas(pergunta);
 	}
 
-	public void alteraAlternativa(AlternativaVO alternativaVO) {
-		JOptionPane.showMessageDialog(null, "Certo!\n Desenvolver a partir da BO");		
+	public boolean alteraAlternativa(AlternativaVO alternativaVO) {
+		
+		return alternativaDAO.alteraAlternativa(alternativaVO);		
 	}
 
 }
