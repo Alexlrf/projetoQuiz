@@ -159,3 +159,5 @@ INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) va
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UMA ÁREA INSERIDA DENTRO DA CORPORAÇÃO', '- - -');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'SÃO FATORES E CONDIÇÕES EXTERNAS QUE TÊM RELEVÂNCIA IMEDIATA PARA A ORGANIZAÇÃO', 'CORRETA');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+
