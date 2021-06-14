@@ -21,9 +21,9 @@ public class Utils {
 	public static boolean dataValida(LocalDate data) {
 		boolean retorno = true;
 		LocalDate dataAtual = LocalDate.now();
-		if (data.isAfter(dataAtual)) {
-			retorno = false;			
-		}		
+		if (data == null || data.isAfter(dataAtual)) {
+			retorno = false;		
+		}
 		return retorno;		
 	}
 	

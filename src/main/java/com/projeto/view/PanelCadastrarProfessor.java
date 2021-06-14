@@ -1,13 +1,18 @@
 package com.projeto.view;
 
 import javax.swing.JPanel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
 import java.awt.SystemColor;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -16,9 +21,13 @@ import javax.swing.text.MaskFormatter;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.projeto.enums.TipoUsuarioEnum;
+import com.projeto.enums.TurnoEnum;
 import com.projeto.model.entity.ProfessorVO;
+import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
+import com.projeto.repository.Utils;
+import com.projeto.controller.UsuarioController;
 
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
@@ -35,20 +44,25 @@ public class PanelCadastrarProfessor extends JPanel {
 	private JFormattedTextField txtRg;
 	private JFormattedTextField txtCpf;
 	private JFormattedTextField txtCelular;
-	private PlaceholderTextField txtNacionalidade;
 	private PlaceholderPasswordField pswSenha;
 	private PlaceholderPasswordField pswConfirmarSenha;
-	private JRadioButton btnMasculino;
-	private JRadioButton btnFeminino;
-	private JRadioButton btnDeficienteSim;
-	private JRadioButton btnDeficienteNao;
+	private JRadioButton rdbMasculino;
+	private JRadioButton rdbFeminino;
+	private JRadioButton rdbDeficienteSim;
+	private JRadioButton rdbDeficienteNao;
 	private JComboBox cbxTurno;
 	private JComboBox cbxDisciplina;
 	private JCheckBox cbMostrarSenha;
 	private JCheckBox cbConfirmarSenha;
-	private JButton btnNewButton;
 	private DatePickerSettings dateSettings;
 	private DatePicker dataNascimento;
+	private UsuarioVO professor = new ProfessorVO();
+	private UsuarioController UsuarioController = new UsuarioController();
+
+	public PanelCadastrarProfessor(UsuarioVO professor) {
+		this.professor = professor;
+	}
+	
 
 	/**
 	 * Create the panel.
@@ -91,8 +105,6 @@ public class PanelCadastrarProfessor extends JPanel {
 		
 		JLabel lblCelular = new JLabel("Celular:");
 		
-		JLabel lblNacionalidade = new JLabel("Nacionalidade");
-		
 		JLabel lblTurno = new JLabel("Turno:");
 		
 		JLabel lblSenha = new JLabel("Senha:");
@@ -125,13 +137,13 @@ public class PanelCadastrarProfessor extends JPanel {
 		dateSettings.setAllowKeyboardEditing(false);
 		dataNascimento = new DatePicker(dateSettings);
 		
-		btnMasculino = new JRadioButton("Masculino");
+		rdbMasculino = new JRadioButton("Masculino");
 		
-		btnFeminino = new JRadioButton("Feminino");
+		rdbFeminino = new JRadioButton("Feminino");
 		
-		btnDeficienteSim = new JRadioButton("Sim");
+		rdbDeficienteSim = new JRadioButton("Sim");
 		
-		btnDeficienteNao = new JRadioButton("Não");
+		rdbDeficienteNao = new JRadioButton("Não");
 		
 		MaskFormatter mascaraCelular;
 		try {
@@ -142,11 +154,14 @@ public class PanelCadastrarProfessor extends JPanel {
 		}
 		txtCelular.setColumns(10);
 		
-		txtNacionalidade = new PlaceholderTextField();
-		txtNacionalidade.setPlaceholder("Digite sua nacionalidade, Ex: 'Brasil'.");
-		txtNacionalidade.setColumns(10);
-		
+		ArrayList<String> turno = new ArrayList<String>();
+		turno.add(0, "Selecione o Turno");
+		turno.add(1, TurnoEnum.MATUTINO.toString());
+		turno.add(2, TurnoEnum.VESPERTINO.toString());
+		turno.add(3, TurnoEnum.NOTURNO.toString());
 		cbxTurno = new JComboBox();
+		DefaultComboBoxModel preencherTurno = new DefaultComboBoxModel(turno.toArray());
+		cbxTurno.setModel(preencherTurno);
 		
 		pswSenha = new PlaceholderPasswordField();
 		pswSenha.setPlaceholder("Digite sua senha, e não se esqueça de anotar.");
@@ -156,7 +171,10 @@ public class PanelCadastrarProfessor extends JPanel {
 		
 		JLabel lblDisciplina = new JLabel("Disciplina:");
 		
+		ArrayList<String> disciplina = UsuarioController.buscarDisciplina();
 		cbxDisciplina = new JComboBox();
+		DefaultComboBoxModel preencherDisciplina = new DefaultComboBoxModel(disciplina.toArray());
+		cbxDisciplina.setModel(preencherDisciplina);
 		
 		cbMostrarSenha = new JCheckBox("Mostrar senha");
 		cbMostrarSenha.addActionListener(new ActionListener() {
@@ -182,68 +200,56 @@ public class PanelCadastrarProfessor extends JPanel {
 			}
 		});
 		
-		btnNewButton = new JButton("C A D A S T R A R");
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
+		JButton btnCadastrar = new JButton("C A D A S T R A R");
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				boolean validar = validarCampos();
+				
+				if (validar) {
+					cadastrarProfessor();
+				}
+			}
+		});
+		btnCadastrar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JButton btnNewButton_1 = new JButton("L I M P A R");
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		JButton btnAtualizar = new JButton("A T U A L I Z A R");
+		btnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				boolean validar = validarCampos();
+				
+				if (validar) {
+					cadastrarProfessor();
+				}
+			}
+		});
+		btnAtualizar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		
+		JButton btnLimpar = new JButton("L I M P A R");
+		btnLimpar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				limparTela();
+			}
+		});
+		btnLimpar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
+			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(299)
 					.addComponent(lblCadastrarProfessor, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGap(247))
 				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 434, Short.MAX_VALUE)
+					.addComponent(btnCadastrar, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+					.addComponent(btnAtualizar, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(37)
 					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblDataDeNascimento)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(dataNascimento, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
-							.addGap(32)
-							.addComponent(lblSexo)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnMasculino)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnFeminino)
-							.addGap(58))
-						.addGroup(gl_panel.createSequentialGroup()
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblNacionalidade)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtNacionalidade, GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
-									.addPreferredGap(ComponentPlacement.RELATED, 18, GroupLayout.PREFERRED_SIZE)
-									.addComponent(lblTurno)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(cbxTurno, GroupLayout.PREFERRED_SIZE, 388, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblRg)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtRg, GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
-									.addGap(18)
-									.addComponent(lblCpf)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(txtCpf, GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE))
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblNome)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 683, Short.MAX_VALUE))
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblPossuiDeficiencia)
-									.addGap(18)
-									.addComponent(btnDeficienteSim)
-									.addGap(6)
-									.addComponent(btnDeficienteNao)
-									.addGap(21)
-									.addComponent(lblCelular)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(txtCelular, GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(lblDisciplina)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(cbxDisciplina, 0, 157, Short.MAX_VALUE))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblSenha)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -251,22 +257,60 @@ public class PanelCadastrarProfessor extends JPanel {
 										.addGroup(gl_panel.createSequentialGroup()
 											.addComponent(cbMostrarSenha, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
 											.addGap(85)
-											.addComponent(lblDicaSenha, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(lblDicaSenha, GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
 											.addGap(267))
-										.addComponent(pswSenha, GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)))
+										.addComponent(pswSenha, GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblConfirmarSenha)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addComponent(cbConfirmarSenha)
-										.addComponent(pswConfirmarSenha, GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))))
+										.addComponent(pswConfirmarSenha, GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE))))
+							.addContainerGap())
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblDataDeNascimento)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(dataNascimento, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+							.addGap(32)
+							.addComponent(lblSexo)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(rdbMasculino)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(rdbFeminino)
+							.addGap(58))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(lblTurno)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(cbxTurno, 0, 186, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(lblRg)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(txtRg, GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(lblCpf)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(txtCpf, GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(lblNome)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 683, Short.MAX_VALUE))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(lblPossuiDeficiencia)
+									.addGap(18)
+									.addComponent(rdbDeficienteSim)
+									.addGap(6)
+									.addComponent(rdbDeficienteNao)
+									.addGap(21)
+									.addComponent(lblCelular)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(txtCelular, GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(lblDisciplina)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(cbxDisciplina, 0, 157, Short.MAX_VALUE)))
 							.addGap(20))))
-				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 467, Short.MAX_VALUE)
-					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -279,33 +323,29 @@ public class PanelCadastrarProfessor extends JPanel {
 						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(37)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblRg)
+						.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblCpf)
 						.addComponent(txtRg, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblRg)
+						.addComponent(cbxTurno, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblTurno))
 					.addGap(37)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblDataDeNascimento)
 						.addComponent(lblSexo)
 						.addComponent(dataNascimento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnMasculino)
-						.addComponent(btnFeminino))
+						.addComponent(rdbMasculino)
+						.addComponent(rdbFeminino))
 					.addGap(50)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblPossuiDeficiencia)
 						.addComponent(lblCelular)
-						.addComponent(btnDeficienteNao)
-						.addComponent(btnDeficienteSim)
+						.addComponent(rdbDeficienteNao)
+						.addComponent(rdbDeficienteSim)
 						.addComponent(txtCelular, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblDisciplina)
 						.addComponent(cbxDisciplina, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(41)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNacionalidade)
-						.addComponent(txtNacionalidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxTurno, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblTurno))
-					.addGap(56)
+					.addGap(32)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblSenha)
 						.addComponent(pswSenha, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -319,17 +359,163 @@ public class PanelCadastrarProfessor extends JPanel {
 						.addComponent(pswConfirmarSenha, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cbConfirmarSenha)
-					.addPreferredGap(ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
+					.addGap(84)
 					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnNewButton_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
+						.addComponent(btnCadastrar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+						.addComponent(btnAtualizar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+						.addComponent(btnLimpar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		panel.setLayout(gl_panel);
 		setLayout(groupLayout);
-		ProfessorVO professor = new ProfessorVO();
+		
+		if (professor.getIdUsuario() != null) {
+			btnAtualizar.setVisible(true);
+			btnCadastrar.setVisible(false);
+		} else {
+			btnAtualizar.setVisible(false);
+			btnCadastrar.setVisible(true);
+		}
+	}
+
+	protected void cadastrarProfessor() {
+		
+		professor.setNome(txtNome.getText());
+		
+		if (cbxTurno.getSelectedItem().equals(TurnoEnum.MATUTINO)) {
+			professor.setTurno(TurnoEnum.MATUTINO);
+		} else if (cbxTurno.getSelectedItem().equals(TurnoEnum.VESPERTINO)) {
+			professor.setTurno(TurnoEnum.VESPERTINO);
+		} else if (cbxTurno.getSelectedItem().equals(TurnoEnum.NOTURNO)) {
+			professor.setTurno(TurnoEnum.NOTURNO);
+		}
+		
+		professor.setRg(txtRg.getText().replace(".", ""));
+		professor.setCpf(txtCpf.getText().replace(".", "").replace("-", ""));
+		professor.setDataNascimento(dataNascimento.getDate());
+		
+		professor.setSexo('F');
+		if (rdbMasculino.isSelected()) {
+			professor.setSexo('M');
+		}
+		
+		professor.setPossuiDeficiencia(false);
+		if (rdbDeficienteSim.isSelected()) {
+			professor.setPossuiDeficiencia(true);
+		}
+		
+		professor.setCelular(txtCelular.getText().replace("(", "").replace(")", "").replace("-", ""));
+		((ProfessorVO)professor).setIdDisciplina(1);// resolver disciplina
+		
+		professor.setSenha(pswSenha.getText());
 		professor.setTipo(TipoUsuarioEnum.PROFESSOR);
-	} 
+		
+		String mensagem = "";
+		String titulo = "";
+		if (professor.getIdUsuario() != null) {
+			// TODO atualizar
+			titulo = "Atualizar";
+		} else {
+			
+			professor = UsuarioController.cadastrar(professor);
+			if (professor.getIdUsuario() != null) {
+				mensagem = "Professor cadastrado com sucesso!";
+			} else {
+				mensagem = "Erro ao cadastrar professor.";
+			}
+			titulo = "Cadastrar";
+		}
+		
+		JOptionPane.showMessageDialog(null, mensagem, titulo, JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	protected void limparTela() {
+		txtNome.setText("");
+		cbxTurno.setSelectedIndex(0);
+		txtRg.setText("");
+		txtCpf.setText("");
+		dataNascimento.clear();
+		rdbMasculino.setSelected(false);
+		rdbFeminino.setSelected(false);
+		rdbDeficienteNao.setSelected(false);
+		rdbDeficienteSim.setSelected(false);
+		txtCelular.setText("");
+		cbxDisciplina.setSelectedIndex(0);
+		pswSenha.setText("");
+		pswConfirmarSenha.setText("");
+		cbMostrarSenha.setSelected(false);
+		cbConfirmarSenha.setSelected(false);
+	}
+
+	protected boolean validarCampos() {
+		StringBuilder mensagem = new StringBuilder();
+		boolean validar = true;
+		mensagem.append("Os campos ");
+		
+		if (!Utils.stringValida(txtNome.getText())) {
+			mensagem.append("nome, ");
+			validar = false;
+		}
+
+		if (cbxTurno.getSelectedIndex() == 0) {
+			mensagem.append("Turno, ");
+			validar = false;
+		}
+		
+		if (!Utils.stringValida(txtRg.getText().replace(".", ""))) {
+			mensagem.append("Rg, ");
+			validar = false;
+		}
+		
+		if (!Utils.stringValida(txtCpf.getText().replace(".", "").replace("-", ""))) {
+			mensagem.append("Cpf, ");
+			validar = false;
+		}
+
+		LocalDate dtNascimento = dataNascimento.getDate();
+		if (!Utils.dataValida(dtNascimento)) {
+			mensagem.append("Data de Nascimento, ");
+			validar = false;
+		}
+
+		if (!rdbMasculino.isSelected() && !rdbFeminino.isSelected()) {
+			mensagem.append("Sexo, ");
+			validar = false;
+		}
+
+		if (!rdbDeficienteNao.isSelected() && !rdbDeficienteSim.isSelected()) {
+			mensagem.append("Possui Deficiência, ");
+			validar = false;
+		}
+
+		if (!Utils.stringValida(txtCelular.getText().replace("(", "").replace(")", "").replace("-", ""))) {
+			mensagem.append("Celular, ");
+			validar = false;
+		}
+
+		if (cbxDisciplina.getSelectedIndex() == 0) {
+			mensagem.append("Disciplina, ");
+			validar = false;
+		}
+		
+		if (!Utils.stringValida(pswSenha.getText())) {
+			mensagem.append("Senha, ");
+			validar = false;
+		}
+		
+		if (!Utils.stringValida(pswConfirmarSenha.getText())) {
+			mensagem.append("Confirmar a Senha, ");
+			validar = false;
+		}
+		
+		mensagem.append("são obrigatórios.\n Favor preenchelos!");
+		
+		if (!validar) {
+			JOptionPane.showMessageDialog(null, mensagem, "A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
+		}
+		
+		return validar;
+	}
 	
 
 }

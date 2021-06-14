@@ -292,9 +292,9 @@ public class UsuarioDAO{
 	}
 	
 	public UsuarioVO cadastrar(UsuarioVO usuario) {
-		String sql = "INSERT INTO USUARIO (NOME, RG, CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, "
-				+ " NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO, ID_DISCIPLINA) "
-				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO USUARIO (NOME, RG, CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR "
+				+ " TURNO, SENHA, TIPO, ATIVO, ID_DISCIPLINA) "
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatementWithPk(conn, sql);){
@@ -306,17 +306,16 @@ public class UsuarioDAO{
 			stmt.setString(5, usuario.getSexo() + "");
 			stmt.setBoolean(6, usuario.isPossuiDeficiencia());
 			stmt.setString(7, usuario.getCelular());
-			stmt.setString(8, usuario.getNacionalidade());
-			stmt.setString(9, usuario.getTurno().toString());
-			stmt.setString(10, usuario.getSenha());
-			stmt.setString(11, usuario.getTipo().toString());
-			stmt.setBoolean(12, true);
+			stmt.setString(8, usuario.getTurno().toString());
+			stmt.setString(9, usuario.getSenha());
+			stmt.setString(10, usuario.getTipo().toString());
+			stmt.setBoolean(11, true);
 			
 			Integer idDisciplina = null;
 			if (usuario.getTipo().equals(TipoUsuarioEnum.PROFESSOR)) {
 				idDisciplina = ((ProfessorVO)usuario).getIdDisciplina();
 			}
-			stmt.setInt(13, idDisciplina);
+			stmt.setInt(12, idDisciplina);
 			
 			stmt.executeUpdate();
 			
@@ -373,5 +372,28 @@ public class UsuarioDAO{
 			}
 		
 		return atualizou;
+	}
+
+	public ArrayList<String> buscarDisciplina() {
+		ArrayList<String> disciplinas = new ArrayList<String>();
+		disciplinas.add("Selecione a Disciplina");
+		
+		String sql = "SELECT DISTINCT NOME_DISCIPLINA FROM DISCiPLINA";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				String discplina = rs.getString("NOME_DISCIPLINA");
+				disciplinas.add(discplina);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao consultar disciplina: " + e.getMessage());
+		}
+		
+		return disciplinas;
 	}
 }

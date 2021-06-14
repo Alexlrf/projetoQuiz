@@ -63,4 +63,9 @@ public class UsuarioController {
 		return usuarioBO.alterar(prof);
 	}
 
+	public ArrayList<String> buscarDisciplina() {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		return usuarioDAO.buscarDisciplina();
+	}
+
 }
