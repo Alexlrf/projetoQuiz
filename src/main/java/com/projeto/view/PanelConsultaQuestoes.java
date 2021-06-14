@@ -749,7 +749,6 @@ public class PanelConsultaQuestoes extends JPanel {
 	}
 
 	public static <T, E> T getChavePorValor(Map<T, E> map, E value) {
-
 		for (Entry<T, E> entry : map.entrySet()) {
 			if (value.equals(entry.getValue())) {
 				return entry.getKey();
