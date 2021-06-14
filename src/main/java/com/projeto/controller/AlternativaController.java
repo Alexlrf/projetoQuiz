@@ -50,7 +50,10 @@ public class AlternativaController {
 			mensagem = "Não é possível alterar ALTERNATIVA de outro usuário!\n";
 			retorno = false;
 		} else {
-			alternativaBO.alteraAlternativa(alternativaVO);
+			if(!alternativaBO.alteraAlternativa(alternativaVO)) {
+				mensagem = "Não foi possível alterar ALTERNATIVA!\n";
+				retorno = false;
+			}
 		}
 		
 		if (Utils.stringValida(mensagem)) {
