@@ -484,6 +484,9 @@ public class PanelConsultaQuestoes extends JPanel {
 							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
 
 							for (AlternativaVO alternativaVO2 : alternativas) {
+								System.out.println("alternativa = "+alternativaVO2.getTexto()+ " -> "
+																	+alternativaVO2.getAlternativaCorreta()+ " -> "
+																	+alternativaVO2.getIdAlternativa());
 								if (alternativaVO2.getAlternativaCorreta()
 										.equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
 									JOptionPane.showMessageDialog(null,
