@@ -98,4 +98,24 @@ public class AlternativaDAO implements BaseDao<AlternativaVO>{
 		}
 		return retorno;		
 	}
+
+	public boolean alteraAlternativa(AlternativaVO alternativaVO) {
+		boolean retorno = true;
+		String sql = "UPDATE alternativa SET texto_alternativa = ?, alternativa_correta = ? WHERE id_alternativa = ?";
+			
+			try (Connection conn = Banco.getConnection();
+					PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
+
+				stmt.setString(1, alternativaVO.getTexto());			
+				stmt.setString(2, alternativaVO.getAlternativaCorreta());
+				stmt.setInt(3, alternativaVO.getIdAlternativa());
+				stmt.executeUpdate();			
+				
+			} catch (SQLException e) {
+				System.out.println("Erro ao cadastrar lista de alternativas!");
+				retorno = false;				
+			}		
+		
+		return retorno;		
+	}
 }

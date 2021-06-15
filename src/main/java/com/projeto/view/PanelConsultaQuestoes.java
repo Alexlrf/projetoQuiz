@@ -92,13 +92,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		tableConsulta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
-				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
-
-				if (perguntaSelecionada >= 0) {
-					PerguntaVO pergunta = perguntas.get(perguntaSelecionada);
-					preencherAlternativas(pergunta);
-				}
+				consultarAlternativasDaPerguntaSelecionada();
 			}
 		});
 
@@ -447,7 +441,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						break;
 
 					case "ALTERNATIVA":
-						preparaAlteracaoAlternativa();
+						preparaAlteracaoAlternativa(true);
 						break;
 
 					default:
@@ -456,11 +450,12 @@ public class PanelConsultaQuestoes extends JPanel {
 				}
 			}
 
-			private void preparaAlteracaoAlternativa() {
+			private void preparaAlteracaoAlternativa(boolean primeiraTela) {
 				AlternativaVO alternativaVO = new AlternativaVO();
 				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
 				alternativaSelecionada = tableAlternativas.getSelectedRow() - 1;
-
+				
+				boolean podeAlterar = true;
 				if (alternativaSelecionada < 0 || perguntaSelecionada < 0) {
 					JOptionPane.showMessageDialog(null, "Selecione uma ALTERNATIVA para alterar", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
@@ -481,35 +476,53 @@ public class PanelConsultaQuestoes extends JPanel {
 							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
 
 						} else if (opcao == JOptionPane.YES_OPTION) {
-							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
-
-							for (AlternativaVO alternativaVO2 : alternativas) {
-								if (alternativaVO2.getAlternativaCorreta()
-										.equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
-									JOptionPane.showMessageDialog(null,
-											"Verifique! \nJá existe uma alternativa correta!", Constants.ALERTA,
-											JOptionPane.INFORMATION_MESSAGE);
-									break;
-								}
-							}
+							podeAlterar = this.podeSelecionarAlternativaCorreta(alternativaVO);
 						}
 
 						try {
-							alternativaController.alteraAlternativa(alternativaVO, usuarioLogado);
-							JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
-									JOptionPane.INFORMATION_MESSAGE);
+							if(primeiraTela && podeAlterar) {
+								alternativaController.alteraAlternativa(alternativaVO, usuarioLogado);
+								JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
+										JOptionPane.INFORMATION_MESSAGE);
+								consultarAlternativasDaPerguntaSelecionada();
+							}
 						} catch (ErroNoCadastroException mensagem) {
 							JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 									JOptionPane.ERROR_MESSAGE, null);
 						}
-
 					} else {
 						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
-
 					}
 				}
 			}
 
+			private boolean podeSelecionarAlternativaCorreta(AlternativaVO alternativaVO) {
+				boolean temAlternativaCorreta = false;
+				
+				alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
+				for (AlternativaVO alternativaVO2 : alternativas) {
+					System.out.println("alternativa = "+alternativaVO2.getTexto()+ " -> "
+														+alternativaVO2.getAlternativaCorreta()+ " -> "
+														+alternativaVO2.getIdAlternativa());
+					if (alternativaVO2.getAlternativaCorreta()
+							.equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
+						
+						temAlternativaCorreta = true;
+						break;
+					}
+				}
+				if (temAlternativaCorreta){
+					JOptionPane.showMessageDialog(null,
+							"Verifique! \nJá existe uma alternativa correta!", Constants.ALERTA,
+							JOptionPane.INFORMATION_MESSAGE);
+					preparaAlteracaoAlternativa(false);
+				} else {
+					alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
+				}
+				
+				return !temAlternativaCorreta;
+			}
+			
 			private void preparaAlteracaoCategoria() {
 				if (comboCategorias.getSelectedIndex() > 0) {
 					String categoriaEscolhida = comboCategorias.getSelectedItem().toString();
@@ -630,6 +643,15 @@ public class PanelConsultaQuestoes extends JPanel {
 
 	}
 
+	protected void consultarAlternativasDaPerguntaSelecionada() {
+		perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
+
+		if (perguntaSelecionada >= 0) {
+			PerguntaVO pergunta = perguntas.get(perguntaSelecionada);
+			preencherAlternativas(pergunta);
+		}
+	}
+
 	protected void consultaSeletor() {
 		limpaTabelaPerguntas();
 		limpaTabelaAlternativas();
@@ -727,7 +749,6 @@ public class PanelConsultaQuestoes extends JPanel {
 	}
 
 	public static <T, E> T getChavePorValor(Map<T, E> map, E value) {
-
 		for (Entry<T, E> entry : map.entrySet()) {
 			if (value.equals(entry.getValue())) {
 				return entry.getKey();
