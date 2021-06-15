@@ -52,7 +52,7 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 	}
-	
+
 	public UsuarioVO getUsuario() {
 		return usuario;
 	}
@@ -67,7 +67,6 @@ public class TelaPrincipal extends JFrame {
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		this.TelaPrincipal();
 		setExtendedState(Frame.MAXIMIZED_BOTH);
-
 	}
 	
 	/**

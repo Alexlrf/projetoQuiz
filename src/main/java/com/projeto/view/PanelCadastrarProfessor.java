@@ -9,6 +9,7 @@ import java.awt.SystemColor;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,6 +25,7 @@ import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
 import com.projeto.exceptions.CpfExistenteException;
 import com.projeto.exceptions.RgExistenteException;
+import com.projeto.model.entity.DisciplinaVO;
 import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
@@ -60,8 +62,9 @@ public class PanelCadastrarProfessor extends JPanel {
 	private DatePicker dataNascimento;
 	private UsuarioVO professor = new ProfessorVO();
 	private UsuarioController UsuarioController = new UsuarioController();
+	private List<DisciplinaVO> disciplinas = new ArrayList<>();
 
-	public PanelCadastrarProfessor(UsuarioVO professor) {
+	public PanelCadastrarProfessor(ProfessorVO professor) {
 		this.professor = professor;
 	}
 	
@@ -172,9 +175,14 @@ public class PanelCadastrarProfessor extends JPanel {
 		
 		JLabel lblDisciplina = new JLabel("Disciplina:");
 		
-		ArrayList<String> disciplina = UsuarioController.buscarDisciplina();
+		disciplinas = UsuarioController.buscarDisciplina();
+		ArrayList<String> disc = new ArrayList<>();
+		disc.add("SELECIONE A DISCIPLINA");
+		for (DisciplinaVO disciplinaVO : disciplinas) {
+			disc.add(disciplinaVO.getNomeDisciplina());
+		}
 		cbxDisciplina = new JComboBox();
-		DefaultComboBoxModel preencherDisciplina = new DefaultComboBoxModel(disciplina.toArray());
+		DefaultComboBoxModel preencherDisciplina = new DefaultComboBoxModel(disc.toArray());
 		cbxDisciplina.setModel(preencherDisciplina);
 		
 		cbMostrarSenha = new JCheckBox("Mostrar senha");
@@ -375,10 +383,31 @@ public class PanelCadastrarProfessor extends JPanel {
 		if (professor.getIdUsuario() != null) {
 			btnAtualizar.setVisible(true);
 			btnCadastrar.setVisible(false);
+			preencherProfessorNaTela(professor);
 		} else {
 			btnAtualizar.setVisible(false);
 			btnCadastrar.setVisible(true);
 		}
+	}
+
+	private void preencherProfessorNaTela(UsuarioVO professor) {
+		txtNome.setText(professor.getNome());
+		// cbxTurno
+		txtRg.setText(professor.getRg());
+		txtCpf.setText(professor.getCpf());
+		dataNascimento.setDate(professor.getDataNascimento());
+		
+		//rdbMasculino
+		
+		//rdbDeficiencia
+		
+		txtCelular.setText(professor.getCelular());
+		
+		//Disciplina
+		
+		pswSenha.setText(professor.getSenha());
+		pswConfirmarSenha.setText(professor.getSenha());
+		
 	}
 
 	protected boolean validarSenha() {
@@ -428,7 +457,13 @@ public class PanelCadastrarProfessor extends JPanel {
 		}
 		
 		professor.setCelular(txtCelular.getText().replace("(", "").replace(")", "").replace("-", "").replace(" ", ""));
-		((ProfessorVO)professor).setIdDisciplina(1);// resolver disciplina
+		
+		String disciplinaSelecionada = cbxDisciplina.getSelectedItem().toString();
+		for (DisciplinaVO disciplinaVO : disciplinas) {
+			if (disciplinaVO.getNomeDisciplina().equalsIgnoreCase(disciplinaSelecionada)) {
+				((ProfessorVO)professor).setIdDisciplina(disciplinaVO.getIdDisciplina());
+			}
+		}
 		
 		professor.setSenha(pswSenha.getText());
 		professor.setTipo(TipoUsuarioEnum.PROFESSOR);
@@ -525,7 +560,7 @@ public class PanelCadastrarProfessor extends JPanel {
 			mensagem.append("Celular, ");
 			validar = false;
 		}
-
+		
 		if (cbxDisciplina.getSelectedIndex() == 0) {
 			mensagem.append("Disciplina, ");
 			validar = false;

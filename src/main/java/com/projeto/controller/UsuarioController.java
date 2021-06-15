@@ -11,6 +11,7 @@ import com.projeto.exceptions.SenhaNaoInformadaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
 import com.projeto.model.bo.UsuarioBO;
 import com.projeto.model.dao.UsuarioDAO;
+import com.projeto.model.entity.DisciplinaVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.seletor.PesquisarDeUsuarioSeletor;
 import com.projeto.view.TelaPrincipal;
@@ -65,7 +66,7 @@ public class UsuarioController {
 		return usuarioBO.alterar(prof);
 	}
 
-	public ArrayList<String> buscarDisciplina() {
+	public List<DisciplinaVO> buscarDisciplina() {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		return usuarioDAO.buscarDisciplina();
 	}

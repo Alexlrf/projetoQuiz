@@ -11,6 +11,7 @@ import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
 import com.projeto.model.entity.AlunoVO;
 import com.projeto.model.entity.CoordenadorVO;
+import com.projeto.model.entity.DisciplinaVO;
 import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Banco;
@@ -76,7 +77,7 @@ public class UsuarioDAO{
 	public boolean verificarSenhaDAO(String cpf, String senha) {
 		boolean validar  = false;
 		
-		String sql = "SELECT SENHA FROM USUARIO WHERE cpf = '" + cpf + "' AND senha = MD5('" + senha + "')";
+		String sql = "SELECT SENHA FROM USUARIO WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'";
 
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
@@ -101,7 +102,7 @@ public class UsuarioDAO{
 	 */
 	public UsuarioVO verificarCpfSenhaDAO(String cpf, String senha) {
 		UsuarioVO usuario = null;
-		String sql = "SELECT * FROM usuario WHERE cpf = '" + cpf + "' AND senha = MD5('" + senha + "')";
+		String sql = "SELECT * FROM usuario WHERE cpf = '" + cpf + "' AND senha = '" + senha + "'";
 	
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
@@ -397,11 +398,10 @@ public class UsuarioDAO{
 		return atualizou;
 	}
 
-	public ArrayList<String> buscarDisciplina() {
-		ArrayList<String> disciplinas = new ArrayList<String>();
-		disciplinas.add("Selecione a Disciplina");
+	public List<DisciplinaVO> buscarDisciplina() {
+		List<DisciplinaVO> disciplinas = new ArrayList<>();
 		
-		String sql = "SELECT DISTINCT NOME_DISCIPLINA FROM DISCiPLINA";
+		String sql = "SELECT DISTINCT ID_DISCIPLINA, NOME_DISCIPLINA FROM DISCIPLINA";
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
@@ -409,8 +409,10 @@ public class UsuarioDAO{
 			ResultSet rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				String discplina = rs.getString("NOME_DISCIPLINA");
-				disciplinas.add(discplina);
+				DisciplinaVO disciplina = new DisciplinaVO();
+				disciplina.setIdDisciplina(rs.getInt("ID_DISCIPLINA"));
+				disciplina.setNomeDisciplina(rs.getString("NOME_DISCIPLINA"));
+				disciplinas.add(disciplina);
 			}
 			
 		} catch (Exception e) {

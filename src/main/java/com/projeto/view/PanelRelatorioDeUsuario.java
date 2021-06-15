@@ -228,8 +228,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		btnAlterar = new JButton("Alterar");
 		btnAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO fazer alteração do usuario e chamar o painel de cadastro passando o usuario como parametro
-				JOptionPane.showMessageDialog(null, "Botão em Construção...");
+				alterarUsuario();
 			}
 		});
 		btnAlterar.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -364,7 +363,23 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		);
 		panel.setLayout(gl_panel);
 		setLayout(groupLayout);
+	}
 
+	protected void alterarUsuario() {
+		UsuarioVO usuarioSelecionado = usuario.get(tblListaDeUsuarios.getSelectedRow() - 1);
+		
+		if(usuarioSelecionado instanceof AlunoVO) {
+			AlunoVO aluno = (AlunoVO) usuarioSelecionado;
+			//chamar a tela do aluno
+			
+		} else if (usuarioSelecionado instanceof ProfessorVO) {
+			ProfessorVO professor = (ProfessorVO) usuarioSelecionado;
+			//chamar tela do professor
+			
+		} else if (usuarioSelecionado instanceof CoordenadorVO) {
+			CoordenadorVO coordenador = (CoordenadorVO) usuarioSelecionado;
+			//chamar a tela do coordenador
+		}
 	}
 
 	private void verificarBotoesPaginas() {
@@ -449,20 +464,6 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		}
 		
 		habilitarBtnExcel();
-		
-//		for (UsuarioVO usuarioVO : usuario) {
-//			if(usuarioVO instanceof AlunoVO) {
-//				AlunoVO aluno = (AlunoVO) usuarioVO;
-//				preencherTabelaUsuarios(aluno);
-//				
-//			} else if (usuarioVO instanceof ProfessorVO) {
-//				ProfessorVO professor = (ProfessorVO) usuarioVO;
-//				preencherTabelaUsuarios(professor);
-//			} else if (usuarioVO instanceof CoordenadorVO) {
-//				CoordenadorVO coordenador = (CoordenadorVO) usuarioVO;
-//				preencherTabelaUsuarios(coordenador);
-//			}
-//		}
 	}
 
 	private void limparTabelaUsuario() {

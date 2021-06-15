@@ -15,19 +15,19 @@ public class DisciplinaVO {
 		super();
 	}
 
-	int getIdDisciplina() {
+	public int getIdDisciplina() {
 		return idDisciplina;
 	}
 
-	void setIdDisciplina(int idDisciplina) {
+	public void setIdDisciplina(int idDisciplina) {
 		this.idDisciplina = idDisciplina;
 	}
 
-	String getNomeDisciplina() {
+	public String getNomeDisciplina() {
 		return nomeDisciplina;
 	}
 
-	void setNomeDisciplina(String nomeDisciplina) {
+	public void setNomeDisciplina(String nomeDisciplina) {
 		this.nomeDisciplina = nomeDisciplina;
 	}	
 	
