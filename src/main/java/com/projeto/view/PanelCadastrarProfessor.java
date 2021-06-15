@@ -155,7 +155,7 @@ public class PanelCadastrarProfessor extends JPanel {
 		}
 		txtCelular.setColumns(10);
 		
-		ArrayList<String> turno = new ArrayList<String>();
+		ArrayList<String> turno = new ArrayList<>();
 		turno.add(0, "Selecione o Turno");
 		turno.add(1, TurnoEnum.MATUTINO.toString());
 		turno.add(2, TurnoEnum.VESPERTINO.toString());
