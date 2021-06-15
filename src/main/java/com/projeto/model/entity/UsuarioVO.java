@@ -15,14 +15,13 @@ public abstract class UsuarioVO {
 	private char sexo;
 	private boolean possuiDeficiencia;
 	private String celular;
-	private String nacionalidade;
 	private TurnoEnum turno;
 	private String senha;
 	private TipoUsuarioEnum tipo;
 	private boolean ativo;
 
 	public UsuarioVO(Integer idUsuario, String nome, String rg, String cpf, LocalDate dataNascimento, char sexo,
-			boolean possuiDeficiencia, String celular, String nacionalidade, TurnoEnum turno, String senha,
+			boolean possuiDeficiencia, String celular, TurnoEnum turno, String senha,
 			TipoUsuarioEnum tipo, boolean avito) {
 		super();
 		this.idUsuario = idUsuario;
@@ -33,7 +32,6 @@ public abstract class UsuarioVO {
 		this.sexo = sexo;
 		this.possuiDeficiencia = possuiDeficiencia;
 		this.celular = celular;
-		this.nacionalidade = nacionalidade;
 		this.turno = turno;
 		this.senha = senha;
 		this.tipo = tipo;
@@ -106,14 +104,6 @@ public abstract class UsuarioVO {
 	
 	public void setCelular(String celular) {
 		this.celular = celular;
-	}
-	
-	public String getNacionalidade() {
-		return nacionalidade;
-	}
-	
-	public void setNacionalidade(String nacionalidade) {
-		this.nacionalidade = nacionalidade;
 	}
 	
 	public TurnoEnum getTurno() {

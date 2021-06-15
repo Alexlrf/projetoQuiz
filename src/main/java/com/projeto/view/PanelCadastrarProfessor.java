@@ -22,6 +22,8 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
+import com.projeto.exceptions.CpfExistenteException;
+import com.projeto.exceptions.RgExistenteException;
 import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
@@ -63,7 +65,6 @@ public class PanelCadastrarProfessor extends JPanel {
 		this.professor = professor;
 	}
 	
-
 	/**
 	 * Create the panel.
 	 */
@@ -203,9 +204,10 @@ public class PanelCadastrarProfessor extends JPanel {
 		JButton btnCadastrar = new JButton("C A D A S T R A R");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				boolean validar = validarCampos();
+				boolean validarCampos = validarCampos();
+				boolean senhaValida = validarSenha();
 				
-				if (validar) {
+				if (validarCampos && senhaValida) {
 					cadastrarProfessor();
 				}
 			}
@@ -215,9 +217,10 @@ public class PanelCadastrarProfessor extends JPanel {
 		JButton btnAtualizar = new JButton("A T U A L I Z A R");
 		btnAtualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				boolean validar = validarCampos();
+				boolean validarCampos = validarCampos();
+				boolean senhaValida = validarSenha();
 				
-				if (validar) {
+				if (validarCampos && senhaValida) {
 					cadastrarProfessor();
 				}
 			}
@@ -378,15 +381,35 @@ public class PanelCadastrarProfessor extends JPanel {
 		}
 	}
 
+	protected boolean validarSenha() {
+		boolean validarSenha = true;
+		
+		if (!pswSenha.getText().equals(pswConfirmarSenha.getText())) {
+			validarSenha = false;
+			JOptionPane.showMessageDialog(null, "Para confirmar a senha, é necessário que as duas senhas sejam as mesmas.\n "
+					+ "Favor verificar!", "Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+		} else if (pswSenha.getText().length() < 8) {
+			validarSenha = false;
+			JOptionPane.showMessageDialog(null, "A senha deve conter mais de 8 caracteres.\n Favor verificar!", 
+					"Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+		} else if (pswSenha.getText().length() > 30) {
+			validarSenha = false;
+			JOptionPane.showMessageDialog(null, "A senha deve conter menos de 30 caracteres.\n Favor verificar!", 
+					"Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+		}
+		
+		return validarSenha;
+	}
+
 	protected void cadastrarProfessor() {
 		
 		professor.setNome(txtNome.getText());
 		
-		if (cbxTurno.getSelectedItem().equals(TurnoEnum.MATUTINO)) {
+		if (cbxTurno.getSelectedItem().equals("MATUTINO")) {
 			professor.setTurno(TurnoEnum.MATUTINO);
-		} else if (cbxTurno.getSelectedItem().equals(TurnoEnum.VESPERTINO)) {
+		} else if (cbxTurno.getSelectedItem().equals("VESPERTINO")) {
 			professor.setTurno(TurnoEnum.VESPERTINO);
-		} else if (cbxTurno.getSelectedItem().equals(TurnoEnum.NOTURNO)) {
+		} else if (cbxTurno.getSelectedItem().equals("NOTURNO")) {
 			professor.setTurno(TurnoEnum.NOTURNO);
 		}
 		
@@ -404,7 +427,7 @@ public class PanelCadastrarProfessor extends JPanel {
 			professor.setPossuiDeficiencia(true);
 		}
 		
-		professor.setCelular(txtCelular.getText().replace("(", "").replace(")", "").replace("-", ""));
+		professor.setCelular(txtCelular.getText().replace("(", "").replace(")", "").replace("-", "").replace(" ", ""));
 		((ProfessorVO)professor).setIdDisciplina(1);// resolver disciplina
 		
 		professor.setSenha(pswSenha.getText());
@@ -417,15 +440,19 @@ public class PanelCadastrarProfessor extends JPanel {
 			titulo = "Atualizar";
 		} else {
 			
-			professor = UsuarioController.cadastrar(professor);
-			if (professor.getIdUsuario() != null) {
-				mensagem = "Professor cadastrado com sucesso!";
-			} else {
-				mensagem = "Erro ao cadastrar professor.";
+			try {
+				titulo = "Cadastrar";
+				professor = UsuarioController.cadastrar(professor);
+				if (professor.getIdUsuario() != null) {
+					mensagem = "Professor cadastrado com sucesso!";
+				} else {
+					mensagem = "Erro ao cadastrar professor.";
+				}
+			} catch (RgExistenteException | CpfExistenteException e) {
+				mensagem = e.getMessage();
+				titulo = "Aviso";
 			}
-			titulo = "Cadastrar";
 		}
-		
 		JOptionPane.showMessageDialog(null, mensagem, titulo, JOptionPane.INFORMATION_MESSAGE);
 	}
 
@@ -473,8 +500,14 @@ public class PanelCadastrarProfessor extends JPanel {
 		}
 
 		LocalDate dtNascimento = dataNascimento.getDate();
-		if (!Utils.dataValida(dtNascimento)) {
+		if (dtNascimento == null) {
 			mensagem.append("Data de Nascimento, ");
+			validar = false;
+		}
+		
+		LocalDate dataAtual = LocalDate.now();
+		if (dtNascimento!= null && dtNascimento.isAfter(dataAtual)) {
+			JOptionPane.showMessageDialog(null, "Data de nascimento é maior que a data atual. \n Favor Reconsiderar!", "A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
 			validar = false;
 		}
 

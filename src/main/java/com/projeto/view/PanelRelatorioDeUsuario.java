@@ -31,7 +31,7 @@ import com.projeto.model.entity.AlunoVO;
 import com.projeto.model.entity.CoordenadorVO;
 import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
-import com.projeto.seletor.RelatorioDeUsuarioSeletor;
+import com.projeto.seletor.PesquisarDeUsuarioSeletor;
 
 import com.projeto.repository.Constants;
 import com.projeto.repository.GeradorPlanilhaUsuario;
@@ -377,7 +377,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		
 		lblPaginaAtual.setText(paginaAtual + "");
 		
-		RelatorioDeUsuarioSeletor relatorioUsuario = new RelatorioDeUsuarioSeletor();
+		PesquisarDeUsuarioSeletor relatorioUsuario = new PesquisarDeUsuarioSeletor();
 		
 		relatorioUsuario.setPagina(paginaAtual);
 		relatorioUsuario.setLimite(TAMANHO_PAGINA);
@@ -409,7 +409,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		
 		relatorioUsuario.setNome(txtNome.getText());
 		
-		usuario = usuarioController.relatorioUsuarioController(relatorioUsuario);
+		usuario = usuarioController.pesquisarUsuarioController(relatorioUsuario);
 		
 		paginasTotal = usuarioController.consultarTotalPaginas(relatorioUsuario);
 		lblTotalPaginas.setText(paginasTotal + "");

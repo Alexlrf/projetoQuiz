@@ -14,12 +14,37 @@ import com.projeto.model.entity.CoordenadorVO;
 import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Banco;
-import com.projeto.seletor.RelatorioDeUsuarioSeletor;
+import com.projeto.seletor.PesquisarDeUsuarioSeletor;
 
 public class UsuarioDAO{
 	
 	/**
-	 * Verifica se o cpf está correto
+	 * Verifica se o rg existe
+	 * @param rg
+	 * @return
+	 */
+	public boolean verificarRgDAO(String rg) {
+		boolean validar  = false;
+		
+		String sql = "SELECT RG FROM USUARIO WHERE RG = '" + rg + "'";
+
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
+			
+			ResultSet valido = stmt.executeQuery();
+			
+			// valida se a consulta tenha algum retorno
+			if (valido.next()) {
+				validar = true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar a existência de rg no banco." + e.getMessage());
+		}
+		return validar;
+	}
+	
+	/**
+	 * Verifica se o cpf existe
 	 * @param cpf
 	 * @return
 	 */
@@ -38,13 +63,13 @@ public class UsuarioDAO{
 				validar = true;
 			}
 		} catch (SQLException e) {
-			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
+			System.out.println("Erro ao consultar a existência de cpf no banco." + e.getMessage());
 		}
 		return validar;
 	}
 	
 	/**
-	 * Verifica se a senha está correta
+	 * Verifica se a senha existe
 	 * @param senha
 	 * @return
 	 */
@@ -63,7 +88,7 @@ public class UsuarioDAO{
 				validar = true;
 			}
 		} catch (SQLException e) {
-			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
+			System.out.println("Erro ao consultar a existência de senha no banco." + e.getMessage());
 		}
 		return validar;
 	}
@@ -110,7 +135,7 @@ public class UsuarioDAO{
 				}
 			}
 		} catch (SQLException e) {
-			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
+			System.out.println("Erro ao cadastrar usuario no banco." + e.getMessage());
 		}
 		return usuario;
 	}
@@ -131,14 +156,13 @@ public class UsuarioDAO{
 		usuario.setSexo(rs.getString("SEXO").charAt(0));
 		usuario.setPossuiDeficiencia(rs.getBoolean("POSSUI_DEFICIENCIA"));
 		usuario.setCelular(rs.getString("CELULAR"));
-		usuario.setNacionalidade(rs.getString("NACIONALIDADE"));
 		usuario.setTurno(TurnoEnum.getTurnoEnum(rs.getString("TURNO")));
 		usuario.setTipo(TipoUsuarioEnum.getTipoUsuarioEnum(rs.getString("TIPO")));
 		usuario.setAtivo(rs.getBoolean("ATIVO"));
 		return usuario;
 	}
 
-	public List<UsuarioVO> pesquisarPorSeletor(RelatorioDeUsuarioSeletor relatorioUsuario) {
+	public List<UsuarioVO> pesquisarPorSeletor(PesquisarDeUsuarioSeletor relatorioUsuario) {
 		final List<UsuarioVO> retornoRelatorioUsuario = new ArrayList<>();
 		
 		String sql = "SELECT * FROM USUARIO u";
@@ -181,12 +205,12 @@ public class UsuarioDAO{
 				}
 			}
 		} catch (SQLException e) {
-			System.out.println("Erro ao consultar a existência de login no banco." + e.getMessage());
+			System.out.println("Erro ao pesquisar usuario no banco." + e.getMessage());
 		}
 		return retornoRelatorioUsuario;
 	}
 
-	private String criarFiltros(RelatorioDeUsuarioSeletor seletor, String sql) {
+	private String criarFiltros(PesquisarDeUsuarioSeletor seletor, String sql) {
 		sql += " WHERE ";
 		boolean primeiro = true;
 		
@@ -259,7 +283,7 @@ public class UsuarioDAO{
 		return tipoUsuario;
 	}
 
-	public int consultarTotalPaginas(RelatorioDeUsuarioSeletor relatorioUsuario) {
+	public int consultarTotalPaginas(PesquisarDeUsuarioSeletor relatorioUsuario) {
 		int totalUsuarios = 0;
 		
 		String sql = "SELECT count(*) FROM USUARIO u";
@@ -292,7 +316,7 @@ public class UsuarioDAO{
 	}
 	
 	public UsuarioVO cadastrar(UsuarioVO usuario) {
-		String sql = "INSERT INTO USUARIO (NOME, RG, CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR "
+		String sql = "INSERT INTO USUARIO (NOME, RG, CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, "
 				+ " TURNO, SENHA, TIPO, ATIVO, ID_DISCIPLINA) "
 				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
@@ -350,25 +374,24 @@ public class UsuarioDAO{
 			stmt.setString(5, usuario.getSexo() + "");
 			stmt.setBoolean(6, usuario.isPossuiDeficiencia());
 			stmt.setString(7, usuario.getCelular());
-			stmt.setString(8, usuario.getNacionalidade());
-			stmt.setString(9, usuario.getTurno().toString());
-			stmt.setString(10, usuario.getSenha());
-			stmt.setString(11, usuario.getTipo().toString());
-			stmt.setBoolean(12, true);
+			stmt.setString(8, usuario.getTurno().toString());
+			stmt.setString(9, usuario.getSenha());
+			stmt.setString(10, usuario.getTipo().toString());
+			stmt.setBoolean(11, true);
 			
 			Integer idDisciplina = null;
 			if (usuario.getTipo().equals(TipoUsuarioEnum.PROFESSOR)) {
 				idDisciplina = ((ProfessorVO)usuario).getIdDisciplina();
 			}
-			stmt.setInt(13, idDisciplina);
-			stmt.setInt(14, usuario.getIdUsuario());
+			stmt.setInt(12, idDisciplina);
+			stmt.setInt(13, usuario.getIdUsuario());
 			
 			int linhasAfetadas = stmt.executeUpdate();
 			
 			atualizou = linhasAfetadas > 0;
 			
 			} catch (Exception e) {
-				System.out.println("Erro ao cadastrar usuario: " + e.getMessage());
+				System.out.println("Erro ao alterar usuario: " + e.getMessage());
 			}
 		
 		return atualizou;
