@@ -93,8 +93,9 @@ public class TelaPrincipal extends JFrame {
 		menuItemResponderQuiz = new JMenuItem("Responder Quiz");
 		menuItemResponderQuiz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO  Fazer painel de resolver questões do Aluno
-				JOptionPane.showMessageDialog(null, "Tela em Construção...");
+				contentPane = new PanelQuiz((AlunoVO) usuario);				
+				setContentPane(contentPane);
+				revalidate();
 			}
 		});
 		menuResolverQuiz.add(menuItemResponderQuiz);

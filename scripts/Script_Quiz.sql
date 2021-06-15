@@ -1,3 +1,5 @@
+set sql_safe_updates = 0;
+
 DROP DATABASE IF EXISTS DBTESTE;
 
 CREATE DATABASE DBTESTE;
@@ -19,9 +21,9 @@ CREATE TABLE USUARIO (
   , DT_NASCIMENTO DATE NOT NULL
   , SEXO CHAR(1) NOT NULL
   , POSSUI_DEFICIENCIA BOOLEAN NOT NULL
-  , CELULAR VARCHAR(11)
+  , CELULAR VARCHAR(11) NOT NULL
   , NACIONALIDADE VARCHAR(50) NOT NULL
-  , TURNO ENUM('MATUTINO', 'VESPERTINO', 'NOTURNO') NOT NULL  
+  , TURNO ENUM('MATUTINO', 'VESPERTINO', 'NOTURNO', 'MATUTINO_E_VERSPERTINO', 'MATUTINO_E_NOTURNO', 'VESPERTINO_E_NOTURNO') NOT NULL  
   , SENHA VARCHAR(50) NOT NULL
   , TIPO ENUM('PROFESSOR', 'ALUNO', 'COORDENADOR') NOT NULL
   , ATIVO BOOLEAN NOT NULL
@@ -31,6 +33,8 @@ CREATE TABLE USUARIO (
  CREATE TABLE categoria (
   id_categoria INT NOT NULL AUTO_INCREMENT
   , id_disciplina int not null
+  , id_usuario INT NOT NULL
+  , ativada boolean not null
   , descricao_categoria VARCHAR(50) NOT NULL
   , constraint PK_CATEGORIA primary key (id_categoria)
   );
@@ -40,7 +44,8 @@ CREATE TABLE USUARIO (
   , id_usuario INT NOT NULL
   , id_categoria INT NOT NULL
   , id_disciplina int not null
-  , texto_pergunta TEXT NOT NULL  
+  , texto_pergunta TEXT NOT NULL
+  , pergunta_ativada boolean not null
   , constraint PK_PERGUNTA primary key (id_pergunta)
   , constraint FK_PERGUNTA_USUARIO foreign key (id_usuario) references usuario(id_usuario)
    , constraint FK_PERGUNTA_CATEGORIA foreign key (id_categoria) references categoria(id_categoria)
@@ -54,6 +59,32 @@ CREATE TABLE USUARIO (
   , constraint PK_ALTERNATIVA primary key (id_alternativa)
   , constraint FK_ALTERNATIVA_PERGUNTA foreign key (id_pergunta) references pergunta(id_pergunta)
   );
+  
+  create table quiz (
+  id_quiz int not null auto_increment
+  , id_usuario int not null 
+  , constraint PK_QUIZ primary key (id_quiz)
+  , constraint FK_quiz_usuario foreign key (id_usuario) references usuario(id_usuario)
+  );
+  
+  create table prova_quiz (
+  id_quiz int not null
+  , id_pergunta int not null
+  , id_usuario int not null  
+  , constraint PK_prova_quiz primary key (id_quiz, id_pergunta)
+  , constraint FK_prova_quiz_quiz foreign key (id_quiz) references quiz(id_quiz)
+  , constraint FK_prova_quiz_pergunta foreign key (id_pergunta) references pergunta (id_pergunta)
+  );
+  
+   create table resultado_prova ( 
+  id_quiz int not null 
+  , id_usuario int not null    
+  , num_acertos int not null 
+  , constraint PK_resultado_prova primary key (id_usuario, id_quiz)
+  , constraint FK_resultado_prova_id_usuario foreign key (id_usuario) references usuario(id_usuario)
+  , constraint FK_resultado_prova_id_quiz foreign key (id_quiz) references quiz(id_quiz)
+  );
+  
 
 insert into disciplina (nome_disciplina) values ('Java');
 insert into disciplina (nome_disciplina) values ('Software');
@@ -69,7 +100,7 @@ INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CE
 	VALUES ('KOGUT', '1111111', '11111111111', '2020-05-05', 'M', false, '45987456311', 'BRASILEIRO', 'MATUTINO', MD5('kogut'), 'COORDENADOR', true);
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
 	VALUES ('JOÃO', '5656565', '56565656565', '2020-05-05', 'M', false, '45987456351', 'BRASILEIRO', 'NOTURNO', MD5('joao'), 'COORDENADOR', true);
-    
+
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
 	VALUES ('ALISON', '3333333', '33333333333', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', MD5('alison'), 'ALUNO', true);
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
@@ -81,21 +112,44 @@ INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CE
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
 	VALUES ('PELÉ', '9999999', '99999999999', '2020-01-05', 'M', false, '45987956321', 'BRASILEIRO', 'MATUTINO', MD5('pele'), 'ALUNO', true);
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO) 
-	VALUES ('WAGNER', '1010101', '10101010101', '2020-10-05', 'M', false, '45983456321', 'BRASILEIRO', 'NOTURNO', MD5('wagner'), 'ALUNO', true);
+	VALUES ('WAGNER', '1010101', '10101010101', '2020-10-05', 'M', false, '44983456321', 'BRASILEIRO', 'NOTURNO', MD5('wagner'), 'ALUNO', true);
 INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
-	VALUES ('ALISON', '3333333', '33333333333', '2020-05-05', 'M', false, '45987456321', 'BRASILEIRO', 'MATUTINO', MD5('alison'), 'ALUNO', true);
+	VALUES ('PATETA', '1313131', '13131313131', '2020-05-05', 'M', false, '48987456321', 'BRASILEIRO', 'MATUTINO', MD5('pateta'), 'ALUNO', true);
+INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
+	VALUES ('TOM', '3131313', '31313131313', '2020-05-05', 'M', false, '47987456321', 'BRASILEIRO', 'MATUTINO', MD5('tom'), 'ALUNO', true);
+INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
+	VALUES ('WILL', '5151515', '51515151515', '2020-05-05', 'M', false, '46987456321', 'BRASILEIRO', 'MATUTINO', MD5('will'), 'ALUNO', true);
+INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
+	VALUES ('JASON', '1919191', '19191919191', '2020-05-05', 'M', false, '42987456321', 'BRASILEIRO', 'MATUTINO', MD5('jason'), 'ALUNO', true);
+INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
+	VALUES ('HEITOR', '9191919', '91919191919', '2020-05-05', 'M', false, '45777456321', 'BRASILEIRO', 'MATUTINO', MD5('heitor'), 'ALUNO', true);
+INSERT INTO USUARIO (NOME, RG,  CPF, DT_NASCIMENTO, SEXO, POSSUI_DEFICIENCIA, CELULAR, NACIONALIDADE, TURNO, SENHA, TIPO, ATIVO)
+	VALUES ('CELSO', '1717171', '17171717171', '2020-05-05', 'M', false, '45988456321', 'BRASILEIRO', 'MATUTINO', MD5('celso'), 'ALUNO', true);
 
 
-INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'ORIENTAÇÃO A OBJETOS');
-INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'GIT / GITHUB');
-INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'SELETORES');
-INSERT INTO categoria (id_disciplina, descricao_categoria) values(2, 'INTERFACES');
-INSERT INTO categoria (id_disciplina, descricao_categoria) values(1, 'EXCEÇÕES');
 
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 1, 1, 'O QUE É ABSTRAÇÃO?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 2, 1, 'QUAL A DIFERENÇA ENTRE GIT E GITHUB?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 2, 1, 'O QUE É UM PUSH?');
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta) values(1, 3, 1, 'QUAL A FUNÇÃO DOS SELETORES?');
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'GIT / GITHUB', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'SELETORES', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'INTERFACES', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 1, 'EXCEÇÕES', true);
+
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 2, 'ORIENTAÇÃO A OBJETOS', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(1, 2, 'POLIMORFISMO', true);
+
+
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(2, 3, 'TIPOS DE SISTEMAS ', true);
+INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(2, 3, 'AMBIENTES OPERACIONAIS', true);
+
+
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 5, 1, 'O QUE É ABSTRAÇÃO?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 1, 1, 'QUAL A DIFERENÇA ENTRE GIT E GITHUB?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 1, 1, 'O QUE É UM PUSH?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 2, 1, 'QUAL A FUNÇÃO DOS SELETORES?', true);
+
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 6, 1, 'O QUE É POLIMORFISMO?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(3, 8, 2, 'O QUE É AMBIENTE OPERACIONAL?', true);
+
+
 
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UMA CATEGORIA DE CLASSE JAVA', '- - -');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
@@ -120,3 +174,47 @@ INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) va
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'AUXILIAR NA APRESENTAÇÃO DO LAYOUT DE UMA JFRAME', '- - -');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'POSSIBILITA CONSULTAS SQL MAIS COMPLEXAS DE FORMA MAIS DINÂMICA', 'CORRETA');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'INSTANCIAR OBJETOS DE CLASSES ABSTRATAS', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UMA CATEGORIA DE CLASSE JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É QUANDO TIPOS DE CLASSES MAIS ABSTRATAS REPRESENTAM O COMPORTAMENTO DAS CLASSES CONCRETAS QUE REFERENCIAM', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UMA CATEGORIA DE SISTEMA ORGANIZACIONAL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UM TIPO DE PROCESSO INTERNO DE RH', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UMA ÁREA INSERIDA DENTRO DA CORPORAÇÃO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'SÃO FATORES E CONDIÇÕES EXTERNAS QUE TÊM RELEVÂNCIA IMEDIATA PARA A ORGANIZAÇÃO', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+
+select * from usuario;
+select * from categoria;
+select * from pergunta;
+
+insert into quiz (id_usuario) values (2);
+INSERT INTO quiz (id_usuario) values (1);
+INSERT INTO quiz (id_usuario) values (1);
+
+insert into prova_quiz (id_quiz, id_usuario, id_pergunta) values (1, 2, 1);
+insert into prova_quiz (id_quiz, id_usuario, id_pergunta) values (1, 2, 2);
+insert into prova_quiz (id_quiz, id_usuario, id_pergunta) values (1, 2, 3);
+
+insert into resultado_prova (id_quiz, id_usuario, num_acertos) values (1, 2, 2);
+insert into resultado_prova (id_quiz, id_usuario, num_acertos) values (1, 1, 3);
+
+select id_quiz, id_usuario as Professor_Responsavel from quiz;
+select id_quiz, id_pergunta, id_usuario as Professor_Responsavel from prova_quiz;
+select id_quiz, id_usuario as Aluno, num_acertos as Acertos from resultado_prova;
+
+select 
+	prova_quiz.id_quiz, prova_quiz.id_pergunta, prova_quiz.id_usuario
+   , pergunta.texto_pergunta , alternativa.texto_alternativa, alternativa.alternativa_correta
+from 
+	prova_quiz
+inner join
+	pergunta on prova_quiz.id_pergunta = pergunta.id_pergunta
+inner join 
+	alternativa on pergunta.id_pergunta = alternativa.id_pergunta
+where 
+	prova_quiz.id_quiz = 1;
