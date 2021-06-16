@@ -4,10 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.model.entity.QuizVO;
 import com.projeto.repository.Banco;
 
 public class QuizDAO {
@@ -54,6 +57,81 @@ public class QuizDAO {
 			}		
 		}
 		return retorno;
+	}
+
+	public int validaCodigoQuiz(String codigoQuiz) throws ErroNaConsultaException {
+		int codigoQuizValido = 0; 
+		
+		String sql = "SELECT id_quiz FROM prova_quiz WHERE id_quiz = ?";
+		
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
+			
+			stmt.setInt(1, Integer.parseInt(codigoQuiz));
+			stmt.executeUpdate();
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				codigoQuizValido = (rs.getInt("id_quiz"));	
+			}
+			
+		}  catch (SQLException e) {
+			codigoQuizValido = 0;		
+			throw new ErroNaConsultaException("Erro ao conectar com o Quiz!");
+		}			
+		return codigoQuizValido;
+	}
+
+	public List<PerguntaVO> consultaPerguntasQuiz(int idRetornado) throws ErroNaConsultaException{
+		List<PerguntaVO> perguntasRetornadas = new ArrayList<>();
+		PerguntaVO pergunta;
+		
+		String sql = "SELECT id_pergunta FROM prova_quiz WHERE id_quiz = ?;";		
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
+			
+			stmt.setInt(1, idRetornado);			
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				pergunta = new PerguntaVO();
+				pergunta.setIdPergunta(rs.getInt("id_pergunta"));
+				pergunta.setListaAlternativas(preencheAlternativas(pergunta.getIdPergunta()));
+				perguntasRetornadas.add(pergunta);
+			}
+			
+		}  catch (SQLException e) {
+			throw new ErroNaConsultaException("Erro ao conectar com as perguntas do Quiz!");
+		}			
+		return perguntasRetornadas;
+	}
+
+	private List<AlternativaVO> preencheAlternativas(int idPergunta) {
+		List<AlternativaVO> alternativas = new ArrayList<>();
+		String sql = "SELECT * FROM alternativa WHERE id_pergunta = ?";
+		
+		try (Connection conn = Banco.getConnection();
+				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);) {
+			
+			stmt.setInt(1, idPergunta);
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				AlternativaVO alternativaVO = new AlternativaVO();
+				alternativaVO.setIdAlternativa(rs.getInt("id_alternativa"));
+				alternativaVO.setIdPergunta(rs.getInt("id_pergunta"));
+				alternativaVO.setTexto(rs.getString("texto_alternativa"));
+				alternativaVO.setAlternativaCorreta(rs.getString("alternativa_correta"));
+				alternativas.add(alternativaVO);
+			}			
+			
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar alternativas por id_pergunta!");
+			
+		}				
+		return alternativas;
 	}
 
 

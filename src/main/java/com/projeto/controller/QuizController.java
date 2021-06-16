@@ -6,6 +6,7 @@ import com.projeto.bo.QuizBO;
 import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.model.entity.QuizVO;
 
 public class QuizController {
 	QuizBO quizBO = new QuizBO();
@@ -15,9 +16,8 @@ public class QuizController {
 		return quizBO.cadastraQuiz(quiz, idUsuario);
 	}
 
-	public int validaCodigoQuiz(String codigoQuiz) throws ErroNaConsultaException {
-		
-		return 0;
+	public QuizVO validaCodigoQuiz(String codigoQuiz) throws ErroNaConsultaException {			
+		return quizBO.validaCodigoQuiz(codigoQuiz);
 	}
 
 }

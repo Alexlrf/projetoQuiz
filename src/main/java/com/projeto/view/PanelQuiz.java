@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import com.projeto.controller.QuizController;
 import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.model.entity.PerguntaVO;
+import com.projeto.model.entity.QuizVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
@@ -17,6 +18,7 @@ import java.awt.event.ActionEvent;
 
 public class PanelQuiz extends JPanel {
 	private QuizController quizController = new QuizController();
+	private QuizVO quizVO = new QuizVO();
 	
 	private String codigoQuiz;
 
@@ -60,26 +62,19 @@ public class PanelQuiz extends JPanel {
 	private void validaCodigoDigitado(String codigoQuiz) {
 		
 		try {
-			int codigoProva = quizController.validaCodigoQuiz(codigoQuiz);
+			quizVO = quizController.validaCodigoQuiz(codigoQuiz);
+			if (quizVO != null) {
+				JOptionPane.showMessageDialog(null, " Vamos Lá !!!", Constants.SUCESSO,
+						JOptionPane.INFORMATION_MESSAGE);			
+				
+			}
 			
-			JOptionPane.showMessageDialog(null, " Vamos Lá !!!", Constants.SUCESSO,
-					JOptionPane.INFORMATION_MESSAGE);
-			
-			JOptionPane.showMessageDialog(null, "Aqui começa o quiz de código "+codigoProva);
 			
 		} catch (ErroNaConsultaException mensagem) {
 			JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 					JOptionPane.ERROR_MESSAGE, null);
-		}
-		
-		
-//		if (!quizController.validaCodigoQuiz(codigoQuiz)) {
-//			JOptionPane.showMessageDialog(null, "Código Inválido!", Constants.ALERTA,
-//					JOptionPane.ERROR_MESSAGE, null);
-//			
-//		} else {
-//			
-//		}
+		}	
+
 		
 	}
 
