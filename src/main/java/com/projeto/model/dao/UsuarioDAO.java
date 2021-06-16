@@ -160,6 +160,7 @@ public class UsuarioDAO{
 		usuario.setTurno(TurnoEnum.getTurnoEnum(rs.getString("TURNO")));
 		usuario.setTipo(TipoUsuarioEnum.getTipoUsuarioEnum(rs.getString("TIPO")));
 		usuario.setAtivo(rs.getBoolean("ATIVO"));
+		usuario.setSenha(rs.getString("SENHA"));
 		return usuario;
 	}
 

@@ -42,6 +42,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ButtonGroup;
 
 public class PanelCadastrarProfessor extends JPanel {
 	private PlaceholderTextField txtNome;
@@ -63,6 +64,8 @@ public class PanelCadastrarProfessor extends JPanel {
 	private UsuarioVO professor = new ProfessorVO();
 	private UsuarioController UsuarioController = new UsuarioController();
 	private List<DisciplinaVO> disciplinas = new ArrayList<>();
+	private final ButtonGroup buttonGroupDeficiencia = new ButtonGroup();
+	private final ButtonGroup buttonGroupSexo = new ButtonGroup();
 
 	public PanelCadastrarProfessor(ProfessorVO professor) {
 		this.professor = professor;
@@ -147,12 +150,16 @@ setBackground(new Color(70, 130, 150));
 		dataNascimento = new DatePicker(dateSettings);
 		
 		rdbMasculino = new JRadioButton("Masculino");
+		buttonGroupSexo.add(rdbMasculino);
 		
 		rdbFeminino = new JRadioButton("Feminino");
+		buttonGroupSexo.add(rdbFeminino);
 		
 		rdbDeficienteSim = new JRadioButton("Sim");
+		buttonGroupDeficiencia.add(rdbDeficienteSim);
 		
 		rdbDeficienteNao = new JRadioButton("Não");
+		buttonGroupDeficiencia.add(rdbDeficienteNao);
 		
 		MaskFormatter mascaraCelular;
 		try {
@@ -388,28 +395,37 @@ setBackground(new Color(70, 130, 150));
 		if (professor.getIdUsuario() != null) {
 			btnAtualizar.setVisible(true);
 			btnCadastrar.setVisible(false);
-			preencherProfessorNaTela(professor);
+			preencherProfessorNaTela((ProfessorVO) professor);
 		} else {
 			btnAtualizar.setVisible(false);
 			btnCadastrar.setVisible(true);
 		}
 	}
 
-	private void preencherProfessorNaTela(UsuarioVO professor) {
+	private void preencherProfessorNaTela(ProfessorVO professor) {
 		txtNome.setText(professor.getNome());
-		// cbxTurno
+		cbxTurno.setSelectedItem(professor.getTurno().toString());
 		txtRg.setText(professor.getRg());
 		txtCpf.setText(professor.getCpf());
 		dataNascimento.setDate(professor.getDataNascimento());
 		
-		//rdbMasculino
+		rdbFeminino.setSelected(true);
+		if (professor.getSexo() == 'M') {
+			rdbMasculino.setSelected(true);
+		}
 		
-		//rdbDeficiencia
+		rdbDeficienteNao.setSelected(true);
+		if (professor.isPossuiDeficiencia()) {
+			rdbDeficienteSim.setSelected(true);
+		}
 		
 		txtCelular.setText(professor.getCelular());
 		
-		//Disciplina
-		
+		for (DisciplinaVO disciplinaVO : disciplinas) {
+			if(professor.getIdDisciplina() == disciplinaVO.getIdDisciplina()) {
+				cbxDisciplina.setSelectedItem(disciplinaVO.getNomeDisciplina());
+			}
+		}
 		pswSenha.setText(professor.getSenha());
 		pswConfirmarSenha.setText(professor.getSenha());
 		
