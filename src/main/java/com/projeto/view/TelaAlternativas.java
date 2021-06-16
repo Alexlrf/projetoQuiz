@@ -128,7 +128,7 @@ public class TelaAlternativas extends JFrame {
 	protected void verificarAcerto(AlternativaVO alternativaVO) {
 		
 		if (alternativaVO.getAlternativaCorreta().equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
-			TelaQuiz.setAcertos(1);			
+			TelaQuiz.acertosQuiz(true);			
 		}		
 		JOptionPane.showMessageDialog(null, "Resposta Registrada!");
 		dispose();

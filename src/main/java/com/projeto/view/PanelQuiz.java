@@ -32,7 +32,7 @@ public class PanelQuiz extends JPanel {
 	}
 
 	private boolean iniciaQuiz(UsuarioVO alunoLogado) {
-		JOptionPane.showMessageDialog(null, "Bem Vindo  "+alunoLogado.getNome().toUpperCase()+"!\nVamos começar?");
+		JOptionPane.showMessageDialog(null, " Bem Vindo  "+alunoLogado.getNome().toUpperCase()+"!\n\n Vamos começar?");
 		
 		codigoQuiz = JOptionPane.showInputDialog(null, "Digite o código do quiz!");
 		
@@ -52,7 +52,7 @@ public class PanelQuiz extends JPanel {
 		try {
 			quizVO = quizController.validaCodigoQuiz(codigoQuiz);
 			if (quizVO != null) {
-				JOptionPane.showMessageDialog(null, " Vamos Lá !!!", Constants.SUCESSO,
+				JOptionPane.showMessageDialog(null, " Boa Sorte! \nVamos Lá !!!", Constants.SUCESSO,
 						JOptionPane.INFORMATION_MESSAGE);				
 				
 				TelaQuiz telaQuiz = new TelaQuiz(alunoLogado, quizVO);

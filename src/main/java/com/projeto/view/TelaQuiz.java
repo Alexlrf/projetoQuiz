@@ -25,12 +25,18 @@ public class TelaQuiz extends JFrame {
 	private int contadorQuestoes;
 	private static int acertos;	
 
-	public static int getAcertos() {
+	public  int getAcertos() {
 		return acertos;
 	}
 
-	public static void setAcertos(int acertos) {
-		TelaQuiz.acertos = acertos++;
+	public void setAcertos(int acertos) {
+		this.acertos = acertos;
+	}
+	
+	public static void acertosQuiz(boolean retornoQuestao) {
+		if (retornoQuestao) {
+			acertos++;
+		} 
 	}
 
 	/**
@@ -78,18 +84,18 @@ public class TelaQuiz extends JFrame {
 							"INCLUSÃO DE PERGUNTA ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 
 					if (opcaoEscolhida == JOptionPane.YES_OPTION) {
-						TelaAlternativas telaAlternativas = new TelaAlternativas(pergunta.getListaAlternativas(),
-								pergunta);
+						TelaAlternativas telaAlternativas = new TelaAlternativas(pergunta.getListaAlternativas(), pergunta);
 						telaAlternativas.setVisible(true);
 						btnQuestao.setBackground(Color.gray);
 						btnQuestao.setEnabled(false);
 					}
+					System.out.println("Vc acertou "+acertos);
 				}
 			});
 			getContentPane().add(btnQuestao);
 			contadorQuestoes++;
 		}
-		
-		System.out.println("Vc acertou "+acertos);
+		JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n\n Obrigado!");
+		this.dispose();
 	}
 }
