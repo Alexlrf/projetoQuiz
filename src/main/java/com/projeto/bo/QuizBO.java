@@ -32,10 +32,13 @@ public class QuizBO {
 		}		
 		return idQuiz;
 	}
+	
 	public QuizVO validaCodigoQuiz(String codigoQuiz)  throws ErroNaConsultaException {	
 		 QuizVO quizVO = new QuizVO();
 		 String mensagem = "";
-		int idRetornado = quizDAO.validaCodigoQuiz(codigoQuiz);
+		 int idQuizSelecionado = Integer.parseInt(codigoQuiz);
+		 
+		int idRetornado = quizDAO.validaCodigoQuiz(idQuizSelecionado);
 		 if (idRetornado == 0) {
 			 mensagem += "Erro ao obter código do Quiz!\n";
 		} else {
@@ -47,8 +50,7 @@ public class QuizBO {
 				quizVO.setIdQuiz(idRetornado);
 				quizVO.setPerguntas(listaPerguntas);
 			}
-		}
-		 
+		}		 
 		 if (Utils.stringValida(mensagem)) {
 			throw new ErroNaConsultaException(mensagem);
 		}

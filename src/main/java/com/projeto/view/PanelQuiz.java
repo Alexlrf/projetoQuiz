@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import com.projeto.controller.QuizController;
 import com.projeto.exceptions.ErroNaConsultaException;
+import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.QuizVO;
 import com.projeto.model.entity.UsuarioVO;
@@ -30,7 +31,7 @@ public class PanelQuiz extends JPanel {
 		boolean comeco = iniciaQuiz(alunoLogado);
 		
 		if (comeco) {
-			validaCodigoDigitado(codigoQuiz);
+			validaCodigoDigitado(codigoQuiz, alunoLogado);
 			
 		} 
 		
@@ -59,13 +60,25 @@ public class PanelQuiz extends JPanel {
 		return true;		
 	}
 
-	private void validaCodigoDigitado(String codigoQuiz) {
+	private void validaCodigoDigitado(String codigoQuiz, UsuarioVO alunoLogado) {
 		
 		try {
 			quizVO = quizController.validaCodigoQuiz(codigoQuiz);
 			if (quizVO != null) {
 				JOptionPane.showMessageDialog(null, " Vamos Lá !!!", Constants.SUCESSO,
-						JOptionPane.INFORMATION_MESSAGE);			
+						JOptionPane.INFORMATION_MESSAGE);
+				
+				System.out.println("ID Quiz -> "+quizVO.getIdQuiz()+"  | Aluno = "+alunoLogado.getNome());
+				System.out.println("=====================================================");
+				  for (PerguntaVO pergunta : quizVO.getPerguntas()) {
+					  System.out.println("=====================================================");
+					  System.out.println("=====================================================");
+					  System.out.println(pergunta.getTextoPergunta()+"\n");
+					  for (AlternativaVO alternativa: pergunta.getListaAlternativas()) {
+						  System.out.println(alternativa.getTexto()+" - "+alternativa.getAlternativaCorreta()+"\n");
+					}
+				}
+										
 				
 			}
 			

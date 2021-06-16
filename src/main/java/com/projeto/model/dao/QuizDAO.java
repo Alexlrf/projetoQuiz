@@ -59,17 +59,16 @@ public class QuizDAO {
 		return retorno;
 	}
 
-	public int validaCodigoQuiz(String codigoQuiz) throws ErroNaConsultaException {
+	public int validaCodigoQuiz(int codigoQuiz) throws ErroNaConsultaException {
 		int codigoQuizValido = 0; 
 		
-		String sql = "SELECT id_quiz FROM prova_quiz WHERE id_quiz = ?";
+		String sql = "SELECT distinct(id_quiz) FROM prova_quiz WHERE id_quiz = ?";
 		
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
 			
-			stmt.setInt(1, Integer.parseInt(codigoQuiz));
-			stmt.executeUpdate();
+			stmt.setInt(1, codigoQuiz);
 			ResultSet rs = stmt.executeQuery();
 			
 			if (rs.next()) {
@@ -87,7 +86,14 @@ public class QuizDAO {
 		List<PerguntaVO> perguntasRetornadas = new ArrayList<>();
 		PerguntaVO pergunta;
 		
-		String sql = "SELECT id_pergunta FROM prova_quiz WHERE id_quiz = ?;";		
+		String sql = "SELECT"
+				+ 		" prova_quiz.id_pergunta, pergunta.texto_pergunta "
+				+ "FROM"
+				+ 		" prova_quiz \r\n"
+				+ "INNER JOIN"
+				+ 		" pergunta on prova_quiz.id_pergunta = pergunta.id_pergunta "
+				+ "WHERE"
+				+ 		" prova_quiz.id_quiz = ?;";		
 		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
@@ -98,6 +104,7 @@ public class QuizDAO {
 			while (rs.next()) {
 				pergunta = new PerguntaVO();
 				pergunta.setIdPergunta(rs.getInt("id_pergunta"));
+				pergunta.setTextoPergunta(rs.getString("texto_pergunta"));
 				pergunta.setListaAlternativas(preencheAlternativas(pergunta.getIdPergunta()));
 				perguntasRetornadas.add(pergunta);
 			}
