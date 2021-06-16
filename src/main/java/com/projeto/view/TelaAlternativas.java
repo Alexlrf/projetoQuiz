@@ -2,6 +2,7 @@ package com.projeto.view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,32 +12,27 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
 import com.projeto.model.entity.AlternativaVO;
+import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Constants;
 
 public class TelaAlternativas extends JFrame {
-
+	private static final long serialVersionUID = 1L;
+	
 	private JPanel contentPane;
+	private static PerguntaVO perguntaVO;
 	private JButton btnAlternativa1;
 	private JButton btnAlternativa2;
 	private JButton btnAlternativa3;
 	private JButton btnAlternativa4;
 	private JButton btnAlternativa5;
 	private static List<AlternativaVO> alternativas;
-	private int acertos;	
-
-	int getAcertos() {
-		return acertos;
-	}
-
-	void setAcertos(int acertos) {
-		this.acertos = acertos;
-	}
 
 	/**
 	 * Launch the application.
@@ -45,7 +41,7 @@ public class TelaAlternativas extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaAlternativas frame = new TelaAlternativas(alternativas);
+					TelaAlternativas frame = new TelaAlternativas(alternativas, perguntaVO);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -56,8 +52,9 @@ public class TelaAlternativas extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param perguntaVO 
 	 */
-	public TelaAlternativas(List<AlternativaVO> alternativas) {
+	public TelaAlternativas(List<AlternativaVO> alternativas, PerguntaVO perguntaVO) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 737, 468);
 		contentPane = new JPanel();
@@ -66,17 +63,19 @@ public class TelaAlternativas extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(0, 1, 20, 10));
 		
-		acertos = 0;
+		JLabel lblPergunta = new JLabel("   "+perguntaVO.getTextoPergunta());
+		lblPergunta.setForeground(Color.WHITE);
+		lblPergunta.setBackground(Color.WHITE);
+		lblPergunta.setFont(new Font("Tahoma", Font.BOLD, 13));
+		contentPane.add(lblPergunta);		
 		
 		JButton btnAlternativa1 = new JButton(alternativas.get(0).getTexto()+"");
 		btnAlternativa1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if (alternativas.get(0).getAlternativaCorreta().equals(Constants.ALTERNATIVA_CORRETA)) {
-					acertos++;
-				}
+				verificarAcerto(alternativas.get(0));			
 			}
-		});
+		});		
 		formataBotao(btnAlternativa1);
 		btnAlternativa1.setBorder(new LineBorder(new Color(0, 0, 128), 3));
 		contentPane.add(btnAlternativa1);
@@ -84,9 +83,8 @@ public class TelaAlternativas extends JFrame {
 		JButton btnAlternativa2 = new JButton(alternativas.get(1).getTexto()+"");
 		btnAlternativa2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (alternativas.get(1).getAlternativaCorreta().equals(Constants.ALTERNATIVA_CORRETA)) {
-					acertos++;
-				}
+				
+				verificarAcerto(alternativas.get(1));
 			}
 		});
 		formataBotao(btnAlternativa2);
@@ -96,9 +94,8 @@ public class TelaAlternativas extends JFrame {
 		JButton btnAlternativa3 = new JButton(alternativas.get(2).getTexto()+"");
 		btnAlternativa3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (alternativas.get(2).getAlternativaCorreta().equals(Constants.ALTERNATIVA_CORRETA)) {
-					acertos++;
-				}
+				
+				verificarAcerto(alternativas.get(2));
 			}
 		});
 		formataBotao(btnAlternativa3);
@@ -108,9 +105,8 @@ public class TelaAlternativas extends JFrame {
 		JButton btnAlternativa4 = new JButton(alternativas.get(3).getTexto()+"");
 		btnAlternativa4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (alternativas.get(3).getAlternativaCorreta().equals(Constants.ALTERNATIVA_CORRETA)) {
-					acertos++;
-				}
+				
+				verificarAcerto(alternativas.get(3));
 			}
 		});
 		formataBotao(btnAlternativa4);
@@ -120,9 +116,8 @@ public class TelaAlternativas extends JFrame {
 		JButton btnAlternativa5 = new JButton(alternativas.get(4).getTexto()+"");
 		btnAlternativa5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (alternativas.get(4).getAlternativaCorreta().equals(Constants.ALTERNATIVA_CORRETA)) {
-					acertos++;
-				}
+				
+				verificarAcerto(alternativas.get(4));
 			}
 		});
 		formataBotao(btnAlternativa5);
@@ -130,6 +125,15 @@ public class TelaAlternativas extends JFrame {
 		contentPane.add(btnAlternativa5);		
 	}
 	
+	protected void verificarAcerto(AlternativaVO alternativaVO) {
+		
+		if (alternativaVO.getAlternativaCorreta().equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
+			TelaQuiz.setAcertos(1);			
+		}		
+		JOptionPane.showMessageDialog(null, "Resposta Registrada!");
+		dispose();
+	}
+
 	public JButton formataBotao(JButton botao) {
 
 		botao.setBackground(UIManager.getColor("Button.light"));

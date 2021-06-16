@@ -1,23 +1,18 @@
 package com.projeto.view;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.projeto.controller.QuizController;
 import com.projeto.exceptions.ErroNaConsultaException;
-import com.projeto.model.entity.AlternativaVO;
-import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.QuizVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 public class PanelQuiz extends JPanel {
+	private static final long serialVersionUID = 1L;
+	
 	private QuizController quizController = new QuizController();
 	private QuizVO quizVO = new QuizVO();
 	
