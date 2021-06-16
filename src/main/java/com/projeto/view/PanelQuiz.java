@@ -58,41 +58,17 @@ public class PanelQuiz extends JPanel {
 			quizVO = quizController.validaCodigoQuiz(codigoQuiz);
 			if (quizVO != null) {
 				JOptionPane.showMessageDialog(null, " Vamos Lá !!!", Constants.SUCESSO,
-						JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.INFORMATION_MESSAGE);				
 				
-				imprimeTeste(quizVO, alunoLogado);	
+				TelaQuiz telaQuiz = new TelaQuiz(alunoLogado, quizVO);
+				telaQuiz.setVisible(true);	
 				
-				geraCard(quizVO, alunoLogado);
 			}		
 			
 		} catch (ErroNaConsultaException mensagem) {
 			JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 					JOptionPane.ERROR_MESSAGE, null);
 		}		
-	}
-
-	private void geraCard(QuizVO quizVO2, UsuarioVO alunoLogado) {
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		add(btnNewButton);
-		
-	}
-
-	private void imprimeTeste(QuizVO quizVO2, UsuarioVO alunoLogado) {
-		System.out.println("ID Quiz -> "+quizVO.getIdQuiz()+"  | Aluno = "+alunoLogado.getNome());
-		System.out.println("=====================================================");
-		  for (PerguntaVO pergunta : quizVO.getPerguntas()) {
-			  System.out.println("=====================================================");
-			  System.out.println("=====================================================");
-			  System.out.println(pergunta.getTextoPergunta()+"\n");
-			  for (AlternativaVO alternativa: pergunta.getListaAlternativas()) {
-				  System.out.println(alternativa.getTexto()+" - "+alternativa.getAlternativaCorreta()+"\n");
-			}
-		}
-		
 	}
 
 }
