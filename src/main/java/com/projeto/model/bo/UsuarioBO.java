@@ -61,9 +61,9 @@ public class UsuarioBO {
 		return usuario;
 	}
 
-	public boolean alterar(UsuarioVO prof) {
+	public boolean alterar(UsuarioVO usuario) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		return usuarioDAO.alterar(prof);
+		return usuarioDAO.alterar(usuario);
 	}
 
 }

@@ -17,7 +17,10 @@ import javax.swing.text.MaskFormatter;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.projeto.controller.UsuarioController;
+import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
+import com.projeto.exceptions.CpfExistenteException;
+import com.projeto.exceptions.RgExistenteException;
 import com.projeto.model.dao.AlunoDAO;
 import com.projeto.model.entity.AlunoVO;
 import com.projeto.model.entity.UsuarioVO;
@@ -65,12 +68,17 @@ public class PanelCadastrarAluno extends JPanel {
 
 	public PanelCadastrarAluno(AlunoVO aluno) {
 		this.aluno = aluno;
+		construirTela();
+	}
+	
+	public PanelCadastrarAluno() {
+		construirTela();
 	}
 	
 	/**
 	 * Create the panel.
 	 */
-	public PanelCadastrarAluno() {
+	public void construirTela() {
 		setBackground(new Color(205, 92, 92));
 		
 		JPanel panel = new JPanel();
@@ -369,14 +377,85 @@ public class PanelCadastrarAluno extends JPanel {
 		if (aluno.getIdUsuario() != null) {
 			btnAtualizar.setVisible(true);
 			btnCadastrar.setVisible(false);
+			preencherAlunoNaTela((AlunoVO)aluno);
 		} else {
 			btnAtualizar.setVisible(false);
 			btnCadastrar.setVisible(true);
 		}
 	}
 
+	private void preencherAlunoNaTela(AlunoVO aluno) {
+		txtNome.setText(aluno.getNome());
+		cbxTurno.setSelectedItem(aluno.getTurno().toString());
+		txtRg.setText(aluno.getRg());
+		txtCpf.setText(aluno.getCpf());
+		dataNascimento.setDate(aluno.getDataNascimento());
+		
+		rdbFeminino.setSelected(true);
+		if (aluno.getSexo() == 'M') {
+			rdbMasculino.setSelected(true);
+		}
+		
+		rdbDeficienteNao.setSelected(true);
+		if (aluno.isPossuiDeficiencia()) {
+			rdbDeficienteSim.setSelected(true);
+		}
+		
+		txtCelular.setText(aluno.getCelular());
+		pswSenha.setText(aluno.getSenha());
+		pswConfirmarSenha.setText(aluno.getSenha());
+	}
+
 	protected void cadastrarAluno() {
-		// TODO Auto-generated method stub
+		aluno.setNome(txtNome.getText());
+		
+		if (cbxTurno.getSelectedItem().equals("MATUTINO")) {
+			aluno.setTurno(TurnoEnum.MATUTINO);
+		} else if (cbxTurno.getSelectedItem().equals("VESPERTINO")) {
+			aluno.setTurno(TurnoEnum.VESPERTINO);
+		} else if (cbxTurno.getSelectedItem().equals("NOTURNO")) {
+			aluno.setTurno(TurnoEnum.NOTURNO);
+		}
+		
+		aluno.setRg(txtRg.getText().replace(".", ""));
+		aluno.setCpf(txtCpf.getText().replace(".", "").replace("-", ""));
+		aluno.setDataNascimento(dataNascimento.getDate());
+		
+		aluno.setSexo('F');
+		if (rdbMasculino.isSelected()) {
+			aluno.setSexo('M');
+		}
+		
+		aluno.setPossuiDeficiencia(false);
+		if (rdbDeficienteSim.isSelected()) {
+			aluno.setPossuiDeficiencia(true);
+		}
+		
+		aluno.setCelular(txtCelular.getText().replace("(", "").replace(")", "").replace("-", "").replace(" ", ""));
+		aluno.setSenha(pswSenha.getText());
+		aluno.setTipo(TipoUsuarioEnum.ALUNO);
+		
+		String mensagem = "";
+		String titulo = "";
+		if (aluno.getIdUsuario() != null) {
+			// TODO atualizar
+			titulo = "Atualizar";
+		} else {
+			
+			try {
+				titulo = "Cadastrar";
+				aluno = UsuarioController.cadastrar(aluno);
+				if (aluno.getIdUsuario() != null) {
+					mensagem = "Professor cadastrado com sucesso!";
+				} else {
+					mensagem = "Erro ao cadastrar professor.";
+				}
+			} catch (RgExistenteException | CpfExistenteException e) {
+				mensagem = e.getMessage();
+				titulo = "Aviso";
+			}
+		}
+		JOptionPane.showMessageDialog(null, mensagem, titulo, JOptionPane.INFORMATION_MESSAGE);
 		
 	}
 	

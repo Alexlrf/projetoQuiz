@@ -395,7 +395,7 @@ setBackground(new Color(70, 130, 150));
 		if (professor.getIdUsuario() != null) {
 			btnAtualizar.setVisible(true);
 			btnCadastrar.setVisible(false);
-			preencherProfessorNaTela((ProfessorVO) professor);
+			preencherProfessorNaTela((ProfessorVO)professor);
 		} else {
 			btnAtualizar.setVisible(false);
 			btnCadastrar.setVisible(true);

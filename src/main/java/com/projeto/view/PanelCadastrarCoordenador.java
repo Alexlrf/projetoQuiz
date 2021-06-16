@@ -20,8 +20,12 @@ import javax.swing.text.MaskFormatter;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.projeto.controller.UsuarioController;
+import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
+import com.projeto.exceptions.CpfExistenteException;
+import com.projeto.exceptions.RgExistenteException;
 import com.projeto.model.entity.CoordenadorVO;
+import com.projeto.model.entity.DisciplinaVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
@@ -57,12 +61,17 @@ public class PanelCadastrarCoordenador extends JPanel {
 
 	public PanelCadastrarCoordenador (UsuarioVO coordenador) {
 		this.coordenador = coordenador;
+		construitTela();
+	}
+	
+	public PanelCadastrarCoordenador() {
+		construitTela();
 	}
 	
 	/**
 	 * Create the panel.
 	 */
-	public PanelCadastrarCoordenador() {
+	public void construitTela() {
 		setBackground(new Color(32, 178, 170));
 		
 		JPanel panel = new JPanel();
@@ -358,11 +367,35 @@ public class PanelCadastrarCoordenador extends JPanel {
 		if (coordenador.getIdUsuario() != null) {
 			btnAtualizar.setVisible(true);
 			btnCadastrar.setVisible(false);
+			preencherCoordenadorNaTela((CoordenadorVO)coordenador);
 		} else {
 			btnAtualizar.setVisible(false);
 			btnCadastrar.setVisible(true);
 		}
 
+	}
+
+	private void preencherCoordenadorNaTela(CoordenadorVO coordenador) {
+		txtNome.setText(coordenador.getNome());
+		cbxTurno.setSelectedItem(coordenador.getTurno().toString());
+		txtRg.setText(coordenador.getRg());
+		txtCpf.setText(coordenador.getCpf());
+		dataNascimento.setDate(coordenador.getDataNascimento());
+		
+		rdbFeminino.setSelected(true);
+		if (coordenador.getSexo() == 'M') {
+			rdbMasculino.setSelected(true);
+		}
+		
+		rdbDeficienteNao.setSelected(true);
+		if (coordenador.isPossuiDeficiencia()) {
+			rdbDeficienteSim.setSelected(true);
+		}
+		
+		txtCelular.setText(coordenador.getCelular());
+		pswSenha.setText(coordenador.getSenha());
+		pswConfirmarSenha.setText(coordenador.getSenha());
+		
 	}
 
 	protected void limparTela() {
@@ -384,8 +417,55 @@ public class PanelCadastrarCoordenador extends JPanel {
 	}
 
 	protected void cadastrarCoordenador() {
-		// TODO Auto-generated method stub
+		coordenador.setNome(txtNome.getText());
 		
+		if (cbxTurno.getSelectedItem().equals("MATUTINO")) {
+			coordenador.setTurno(TurnoEnum.MATUTINO);
+		} else if (cbxTurno.getSelectedItem().equals("VESPERTINO")) {
+			coordenador.setTurno(TurnoEnum.VESPERTINO);
+		} else if (cbxTurno.getSelectedItem().equals("NOTURNO")) {
+			coordenador.setTurno(TurnoEnum.NOTURNO);
+		}
+		
+		coordenador.setRg(txtRg.getText().replace(".", ""));
+		coordenador.setCpf(txtCpf.getText().replace(".", "").replace("-", ""));
+		coordenador.setDataNascimento(dataNascimento.getDate());
+		
+		coordenador.setSexo('F');
+		if (rdbMasculino.isSelected()) {
+			coordenador.setSexo('M');
+		}
+		
+		coordenador.setPossuiDeficiencia(false);
+		if (rdbDeficienteSim.isSelected()) {
+			coordenador.setPossuiDeficiencia(true);
+		}
+		
+		coordenador.setCelular(txtCelular.getText().replace("(", "").replace(")", "").replace("-", "").replace(" ", ""));
+		coordenador.setSenha(pswSenha.getText());
+		coordenador.setTipo(TipoUsuarioEnum.COORDENADOR);
+		
+		String mensagem = "";
+		String titulo = "";
+		if (coordenador.getIdUsuario() != null) {
+			// TODO atualizar
+			titulo = "Atualizar";
+		} else {
+			
+			try {
+				titulo = "Cadastrar";
+				coordenador = UsuarioController.cadastrar(coordenador);
+				if (coordenador.getIdUsuario() != null) {
+					mensagem = "Professor cadastrado com sucesso!";
+				} else {
+					mensagem = "Erro ao cadastrar professor.";
+				}
+			} catch (RgExistenteException | CpfExistenteException e) {
+				mensagem = e.getMessage();
+				titulo = "Aviso";
+			}
+		}
+		JOptionPane.showMessageDialog(null, mensagem, titulo, JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	protected boolean validarSenha() {

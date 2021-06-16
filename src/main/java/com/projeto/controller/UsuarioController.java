@@ -61,9 +61,9 @@ public class UsuarioController {
 		return usuarioBO.cadastrar(usuario);
 	}
 
-	public boolean alterar(UsuarioVO prof) {
+	public boolean alterar(UsuarioVO usuario) {
 		UsuarioBO usuarioBO = new UsuarioBO();
-		return usuarioBO.alterar(prof);
+		return usuarioBO.alterar(usuario);
 	}
 
 	public List<DisciplinaVO> buscarDisciplina() {
