@@ -23,13 +23,13 @@ import com.projeto.model.entity.UsuarioVO;
 
 public class TelaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
-	
+
 	private JPanel contentPane;
 	private UsuarioVO usuario;
 	private JMenu menuRelatorioDeUsuarios;
 	private JMenuItem menuItemRelatorioDeUsuarios;
 	private JMenu menuCadastroDeUsuarios;
-	private JMenuItem menuItemCadastrarprofessor;
+	private JMenuItem menuItemCadastrarProfessor;
 	private JMenuItem menuItemCadastrarCoordenador;
 	private JMenuItem menuItemCadastrarAluno;
 	private JMenu menuQuestoes;
@@ -61,14 +61,14 @@ public class TelaPrincipal extends JFrame {
 		this.usuario = usuario;
 		this.TelaPrincipal();
 	}
-	
+
 
 	public TelaPrincipal() {
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		this.TelaPrincipal();
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
-	
+
 	/**
 	 * Create the frame.
 	 */
@@ -78,17 +78,17 @@ public class TelaPrincipal extends JFrame {
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		
+
 		contentPane = new Home();
 		setContentPane(contentPane);
 		revalidate();
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);		
 
 		menuResolverQuiz = new JMenu("RESOLVER QUESTÕES");
 		menuBar.add(menuResolverQuiz);
-		
+
 		menuItemResponderQuiz = new JMenuItem("Responder Quiz");
 		menuItemResponderQuiz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -97,10 +97,10 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		menuResolverQuiz.add(menuItemResponderQuiz);
-		
+
 		menuQuestoes = new JMenu("QUESTÕES");
 		menuBar.add(menuQuestoes);
-		
+
 		menuItemCadastraQuestao = new JMenuItem("Cadastrar Questão");
 		menuItemCadastraQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
@@ -110,11 +110,11 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		menuQuestoes.add(menuItemCadastraQuestao);
-		
+
 		menuItemConsultaQuestao = new JMenuItem("Consultar Questões");
 		menuItemConsultaQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				contentPane = new PanelConsultaQuestoes(usuario);
 				setContentPane(contentPane);
 				revalidate();
@@ -125,30 +125,54 @@ public class TelaPrincipal extends JFrame {
 
 		menuRelatorioDeUsuarios = new JMenu("RELATÓRIO");
 		menuBar.add(menuRelatorioDeUsuarios);
-		
+
 		menuItemRelatorioDeUsuarios = new JMenuItem("Relatório de Usuários");
 		menuItemRelatorioDeUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				contentPane = new PanelRelatorioDeUsuario();
+				PanelRelatorioDeUsuario painel = new PanelRelatorioDeUsuario(); 
+				contentPane = painel;
+
+				painel.getBtnAlterar().addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						//Obter o usuário selecionado
+						UsuarioVO usuarioSelecionado = painel.obterUsuarioSelecionado();
+						
+						if(usuarioSelecionado instanceof AlunoVO) {
+							AlunoVO aluno = (AlunoVO) usuarioSelecionado;
+							contentPane = new PanelCadastrarAluno(aluno);
+							
+						} else if (usuarioSelecionado instanceof ProfessorVO) {
+							ProfessorVO professor = (ProfessorVO) usuarioSelecionado;
+							contentPane = new PanelCadastrarProfessor(professor);
+							
+						} else if (usuarioSelecionado instanceof CoordenadorVO) {
+							CoordenadorVO coordenador = (CoordenadorVO) usuarioSelecionado;
+							contentPane = new PanelCadastrarCoordenador(coordenador);
+						}
+						
+						setContentPane(contentPane);
+						revalidate();
+					}
+				});
 				setContentPane(contentPane);
 				revalidate();
 			}
 		});
 		menuRelatorioDeUsuarios.add(menuItemRelatorioDeUsuarios);
-		
+
 		menuCadastroDeUsuarios = new JMenu("CADASTRO DE USUÁRIOS");
 		menuBar.add(menuCadastroDeUsuarios);
-		
-		menuItemCadastrarprofessor = new JMenuItem("CadastrarProfessor");
-		menuItemCadastrarprofessor.addActionListener(new ActionListener() {
+
+		menuItemCadastrarProfessor = new JMenuItem("CadastrarProfessor");
+		menuItemCadastrarProfessor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				contentPane = new PanelCadastrarProfessor();
 				setContentPane(contentPane);
 				revalidate();
 			}
 		});
-		menuCadastroDeUsuarios.add(menuItemCadastrarprofessor);
-		
+		menuCadastroDeUsuarios.add(menuItemCadastrarProfessor);
+
 		menuItemCadastrarCoordenador = new JMenuItem("Cadastrar Coordenador");
 		menuItemCadastrarCoordenador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,7 +182,7 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		menuCadastroDeUsuarios.add(menuItemCadastrarCoordenador);
-		
+
 		menuItemCadastrarAluno = new JMenuItem("Cadastrar Aluno");
 		menuItemCadastrarAluno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -168,10 +192,10 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		menuCadastroDeUsuarios.add(menuItemCadastrarAluno);
-		
+
 		mnSair = new JMenu("S A I R");		
 		menuBar.add(mnSair);
-		
+
 		mntmNewMenuItem = new JMenuItem("S A I R ");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -184,26 +208,26 @@ public class TelaPrincipal extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);		
-		
+
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGap(0, 424, Short.MAX_VALUE)
-		);
+				);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGap(0, 229, Short.MAX_VALUE)
-		);
+				);
 		contentPane.setLayout(gl_contentPane);
-		
+
 		if(usuario instanceof AlunoVO) {
 			AlunoVO aluno = (AlunoVO) usuario;
 			this.abrirTelaAluno(aluno);
-			
+
 		} else if (usuario instanceof ProfessorVO) {
 			ProfessorVO professor = (ProfessorVO) usuario;
 			this.abrirTelaProfessor(professor);
-			
+
 		} else if (usuario instanceof CoordenadorVO) {
 			CoordenadorVO coordenador = (CoordenadorVO) usuario;
 			this.abrirTelaCoordenador(coordenador);
@@ -213,7 +237,7 @@ public class TelaPrincipal extends JFrame {
 	public void abrirTelaAluno(AlunoVO aluno) {
 		// visibilidades somente do aluno
 		menuResolverQuiz.setVisible(true);
-		
+
 		// visibilidades negadas para o aluno
 		menuQuestoes.setVisible(false);
 		menuRelatorioDeUsuarios.setVisible(false);
@@ -223,7 +247,7 @@ public class TelaPrincipal extends JFrame {
 	public void abrirTelaProfessor(ProfessorVO professor) {
 		// visibilidades somente do professor
 		menuQuestoes.setVisible(true);
-		
+
 		// visibilidades negadas para o professor
 		menuResolverQuiz.setVisible(false);
 		menuRelatorioDeUsuarios.setVisible(false);
@@ -234,7 +258,7 @@ public class TelaPrincipal extends JFrame {
 		// visibilidades somente do coordenador
 		menuRelatorioDeUsuarios.setVisible(true);
 		menuCadastroDeUsuarios.setVisible(true);
-		
+
 		// visibilidades negadas para o coordenador
 		menuQuestoes.setVisible(false);
 		menuResolverQuiz.setVisible(false);

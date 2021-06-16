@@ -66,13 +66,18 @@ public class PanelCadastrarProfessor extends JPanel {
 
 	public PanelCadastrarProfessor(ProfessorVO professor) {
 		this.professor = professor;
+		construirTela();
 	}
 	
 	/**
 	 * Create the panel.
 	 */
 	public PanelCadastrarProfessor() {
-		setBackground(new Color(70, 130, 150));
+		construirTela();
+	}
+
+	private void construirTela() {
+setBackground(new Color(70, 130, 150));
 		
 		JPanel panel = new JPanel();
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -196,7 +201,7 @@ public class PanelCadastrarProfessor extends JPanel {
 			}
 		});
 		
-		JLabel lblDicaSenha = new JLabel("A senha deve conter de 8 à 30 caracteres.");
+		JLabel lblDicaSenha = new JLabel("A senha deve conter de 8 a 30 caracteres.");
 		
 		cbConfirmarSenha = new JCheckBox("Mostrar Senha");
 		cbConfirmarSenha.addActionListener(new ActionListener() {
@@ -576,7 +581,7 @@ public class PanelCadastrarProfessor extends JPanel {
 			validar = false;
 		}
 		
-		mensagem.append("são obrigatórios.\n Favor preenchelos!");
+		mensagem.append("são obrigatórios.\n Favor preenchê-los!");
 		
 		if (!validar) {
 			JOptionPane.showMessageDialog(null, mensagem, "A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);

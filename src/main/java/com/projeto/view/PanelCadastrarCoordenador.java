@@ -188,7 +188,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 			}
 		});
 		
-		JLabel lblDicaSenha = new JLabel("A senha deve conter de 8 à 30 caracteres.");
+		JLabel lblDicaSenha = new JLabel("A senha deve conter de 8 a 30 caracteres.");
 		
 		btnCadastrar = new JButton("C A D A S T R A R");
 		btnCadastrar.addActionListener(new ActionListener() {
@@ -470,7 +470,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 			validar = false;
 		}
 		
-		mensagem.append("são obrigatórios.\n Favor preenchelos!");
+		mensagem.append("são obrigatórios.\n Favor preenchê-los!");
 		
 		if (!validar) {
 			JOptionPane.showMessageDialog(null, mensagem, "A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);

@@ -63,7 +63,7 @@ public class PanelCadastrarAluno extends JPanel {
 	private UsuarioController UsuarioController = new UsuarioController();
 	private JComboBox cbxTurno;
 
-	public PanelCadastrarAluno(UsuarioVO aluno) {
+	public PanelCadastrarAluno(AlunoVO aluno) {
 		this.aluno = aluno;
 	}
 	
@@ -183,7 +183,7 @@ public class PanelCadastrarAluno extends JPanel {
 			}
 		});
 		
-		JLabel lblDicaSenha = new JLabel("A senha deve conter de 8 à 30 caracteres.");
+		JLabel lblDicaSenha = new JLabel("A senha deve conter de 8 a 30 caracteres.");
 		
 		JLabel lblConfirmarSenha = new JLabel("Confirmar Senha:");
 		
@@ -479,7 +479,7 @@ boolean validarSenha = true;
 			validar = false;
 		}
 		
-		mensagem.append("são obrigatórios.\n Favor preenchelos!");
+		mensagem.append("são obrigatórios.\n Favor preenchê-los!");
 		
 		if (!validar) {
 			JOptionPane.showMessageDialog(null, mensagem, "A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);

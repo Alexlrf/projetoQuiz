@@ -51,7 +51,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 	private JLabel lblPaginaAtual;
 	private JButton btnProximaPagina;
 	private JPanel panel;
-	private List<UsuarioVO> usuario = new ArrayList<>();
+	private List<UsuarioVO> usuarios = new ArrayList<>();
 	private String[] nomesColunas = {"Nome", "Tipo de Usuario", "Turno", "Sexo", "Possui Deficiência", "RG", "CPF"};
 	private DefaultTableModel model;
 	private int paginaAtual = 1;
@@ -206,7 +206,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 				UsuarioController usuarioController = new UsuarioController();
 				int indiceSelecionadoNaTablela = tblListaDeUsuarios.getSelectedRow();
 				if (indiceSelecionadoNaTablela > 0) {
-					UsuarioVO usuarioSelecionado = usuario.get(indiceSelecionadoNaTablela - 1);
+					UsuarioVO usuarioSelecionado = usuarios.get(indiceSelecionadoNaTablela - 1);
 					
 					String perguntaExclusao = "Deseja excluir o usuario: " + usuarioSelecionado.getNome() + "?";
 					
@@ -226,11 +226,6 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		btnExcluir.setEnabled(false);
 		
 		btnAlterar = new JButton("Alterar");
-		btnAlterar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				alterarUsuario();
-			}
-		});
 		btnAlterar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnAlterar.setEnabled(false);
 		
@@ -245,7 +240,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 					String caminhoEscolhido = jfc.getSelectedFile().getAbsolutePath();
 					GeradorPlanilhaUsuario geradorPlanilha = new GeradorPlanilhaUsuario();
 					try {
-						geradorPlanilha.gerarPlanilhaUsuarios(usuario, caminhoEscolhido);
+						geradorPlanilha.gerarPlanilhaUsuarios(usuarios, caminhoEscolhido);
 						JOptionPane.showMessageDialog(null, "Planilha gerada com sucesso!", Constants.SUCESSO,
 								JOptionPane.INFORMATION_MESSAGE, null);
 
@@ -365,23 +360,6 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		setLayout(groupLayout);
 	}
 
-	protected void alterarUsuario() {
-		UsuarioVO usuarioSelecionado = usuario.get(tblListaDeUsuarios.getSelectedRow() - 1);
-		
-		if(usuarioSelecionado instanceof AlunoVO) {
-			AlunoVO aluno = (AlunoVO) usuarioSelecionado;
-			//chamar a tela do aluno
-			
-		} else if (usuarioSelecionado instanceof ProfessorVO) {
-			ProfessorVO professor = (ProfessorVO) usuarioSelecionado;
-			//chamar tela do professor
-			
-		} else if (usuarioSelecionado instanceof CoordenadorVO) {
-			CoordenadorVO coordenador = (CoordenadorVO) usuarioSelecionado;
-			//chamar a tela do coordenador
-		}
-	}
-
 	private void verificarBotoesPaginas() {
 		btnPaginaAnterior.setEnabled(paginaAtual > 1);
 		btnProximaPagina.setEnabled(paginaAtual < paginasTotal);
@@ -424,19 +402,19 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		
 		relatorioUsuario.setNome(txtNome.getText());
 		
-		usuario = usuarioController.pesquisarUsuarioController(relatorioUsuario);
+		usuarios = usuarioController.pesquisarUsuarioController(relatorioUsuario);
 		
 		paginasTotal = usuarioController.consultarTotalPaginas(relatorioUsuario);
 		lblTotalPaginas.setText(paginasTotal + "");
 		
 		verificarBotoesPaginas();
-		this.atualizarTabelaUsuario(usuario);
+		this.atualizarTabelaUsuario(usuarios);
 	}
 
 	private void atualizarTabelaUsuario(List<UsuarioVO> usuario2) {
 		model = (DefaultTableModel) this.tblListaDeUsuarios.getModel();
 		
-		for(UsuarioVO usu: this.usuario) {
+		for(UsuarioVO usu: this.usuarios) {
 			if (usu.isAtivo()) {
 				Object[] novaLinhaTabela = new Object[7];
 				
@@ -478,5 +456,25 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		} else {
 			btnGerarXls.setEnabled(false);
 		}
+	}
+
+	public JTable getTblListaDeUsuarios() {
+		return tblListaDeUsuarios;
+	}
+
+	public void setTblListaDeUsuarios(JTable tblListaDeUsuarios) {
+		this.tblListaDeUsuarios = tblListaDeUsuarios;
+	}
+
+	public JButton getBtnAlterar() {
+		return btnAlterar;
+	}
+
+	public void setBtnAlterar(JButton btnAlterar) {
+		this.btnAlterar = btnAlterar;
+	}
+
+	public UsuarioVO obterUsuarioSelecionado() {
+		return usuarios.get(tblListaDeUsuarios.getSelectedRow() - 1);
 	}
 }
