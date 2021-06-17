@@ -14,16 +14,16 @@ public class Utils {
 		boolean retorno = false;
 		if (string != null && !string.trim().isEmpty()) {
 			retorno = true;			
-		}		
+		}
 		return retorno;
 	}
 	
 	public static boolean dataValida(LocalDate data) {
-		boolean retorno = true;
+		boolean retorno = false;
 		LocalDate dataAtual = LocalDate.now();
-		if (data.isAfter(dataAtual)) {
-			retorno = false;			
-		}		
+		if (data == null || data.isAfter(dataAtual)) {
+			retorno = true;		
+		}
 		return retorno;		
 	}
 	

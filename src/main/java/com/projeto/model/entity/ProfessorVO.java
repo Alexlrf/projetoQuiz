@@ -14,9 +14,9 @@ public class ProfessorVO extends UsuarioVO{
 	}
 
 	public ProfessorVO(Integer idUsuario, String nome, String rg, String cpf, LocalDate dataNascimento, char sexo,
-			boolean possuiDeficiencia, String celular, String nacionalidade, TurnoEnum turno, String senha,
+			boolean possuiDeficiencia, String celular, TurnoEnum turno, String senha,
 			TipoUsuarioEnum tipo, boolean avito, int idDisciplina) {
-		super(idUsuario, nome, rg, cpf, dataNascimento, sexo, possuiDeficiencia, celular, nacionalidade, turno, senha,
+		super(idUsuario, nome, rg, cpf, dataNascimento, sexo, possuiDeficiencia, celular, turno, senha,
 				tipo, avito);
 		this.idDisciplina = idDisciplina;
 	}

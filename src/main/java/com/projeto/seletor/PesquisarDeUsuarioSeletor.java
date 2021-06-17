@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
 
-public class RelatorioDeUsuarioSeletor {
+public class PesquisarDeUsuarioSeletor {
 
 	private TurnoEnum turno;
 	private String nome;
@@ -14,7 +14,7 @@ public class RelatorioDeUsuarioSeletor {
 	private int limite;
 	private int pagina;
 	
-	public RelatorioDeUsuarioSeletor() {
+	public PesquisarDeUsuarioSeletor() {
 		//Default: traz os resultados sem limite e sem página
 		this.limite = 0;
 		this.pagina = -1;
@@ -29,7 +29,7 @@ public class RelatorioDeUsuarioSeletor {
 		return ((this.limite > 0) && (this.pagina > -1));
 	}
 	
-	public RelatorioDeUsuarioSeletor(TurnoEnum turno, String nome, TipoUsuarioEnum tipo) {
+	public PesquisarDeUsuarioSeletor(TurnoEnum turno, String nome, TipoUsuarioEnum tipo) {
 		super();
 		this.turno = turno;
 		this.nome = nome;

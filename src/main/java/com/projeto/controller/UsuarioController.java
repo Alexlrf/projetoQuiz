@@ -3,14 +3,17 @@ package com.projeto.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.projeto.exceptions.CpfExistenteException;
 import com.projeto.exceptions.LoginNaoInformadoException;
+import com.projeto.exceptions.RgExistenteException;
 import com.projeto.exceptions.SenhaIncorretaException;
 import com.projeto.exceptions.SenhaNaoInformadaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
 import com.projeto.model.bo.UsuarioBO;
 import com.projeto.model.dao.UsuarioDAO;
+import com.projeto.model.entity.DisciplinaVO;
 import com.projeto.model.entity.UsuarioVO;
-import com.projeto.seletor.RelatorioDeUsuarioSeletor;
+import com.projeto.seletor.PesquisarDeUsuarioSeletor;
 import com.projeto.view.TelaPrincipal;
 
 public class UsuarioController {
@@ -33,9 +36,9 @@ public class UsuarioController {
 		return usuario;
 	}
 
-	public List<UsuarioVO> relatorioUsuarioController(RelatorioDeUsuarioSeletor relatorioUsuario) {
+	public List<UsuarioVO> pesquisarUsuarioController(PesquisarDeUsuarioSeletor pesquisarUsuario) {
 		UsuarioBO usuarioBO = new UsuarioBO();
-		return usuarioBO.relatorioUsuarioSeletorBO(relatorioUsuario);
+		return usuarioBO.pesquisarUsuarioSeletorBO(pesquisarUsuario);
 	}
 
 	public String excluirUsuarioController(Integer idUsuarioSelecionado) {
@@ -48,19 +51,24 @@ public class UsuarioController {
 		return usuarioDAO.consultarTipoUsuarioDAO();
 	}
 
-	public int consultarTotalPaginas(RelatorioDeUsuarioSeletor relatorioUsuario) {
+	public int consultarTotalPaginas(PesquisarDeUsuarioSeletor relatorioUsuario) {
 		UsuarioBO usuarioBO = new UsuarioBO();
 		return usuarioBO.consultarTotalPaginas(relatorioUsuario);
 	}
 	
-	public UsuarioVO cadastrar(UsuarioVO usuario) {
+	public UsuarioVO cadastrar(UsuarioVO usuario) throws RgExistenteException, CpfExistenteException {
 		UsuarioBO usuarioBO = new UsuarioBO();
 		return usuarioBO.cadastrar(usuario);
 	}
 
-	public boolean alterar(UsuarioVO prof) {
+	public boolean alterar(UsuarioVO usuario) throws RgExistenteException, CpfExistenteException {
 		UsuarioBO usuarioBO = new UsuarioBO();
-		return usuarioBO.alterar(prof);
+		return usuarioBO.alterar(usuario);
+	}
+
+	public List<DisciplinaVO> buscarDisciplina() {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		return usuarioDAO.buscarDisciplina();
 	}
 
 }

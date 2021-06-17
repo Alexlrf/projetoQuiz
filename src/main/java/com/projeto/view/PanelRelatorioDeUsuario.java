@@ -31,7 +31,7 @@ import com.projeto.model.entity.AlunoVO;
 import com.projeto.model.entity.CoordenadorVO;
 import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
-import com.projeto.seletor.RelatorioDeUsuarioSeletor;
+import com.projeto.seletor.PesquisarDeUsuarioSeletor;
 
 import com.projeto.repository.Constants;
 import com.projeto.repository.GeradorPlanilhaUsuario;
@@ -51,7 +51,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 	private JLabel lblPaginaAtual;
 	private JButton btnProximaPagina;
 	private JPanel panel;
-	private List<UsuarioVO> usuario = new ArrayList<>();
+	private List<UsuarioVO> usuarios = new ArrayList<>();
 	private String[] nomesColunas = {"Nome", "Tipo de Usuario", "Turno", "Sexo", "Possui Deficiência", "RG", "CPF"};
 	private DefaultTableModel model;
 	private int paginaAtual = 1;
@@ -63,7 +63,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 	private int paginasTotal;
 	private JLabel lblTotalPaginas;
 
-	/** TIPO DE USUARIO, NOME COM LIKE, PESQUISAR TODOS. LEMBRAR DE ACRESCENTAR PAGINAÇÃO e relatório excel.
+	/**
 	 * Create the panel.
 	 */
 	public PanelRelatorioDeUsuario() {
@@ -96,7 +96,6 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		
 		JLabel lblTipoDeUsuario = new JLabel("Tipo de Usuário:");
 		
-
 		ArrayList<String> tipoUsuario = usuarioController.consultarTipoUsuarioController();
 		cbxTipoUsuario = new JComboBox();
 		DefaultComboBoxModel preencherTipoUsuario = new DefaultComboBoxModel(tipoUsuario.toArray());
@@ -114,26 +113,29 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				limparTabelaUsuario();
-				txtNome.setText("");
-				cbxTipoUsuario.setSelectedIndex(0);
-				cbxTurno.setSelectedIndex(0);
-				btnExcluir.setEnabled(false);
-				btnGerarXls.setEnabled(false);
-				btnAlterar.setEnabled(false);
-				paginaAtual = 1;
-				paginasTotal = 1;
-				lblPaginaAtual.setText(paginaAtual + "");
-				lblTotalPaginas.setText(paginasTotal + "");
+				limparTudo();
 			}
 		});
 		btnLimpar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		tblListaDeUsuarios = new JTable();
+		tblListaDeUsuarios.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tblListaDeUsuarios.getSelectedRow() > 0) {
+					btnExcluir.setEnabled(true);
+					btnAlterar.setEnabled(true);
+				} else {
+					btnExcluir.setEnabled(false);
+					btnAlterar.setEnabled(false);
+				}
+			}
+		});
+		
 		tblListaDeUsuarios.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"Nome", "Tipo", "Turno", "Sexo", "Deficiente", "CPF", "RG"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -149,33 +151,14 @@ public class PanelRelatorioDeUsuario extends JPanel {
 				return columnEditables[column];
 			}
 		});
-		tblListaDeUsuarios.addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (tblListaDeUsuarios.getSelectedRow() > 0) {
-					btnExcluir.setEnabled(true);
-					btnAlterar.setEnabled(true);
-				} else {
-					btnExcluir.setEnabled(false);
-					btnAlterar.setEnabled(false);
-				}
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (tblListaDeUsuarios.getSelectedRow() >= 0) {
-					btnExcluir.setEnabled(true);
-					btnAlterar.setEnabled(true);
-				}
-			}
-		});
 		
 		btnPaginaAnterior = new JButton("← ");
 		btnPaginaAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (paginaAtual > 1) {
 					paginaAtual--;
+					btnExcluir.setEnabled(false);
+					btnAlterar.setEnabled(false);
 				}
 				buscarUsuariosSeletores();
 			}
@@ -192,6 +175,8 @@ public class PanelRelatorioDeUsuario extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 					paginaAtual++;
 					buscarUsuariosSeletores();
+					btnExcluir.setEnabled(false);
+					btnAlterar.setEnabled(false);
 				}
 			}
 		);
@@ -206,7 +191,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 				UsuarioController usuarioController = new UsuarioController();
 				int indiceSelecionadoNaTablela = tblListaDeUsuarios.getSelectedRow();
 				if (indiceSelecionadoNaTablela > 0) {
-					UsuarioVO usuarioSelecionado = usuario.get(indiceSelecionadoNaTablela - 1);
+					UsuarioVO usuarioSelecionado = usuarios.get(indiceSelecionadoNaTablela - 1);
 					
 					String perguntaExclusao = "Deseja excluir o usuario: " + usuarioSelecionado.getNome() + "?";
 					
@@ -216,6 +201,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 						String mensagem = usuarioController.excluirUsuarioController(usuarioSelecionado.getIdUsuario());
 						JOptionPane.showMessageDialog(null, mensagem);
 						limparTabelaUsuario();
+						limparTudo();
 					}
 				} else {
 					btnExcluir.setEnabled(false);
@@ -226,12 +212,6 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		btnExcluir.setEnabled(false);
 		
 		btnAlterar = new JButton("Alterar");
-		btnAlterar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// TODO fazer alteração do usuario e chamar o painel de cadastro passando o usuario como parametro
-				JOptionPane.showMessageDialog(null, "Botão em Construção...");
-			}
-		});
 		btnAlterar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnAlterar.setEnabled(false);
 		
@@ -246,7 +226,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 					String caminhoEscolhido = jfc.getSelectedFile().getAbsolutePath();
 					GeradorPlanilhaUsuario geradorPlanilha = new GeradorPlanilhaUsuario();
 					try {
-						geradorPlanilha.gerarPlanilhaUsuarios(usuario, caminhoEscolhido);
+						geradorPlanilha.gerarPlanilhaUsuarios(usuarios, caminhoEscolhido);
 						JOptionPane.showMessageDialog(null, "Planilha gerada com sucesso!", Constants.SUCESSO,
 								JOptionPane.INFORMATION_MESSAGE, null);
 
@@ -364,7 +344,6 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		);
 		panel.setLayout(gl_panel);
 		setLayout(groupLayout);
-
 	}
 
 	private void verificarBotoesPaginas() {
@@ -377,7 +356,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		
 		lblPaginaAtual.setText(paginaAtual + "");
 		
-		RelatorioDeUsuarioSeletor relatorioUsuario = new RelatorioDeUsuarioSeletor();
+		PesquisarDeUsuarioSeletor relatorioUsuario = new PesquisarDeUsuarioSeletor();
 		
 		relatorioUsuario.setPagina(paginaAtual);
 		relatorioUsuario.setLimite(TAMANHO_PAGINA);
@@ -409,19 +388,19 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		
 		relatorioUsuario.setNome(txtNome.getText());
 		
-		usuario = usuarioController.relatorioUsuarioController(relatorioUsuario);
+		usuarios = usuarioController.pesquisarUsuarioController(relatorioUsuario);
 		
 		paginasTotal = usuarioController.consultarTotalPaginas(relatorioUsuario);
 		lblTotalPaginas.setText(paginasTotal + "");
 		
 		verificarBotoesPaginas();
-		this.atualizarTabelaUsuario(usuario);
+		this.atualizarTabelaUsuario(usuarios);
 	}
 
 	private void atualizarTabelaUsuario(List<UsuarioVO> usuario2) {
 		model = (DefaultTableModel) this.tblListaDeUsuarios.getModel();
 		
-		for(UsuarioVO usu: this.usuario) {
+		for(UsuarioVO usu: this.usuarios) {
 			if (usu.isAtivo()) {
 				Object[] novaLinhaTabela = new Object[7];
 				
@@ -449,22 +428,22 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		}
 		
 		habilitarBtnExcel();
-		
-//		for (UsuarioVO usuarioVO : usuario) {
-//			if(usuarioVO instanceof AlunoVO) {
-//				AlunoVO aluno = (AlunoVO) usuarioVO;
-//				preencherTabelaUsuarios(aluno);
-//				
-//			} else if (usuarioVO instanceof ProfessorVO) {
-//				ProfessorVO professor = (ProfessorVO) usuarioVO;
-//				preencherTabelaUsuarios(professor);
-//			} else if (usuarioVO instanceof CoordenadorVO) {
-//				CoordenadorVO coordenador = (CoordenadorVO) usuarioVO;
-//				preencherTabelaUsuarios(coordenador);
-//			}
-//		}
 	}
 
+
+	protected void limparTudo() {
+		txtNome.setText("");
+		cbxTipoUsuario.setSelectedIndex(0);
+		cbxTurno.setSelectedIndex(0);
+		btnExcluir.setEnabled(false);
+		btnGerarXls.setEnabled(false);
+		btnAlterar.setEnabled(false);
+		paginaAtual = 1;
+		paginasTotal = 1;
+		lblPaginaAtual.setText(paginaAtual + "");
+		lblTotalPaginas.setText(paginasTotal + "");
+	}
+	
 	private void limparTabelaUsuario() {
 		tblListaDeUsuarios.setModel(new DefaultTableModel(new Object[][] {nomesColunas, }, nomesColunas));
 		btnPaginaAnterior.setEnabled(false);
@@ -477,5 +456,25 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		} else {
 			btnGerarXls.setEnabled(false);
 		}
+	}
+
+	public JTable getTblListaDeUsuarios() {
+		return tblListaDeUsuarios;
+	}
+
+	public void setTblListaDeUsuarios(JTable tblListaDeUsuarios) {
+		this.tblListaDeUsuarios = tblListaDeUsuarios;
+	}
+
+	public JButton getBtnAlterar() {
+		return btnAlterar;
+	}
+
+	public void setBtnAlterar(JButton btnAlterar) {
+		this.btnAlterar = btnAlterar;
+	}
+
+	public UsuarioVO obterUsuarioSelecionado() {
+		return usuarios.get(tblListaDeUsuarios.getSelectedRow() - 1);
 	}
 }
