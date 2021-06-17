@@ -16,6 +16,7 @@ import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.QuizVO;
 import com.projeto.model.entity.UsuarioVO;
+import javax.swing.JLabel;
 
 public class TelaQuiz extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -77,12 +78,8 @@ public class TelaQuiz extends JFrame {
 			btnQuestao.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
-					if (contadorPerguntasRespondidas < quizVO.getPerguntas().size()) {
 						selecionaPergunta(pergunta);						
-							
-					}else {
-						fechaTela();							
-					}
+
 				}
 
 				private void selecionaPergunta(PerguntaVO pergunta) {
