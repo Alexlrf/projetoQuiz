@@ -136,7 +136,7 @@ public class TelaPrincipal extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 						
 						UsuarioVO usuarioSelecionado = painel.obterUsuarioSelecionado();
-						int showConfirmDialog = JOptionPane.showConfirmDialog(null, "Você deseja alterar o(a)" + usuarioSelecionado.getNome() + "?", 
+						int showConfirmDialog = JOptionPane.showConfirmDialog(null, "Você deseja alterar o(a) " + usuarioSelecionado.getNome() + "?", 
 								"Alterar Usuário", JOptionPane.YES_NO_OPTION);
 						
 						if (showConfirmDialog == JOptionPane.OK_OPTION) {

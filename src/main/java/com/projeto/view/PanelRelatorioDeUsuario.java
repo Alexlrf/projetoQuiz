@@ -63,7 +63,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 	private int paginasTotal;
 	private JLabel lblTotalPaginas;
 
-	/** TIPO DE USUARIO, NOME COM LIKE, PESQUISAR TODOS. LEMBRAR DE ACRESCENTAR PAGINAÇÃO e relatório excel.
+	/**
 	 * Create the panel.
 	 */
 	public PanelRelatorioDeUsuario() {
