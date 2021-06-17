@@ -25,9 +25,9 @@ public class TelaQuiz extends JFrame {
 	private static QuizVO quiz;
 	private int contadorBotoesdeQuestao;
 	private static int acertos;	
-	private int contadorPerguntasRespondidas;
+	private static int contadorPerguntasRespondidas;
 
-	public  int getAcertos() {
+	public static  int getAcertos() {
 		return acertos;
 	}
 
@@ -76,12 +76,9 @@ public class TelaQuiz extends JFrame {
 			JButton btnQuestao = new JButton(contadorBotoesdeQuestao + "");
 			btnQuestao.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("Acertou fora: "+acertos+" - "+contadorPerguntasRespondidas+" - "+pergunta.getIdPergunta());
-					contadorPerguntasRespondidas++;	
-					if (contadorPerguntasRespondidas <= quizVO.getPerguntas().size()) {
-						selecionaPergunta(pergunta);
-						
-						System.out.println("Acertou dentro: "+acertos+" - "+contadorPerguntasRespondidas+" - "+pergunta.getIdPergunta());
+					
+					if (contadorPerguntasRespondidas < quizVO.getPerguntas().size()) {
+						selecionaPergunta(pergunta);						
 							
 					}else {
 						fechaTela();							
@@ -105,16 +102,19 @@ public class TelaQuiz extends JFrame {
 		}
 	}
 	
-	protected void fechaTela() {
-		JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n Você acertou: "+getAcertos()+" Questões");
-		this.dispose();
-		
+	protected static void fechaTela() {
+			JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n Você acertou: "+getAcertos()+" Questões");
 	}
 
-	public static void acertosQuiz(boolean retornoQuestao) {
+	public static void acertosQuiz(boolean retornoQuestao, int contador) {
 		if (retornoQuestao) {
 			acertos++;
-			System.out.println(acertos+" dentro do metodo");
-		} 		
+			contadorPerguntasRespondidas++;
+			if (contadorPerguntasRespondidas >= quiz.getPerguntas().size()) {
+				fechaTela();		
+			}
+		} else {
+			contadorPerguntasRespondidas++;	
+		}
 	}
 }

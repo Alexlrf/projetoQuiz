@@ -126,12 +126,14 @@ public class TelaAlternativas extends JFrame {
 	}
 	
 	protected void verificarAcerto(AlternativaVO alternativaVO) {
+		JOptionPane.showMessageDialog(null, "Resposta Registrada!");
+		dispose();
 		
 		if (alternativaVO.getAlternativaCorreta().equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
-			TelaQuiz.acertosQuiz(true);			
-		} 
- 		JOptionPane.showMessageDialog(null, "Resposta Registrada!");
-		dispose();
+			TelaQuiz.acertosQuiz(true, 1);			
+		} else {
+			TelaQuiz.acertosQuiz(false, 1);
+		}
 	}
 
 	public JButton formataBotao(JButton botao) {
