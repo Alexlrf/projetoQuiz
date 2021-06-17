@@ -24,11 +24,14 @@ public class UsuarioDAO{
 	 * @param rg
 	 * @return
 	 */
-	public boolean verificarRgDAO(String rg) {
+	public boolean verificarRgDAO(String rg, Integer idUsuario) {
 		boolean validar  = false;
-		
 		String sql = "SELECT RG FROM USUARIO WHERE RG = '" + rg + "'";
-
+		
+		if (idUsuario != null && idUsuario > 0) {
+			sql += " AND ID_USUARIO <> " + idUsuario;
+		}
+		
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
 			
@@ -49,10 +52,13 @@ public class UsuarioDAO{
 	 * @param cpf
 	 * @return
 	 */
-	public boolean verificarCpfDAO(String cpf) {
+	public boolean verificarCpfDAO(String cpf, Integer idUsuario) {
 		boolean validar  = false;
-		
 		String sql = "SELECT CPF FROM USUARIO WHERE CPF = '" + cpf + "'";
+		
+		if (idUsuario != null && idUsuario > 0) {
+			sql += " AND ID_USUARIO <> " + idUsuario;
+		}
 
 		try (Connection conn = Banco.getConnection();
 				PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);){
@@ -337,7 +343,7 @@ public class UsuarioDAO{
 			stmt.setString(10, usuario.getTipo().toString());
 			stmt.setBoolean(11, true);
 			
-			Integer idDisciplina = null;
+			Integer idDisciplina = 0;
 			if (usuario.getTipo().equals(TipoUsuarioEnum.PROFESSOR)) {
 				idDisciplina = ((ProfessorVO)usuario).getIdDisciplina();
 			}
@@ -381,7 +387,7 @@ public class UsuarioDAO{
 			stmt.setString(10, usuario.getTipo().toString());
 			stmt.setBoolean(11, true);
 			
-			Integer idDisciplina = null;
+			Integer idDisciplina = 0;
 			if (usuario.getTipo().equals(TipoUsuarioEnum.PROFESSOR)) {
 				idDisciplina = ((ProfessorVO)usuario).getIdDisciplina();
 			}

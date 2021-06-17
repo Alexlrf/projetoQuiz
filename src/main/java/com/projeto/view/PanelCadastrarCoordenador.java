@@ -411,10 +411,8 @@ public class PanelCadastrarCoordenador extends JPanel {
 		txtRg.setText("");
 		txtCpf.setText("");
 		dataNascimento.clear();
-		rdbMasculino.setSelected(false);
-		rdbFeminino.setSelected(false);
-		rdbDeficienteNao.setSelected(false);
-		rdbDeficienteSim.setSelected(false);
+		buttonGroupSexo.clearSelection();
+		buttonGroupDeficiente.clearSelection();
 		txtCelular.setText("");
 		pswSenha.setText("");
 		pswConfirmarSenha.setText("");
@@ -475,9 +473,10 @@ public class PanelCadastrarCoordenador extends JPanel {
 				titulo = "Cadastrar";
 				coordenador = UsuarioController.cadastrar(coordenador);
 				if (coordenador.getIdUsuario() != null) {
-					mensagem = "Professor cadastrado com sucesso!";
+					mensagem = "Coordenador cadastrado com sucesso!";
+					limparTela();
 				} else {
-					mensagem = "Erro ao cadastrar professor.";
+					mensagem = "Erro ao cadastrar coordenador.";
 				}
 			} catch (RgExistenteException | CpfExistenteException e) {
 				mensagem = e.getMessage();

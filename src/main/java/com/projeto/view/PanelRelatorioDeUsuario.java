@@ -96,7 +96,6 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		
 		JLabel lblTipoDeUsuario = new JLabel("Tipo de Usuário:");
 		
-
 		ArrayList<String> tipoUsuario = usuarioController.consultarTipoUsuarioController();
 		cbxTipoUsuario = new JComboBox();
 		DefaultComboBoxModel preencherTipoUsuario = new DefaultComboBoxModel(tipoUsuario.toArray());
@@ -114,16 +113,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				limparTabelaUsuario();
-				txtNome.setText("");
-				cbxTipoUsuario.setSelectedIndex(0);
-				cbxTurno.setSelectedIndex(0);
-				btnExcluir.setEnabled(false);
-				btnGerarXls.setEnabled(false);
-				btnAlterar.setEnabled(false);
-				paginaAtual = 1;
-				paginasTotal = 1;
-				lblPaginaAtual.setText(paginaAtual + "");
-				lblTotalPaginas.setText(paginasTotal + "");
+				limparTudo();
 			}
 		});
 		btnLimpar.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -141,11 +131,11 @@ public class PanelRelatorioDeUsuario extends JPanel {
 				}
 			}
 		});
+		
 		tblListaDeUsuarios.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"Nome", "Tipo", "Turno", "Sexo", "Deficiente", "CPF", "RG"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -211,6 +201,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 						String mensagem = usuarioController.excluirUsuarioController(usuarioSelecionado.getIdUsuario());
 						JOptionPane.showMessageDialog(null, mensagem);
 						limparTabelaUsuario();
+						limparTudo();
 					}
 				} else {
 					btnExcluir.setEnabled(false);
@@ -439,6 +430,20 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		habilitarBtnExcel();
 	}
 
+
+	protected void limparTudo() {
+		txtNome.setText("");
+		cbxTipoUsuario.setSelectedIndex(0);
+		cbxTurno.setSelectedIndex(0);
+		btnExcluir.setEnabled(false);
+		btnGerarXls.setEnabled(false);
+		btnAlterar.setEnabled(false);
+		paginaAtual = 1;
+		paginasTotal = 1;
+		lblPaginaAtual.setText(paginaAtual + "");
+		lblTotalPaginas.setText(paginasTotal + "");
+	}
+	
 	private void limparTabelaUsuario() {
 		tblListaDeUsuarios.setModel(new DefaultTableModel(new Object[][] {nomesColunas, }, nomesColunas));
 		btnPaginaAnterior.setEnabled(false);

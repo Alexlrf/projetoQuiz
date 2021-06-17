@@ -47,7 +47,7 @@ public class PanelCadastrarAluno extends JPanel {
 	private PlaceholderTextField txtNome;
 	private JFormattedTextField txtCpf;
 	private final ButtonGroup buttonGroupSexo = new ButtonGroup();
-	private final ButtonGroup buttonGroupDeficiencia = new ButtonGroup();
+	private final ButtonGroup buttonGroupDeficiente = new ButtonGroup();
 	private JFormattedTextField txtRg;
 	private JFormattedTextField txtCelular;
 	private PlaceholderPasswordField pswSenha;
@@ -148,10 +148,10 @@ public class PanelCadastrarAluno extends JPanel {
 		JLabel lblPossuiDeficiencia = new JLabel("Possui alguma deficiência?");
 		
 		rdbDeficienteSim = new JRadioButton("Sim");
-		buttonGroupDeficiencia.add(rdbDeficienteSim);
+		buttonGroupDeficiente.add(rdbDeficienteSim);
 		
 		rdbDeficienteNao = new JRadioButton("Não");
-		buttonGroupDeficiencia.add(rdbDeficienteNao);
+		buttonGroupDeficiente.add(rdbDeficienteNao);
 		
 		JLabel lblCelular = new JLabel("Celular:");
 		
@@ -271,7 +271,7 @@ public class PanelCadastrarAluno extends JPanel {
 											.addComponent(lblCpf)
 											.addPreferredGap(ComponentPlacement.UNRELATED)
 											.addComponent(txtCpf, GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
-										.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)))
+										.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(lblDataDeNascimento, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
@@ -294,14 +294,14 @@ public class PanelCadastrarAluno extends JPanel {
 										.addGroup(gl_panel.createSequentialGroup()
 											.addComponent(cbMostrarSenha, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
 											.addGap(95)
-											.addComponent(lblDicaSenha, GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
-										.addComponent(pswSenha, GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)))
+											.addComponent(lblDicaSenha, GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE))
+										.addComponent(pswSenha, GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblConfirmarSenha)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addComponent(cbConfirmarSenha, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
-										.addComponent(pswConfirmarSenha, GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)))
+										.addComponent(pswConfirmarSenha, GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblPossuiDeficiencia)
 									.addGap(18)
@@ -316,9 +316,9 @@ public class PanelCadastrarAluno extends JPanel {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 272, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
 					.addComponent(btnCadastrar)
-					.addPreferredGap(ComponentPlacement.RELATED, 272, Short.MAX_VALUE)
+					.addGap(62)
 					.addComponent(btnAtualizar)
 					.addContainerGap())
 		);
@@ -367,7 +367,7 @@ public class PanelCadastrarAluno extends JPanel {
 						.addComponent(pswConfirmarSenha, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cbConfirmarSenha)
-					.addPreferredGap(ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnCadastrar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
@@ -461,9 +461,10 @@ public class PanelCadastrarAluno extends JPanel {
 				titulo = "Cadastrar";
 				aluno = UsuarioController.cadastrar(aluno);
 				if (aluno.getIdUsuario() != null) {
-					mensagem = "Professor cadastrado com sucesso!";
+					mensagem = "Aluno cadastrado com sucesso!";
+					limparTela();
 				} else {
-					mensagem = "Erro ao cadastrar professor.";
+					mensagem = "Erro ao cadastrar aluno.";
 				}
 			} catch (RgExistenteException | CpfExistenteException e) {
 				mensagem = e.getMessage();
@@ -480,10 +481,8 @@ public class PanelCadastrarAluno extends JPanel {
 		txtRg.setText("");
 		txtCpf.setText("");
 		dataNascimento.clear();
-		rdbMasculino.setSelected(false);
-		rdbFeminino.setSelected(false);
-		rdbDeficienteNao.setSelected(false);
-		rdbDeficienteSim.setSelected(false);
+		buttonGroupSexo.clearSelection();
+		buttonGroupDeficiente.clearSelection();
 		txtCelular.setText("");
 		pswSenha.setText("");
 		pswConfirmarSenha.setText("");

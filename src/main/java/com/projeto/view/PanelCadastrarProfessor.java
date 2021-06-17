@@ -64,7 +64,7 @@ public class PanelCadastrarProfessor extends JPanel {
 	private UsuarioVO professor = new ProfessorVO();
 	private UsuarioController UsuarioController = new UsuarioController();
 	private List<DisciplinaVO> disciplinas = new ArrayList<>();
-	private final ButtonGroup buttonGroupDeficiencia = new ButtonGroup();
+	private final ButtonGroup buttonGroupDeficiente = new ButtonGroup();
 	private final ButtonGroup buttonGroupSexo = new ButtonGroup();
 
 	public PanelCadastrarProfessor(ProfessorVO professor) {
@@ -156,10 +156,10 @@ setBackground(new Color(70, 130, 150));
 		buttonGroupSexo.add(rdbFeminino);
 		
 		rdbDeficienteSim = new JRadioButton("Sim");
-		buttonGroupDeficiencia.add(rdbDeficienteSim);
+		buttonGroupDeficiente.add(rdbDeficienteSim);
 		
 		rdbDeficienteNao = new JRadioButton("Não");
-		buttonGroupDeficiencia.add(rdbDeficienteNao);
+		buttonGroupDeficiente.add(rdbDeficienteNao);
 		
 		MaskFormatter mascaraCelular;
 		try {
@@ -512,6 +512,7 @@ setBackground(new Color(70, 130, 150));
 				professor = UsuarioController.cadastrar(professor);
 				if (professor.getIdUsuario() != null) {
 					mensagem = "Professor cadastrado com sucesso!";
+					limparTela();
 				} else {
 					mensagem = "Erro ao cadastrar professor.";
 				}
@@ -529,10 +530,8 @@ setBackground(new Color(70, 130, 150));
 		txtRg.setText("");
 		txtCpf.setText("");
 		dataNascimento.clear();
-		rdbMasculino.setSelected(false);
-		rdbFeminino.setSelected(false);
-		rdbDeficienteNao.setSelected(false);
-		rdbDeficienteSim.setSelected(false);
+		buttonGroupSexo.clearSelection();
+		buttonGroupDeficiente.clearSelection();
 		txtCelular.setText("");
 		cbxDisciplina.setSelectedIndex(0);
 		pswSenha.setText("");

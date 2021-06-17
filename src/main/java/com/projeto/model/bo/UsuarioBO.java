@@ -16,7 +16,7 @@ public class UsuarioBO {
 
 	public UsuarioVO verificarLoginBO(String cpf, String senha) throws UsuarioNaoExistenteException, SenhaIncorretaException {
 		UsuarioDAO verificarCpfSenha = new UsuarioDAO();
-		if (!verificarCpfSenha.verificarCpfDAO(cpf)) {
+		if (!verificarCpfSenha.verificarCpfDAO(cpf, null)) {
 			throw new UsuarioNaoExistenteException("Usuario não cadastrado");
 		} else if (!verificarCpfSenha.verificarSenhaDAO(cpf, senha)){
 			throw new SenhaIncorretaException("Senha incorreta");
@@ -50,9 +50,9 @@ public class UsuarioBO {
 	public UsuarioVO cadastrar(UsuarioVO usuario) throws RgExistenteException, CpfExistenteException {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		
-		if (usuarioDAO.verificarRgDAO(usuario.getRg())) {
+		if (usuarioDAO.verificarRgDAO(usuario.getRg(), usuario.getIdUsuario())) {
 			throw new RgExistenteException("Rg já existente no banco, favor reconsiderar!");
-		} else if (usuarioDAO.verificarCpfDAO(usuario.getCpf())) {
+		} else if (usuarioDAO.verificarCpfDAO(usuario.getCpf(), usuario.getIdUsuario())) {
 			throw new CpfExistenteException("Cpf já cadastrado no banco, favor reconsiderar!");
 		} else {
 			usuario = usuarioDAO.cadastrar(usuario);
@@ -65,9 +65,9 @@ public class UsuarioBO {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		boolean atualizou = false;
 		
-		if (usuarioDAO.verificarRgDAO(usuario.getRg())) {
+		if (usuarioDAO.verificarRgDAO(usuario.getRg(), usuario.getIdUsuario())) {
 			throw new RgExistenteException("Rg já existente no banco, favor reconsiderar!");
-		} else if (usuarioDAO.verificarCpfDAO(usuario.getCpf())) {
+		} else if (usuarioDAO.verificarCpfDAO(usuario.getCpf(), usuario.getIdUsuario())) {
 			throw new CpfExistenteException("Cpf já cadastrado no banco, favor reconsiderar!");
 		} else {
 			atualizou = usuarioDAO.alterar(usuario);
