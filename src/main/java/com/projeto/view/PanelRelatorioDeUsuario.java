@@ -31,7 +31,7 @@ import com.projeto.model.entity.AlunoVO;
 import com.projeto.model.entity.CoordenadorVO;
 import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
-import com.projeto.seletor.PesquisarDeUsuarioSeletor;
+import com.projeto.seletor.PesquisarUsuarioSeletor;
 
 import com.projeto.repository.Constants;
 import com.projeto.repository.GeradorPlanilhaUsuario;
@@ -52,7 +52,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 	private JButton btnProximaPagina;
 	private JPanel panel;
 	private List<UsuarioVO> usuarios = new ArrayList<>();
-	private String[] nomesColunas = {"Nome", "Tipo de Usuario", "Turno", "Sexo", "Possui Deficiência", "RG", "CPF"};
+	private String[] nomesColunas = {"Nome", "Tipo de Usuario", "Turno", "Sexo", "Possui Deficiência", "RG", "CPF", "Status"};
 	private DefaultTableModel model;
 	private int paginaAtual = 1;
 	private JButton btnGerarXls;
@@ -62,6 +62,10 @@ public class PanelRelatorioDeUsuario extends JPanel {
 	private JButton btnAlterar;
 	private int paginasTotal;
 	private JLabel lblTotalPaginas;
+
+	private JComboBox cbxAtivado;
+
+	private PesquisarUsuarioSeletor relatorioUsuario;
 
 	/**
 	 * Create the panel.
@@ -139,13 +143,13 @@ public class PanelRelatorioDeUsuario extends JPanel {
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class, String.class, String.class, String.class
+				String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, false, false
+				false, false, false, false, false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -188,7 +192,6 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				UsuarioController usuarioController = new UsuarioController();
 				int indiceSelecionadoNaTablela = tblListaDeUsuarios.getSelectedRow();
 				if (indiceSelecionadoNaTablela > 0) {
 					UsuarioVO usuarioSelecionado = usuarios.get(indiceSelecionadoNaTablela - 1);
@@ -200,6 +203,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 					if (opcaoSelecionada == JOptionPane.YES_OPTION) {
 						String mensagem = usuarioController.excluirUsuarioController(usuarioSelecionado.getIdUsuario());
 						JOptionPane.showMessageDialog(null, mensagem);
+						usuarios.remove(indiceSelecionadoNaTablela - 1);
 						limparTabelaUsuario();
 						limparTudo();
 					}
@@ -226,7 +230,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 					String caminhoEscolhido = jfc.getSelectedFile().getAbsolutePath();
 					GeradorPlanilhaUsuario geradorPlanilha = new GeradorPlanilhaUsuario();
 					try {
-						geradorPlanilha.gerarPlanilhaUsuarios(usuarios, caminhoEscolhido);
+						geradorPlanilha.gerarPlanilhaUsuarios(relatorioUsuario, caminhoEscolhido);
 						JOptionPane.showMessageDialog(null, "Planilha gerada com sucesso!", Constants.SUCESSO,
 								JOptionPane.INFORMATION_MESSAGE, null);
 
@@ -252,6 +256,12 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		
 		lblTotalPaginas = new JLabel("");
 		
+		JLabel lblAtivo = new JLabel("ativado");
+		
+		cbxAtivado = new JComboBox();
+		cbxAtivado.setModel(new DefaultComboBoxModel
+				(new String[] {Constants.TODOS.toString(), Constants.ATIVADO.toString(), Constants.DESATIVADO.toString()}));
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -261,7 +271,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 					.addGap(253))
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(250)
-					.addComponent(btnPaginaAnterior, GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+					.addComponent(btnPaginaAnterior, GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblPaginaAtual, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
 					.addGap(2)
@@ -269,7 +279,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblTotalPaginas, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnProximaPagina, GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+					.addComponent(btnProximaPagina, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
 					.addGap(249))
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(71)
@@ -285,29 +295,34 @@ public class PanelRelatorioDeUsuario extends JPanel {
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addGroup(gl_panel.createSequentialGroup()
-											.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-											.addGap(18))
+											.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+											.addGap(18)
+											.addComponent(lblAtivo)
+											.addPreferredGap(ComponentPlacement.RELATED))
 										.addGroup(gl_panel.createSequentialGroup()
-											.addComponent(btnLimpar, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+											.addComponent(btnLimpar, GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
 											.addGap(36)))
-									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 										.addGroup(gl_panel.createSequentialGroup()
-											.addComponent(btnExcluir, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+											.addComponent(btnExcluir, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
 											.addGap(86))
 										.addGroup(gl_panel.createSequentialGroup()
-											.addComponent(lblTurno)
+											.addGap(19)
+											.addComponent(cbxAtivado, 0, 114, Short.MAX_VALUE)
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(cbxTurno, 0, 171, Short.MAX_VALUE)))
-									.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(lblTurno)
+											.addPreferredGap(ComponentPlacement.RELATED)))
 									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-										.addComponent(btnAlterar, GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-										.addComponent(lblTipoDeUsuario))
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-										.addComponent(cbxTipoUsuario, 0, 144, Short.MAX_VALUE)
 										.addGroup(gl_panel.createSequentialGroup()
-											.addGap(22)
-											.addComponent(btnBuscar, GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)))))
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(btnAlterar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+										.addComponent(cbxTurno, 0, 135, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblTipoDeUsuario)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+										.addComponent(cbxTipoUsuario, 0, 87, Short.MAX_VALUE)
+										.addComponent(btnBuscar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))))
 							.addGap(67))))
 		);
 		gl_panel.setVerticalGroup(
@@ -319,10 +334,12 @@ public class PanelRelatorioDeUsuario extends JPanel {
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNome)
 						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblTurno)
-						.addComponent(cbxTurno, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbxTipoUsuario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblTipoDeUsuario))
+						.addComponent(lblTipoDeUsuario)
+						.addComponent(cbxTurno, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblTurno)
+						.addComponent(cbxAtivado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblAtivo))
 					.addGap(43)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnLimpar)
@@ -356,7 +373,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		
 		lblPaginaAtual.setText(paginaAtual + "");
 		
-		PesquisarDeUsuarioSeletor relatorioUsuario = new PesquisarDeUsuarioSeletor();
+		relatorioUsuario = new PesquisarUsuarioSeletor();
 		
 		relatorioUsuario.setPagina(paginaAtual);
 		relatorioUsuario.setLimite(TAMANHO_PAGINA);
@@ -386,6 +403,15 @@ public class PanelRelatorioDeUsuario extends JPanel {
 			}
 		}
 		
+		relatorioUsuario.setAtivo(null);
+		if (cbxAtivado.getSelectedIndex() > 0) {
+			if (cbxAtivado.getSelectedItem().equals(Constants.ATIVADO.toString())) {
+				relatorioUsuario.setAtivo(true);
+			} else {
+				relatorioUsuario.setAtivo(false);
+			}
+		}
+		
 		relatorioUsuario.setNome(txtNome.getText());
 		
 		usuarios = usuarioController.pesquisarUsuarioController(relatorioUsuario);
@@ -397,34 +423,39 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		this.atualizarTabelaUsuario(usuarios);
 	}
 
-	private void atualizarTabelaUsuario(List<UsuarioVO> usuario2) {
+	private void atualizarTabelaUsuario(List<UsuarioVO> usuario) {
 		model = (DefaultTableModel) this.tblListaDeUsuarios.getModel();
 		
-		for(UsuarioVO usu: this.usuarios) {
-			if (usu.isAtivo()) {
-				Object[] novaLinhaTabela = new Object[7];
-				
-				novaLinhaTabela[0] = usu.getNome();
-				novaLinhaTabela[1] = usu.getTipo();
-				novaLinhaTabela[2] = usu.getTurno();
-				
-				if (usu.getSexo() == Constants.MASCULINO) {
-					novaLinhaTabela[3] = "Masculino";
-				} else {
-					novaLinhaTabela[3] = "Feminino";
-				}
-				
-				if (usu.isPossuiDeficiencia()) {
-					novaLinhaTabela[4] = "Sim";				
-				} else {
-					novaLinhaTabela[4] = "Não";
-				}
-				
-				novaLinhaTabela[5] = usu.getRg();
-				novaLinhaTabela[6] = usu.getCpf();
-				
-				model.addRow(novaLinhaTabela);
+		for(UsuarioVO usu: usuarios) {
+			
+			Object[] novaLinhaTabela = new Object[8];
+			
+			novaLinhaTabela[0] = usu.getNome();
+			novaLinhaTabela[1] = usu.getTipo();
+			novaLinhaTabela[2] = usu.getTurno();
+			
+			if (usu.getSexo() == Constants.MASCULINO) {
+				novaLinhaTabela[3] = "Masculino";
+			} else {
+				novaLinhaTabela[3] = "Feminino";
 			}
+			
+			if (usu.isPossuiDeficiencia()) {
+				novaLinhaTabela[4] = "Sim";				
+			} else {
+				novaLinhaTabela[4] = "Não";
+			}
+			
+			novaLinhaTabela[5] = usu.getRg();
+			novaLinhaTabela[6] = usu.getCpf();
+			
+			if ( usu.isAtivo()) {
+				novaLinhaTabela[7] = "ATIVADO";
+			} else {
+				novaLinhaTabela[7] = "DESATIVADO";
+			}
+			
+			model.addRow(novaLinhaTabela);
 		}
 		
 		habilitarBtnExcel();
@@ -435,6 +466,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		txtNome.setText("");
 		cbxTipoUsuario.setSelectedIndex(0);
 		cbxTurno.setSelectedIndex(0);
+		cbxAtivado.setSelectedIndex(0);
 		btnExcluir.setEnabled(false);
 		btnGerarXls.setEnabled(false);
 		btnAlterar.setEnabled(false);

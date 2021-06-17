@@ -10,7 +10,7 @@ import com.projeto.exceptions.SenhaIncorretaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
 import com.projeto.model.dao.UsuarioDAO;
 import com.projeto.model.entity.UsuarioVO;
-import com.projeto.seletor.PesquisarDeUsuarioSeletor;
+import com.projeto.seletor.PesquisarUsuarioSeletor;
 
 public class UsuarioBO {
 
@@ -25,7 +25,7 @@ public class UsuarioBO {
 		}
 	}
 
-	public List<UsuarioVO> pesquisarUsuarioSeletorBO(PesquisarDeUsuarioSeletor pesquisarUsuario) {
+	public List<UsuarioVO> pesquisarUsuarioSeletorBO(PesquisarUsuarioSeletor pesquisarUsuario) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		return usuarioDAO.pesquisarPorSeletor(pesquisarUsuario);
 	}
@@ -42,7 +42,7 @@ public class UsuarioBO {
 		return retorno;
 	}
 
-	public int consultarTotalPaginas(PesquisarDeUsuarioSeletor relatorioUsuario) {
+	public int consultarTotalPaginas(PesquisarUsuarioSeletor relatorioUsuario) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		return usuarioDAO.consultarTotalPaginas(relatorioUsuario);
 	}

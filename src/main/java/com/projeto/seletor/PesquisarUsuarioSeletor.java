@@ -5,16 +5,17 @@ import java.time.LocalDate;
 import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
 
-public class PesquisarDeUsuarioSeletor {
+public class PesquisarUsuarioSeletor {
 
 	private TurnoEnum turno;
 	private String nome;
 	private TipoUsuarioEnum tipo;
+	private Boolean ativo; 
 	
 	private int limite;
 	private int pagina;
 	
-	public PesquisarDeUsuarioSeletor() {
+	public PesquisarUsuarioSeletor() {
 		//Default: traz os resultados sem limite e sem página
 		this.limite = 0;
 		this.pagina = -1;
@@ -29,7 +30,7 @@ public class PesquisarDeUsuarioSeletor {
 		return ((this.limite > 0) && (this.pagina > -1));
 	}
 	
-	public PesquisarDeUsuarioSeletor(TurnoEnum turno, String nome, TipoUsuarioEnum tipo) {
+	public PesquisarUsuarioSeletor(TurnoEnum turno, String nome, TipoUsuarioEnum tipo) {
 		super();
 		this.turno = turno;
 		this.nome = nome;
@@ -53,6 +54,10 @@ public class PesquisarDeUsuarioSeletor {
 		}
 		
 		if ((this.turno != null) && (this.turno.toString().trim().length() > 0)) {
+			retorno = true;
+		}
+		
+		if (this.ativo != null) {
 			retorno = true;
 		}
 		
@@ -106,6 +111,14 @@ public class PesquisarDeUsuarioSeletor {
 
 	public void setPagina(int pagina) {
 		this.pagina = pagina;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 }

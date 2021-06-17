@@ -13,7 +13,7 @@ import com.projeto.model.bo.UsuarioBO;
 import com.projeto.model.dao.UsuarioDAO;
 import com.projeto.model.entity.DisciplinaVO;
 import com.projeto.model.entity.UsuarioVO;
-import com.projeto.seletor.PesquisarDeUsuarioSeletor;
+import com.projeto.seletor.PesquisarUsuarioSeletor;
 import com.projeto.view.TelaPrincipal;
 
 public class UsuarioController {
@@ -36,7 +36,7 @@ public class UsuarioController {
 		return usuario;
 	}
 
-	public List<UsuarioVO> pesquisarUsuarioController(PesquisarDeUsuarioSeletor pesquisarUsuario) {
+	public List<UsuarioVO> pesquisarUsuarioController(PesquisarUsuarioSeletor pesquisarUsuario) {
 		UsuarioBO usuarioBO = new UsuarioBO();
 		return usuarioBO.pesquisarUsuarioSeletorBO(pesquisarUsuario);
 	}
@@ -51,7 +51,7 @@ public class UsuarioController {
 		return usuarioDAO.consultarTipoUsuarioDAO();
 	}
 
-	public int consultarTotalPaginas(PesquisarDeUsuarioSeletor relatorioUsuario) {
+	public int consultarTotalPaginas(PesquisarUsuarioSeletor relatorioUsuario) {
 		UsuarioBO usuarioBO = new UsuarioBO();
 		return usuarioBO.consultarTotalPaginas(relatorioUsuario);
 	}
