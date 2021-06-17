@@ -29,6 +29,7 @@ import com.projeto.model.entity.DisciplinaVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
+import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 
 import javax.swing.JRadioButton;
@@ -61,6 +62,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 	private JCheckBox cbMostrarSenha;
 	private final ButtonGroup buttonGroupDeficiente = new ButtonGroup();
 	private final ButtonGroup buttonGroupSexo = new ButtonGroup();
+	private JComboBox cbxAtivado;
 
 	public PanelCadastrarCoordenador (UsuarioVO coordenador) {
 		this.coordenador = coordenador;
@@ -239,6 +241,13 @@ public class PanelCadastrarCoordenador extends JPanel {
 			}
 		});
 		btnLimpar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		
+		JLabel lblStatus = new JLabel("Status");
+		
+		cbxAtivado = new JComboBox();
+		cbxAtivado.setModel(new DefaultComboBoxModel
+				(new String[] {Constants.ATIVADO.toString(), Constants.DESATIVADO.toString()}));
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -246,7 +255,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(225)
-							.addComponent(lblCadastrarCoordenador, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+							.addComponent(lblCadastrarCoordenador, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
 							.addGap(228))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(41)
@@ -254,7 +263,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblDataDeNascimento)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(dataNascimento, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+									.addComponent(dataNascimento, GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(lblSexo)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -271,13 +280,13 @@ public class PanelCadastrarCoordenador extends JPanel {
 									.addGap(18)
 									.addComponent(lblCelular)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(txtCelular, GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE))
+									.addComponent(txtCelular, GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 										.addComponent(lblTurno)
 										.addComponent(lblNome))
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addGroup(gl_panel.createSequentialGroup()
 											.addComponent(cbxTurno, 0, 200, Short.MAX_VALUE)
 											.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -285,10 +294,15 @@ public class PanelCadastrarCoordenador extends JPanel {
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addComponent(txtRg, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblCpf)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(txtCpf, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE))
-										.addComponent(txtNome, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)))
+											.addComponent(lblCpf))
+										.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_panel.createSequentialGroup()
+											.addComponent(lblStatus)
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addComponent(cbxAtivado, 0, 165, Short.MAX_VALUE))
+										.addComponent(txtCpf, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblSenha)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -302,16 +316,16 @@ public class PanelCadastrarCoordenador extends JPanel {
 													.addGap(34)
 													.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 														.addComponent(cbConfirmarSenha)
-														.addComponent(pswConfirmarSenha, GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)))
+														.addComponent(pswConfirmarSenha, GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)))
 												.addGroup(gl_panel.createSequentialGroup()
 													.addGap(84)
 													.addComponent(lblDicaSenha, GroupLayout.PREFERRED_SIZE, 230, GroupLayout.PREFERRED_SIZE))))
-										.addComponent(pswSenha, GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE))))))
+										.addComponent(pswSenha, GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE))))))
 					.addGap(22))
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 163, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 410, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 248, Short.MAX_VALUE)
 					.addComponent(btnCadastrar, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE)
 					.addComponent(btnAtualizar, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
@@ -324,7 +338,9 @@ public class PanelCadastrarCoordenador extends JPanel {
 					.addGap(62)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNome)
-						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblStatus)
+						.addComponent(cbxAtivado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(43)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -378,12 +394,19 @@ public class PanelCadastrarCoordenador extends JPanel {
 		} else {
 			btnAtualizar.setVisible(false);
 			btnCadastrar.setVisible(true);
+			cbxAtivado.setEnabled(false);
 		}
 
 	}
 
 	private void preencherCoordenadorNaTela(CoordenadorVO coordenador) {
 		txtNome.setText(coordenador.getNome());
+		
+		cbxAtivado.setSelectedIndex(1);
+		if (coordenador.isAtivo()) {
+			cbxAtivado.setSelectedIndex(0);
+		}
+		
 		cbxTurno.setSelectedItem(coordenador.getTurno().toString());
 		txtRg.setText(coordenador.getRg());
 		txtCpf.setText(coordenador.getCpf());
@@ -408,6 +431,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 	protected void limparTela() {
 		txtNome.setText("");
 		cbxTurno.setSelectedIndex(0);
+		cbxAtivado.setSelectedIndex(0);
 		txtRg.setText("");
 		txtCpf.setText("");
 		dataNascimento.clear();
@@ -423,6 +447,11 @@ public class PanelCadastrarCoordenador extends JPanel {
 
 	protected void cadastrarCoordenador() {
 		coordenador.setNome(txtNome.getText());
+		
+		coordenador.setAtivo(true);
+		if (cbxAtivado.getSelectedIndex() > 0) {
+			coordenador.setAtivo(false);
+		}
 		
 		if (cbxTurno.getSelectedItem().equals("MATUTINO")) {
 			coordenador.setTurno(TurnoEnum.MATUTINO);

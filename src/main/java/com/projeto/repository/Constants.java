@@ -20,4 +20,8 @@ public class Constants {
 	public static final char MASCULINO = 'M';
 	public static final char FEMININO = 'F';
 	
+	public static final String ATIVADO = "ATIVADO";
+	public static final String DESATIVADO = "DESATIVADO";
+	public static final String TODOS = "TODOS";
+	
 }

@@ -26,6 +26,7 @@ import com.projeto.model.entity.AlunoVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
+import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 
 import javax.swing.SwingConstants;
@@ -65,6 +66,8 @@ public class PanelCadastrarAluno extends JPanel {
 	private UsuarioVO aluno = new AlunoVO();
 	private UsuarioController UsuarioController = new UsuarioController();
 	private JComboBox cbxTurno;
+	private JLabel lblStatus;
+	private JComboBox cbxAtivado;
 
 	public PanelCadastrarAluno(AlunoVO aluno) {
 		this.aluno = aluno;
@@ -243,6 +246,12 @@ public class PanelCadastrarAluno extends JPanel {
 		});
 		btnAtualizar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
+		lblStatus = new JLabel("Status");
+		
+		cbxAtivado = new JComboBox();
+		cbxAtivado.setModel(new DefaultComboBoxModel
+				(new String[] {Constants.ATIVADO.toString(), Constants.DESATIVADO.toString()}));
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -260,7 +269,7 @@ public class PanelCadastrarAluno extends JPanel {
 										.addComponent(lblNome)
 										.addComponent(lblTurno))
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addGroup(gl_panel.createSequentialGroup()
 											.addComponent(cbxTurno, 0, 163, Short.MAX_VALUE)
 											.addGap(22)
@@ -271,7 +280,12 @@ public class PanelCadastrarAluno extends JPanel {
 											.addComponent(lblCpf)
 											.addPreferredGap(ComponentPlacement.UNRELATED)
 											.addComponent(txtCpf, GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
-										.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)))
+										.addGroup(gl_panel.createSequentialGroup()
+											.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(lblStatus)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(cbxAtivado, 0, 89, Short.MAX_VALUE))))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(lblDataDeNascimento, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
@@ -330,7 +344,9 @@ public class PanelCadastrarAluno extends JPanel {
 					.addGap(55)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNome))
+						.addComponent(lblNome)
+						.addComponent(lblStatus)
+						.addComponent(cbxAtivado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(32)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -384,11 +400,18 @@ public class PanelCadastrarAluno extends JPanel {
 		} else {
 			btnAtualizar.setVisible(false);
 			btnCadastrar.setVisible(true);
+			cbxAtivado.setEnabled(false);
 		}
 	}
 
 	private void preencherAlunoNaTela(AlunoVO aluno) {
 		txtNome.setText(aluno.getNome());
+		
+		cbxAtivado.setSelectedIndex(1);
+		if (aluno.isAtivo()) {
+			cbxAtivado.setSelectedIndex(0);
+		}
+		
 		cbxTurno.setSelectedItem(aluno.getTurno().toString());
 		txtRg.setText(aluno.getRg());
 		txtCpf.setText(aluno.getCpf());
@@ -411,6 +434,11 @@ public class PanelCadastrarAluno extends JPanel {
 
 	protected void cadastrarAluno() {
 		aluno.setNome(txtNome.getText());
+		
+		aluno.setAtivo(true);
+		if (cbxAtivado.getSelectedIndex() > 0) {
+			aluno.setAtivo(false);
+		}
 		
 		if (cbxTurno.getSelectedItem().equals("MATUTINO")) {
 			aluno.setTurno(TurnoEnum.MATUTINO);
@@ -478,6 +506,7 @@ public class PanelCadastrarAluno extends JPanel {
 	protected void limparTela() {
 		txtNome.setText("");
 		cbxTurno.setSelectedIndex(0);
+		cbxAtivado.setSelectedIndex(0);
 		txtRg.setText("");
 		txtCpf.setText("");
 		dataNascimento.clear();

@@ -30,6 +30,7 @@ import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
+import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 import com.projeto.controller.UsuarioController;
 
@@ -66,6 +67,7 @@ public class PanelCadastrarProfessor extends JPanel {
 	private List<DisciplinaVO> disciplinas = new ArrayList<>();
 	private final ButtonGroup buttonGroupDeficiente = new ButtonGroup();
 	private final ButtonGroup buttonGroupSexo = new ButtonGroup();
+	private JComboBox cbxAtivado;
 
 	public PanelCadastrarProfessor(ProfessorVO professor) {
 		this.professor = professor;
@@ -254,6 +256,12 @@ setBackground(new Color(70, 130, 150));
 			}
 		});
 		btnLimpar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		
+		cbxAtivado = new JComboBox();
+		cbxAtivado.setModel(new DefaultComboBoxModel
+				(new String[] {Constants.ATIVADO.toString(), Constants.DESATIVADO.toString()}));
+		
+		JLabel lblAtivado = new JLabel("Ativado");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -264,7 +272,7 @@ setBackground(new Color(70, 130, 150));
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 434, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 249, Short.MAX_VALUE)
 					.addComponent(btnCadastrar, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
 					.addComponent(btnAtualizar, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
@@ -315,10 +323,14 @@ setBackground(new Color(70, 130, 150));
 									.addComponent(lblCpf)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(txtCpf, GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
-								.addGroup(gl_panel.createSequentialGroup()
+								.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
 									.addComponent(lblNome)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 683, Short.MAX_VALUE))
+									.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+									.addGap(11)
+									.addComponent(lblAtivado)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(cbxAtivado, 0, 138, Short.MAX_VALUE))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblPossuiDeficiencia)
 									.addGap(18)
@@ -343,7 +355,9 @@ setBackground(new Color(70, 130, 150));
 					.addGap(50)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNome)
-						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxAtivado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblAtivado))
 					.addGap(37)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -399,11 +413,18 @@ setBackground(new Color(70, 130, 150));
 		} else {
 			btnAtualizar.setVisible(false);
 			btnCadastrar.setVisible(true);
+			cbxAtivado.setEnabled(false);
 		}
 	}
 
 	private void preencherProfessorNaTela(ProfessorVO professor) {
 		txtNome.setText(professor.getNome());
+		
+		cbxAtivado.setSelectedIndex(1);
+		if (professor.isAtivo()) {
+			cbxAtivado.setSelectedIndex(0);
+		}
+		
 		cbxTurno.setSelectedItem(professor.getTurno().toString());
 		txtRg.setText(professor.getRg());
 		txtCpf.setText(professor.getCpf());
@@ -453,6 +474,11 @@ setBackground(new Color(70, 130, 150));
 	protected void cadastrarProfessor() {
 		
 		professor.setNome(txtNome.getText());
+		
+		professor.setAtivo(true);
+		if (cbxAtivado.getSelectedIndex() > 0) {
+			professor.setAtivo(false);
+		}
 		
 		if (cbxTurno.getSelectedItem().equals("MATUTINO")) {
 			professor.setTurno(TurnoEnum.MATUTINO);
@@ -527,6 +553,7 @@ setBackground(new Color(70, 130, 150));
 	protected void limparTela() {
 		txtNome.setText("");
 		cbxTurno.setSelectedIndex(0);
+		cbxAtivado.setSelectedIndex(0);
 		txtRg.setText("");
 		txtCpf.setText("");
 		dataNascimento.clear();
@@ -615,6 +642,4 @@ setBackground(new Color(70, 130, 150));
 		
 		return validar;
 	}
-	
-
 }

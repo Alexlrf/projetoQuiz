@@ -3,18 +3,31 @@ package com.projeto.repository;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+
+import com.projeto.controller.UsuarioController;
 import com.projeto.model.entity.UsuarioVO;
+import com.projeto.seletor.PesquisarUsuarioSeletor;
 
 public class GeradorPlanilhaUsuario {
 
-	public void gerarPlanilhaUsuarios(List<UsuarioVO> usuario, String caminhoEscolhido) {
-		String[] nomeColunas = {"Nome", "Tipo de Usuario", "Turno", "Sexo", "Possui Deficiência", "RG", "CPF"}; 
+	public void gerarPlanilhaUsuarios(PesquisarUsuarioSeletor seletor, String caminhoEscolhido) {
+		
+		List<UsuarioVO> usuario = new ArrayList<>();
+		UsuarioController usuarioController = new UsuarioController();
+		
+		seletor.setLimite(0);
+		seletor.setPagina(-1);
+		
+		usuario = usuarioController.pesquisarUsuarioController(seletor);
+		
+		String[] nomeColunas = {"Nome", "Tipo de Usuario", "Turno", "Sexo", "Possui Deficiência", "RG", "CPF", "Status"}; 
 		HSSFWorkbook planilha = new HSSFWorkbook();
 		HSSFSheet aba = planilha.createSheet("Relatório de Usuarios");
 		
@@ -48,6 +61,7 @@ public class GeradorPlanilhaUsuario {
 			
 			novaLinha.createCell(5).setCellValue(usu.getRg());
 			novaLinha.createCell(6).setCellValue(usu.getCpf());
+			novaLinha.createCell(7).setCellValue(usu.isAtivo());
 		}
 		
 		// Ajusta o tamanho das colunas de acordo com seu conteúdo

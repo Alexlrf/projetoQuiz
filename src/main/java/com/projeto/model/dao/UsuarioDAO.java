@@ -15,7 +15,7 @@ import com.projeto.model.entity.DisciplinaVO;
 import com.projeto.model.entity.ProfessorVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Banco;
-import com.projeto.seletor.PesquisarDeUsuarioSeletor;
+import com.projeto.seletor.PesquisarUsuarioSeletor;
 
 public class UsuarioDAO{
 	
@@ -170,7 +170,7 @@ public class UsuarioDAO{
 		return usuario;
 	}
 
-	public List<UsuarioVO> pesquisarPorSeletor(PesquisarDeUsuarioSeletor relatorioUsuario) {
+	public List<UsuarioVO> pesquisarPorSeletor(PesquisarUsuarioSeletor relatorioUsuario) {
 		final List<UsuarioVO> retornoRelatorioUsuario = new ArrayList<>();
 		
 		String sql = "SELECT * FROM USUARIO u";
@@ -218,7 +218,7 @@ public class UsuarioDAO{
 		return retornoRelatorioUsuario;
 	}
 
-	private String criarFiltros(PesquisarDeUsuarioSeletor seletor, String sql) {
+	private String criarFiltros(PesquisarUsuarioSeletor seletor, String sql) {
 		sql += " WHERE ";
 		boolean primeiro = true;
 		
@@ -245,6 +245,14 @@ public class UsuarioDAO{
 			sql += "u.TURNO = '" + seletor.getTurno() + "'";
 			primeiro = false;
 		}
+		
+		if (seletor.getAtivo() != null) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+			sql += "u.ATIVO = " + seletor.getAtivo();
+		}
+		
 		return sql;
 	}
 
@@ -291,7 +299,7 @@ public class UsuarioDAO{
 		return tipoUsuario;
 	}
 
-	public int consultarTotalPaginas(PesquisarDeUsuarioSeletor relatorioUsuario) {
+	public int consultarTotalPaginas(PesquisarUsuarioSeletor relatorioUsuario) {
 		int totalUsuarios = 0;
 		
 		String sql = "SELECT count(*) FROM USUARIO u";
@@ -341,7 +349,7 @@ public class UsuarioDAO{
 			stmt.setString(8, usuario.getTurno().toString());
 			stmt.setString(9, usuario.getSenha());
 			stmt.setString(10, usuario.getTipo().toString());
-			stmt.setBoolean(11, true);
+			stmt.setBoolean(11, usuario.isAtivo());
 			
 			Integer idDisciplina = 0;
 			if (usuario.getTipo().equals(TipoUsuarioEnum.PROFESSOR)) {
@@ -385,7 +393,7 @@ public class UsuarioDAO{
 			stmt.setString(8, usuario.getTurno().toString());
 			stmt.setString(9, usuario.getSenha());
 			stmt.setString(10, usuario.getTipo().toString());
-			stmt.setBoolean(11, true);
+			stmt.setBoolean(11, usuario.isAtivo());
 			
 			Integer idDisciplina = 0;
 			if (usuario.getTipo().equals(TipoUsuarioEnum.PROFESSOR)) {
