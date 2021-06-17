@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 import com.projeto.controller.QuizController;
 import com.projeto.exceptions.ErroNaConsultaException;
+import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.QuizVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Constants;
@@ -53,11 +54,9 @@ public class PanelQuiz extends JPanel {
 			quizVO = quizController.validaCodigoQuiz(codigoQuiz);
 			if (quizVO != null) {
 				JOptionPane.showMessageDialog(null, " Boa Sorte! \nVamos Lá !!!", Constants.SUCESSO,
-						JOptionPane.INFORMATION_MESSAGE);				
-				
+						JOptionPane.INFORMATION_MESSAGE);					
 				TelaQuiz telaQuiz = new TelaQuiz(alunoLogado, quizVO);
-				telaQuiz.setVisible(true);	
-				
+				telaQuiz.setVisible(true);										
 			}		
 			
 		} catch (ErroNaConsultaException mensagem) {

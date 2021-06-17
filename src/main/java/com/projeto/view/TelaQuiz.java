@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.QuizVO;
 import com.projeto.model.entity.UsuarioVO;
@@ -22,8 +23,9 @@ public class TelaQuiz extends JFrame {
 	private JPanel contentPane;
 	private static UsuarioVO usuario;
 	private static QuizVO quiz;
-	private int contadorQuestoes;
+	private int contadorBotoesdeQuestao;
 	private static int acertos;	
+	private int contadorPerguntasRespondidas;
 
 	public  int getAcertos() {
 		return acertos;
@@ -31,12 +33,6 @@ public class TelaQuiz extends JFrame {
 
 	public void setAcertos(int acertos) {
 		this.acertos = acertos;
-	}
-	
-	public static void acertosQuiz(boolean retornoQuestao) {
-		if (retornoQuestao) {
-			acertos++;
-		} 
 	}
 
 	/**
@@ -59,6 +55,7 @@ public class TelaQuiz extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaQuiz(UsuarioVO usuario, QuizVO quiz) {
+		TelaQuiz.quiz = quiz;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -70,32 +67,54 @@ public class TelaQuiz extends JFrame {
 
 	}
 
-	private void geraQuiz(UsuarioVO alunoLogado, QuizVO quizVO2) {
-
-		contadorQuestoes = 1;
+	protected void geraQuiz(UsuarioVO alunoLogado, QuizVO quizVO) {
 		
-		for (PerguntaVO pergunta : quizVO2.getPerguntas()) {
+		contadorBotoesdeQuestao = 1;
+		
+		for (PerguntaVO pergunta : quizVO.getPerguntas()) {
 
-			JButton btnQuestao = new JButton(contadorQuestoes + "");
+			JButton btnQuestao = new JButton(contadorBotoesdeQuestao + "");
 			btnQuestao.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					System.out.println("Acertou fora: "+acertos+" - "+contadorPerguntasRespondidas+" - "+pergunta.getIdPergunta());
+					contadorPerguntasRespondidas++;	
+					if (contadorPerguntasRespondidas <= quizVO.getPerguntas().size()) {
+						selecionaPergunta(pergunta);
+						
+						System.out.println("Acertou dentro: "+acertos+" - "+contadorPerguntasRespondidas+" - "+pergunta.getIdPergunta());
+							
+					}else {
+						fechaTela();							
+					}
+				}
 
+				private void selecionaPergunta(PerguntaVO pergunta) {
 					int opcaoEscolhida = JOptionPane.showConfirmDialog(null, "Deseja responder a pergunta?",
 							"INCLUSÃO DE PERGUNTA ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
-
-					if (opcaoEscolhida == JOptionPane.YES_OPTION) {
-						TelaAlternativas telaAlternativas = new TelaAlternativas(pergunta.getListaAlternativas(), pergunta);
-						telaAlternativas.setVisible(true);
-						btnQuestao.setBackground(Color.gray);
-						btnQuestao.setEnabled(false);
+					
+					if (opcaoEscolhida == JOptionPane.YES_OPTION) {						
+							TelaAlternativas telaAlternativas = new TelaAlternativas(pergunta.getListaAlternativas(), pergunta);
+							telaAlternativas.setVisible(true);
+							btnQuestao.setBackground(Color.gray);
+							btnQuestao.setEnabled(false);						
 					}
-					System.out.println("Vc acertou "+acertos);
 				}
 			});
 			getContentPane().add(btnQuestao);
-			contadorQuestoes++;
+			contadorBotoesdeQuestao++;
 		}
-		JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n\n Obrigado!");
+	}
+	
+	protected void fechaTela() {
+		JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n Você acertou: "+getAcertos()+" Questões");
 		this.dispose();
+		
+	}
+
+	public static void acertosQuiz(boolean retornoQuestao) {
+		if (retornoQuestao) {
+			acertos++;
+			System.out.println(acertos+" dentro do metodo");
+		} 		
 	}
 }
