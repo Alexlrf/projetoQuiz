@@ -61,9 +61,18 @@ public class UsuarioBO {
 		return usuario;
 	}
 
-	public boolean alterar(UsuarioVO usuario) {
+	public boolean alterar(UsuarioVO usuario) throws RgExistenteException, CpfExistenteException {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		return usuarioDAO.alterar(usuario);
+		boolean atualizou = false;
+		
+		if (usuarioDAO.verificarRgDAO(usuario.getRg())) {
+			throw new RgExistenteException("Rg já existente no banco, favor reconsiderar!");
+		} else if (usuarioDAO.verificarCpfDAO(usuario.getCpf())) {
+			throw new CpfExistenteException("Cpf já cadastrado no banco, favor reconsiderar!");
+		} else {
+			atualizou = usuarioDAO.alterar(usuario);
+		}
+		return atualizou;
 	}
 
 }

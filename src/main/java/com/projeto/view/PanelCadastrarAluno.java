@@ -318,6 +318,8 @@ public class PanelCadastrarAluno extends JPanel {
 					.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED, 272, Short.MAX_VALUE)
 					.addComponent(btnCadastrar)
+					.addPreferredGap(ComponentPlacement.RELATED, 272, Short.MAX_VALUE)
+					.addComponent(btnAtualizar)
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -368,7 +370,8 @@ public class PanelCadastrarAluno extends JPanel {
 					.addPreferredGap(ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnCadastrar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnCadastrar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnAtualizar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		panel.setLayout(gl_panel);
@@ -438,8 +441,20 @@ public class PanelCadastrarAluno extends JPanel {
 		String mensagem = "";
 		String titulo = "";
 		if (aluno.getIdUsuario() != null) {
-			// TODO atualizar
 			titulo = "Atualizar";
+			boolean atualizou = false;
+			mensagem = "Erro ao atualizar aluno.";
+			
+			try {
+				atualizou = UsuarioController.alterar(aluno);
+			} catch (RgExistenteException | CpfExistenteException e) {
+				mensagem = e.getMessage();
+				titulo = "Aviso";
+			}
+			
+			if (atualizou) {
+				mensagem = "Aluno atualizado com sucesso!";
+			}
 		} else {
 			
 			try {

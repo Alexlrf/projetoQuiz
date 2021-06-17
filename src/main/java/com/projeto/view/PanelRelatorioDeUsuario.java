@@ -129,6 +129,18 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		btnLimpar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		tblListaDeUsuarios = new JTable();
+		tblListaDeUsuarios.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tblListaDeUsuarios.getSelectedRow() > 0) {
+					btnExcluir.setEnabled(true);
+					btnAlterar.setEnabled(true);
+				} else {
+					btnExcluir.setEnabled(false);
+					btnAlterar.setEnabled(false);
+				}
+			}
+		});
 		tblListaDeUsuarios.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -149,33 +161,14 @@ public class PanelRelatorioDeUsuario extends JPanel {
 				return columnEditables[column];
 			}
 		});
-		tblListaDeUsuarios.addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (tblListaDeUsuarios.getSelectedRow() > 0) {
-					btnExcluir.setEnabled(true);
-					btnAlterar.setEnabled(true);
-				} else {
-					btnExcluir.setEnabled(false);
-					btnAlterar.setEnabled(false);
-				}
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (tblListaDeUsuarios.getSelectedRow() >= 0) {
-					btnExcluir.setEnabled(true);
-					btnAlterar.setEnabled(true);
-				}
-			}
-		});
 		
 		btnPaginaAnterior = new JButton("← ");
 		btnPaginaAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (paginaAtual > 1) {
 					paginaAtual--;
+					btnExcluir.setEnabled(false);
+					btnAlterar.setEnabled(false);
 				}
 				buscarUsuariosSeletores();
 			}
@@ -192,6 +185,8 @@ public class PanelRelatorioDeUsuario extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 					paginaAtual++;
 					buscarUsuariosSeletores();
+					btnExcluir.setEnabled(false);
+					btnAlterar.setEnabled(false);
 				}
 			}
 		);

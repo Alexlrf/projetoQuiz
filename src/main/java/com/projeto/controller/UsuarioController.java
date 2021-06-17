@@ -61,7 +61,7 @@ public class UsuarioController {
 		return usuarioBO.cadastrar(usuario);
 	}
 
-	public boolean alterar(UsuarioVO usuario) {
+	public boolean alterar(UsuarioVO usuario) throws RgExistenteException, CpfExistenteException {
 		UsuarioBO usuarioBO = new UsuarioBO();
 		return usuarioBO.alterar(usuario);
 	}

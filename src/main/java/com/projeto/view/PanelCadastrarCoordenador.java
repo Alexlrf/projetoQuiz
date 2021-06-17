@@ -38,6 +38,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ButtonGroup;
 
 public class PanelCadastrarCoordenador extends JPanel {
 	private PlaceholderTextField txtNome;
@@ -58,6 +59,8 @@ public class PanelCadastrarCoordenador extends JPanel {
 	private UsuarioVO coordenador = new CoordenadorVO();
 	private UsuarioController UsuarioController = new UsuarioController();
 	private JCheckBox cbMostrarSenha;
+	private final ButtonGroup buttonGroupDeficiente = new ButtonGroup();
+	private final ButtonGroup buttonGroupSexo = new ButtonGroup();
 
 	public PanelCadastrarCoordenador (UsuarioVO coordenador) {
 		this.coordenador = coordenador;
@@ -132,14 +135,18 @@ public class PanelCadastrarCoordenador extends JPanel {
 		JLabel lblSexo = new JLabel("Sexo:");
 		
 		rdbMasculino = new JRadioButton("Masculino");
+		buttonGroupSexo.add(rdbMasculino);
 		
 		rdbFeminino = new JRadioButton("Feminino");
+		buttonGroupSexo.add(rdbFeminino);
 		
 		JLabel lblPosuuiDeficiencia = new JLabel("Possui alguma deficiência?");
 		
 		rdbDeficienteSim = new JRadioButton("Sim");
+		buttonGroupDeficiente.add(rdbDeficienteSim);
 		
 		rdbDeficienteNao = new JRadioButton("Não");
+		buttonGroupDeficiente.add(rdbDeficienteNao);
 		
 		JLabel lblCelular = new JLabel("Celular:");
 		
@@ -448,8 +455,20 @@ public class PanelCadastrarCoordenador extends JPanel {
 		String mensagem = "";
 		String titulo = "";
 		if (coordenador.getIdUsuario() != null) {
-			// TODO atualizar
 			titulo = "Atualizar";
+			boolean atualizou = false;
+			mensagem = "Erro ao atualizar coordenador.";
+			
+			try {
+				atualizou = UsuarioController.alterar(coordenador);
+			} catch (RgExistenteException | CpfExistenteException e) {
+				mensagem = e.getMessage();
+				titulo = "Aviso";
+			}
+			
+			if (atualizou) {
+				mensagem = "Coordenador atualizado com sucesso!";
+			}
 		} else {
 			
 			try {

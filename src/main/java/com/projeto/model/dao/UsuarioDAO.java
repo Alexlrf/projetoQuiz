@@ -363,7 +363,7 @@ public class UsuarioDAO{
 		boolean atualizou = false;
 		
 		String sql = " UPDATE USUARIO SET NOME = ?, RG = ?, CPF = ?, DT_NASCIMENTO = ?,"
-				+ " SEXO = ?, POSSUI_DEFICIENCIA = ?, CELULAR = ?, NACIONALIDADE = ?,"
+				+ " SEXO = ?, POSSUI_DEFICIENCIA = ?, CELULAR = ?,"
 				+ " TURNO = ?, SENHA = ?, TIPO = ?, ATIVO = ?, ID_DISCIPLINA = ? WHERE ID_USUARIO = ?";
 		
 		try (Connection conn = Banco.getConnection();

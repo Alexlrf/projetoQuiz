@@ -428,7 +428,6 @@ setBackground(new Color(70, 130, 150));
 		}
 		pswSenha.setText(professor.getSenha());
 		pswConfirmarSenha.setText(professor.getSenha());
-		
 	}
 
 	protected boolean validarSenha() {
@@ -492,8 +491,20 @@ setBackground(new Color(70, 130, 150));
 		String mensagem = "";
 		String titulo = "";
 		if (professor.getIdUsuario() != null) {
-			// TODO atualizar
 			titulo = "Atualizar";
+			boolean atualizou = false;
+			mensagem = "Erro ao atualizar professor.";
+			
+			try {
+				atualizou = UsuarioController.alterar(professor);
+			} catch (RgExistenteException | CpfExistenteException e) {
+				mensagem = e.getMessage();
+				titulo = "Aviso";
+			}
+			
+			if (atualizou) {
+				mensagem = "Professor atualizado com sucesso!";
+			}
 		} else {
 			
 			try {

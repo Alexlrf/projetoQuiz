@@ -134,24 +134,27 @@ public class TelaPrincipal extends JFrame {
 
 				painel.getBtnAlterar().addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						//Obter o usuário selecionado
+						
 						UsuarioVO usuarioSelecionado = painel.obterUsuarioSelecionado();
+						int showConfirmDialog = JOptionPane.showConfirmDialog(null, "Você deseja alterar o(a)" + usuarioSelecionado.getNome() + "?", 
+								"Alterar Usuário", JOptionPane.YES_NO_OPTION);
 						
-						if(usuarioSelecionado instanceof AlunoVO) {
-							AlunoVO aluno = (AlunoVO) usuarioSelecionado;
-							contentPane = new PanelCadastrarAluno(aluno);
-							
-						} else if (usuarioSelecionado instanceof ProfessorVO) {
-							ProfessorVO professor = (ProfessorVO) usuarioSelecionado;
-							contentPane = new PanelCadastrarProfessor(professor);
-							
-						} else if (usuarioSelecionado instanceof CoordenadorVO) {
-							CoordenadorVO coordenador = (CoordenadorVO) usuarioSelecionado;
-							contentPane = new PanelCadastrarCoordenador(coordenador);
+						if (showConfirmDialog == JOptionPane.OK_OPTION) {
+							if(usuarioSelecionado instanceof AlunoVO) {
+								AlunoVO aluno = (AlunoVO) usuarioSelecionado;
+								contentPane = new PanelCadastrarAluno(aluno);
+								
+							} else if (usuarioSelecionado instanceof ProfessorVO) {
+								ProfessorVO professor = (ProfessorVO) usuarioSelecionado;
+								contentPane = new PanelCadastrarProfessor(professor);
+								
+							} else if (usuarioSelecionado instanceof CoordenadorVO) {
+								CoordenadorVO coordenador = (CoordenadorVO) usuarioSelecionado;
+								contentPane = new PanelCadastrarCoordenador(coordenador);
+							}
+							setContentPane(contentPane);
+							revalidate();
 						}
-						
-						setContentPane(contentPane);
-						revalidate();
 					}
 				});
 				setContentPane(contentPane);
