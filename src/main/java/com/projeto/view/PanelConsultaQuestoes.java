@@ -59,7 +59,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	private PerguntaController perguntaController = new PerguntaController();
 	private List<CategoriaVO> categorias = new ArrayList<>();
 	private List<PerguntaVO> perguntas = new ArrayList<>();
-	private List<PerguntaVO> quiz = new ArrayList<>();
+	private List<PerguntaVO> quiz; // = new ArrayList<>();
 	private PlaceholderTextField textFieldBusca;
 	private List<AlternativaVO> alternativas;
 	private JCheckBox chckbxMinhasPerguntas;
@@ -84,6 +84,8 @@ public class PanelConsultaQuestoes extends JPanel {
 	 */
 	public PanelConsultaQuestoes(UsuarioVO usuarioLogado) {
 		usuario = usuarioLogado;
+		
+		quiz = new ArrayList<>();
 		setBackground(new Color(112, 128, 144));
 		setBorder(new LineBorder(new Color(250, 128, 114), 5));
 
@@ -238,7 +240,6 @@ public class PanelConsultaQuestoes extends JPanel {
 						PerguntaVO perguntaAdicionadaQuiz = new PerguntaVO();
 						perguntaAdicionadaQuiz = perguntas.get(perguntaSelecionada);
 						quiz.add(perguntaAdicionadaQuiz);
-						System.out.println(quiz.size());
 
 						JOptionPane.showMessageDialog(null, "Pergunta Adicionada!");
 					} else {
@@ -675,9 +676,9 @@ public class PanelConsultaQuestoes extends JPanel {
 				try {
 					QuizController quizController = new QuizController();
 					int codigoQuiz = quizController.cadastraQuiz(quiz, usuarioLogado.getIdUsuario()); 
-					JOptionPane.showMessageDialog(null, "Alteração efetuada!\n O Código do Quiz é: "+codigoQuiz, Constants.SUCESSO,
+					quiz.clear();
+					JOptionPane.showMessageDialog(null, "Cadastro OK!\n O Código do Quiz é: "+codigoQuiz, Constants.SUCESSO,
 							JOptionPane.INFORMATION_MESSAGE);
-					
 				} catch (Exception mensagem) {
 					JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);

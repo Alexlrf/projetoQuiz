@@ -57,4 +57,9 @@ public class QuizBO {
 		
 		return quizVO;
 	}
+
+	public void cadastraResultado(QuizVO quizVO) throws ErroNoCadastroException {
+		quizDAO.cadastraResultado(quizVO);
+		
+	}
 }

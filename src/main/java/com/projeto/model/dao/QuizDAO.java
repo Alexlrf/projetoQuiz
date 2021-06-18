@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.projeto.exceptions.ErroNaConsultaException;
+import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.QuizVO;
@@ -141,5 +142,22 @@ public class QuizDAO {
 		return alternativas;
 	}
 
+	public void cadastraResultado(QuizVO quizVO) throws ErroNoCadastroException {
+		String sql = "INSERT INTO resultado_prova (id_quiz, id_usuario, num_acertos) VALUES (?, ?, ?);";
+			
+			try (Connection conn = Banco.getConnection();
+					PreparedStatement stmt = Banco.getPreparedStatement(conn, sql)) {
+
+				stmt.setInt(1, quizVO.getIdQuiz());			
+				stmt.setInt(2, quizVO.getAluno().getIdUsuario());
+				stmt.setInt(3, quizVO.getAcertos());
+				stmt.executeUpdate();			
+				
+			} catch (SQLException e) {
+				System.out.println("Erro ao registrar resultado!");
+				throw new ErroNoCadastroException("Erro ao registrar resultado!");
+							
+			}		
+		}
 
 }

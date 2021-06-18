@@ -12,17 +12,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.projeto.controller.QuizController;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.QuizVO;
 import com.projeto.model.entity.UsuarioVO;
+import com.projeto.repository.Constants;
+
 import javax.swing.JLabel;
 
 public class TelaQuiz extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
-	private static UsuarioVO usuario;
+	private static UsuarioVO usuarioVO;
 	private static QuizVO quiz;
 	private int contadorBotoesdeQuestao;
 	private static int acertos;	
@@ -43,7 +46,7 @@ public class TelaQuiz extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaQuiz frame = new TelaQuiz(usuario, quiz);
+					TelaQuiz frame = new TelaQuiz(usuarioVO, quiz);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,6 +60,7 @@ public class TelaQuiz extends JFrame {
 	 */
 	public TelaQuiz(UsuarioVO usuario, QuizVO quiz) {
 		TelaQuiz.quiz = quiz;
+		usuarioVO = usuario;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -101,6 +105,23 @@ public class TelaQuiz extends JFrame {
 	
 	protected static void fechaTela() {
 			JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n Você acertou: "+getAcertos()+" Questões");
+			cadastraResultado();
+	}
+
+	private static void cadastraResultado() {
+		
+		QuizController quizController = new QuizController();
+		QuizVO quizVO = new QuizVO();
+		quizVO.setAluno(usuarioVO);
+		quizVO.setIdQuiz(quiz.getIdQuiz());
+		quizVO.setAcertos(acertos);
+		
+		try {
+			quizController.cadastraResultado(quizVO);
+		} catch (ErroNoCadastroException mensagem) {
+			JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA, JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 
 	public static void acertosQuiz(boolean retornoQuestao, int contador) {

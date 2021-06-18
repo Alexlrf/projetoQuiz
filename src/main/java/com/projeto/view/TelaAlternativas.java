@@ -69,7 +69,7 @@ public class TelaAlternativas extends JFrame {
 		lblPergunta.setFont(new Font("Tahoma", Font.BOLD, 13));
 		contentPane.add(lblPergunta);		
 		
-		JButton btnAlternativa1 = new JButton(alternativas.get(0).getTexto()+"");
+		JButton btnAlternativa1 = new JButton(" "+alternativas.get(0).getTexto());
 		btnAlternativa1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -80,7 +80,7 @@ public class TelaAlternativas extends JFrame {
 		btnAlternativa1.setBorder(new LineBorder(new Color(0, 0, 128), 3));
 		contentPane.add(btnAlternativa1);
 		
-		JButton btnAlternativa2 = new JButton(alternativas.get(1).getTexto()+"");
+		JButton btnAlternativa2 = new JButton(" "+alternativas.get(1).getTexto());
 		btnAlternativa2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -91,7 +91,7 @@ public class TelaAlternativas extends JFrame {
 		btnAlternativa2.setBorder(new LineBorder(new Color(0, 0, 128), 3));
 		contentPane.add(btnAlternativa2);
 		
-		JButton btnAlternativa3 = new JButton(alternativas.get(2).getTexto()+"");
+		JButton btnAlternativa3 = new JButton(" "+alternativas.get(2).getTexto());
 		btnAlternativa3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -102,7 +102,7 @@ public class TelaAlternativas extends JFrame {
 		btnAlternativa3.setBorder(new LineBorder(new Color(0, 0, 128), 3));
 		contentPane.add(btnAlternativa3);
 		
-		JButton btnAlternativa4 = new JButton(alternativas.get(3).getTexto()+"");
+		JButton btnAlternativa4 = new JButton(" "+alternativas.get(3).getTexto());
 		btnAlternativa4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -113,7 +113,7 @@ public class TelaAlternativas extends JFrame {
 		btnAlternativa4.setBorder(new LineBorder(new Color(0, 0, 128), 3));
 		contentPane.add(btnAlternativa4);
 		
-		JButton btnAlternativa5 = new JButton(alternativas.get(4).getTexto()+"");
+		JButton btnAlternativa5 = new JButton(" "+alternativas.get(4).getTexto());
 		btnAlternativa5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
