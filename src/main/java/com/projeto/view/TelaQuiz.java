@@ -5,11 +5,14 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import com.projeto.controller.QuizController;
@@ -73,6 +76,7 @@ public class TelaQuiz extends JFrame {
 		for (PerguntaVO pergunta : quizVO.getPerguntas()) {
 
 			JButton btnQuestao = new JButton(contadorBotoesdeQuestao + "");
+			formataBotao(btnQuestao);
 			btnQuestao.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
@@ -132,5 +136,26 @@ public class TelaQuiz extends JFrame {
 			contadorPerguntasRespondidas = 0;
 			fechaTela();		
 		}		
+	}
+	
+	public JButton formataBotao(JButton botao) {
+
+		botao.setBackground(UIManager.getColor("Button.light"));
+		botao.setForeground(UIManager.getColor("Button.foreground"));
+		botao.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				botao.setBackground(Color.darkGray);
+				botao.setForeground(UIManager.getColor("Button.light"));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				botao.setBackground(UIManager.getColor("Button.light"));
+				botao.setForeground(UIManager.getColor("Button.foreground"));
+			}
+		});
+		return botao;
 	}
 }

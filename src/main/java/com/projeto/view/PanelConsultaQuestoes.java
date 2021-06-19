@@ -107,9 +107,12 @@ public class PanelConsultaQuestoes extends JPanel {
 		comboCategorias = new JComboBox();
 		comboCategorias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				consultarPerguntas();
+			//	consultarPerguntas();
 			}
 
+			/**
+			 * Método desabilitado porque não está aceitando a paginação da tabela
+			 */
 			protected void consultarPerguntas() {
 				limpaTabelaPerguntas();
 				limpaTabelaAlternativas();
