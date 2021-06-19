@@ -13,7 +13,7 @@ public class QuizController {
 	QuizBO quizBO = new QuizBO();
 	
 	public int cadastraQuiz(List<PerguntaVO> quiz, Integer idUsuario) throws ErroNoCadastroException {
-		
+		int idQuiz = 0;
 		String mensagem = "";
 		
 		if (quiz == null) {
@@ -26,14 +26,14 @@ public class QuizController {
 			mensagem += "Selecione perguntas para o Quiz!";
 			
 		} else {
-			quizBO.cadastraQuiz(quiz, idUsuario);			
+			idQuiz = quizBO.cadastraQuiz(quiz, idUsuario);			
 		}
 		
 		if (Utils.stringValida(mensagem)) {
 			throw new ErroNoCadastroException(mensagem);			
 		}		
 		
-		return 0;
+		return idQuiz;
 	}
 
 	public QuizVO validaCodigoQuiz(String codigoQuiz) throws ErroNaConsultaException {			

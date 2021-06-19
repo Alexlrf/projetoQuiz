@@ -58,7 +58,6 @@ public class PanelCadastraQuestoes extends JPanel {
 	private	JFormattedTextField txtCadastraResposta5;
 	private PerguntaVO perguntaVO = null;
 	private JComboBox comboBoxPerguntas; 
-//	public JLabel lblNomeUsuario;
 	private JLabel lblNomeUsuarioLogado;
 
 	AlternativaController alternativaController = new AlternativaController();

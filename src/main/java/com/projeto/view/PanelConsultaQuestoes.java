@@ -72,10 +72,11 @@ public class PanelConsultaQuestoes extends JPanel {
 	private JLabel lblNomeUsuario;
 	private JTable tableConsulta;
 	private int paginaAtual = 1;
+	private UsuarioVO usuario;
 	private JLabel lblPagina;
 	private int paginas;
-	private UsuarioVO usuario;
-
+	private List<PerguntaVO> todasPerguntas;
+	
 	Map<Integer, String> mapCategorias = new HashedMap<>();
 	private JButton btnAdicionaPergunta;
 
@@ -516,7 +517,7 @@ public class PanelConsultaQuestoes extends JPanel {
 
 						try {
 							if(primeiraTela && podeAlterar) {
-								alternativaController.alteraAlternativa(alternativaVO, usuarioLogado);
+								alternativaController.alteraAlternativa(alternativas, alternativaVO, usuarioLogado);
 								JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
 										JOptionPane.INFORMATION_MESSAGE);
 								consultarAlternativasDaPerguntaSelecionada();
@@ -536,9 +537,7 @@ public class PanelConsultaQuestoes extends JPanel {
 				
 				alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
 				for (AlternativaVO alternativaVO2 : alternativas) {
-					System.out.println("alternativa = "+alternativaVO2.getTexto()+ " -> "
-														+alternativaVO2.getAlternativaCorreta()+ " -> "
-														+alternativaVO2.getIdAlternativa());
+					
 					if (alternativaVO2.getAlternativaCorreta()
 							.equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
 						
@@ -735,7 +734,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		try {
 			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
 			paginas = perguntaController.consultarTotalPaginas(perguntaSeletor);
-
+			todasPerguntas = perguntas;
 			lblPagina.setText(String.valueOf(paginaAtual));
 				
 			verificarBotoesPaginas();

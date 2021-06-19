@@ -19,25 +19,15 @@ import com.projeto.model.entity.QuizVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Constants;
 
-import javax.swing.JLabel;
-
 public class TelaQuiz extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel contentPane;
-	private static UsuarioVO usuarioVO;
-	private static QuizVO quiz;
-	private int contadorBotoesdeQuestao;
-	private static int acertos;	
 	private static int contadorPerguntasRespondidas;
-
-	public static  int getAcertos() {
-		return acertos;
-	}
-
-	public void setAcertos(int acertos) {
-		this.acertos = acertos;
-	}
+	private int contadorBotoesdeQuestao;
+	private static UsuarioVO usuarioVO;
+	private static int acertos;	
+	private JPanel contentPane;
+	private static QuizVO quiz;
 
 	/**
 	 * Launch the application.
@@ -82,8 +72,7 @@ public class TelaQuiz extends JFrame {
 			btnQuestao.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
-						selecionaPergunta(pergunta);						
-
+						selecionaPergunta(pergunta);
 				}
 
 				private void selecionaPergunta(PerguntaVO pergunta) {
@@ -104,7 +93,7 @@ public class TelaQuiz extends JFrame {
 	}
 	
 	protected static void fechaTela() {
-			JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n Você acertou: "+getAcertos()+" Questões");
+			JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n Você acertou: "+acertos+" Questões");
 			cadastraResultado();
 	}
 
@@ -120,19 +109,24 @@ public class TelaQuiz extends JFrame {
 			quizController.cadastraResultado(quizVO);
 		} catch (ErroNoCadastroException mensagem) {
 			JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA, JOptionPane.ERROR_MESSAGE);
-		}
-		
+		}		
 	}
 
 	public static void acertosQuiz(boolean retornoQuestao, int contador) {
 		if (retornoQuestao) {
 			acertos++;
-			contadorPerguntasRespondidas++;
-			if (contadorPerguntasRespondidas >= quiz.getPerguntas().size()) {
-				fechaTela();		
-			}
+			contaPerguntaRespondida();
+			
 		} else {
-			contadorPerguntasRespondidas++;	
+			contaPerguntaRespondida();
 		}
+	}
+
+	private static void contaPerguntaRespondida() {
+		contadorPerguntasRespondidas++;
+		if (contadorPerguntasRespondidas >= quiz.getPerguntas().size()) {
+			contadorPerguntasRespondidas = 0;
+			fechaTela();		
+		}		
 	}
 }

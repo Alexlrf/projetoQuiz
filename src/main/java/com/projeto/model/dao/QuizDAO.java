@@ -155,7 +155,7 @@ public class QuizDAO {
 				
 			} catch (SQLException e) {
 				System.out.println("Erro ao registrar resultado!");
-				throw new ErroNoCadastroException("Erro ao registrar resultado!");
+				throw new ErroNoCadastroException("Erro ao registrar resultado!\nLEMBRETE\nCada aluno pode responder somente uma vez cada Quiz!\n");
 							
 			}		
 		}
