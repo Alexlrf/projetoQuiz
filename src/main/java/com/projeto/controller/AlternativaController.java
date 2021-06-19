@@ -50,7 +50,7 @@ public class AlternativaController {
 		} else if (idBuscado != usuarioLogado.getIdUsuario()) {
 			mensagem = "Não é possível alterar ALTERNATIVA de outro usuário!\n";
 			retorno = false;
-		} else if (validaAlternativas(alternativas)) {
+		} else if (!validaAlternativas(alternativas)) {
 			mensagem = "Verifique a existência de alternativas em branco!\n";
 			retorno = false;
 		}else if (!validaAlternativaCorreta(alternativas)) {
@@ -74,15 +74,14 @@ public class AlternativaController {
 		int contaAlternativaCorreta = 0;
 		
 		for (AlternativaVO alternativaVO : alternativas) {
-			if (alternativaVO.getAlternativaCorreta().equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
+			if (alternativaVO.getAlternativaCorreta().equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {				
 				contaAlternativaCorreta++;
 			}			
 		}
 		
 		if (contaAlternativaCorreta != 1) {
 			listaValida =false;
-		}
-		
+		}		
 		return listaValida;
 	}	
 

@@ -477,7 +477,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						break;
 
 					case "ALTERNATIVA":
-						preparaAlteracaoAlternativa(true);
+						preparaAlteracaoAlternativa();
 						break;
 
 					default:
@@ -486,12 +486,11 @@ public class PanelConsultaQuestoes extends JPanel {
 				}
 			}
 
-			private void preparaAlteracaoAlternativa(boolean primeiraTela) {
+			private void preparaAlteracaoAlternativa() {
 				AlternativaVO alternativaVO = new AlternativaVO();
 				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
 				alternativaSelecionada = tableAlternativas.getSelectedRow() - 1;
 				
-				boolean podeAlterar = true;
 				if (alternativaSelecionada < 0 || perguntaSelecionada < 0) {
 					JOptionPane.showMessageDialog(null, "Selecione uma ALTERNATIVA para alterar", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
@@ -512,16 +511,15 @@ public class PanelConsultaQuestoes extends JPanel {
 							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
 
 						} else if (opcao == JOptionPane.YES_OPTION) {
-							podeAlterar = this.podeSelecionarAlternativaCorreta(alternativaVO);
+							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
 						}
 
 						try {
-							if(primeiraTela && podeAlterar) {
 								alternativaController.alteraAlternativa(alternativas, alternativaVO, usuarioLogado);
 								JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
 										JOptionPane.INFORMATION_MESSAGE);
 								consultarAlternativasDaPerguntaSelecionada();
-							}
+								
 						} catch (ErroNoCadastroException mensagem) {
 							JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 									JOptionPane.ERROR_MESSAGE, null);
@@ -530,31 +528,6 @@ public class PanelConsultaQuestoes extends JPanel {
 						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
 					}
 				}
-			}
-
-			private boolean podeSelecionarAlternativaCorreta(AlternativaVO alternativaVO) {
-				boolean temAlternativaCorreta = false;
-				
-				alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
-				for (AlternativaVO alternativaVO2 : alternativas) {
-					
-					if (alternativaVO2.getAlternativaCorreta()
-							.equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
-						
-						temAlternativaCorreta = true;
-						break;
-					}
-				}
-				if (temAlternativaCorreta){
-					JOptionPane.showMessageDialog(null,
-							"Verifique! \nJá existe uma alternativa correta!", Constants.ALERTA,
-							JOptionPane.INFORMATION_MESSAGE);
-					preparaAlteracaoAlternativa(false);
-				} else {
-					alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
-				}
-				
-				return !temAlternativaCorreta;
 			}
 			
 			private void preparaAlteracaoCategoria() {
