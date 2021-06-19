@@ -42,7 +42,7 @@ public class PanelQuiz extends JPanel {
 
 		while (!Utils.stringValida(codigoQuiz)) {
 			int opcao = JOptionPane.showConfirmDialog(null, " Quer prosseguir?", null,
-					JOptionPane.QUESTION_MESSAGE);
+					JOptionPane.OK_CANCEL_OPTION);
 			if (opcao == JOptionPane.YES_OPTION) {
 				codigoQuiz = JOptionPane.showInputDialog(null, " Digite o código do quiz", "CÓDIGO DO QUIZ ",
 						JOptionPane.QUESTION_MESSAGE);
