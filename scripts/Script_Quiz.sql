@@ -141,56 +141,203 @@ INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) 
 INSERT INTO categoria (id_disciplina, id_usuario, descricao_categoria, ativada) values(2, 3, 'AMBIENTES OPERACIONAIS', true);
 
 
-INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 5, 1, 'O QUE É ABSTRAÇÃO?', true);
+-- Perguntas Vilmar
+
 INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 1, 1, 'QUAL A DIFERENÇA ENTRE GIT E GITHUB?', true);
 INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 1, 1, 'O QUE É UM PUSH?', true);
 INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 2, 1, 'QUAL A FUNÇÃO DOS SELETORES?', true);
 
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 5, 1, 'O QUE É UMA VARIÁVEL?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 5, 1, 'CAMEL CASE É?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 5, 1, 'EXISTE HERANÇA MULTIPLA EM JAVA?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 1, 1, 'O QUE FAZ UM MERGE?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 4, 1, 'TRY, CATCH, THROWS SÃO COMANDOS DE?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 2, 1, 'SELETORES SÃO INTERFACES JAVA?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 1, 1, 'GITHUB É UMA VARIAÇÃO DE CÓDIGO PARA USAR EM MOBILE?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 5, 1, 'QUAL CLASSE É USADA PARA TRABALHAR COM TEXTOS EM JAVA?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 4, 1, 'O QUE É UM BLOCO TRY/CATCH?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 1, 1, 'NÃO É POSSÍVEL USAR O GIT COM JAVA', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 1, 1, 'NÃO É POSSÍVEL USAR O GIT COM JAVASCRIPT', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 5, 1, 'JAVA É UM FRAMEWORK PHP', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 5, 1, 'QUAL AFIRMATIVA ESTÁ CORRETA?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 1, 1, 'O QUE É UM PULL ?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(1, 2, 1, 'NÃO É POSSÍVEL USAR JAVA COM BANCO DE DADOS', true);
+
+-- Perguntas Adriano
+
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 5, 1, 'O QUE É ABSTRAÇÃO?', true);
 INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 6, 1, 'O QUE É POLIMORFISMO?', true);
+
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 4, 1, 'PARA TRATAR UMA EXCEÇÃO BASTA UTILIZAR UM BLOCO DE VARIÁVEIS GLOBAIS', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 5, 1, 'VARIÁVEL LOCAL É AQUELA QUE TEM ESCOPO GLOBAL', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 5, 1, 'O QUE É UMA VARIÁVEL GLOBAL ?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 5, 1, 'QUAL ALTERNATIVA ESTÁ CORRETA?', true);
+INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(2, 4, 1, 'O QUE É FINALLY?', true);
+
+
+-- Pasquini
+
 INSERT INTO pergunta (id_usuario, id_categoria, id_disciplina, texto_pergunta, pergunta_ativada) values(3, 8, 2, 'O QUE É AMBIENTE OPERACIONAL?', true);
 
 
 
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UMA CATEGORIA DE CLASSE JAVA', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'É QUANDO SE "ABORDA O QUE É RELEVANTE PARA O PROJETO"', 'CORRETA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'NENHUMA, OS DOIS SÃO A MESMA FERRAMENTA COM NOMES DIFERENTES', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'GIT É UM SOFTWARE DE VERSIONAMENTO E GITHUB É UM SITE QUE HOSPEDA REPOSITÓRIOS GIT', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'GITHUB É UM SOFTWARE DE VERSIONAMENTO E GIT É UM SITE QUE HOSPEDA REPOSITÓRIOS GIT', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'GIT É UM FRAMEWORK JAVA ENQUANTO GITHUB É UM FRAMEWORK JAVASCRIPT', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('1', 'GIT É A LINGUAGEM DE PROGRAMAÇÃO ENQUANTO GITHUB É A IDE QUE SE USA PARA CODIFICAR EM GIT', '- - -');
 
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'NENHUMA, OS DOIS SÃO A MESMA FERRAMENTA COM NOMES DIFERENTES', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'GIT É UM SOFTWARE DE VERSIONAMENTO E GITHUB É UM SITE QUE HOSPEDA REPOSITÓRIOS GIT', 'CORRETA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'GITHUB É UM SOFTWARE DE VERSIONAMENTO E GIT É UM SITE QUE HOSPEDA REPOSITÓRIOS GIT', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'GIT É UM FRAMEWORK JAVA ENQUANTO GITHUB É UM FRAMEWORK JAVASCRIPT', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'GIT É A LINGUAGEM DE PROGRAMAÇÃO ENQUANTO GITHUB É A IDE QUE SE USA PARA CODIFICAR EM GIT', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'PUSH É QUANDO ENVIAMOS PARA UM REPOSITÓRIO REMOTO AS ALTERAÇÕES FEITAS NO REPOSITÓRIO LOCAL', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'PUSH É O ERRO QUE DÁ AO FAZERMOS MERGES ENTRE DUAS BRANCHS DIFERENTES', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'CHAMAMOS DE PUSH O ATO DE TRAZER AS ALTERAÇÕS DO REPOSITÓRIO REMOTO PARA DENTRO DO REPOSITÓRIO LOCAL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'CHAMAMOS DE PUSH O ATO DE TRAZER UM PROJETO DO REPOSITÓRIO REMOTO PARA DENTRO DO REPOSITÓRIO LOCAL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('2', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
 
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'PUSH É QUANDO ENVIAMOS PARA UM REPOSITÓRIO REMOTO AS ALTERAÇÕES FEITAS NO REPOSITÓRIO LOCAL', 'CORRETA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'PUSH É O ERRO QUE DÁ AO FAZERMOS MERGES ENTRE DUAS BRANCHS DIFERENTES', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'CHAMAMOS DE PUSH O ATO DE TRAZER AS ALTERAÇÕS DO REPOSITÓRIO REMOTO PARA DENTRO DO REPOSITÓRIO LOCAL', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'CHAMAMOS DE PUSH O ATO DE TRAZER UM PROJETO DO REPOSITÓRIO REMOTO PARA DENTRO DO REPOSITÓRIO LOCAL', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'APRESENTAR OS DADOS DA CONSULTA EM UMA TABELA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'AJUDAR NA IMPLEMENTAÇÃO DE INTERFACES JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'AUXILIAR NA APRESENTAÇÃO DO LAYOUT DE UMA JFRAME', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'POSSIBILITA CONSULTAS SQL MAIS COMPLEXAS DE FORMA MAIS DINÂMICA', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('3', 'INSTANCIAR OBJETOS DE CLASSES ABSTRATAS', '- - -');
 
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'APRESENTAR OS DADOS DA CONSULTA EM UMA TABELA', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'AJUDAR NA IMPLEMENTAÇÃO DE INTERFACES JAVA', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'AUXILIAR NA APRESENTAÇÃO DO LAYOUT DE UMA JFRAME', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'POSSIBILITA CONSULTAS SQL MAIS COMPLEXAS DE FORMA MAIS DINÂMICA', 'CORRETA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'INSTANCIAR OBJETOS DE CLASSES ABSTRATAS', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'ISSO VARIA MUITO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'É UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'É QUANDO SE "ABORDA O QUE É RELEVANTE PARA O PROJETO"', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('4', 'É UM ESPAÇO DE MEMÓRIA QUE ARMAZENARÁ UM DADO', 'CORRETA');
 
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UMA CATEGORIA DE CLASSE JAVA', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É QUANDO TIPOS DE CLASSES MAIS ABSTRATAS REPRESENTAM O COMPORTAMENTO DAS CLASSES CONCRETAS QUE REFERENCIAM', 'CORRETA');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UMA CONVENÇÃO DE ESCRITA DE CÓDIGO USADA EM JAVA', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UM CASO DO CAMELO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'É UM TIPO DE CLASSE', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'UMA COISA INVENTADA PARA COMPLICAR A VIDA DO PROGRAMADOR', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('5', 'NENHUMA DAS ALTERNATIVAS', '- - -');
 
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UMA CATEGORIA DE SISTEMA ORGANIZACIONAL', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UM TIPO DE PROCESSO INTERNO DE RH', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'É UMA ÁREA INSERIDA DENTRO DA CORPORAÇÃO', '- - -');
-INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'SÃO FATORES E CONDIÇÕES EXTERNAS QUE TÊM RELEVÂNCIA IMEDIATA PARA A ORGANIZAÇÃO', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'SOMENTE A PARTIR DA VERSÃO 8 ', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'COM CERTEZA EXISTE', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'EXISTIA ATÉ A VERSÃO 11', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'NÃO EXISTE', 'CORRETA');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('6', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
 
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('7', 'PROPORCIONA UM AUMENTO DE MEMÓRIA RAM', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('7', 'AJUDA NA IMPLEMENTAÇÃO DE INTERFACES JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('7', 'AUXILIA NA APRESENTAÇÃO DO LAYOUT DE UMA JFRAME', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('7', 'POSSIBILITA CONSULTAS SQL MAIS COMPLEXAS DE FORMA MAIS DINÂMICA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('7', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', 'CORRETA');
 
-select * from usuario;
-select * from categoria;
-select * from pergunta;
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('8', 'COMANDOS EM AÇÃO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('8', 'ATRIBUTOS JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('8', 'PERSISTÊNCIA DE DADOS MYSQL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('8', 'TRATAMENTO DE EXCEÇÃO JAVA', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('8', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('9', 'SIM', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('9', 'CERTEZA QUE SIM', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('9', 'DEPENDE MUITO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('9', 'NÃO', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('9', 'TODAS AFIRMATIVAS ESTÃO CORRETAS', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('10', 'SOMENTE COM MAC-OS', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('10', 'SOMENTE COM LINUX', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('10', 'SOMENTE COM WINDOWS', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('10', 'AFIRMATIVA TOTALMENTE ERRADA', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('10', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('11', 'INTEGER', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('11', 'STRING', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('11', 'DOUBLE', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('11', 'UBUNTU', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('11', 'DOCKER', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('12', 'É UM MODO DE TRATAMENTO DE EXCEÇÕES EM CÓDIGO JAVA', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('12', 'FAMOSO TRIO ELÉTRICO DO CARNAVAL DA BAHIA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('12', 'CAIXA USADA EM CONSTRUÇÕES DE MUROS', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('12', 'NÃO FAÇO IDEIA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('12', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('13', 'ERRADO, DESENVOLVEDORES PLENOS CONSEGUEM', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('13', 'NUNCA SE DEVE TENTAR ESSA UNIÃO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('13', 'SOMENTE ESTAGIÁRIOS NÃO DEVEM USAR', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('13', 'CLARO QUE É POSSÍVEL !!!', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('13', 'FICA POR CONTA E RISCO DE QUEM SE ARRISCAR', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('14', 'ERRADO, DESENVOLVEDORES PLENOS CONSEGUEM', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('14', 'NUNCA SE DEVE TENTAR ESSA UNIÃO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('14', 'SOMENTE ESTAGIÁRIOS NÃO DEVEM USAR', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('14', 'CLARO QUE É POSSÍVEL !!!', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('14', 'FICA POR CONTA E RISCO DE QUEM SE ARRISCAR', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('15', 'NÃO É ISSO, É AO CONTRÁRIO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('15', 'SOMENTE NA VERSÃO DESKTOP', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('15', 'CERTO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('15', 'ERRADO', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('15', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('16', 'ENCAPSULAMENTO É UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('16', 'CLASSE ABSTRATA É UM TIPO DE VARIÁVEL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('16', 'MÉTODO É UM ATRIBUTO INSERIDA DENTRO DA JRE', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('16', 'STRING É UMA CLASSE JAVA', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('16', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('17', 'É QUANDO SE "ABORDA O QUE É RELEVANTE PARA O PROJETO"', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('17', 'É UM TIPO DE VARIÁVEL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('17', 'É UM ATRIBUTO INSERIDA DENTRO DA JRE', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('17', 'TODAS AS ALTERNATIVAS ANTERIORES', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('17', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', 'CORRETA');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('18', 'SOMENTE SE PODE COM NO RELACIONAIS', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('18', 'SOMENTE SE PODE COM RELACIONAIS', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('18', 'SOMENTE COM ORACLE DATABASE', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('18', 'SOMENTE COM SQL SERVER', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('18', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', 'CORRETA');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('19', 'É UMA CATEGORIA DE CLASSE JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('19', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('19', 'É UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('19', 'É QUANDO SE "ABORDA O QUE É RELEVANTE PARA O PROJETO"', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('19', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('20', 'É UMA CATEGORIA DE CLASSE JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('20', 'É UM TIPO DE ATRIBUTO JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('20', 'É UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('20', 'É QUANDO TIPOS DE CLASSES MAIS ABSTRATAS REPRESENTAM O COMPORTAMENTO DAS CLASSES CONCRETAS QUE REFERENCIAM', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('20', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('21', 'MEIO CERTO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('21', 'QUASE CERTO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('21', 'BEM CERTO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('21', 'MUITO ERRADO', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('21', 'TANTO FAZ', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('22', 'É VERDADEIRA A AFIRMAÇÃO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('22', 'É VERDADEIRA A AFIRMAÇÃO QUANDO SE ESTÁ NO PARADIGMA FUNCIONAL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('22', 'SOMENTE EM UMA RELAÇÃO DE "MUITOS" PARA "MUITOS"', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('22', 'NÃO ESTÁ CORRETA A AFIRMAÇÃO', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('22', 'TODAS AS ALTERNATIVAS ANTERIORES ESTÃO CORRETAS', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('23', 'É UMA VARIÁVEL QUE ESTÁ DENTRO DE UM MÉTODO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('23', 'É UMA VARIÁVEL JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('23', 'É UMA VARIÁVEL QUE VIAJA PELO MUNDO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('23', 'É UMA VARIÁVEL DECLARADA DE FORMA QUE POSSA SER USADA EM TODA A CLASSE', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('23', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('24', 'HERANÇA PERMITE QUE UM SISTEMA PASSE SUAS FUNCIONALIDADES PARA OUTRO SISTEMA AO SER ENCERRADO', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('24', 'UMA CLASSE JAVA PODE IMPLEMENTAR DIVERSAS INTERFACES', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('24', 'O VALOR DEFAULT DE UM INT É NULL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('24', 'CHAMAMOS DE PUSH O ATO DE TRAZER UM PROJETO DO REPOSITÓRIO REMOTO PARA DENTRO DO REPOSITÓRIO LOCAL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('24', 'O VALOR DEFAULT DE UM DOUBLE É NULL', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('25', 'É UMA INSTÂNCIA DE UMA CLASSE ABSTRATA JAVA', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('25', 'É QUANDO UM MÉTODO BOOLEANO RETORNA UM DOUBLE', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('25', 'É UM BLOCO QUE SEMPRE SERÁ EXECUTADO NO TRATAMENTO DE EXCEÇÕES COM TRY/CATCH', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('25', 'É UMA CONSULTA EM MAIS DE UMA TABELA DO BANCO DE DADOS', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('25', 'É O NOME QUE SE DÁ AO ARQUIVO GERADO APÓS O BUILD DO PROJETO JAVA', '- - -');
+
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('26', 'É UMA CATEGORIA DE SISTEMA ORGANIZACIONAL', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('26', 'É UM TIPO DE PROCESSO INTERNO DE RH', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('26', 'É UMA ÁREA INSERIDA DENTRO DA CORPORAÇÃO', '- - -');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('26', 'SÃO FATORES E CONDIÇÕES EXTERNAS QUE TÊM RELEVÂNCIA IMEDIATA PARA A ORGANIZAÇÃO', 'CORRETA');
+INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('26', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
+
+
 
 insert into quiz (id_usuario) values (2);
 INSERT INTO quiz (id_usuario) values (1);
@@ -202,19 +349,3 @@ insert into prova_quiz (id_quiz, id_usuario, id_pergunta) values (1, 2, 3);
 
 insert into resultado_prova (id_quiz, id_usuario, num_acertos) values (1, 2, 2);
 insert into resultado_prova (id_quiz, id_usuario, num_acertos) values (1, 1, 3);
-
-select id_quiz, id_usuario as Professor_Responsavel from quiz;
-select id_quiz, id_pergunta, id_usuario as Professor_Responsavel from prova_quiz;
-select id_quiz, id_usuario as Aluno, num_acertos as Acertos from resultado_prova;
-
-select 
-	prova_quiz.id_quiz, prova_quiz.id_pergunta, prova_quiz.id_usuario
-   , pergunta.texto_pergunta , alternativa.texto_alternativa, alternativa.alternativa_correta
-from 
-	prova_quiz
-inner join
-	pergunta on prova_quiz.id_pergunta = pergunta.id_pergunta
-inner join 
-	alternativa on pergunta.id_pergunta = alternativa.id_pergunta
-where 
-	prova_quiz.id_quiz = 1;
