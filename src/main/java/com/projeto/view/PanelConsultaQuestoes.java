@@ -63,8 +63,10 @@ public class PanelConsultaQuestoes extends JPanel {
 	private PlaceholderTextField textFieldBusca;
 	private List<AlternativaVO> alternativas;
 	private JCheckBox chckbxMinhasPerguntas;
+	private List<PerguntaVO> todasPerguntas;
 	private int alternativaSelecionada;
 	private JComboBox comboCategorias;
+	private int contadorPerguntasQuiz;
 	private JTable tableAlternativas;
 	private int perguntaSelecionada;
 	private JButton btnAvancaPagina;
@@ -75,7 +77,7 @@ public class PanelConsultaQuestoes extends JPanel {
 	private UsuarioVO usuario;
 	private JLabel lblPagina;
 	private int paginas;
-	private List<PerguntaVO> todasPerguntas;
+	private JButton btncontaPerguntasQuiz;
 	
 	Map<Integer, String> mapCategorias = new HashedMap<>();
 	private JButton btnAdicionaPergunta;
@@ -241,8 +243,15 @@ public class PanelConsultaQuestoes extends JPanel {
 						PerguntaVO perguntaAdicionadaQuiz = new PerguntaVO();
 						perguntaAdicionadaQuiz = perguntas.get(perguntaSelecionada);
 						quiz.add(perguntaAdicionadaQuiz);
-
 						JOptionPane.showMessageDialog(null, "Pergunta Adicionada!");
+						contadorPerguntasQuiz++;
+						if (contadorPerguntasQuiz == 1) {
+							btncontaPerguntasQuiz.setText(contadorPerguntasQuiz+" Pergunta Adicionada");
+							
+						} else if (contadorPerguntasQuiz > 1) {
+							btncontaPerguntasQuiz.setText(contadorPerguntasQuiz+" Perguntas Adicionadas");
+						}
+						
 					} else {
 						JOptionPane.showMessageDialog(null, "Inclusão cancelada!");
 					}										
@@ -250,6 +259,17 @@ public class PanelConsultaQuestoes extends JPanel {
 			}
 		});
 		btnAdicionaPergunta.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		btncontaPerguntasQuiz = new JButton(" ");
+		btncontaPerguntasQuiz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				TelaPreviaQuiz telaPreviaQuiz = new TelaPreviaQuiz(quiz);
+				telaPreviaQuiz.setVisible(true);				
+			}
+		});
+		btncontaPerguntasQuiz.setBackground(new Color(112, 128, 144));
+		btncontaPerguntasQuiz.setFont(new Font("Tahoma", Font.BOLD, 11));
 
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -258,13 +278,13 @@ public class PanelConsultaQuestoes extends JPanel {
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 826, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 826, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
+							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
 							.addGap(54)
 							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
 							.addGap(26))
@@ -275,9 +295,11 @@ public class PanelConsultaQuestoes extends JPanel {
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(btnAdicionaPergunta, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
-							.addGap(86)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btncontaPerguntasQuiz, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
 							.addComponent(btnVoltaPagina)
 							.addGap(13)
 							.addComponent(lblPagina)
@@ -286,11 +308,11 @@ public class PanelConsultaQuestoes extends JPanel {
 							.addGap(28))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 826, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
 									.addGap(50)
-									.addComponent(comboCategorias, 0, 344, Short.MAX_VALUE)))
+									.addComponent(comboCategorias, 0, 367, Short.MAX_VALUE)))
 							.addContainerGap())))
 		);
 		groupLayout.setVerticalGroup(
@@ -318,12 +340,16 @@ public class PanelConsultaQuestoes extends JPanel {
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(btnAvancaPagina)
 								.addComponent(btnVoltaPagina)
-								.addComponent(lblPagina, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnAdicionaPergunta))
+								.addComponent(lblPagina, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
 							.addGap(18))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblAlternativas)
-							.addPreferredGap(ComponentPlacement.UNRELATED)))
+							.addPreferredGap(ComponentPlacement.UNRELATED))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnAdicionaPergunta)
+								.addComponent(btncontaPerguntasQuiz))
+							.addGap(18)))
 					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
 					.addGap(28)
 					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
@@ -651,6 +677,8 @@ public class PanelConsultaQuestoes extends JPanel {
 					quiz.clear();
 					JOptionPane.showMessageDialog(null, "Cadastro OK!\n O Código do Quiz é: "+codigoQuiz, Constants.SUCESSO,
 							JOptionPane.INFORMATION_MESSAGE);
+					btncontaPerguntasQuiz.setText(" ");
+					
 				} catch (Exception mensagem) {
 					JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
