@@ -18,6 +18,8 @@ import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.QuizVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.repository.Constants;
+import java.awt.Frame;
+import java.awt.Toolkit;
 
 public class TelaQuiz extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -49,6 +51,8 @@ public class TelaQuiz extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaQuiz(UsuarioVO usuario, QuizVO quiz) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaQuiz.class.getResource("/imagens/iconeQuebraCabeca.png")));
+		setExtendedState(Frame.MAXIMIZED_BOTH);
 		TelaQuiz.quiz = quiz;
 		usuarioVO = usuario;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -77,7 +81,7 @@ public class TelaQuiz extends JFrame {
 
 				private void selecionaPergunta(PerguntaVO pergunta) {
 					int opcaoEscolhida = JOptionPane.showConfirmDialog(null, "Deseja responder a pergunta?",
-							"INCLUSÃO DE PERGUNTA ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+							"CONFIRMAÇÃO DE TENTATIVA ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 					
 					if (opcaoEscolhida == JOptionPane.YES_OPTION) {						
 							TelaAlternativas telaAlternativas = new TelaAlternativas(pergunta.getListaAlternativas(), pergunta);
@@ -93,8 +97,8 @@ public class TelaQuiz extends JFrame {
 	}
 	
 	protected static void fechaTela() {
-			JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n Você acertou: "+acertos+" Questões");
-			cadastraResultado();
+			JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n Número de acertos: "+acertos, null, JOptionPane.INFORMATION_MESSAGE);
+			cadastraResultado();			
 	}
 
 	private static void cadastraResultado() {

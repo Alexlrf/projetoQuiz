@@ -19,6 +19,7 @@ import com.projeto.model.entity.PerguntaVO;
 
 import java.awt.Color;
 import javax.swing.border.LineBorder;
+import java.awt.Toolkit;
 
 public class TelaPreviaQuiz extends JFrame {
 
@@ -45,6 +46,7 @@ public class TelaPreviaQuiz extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaPreviaQuiz(List<PerguntaVO> perguntas) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaPreviaQuiz.class.getResource("/imagens/iconeQuebraCabeca.png")));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 714, 377);
 		contentPane = new JPanel();

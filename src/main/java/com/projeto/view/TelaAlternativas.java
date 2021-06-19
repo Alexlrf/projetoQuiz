@@ -21,6 +21,8 @@ import javax.swing.border.LineBorder;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.repository.Constants;
+import java.awt.Frame;
+import java.awt.Toolkit;
 
 public class TelaAlternativas extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -55,6 +57,8 @@ public class TelaAlternativas extends JFrame {
 	 * @param perguntaVO 
 	 */
 	public TelaAlternativas(List<AlternativaVO> alternativas, PerguntaVO perguntaVO) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaAlternativas.class.getResource("/imagens/iconeQuebraCabeca.png")));
+		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 737, 468);
 		contentPane = new JPanel();
@@ -126,7 +130,7 @@ public class TelaAlternativas extends JFrame {
 	}
 	
 	protected void verificarAcerto(AlternativaVO alternativaVO) {
-		JOptionPane.showMessageDialog(null, "Resposta Registrada!");
+		JOptionPane.showMessageDialog(null, "Resposta Registrada!", Constants.SUCESSO, JOptionPane.INFORMATION_MESSAGE);
 		dispose();
 		
 		if (alternativaVO.getAlternativaCorreta().equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
