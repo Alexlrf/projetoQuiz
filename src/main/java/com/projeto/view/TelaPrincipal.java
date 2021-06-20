@@ -39,6 +39,9 @@ public class TelaPrincipal extends JFrame {
 	private JMenuItem menuItemResponderQuiz;
 	private JMenu mnSair;
 	private JMenuItem mntmNewMenuItem;
+	private JMenuItem mntmQuiz;
+
+	private JMenuItem menuItemConsultaQuiz;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -114,6 +117,8 @@ public class TelaPrincipal extends JFrame {
 		menuQuestoes.add(menuItemCadastraQuestao);
 		
 		menuItemConsultaQuestao = new JMenuItem("Consultar Questões");
+		menuBar.add(menuQuestoes);
+		
 		menuItemConsultaQuestao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -123,7 +128,25 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 
-		menuQuestoes.add(menuItemConsultaQuestao);
+		menuQuestoes.add(menuItemConsultaQuestao);		
+		
+		menuItemConsultaQuiz = new JMenu("CONSULTA QUIZ");		
+		menuBar.add(menuItemConsultaQuiz);
+		
+		mntmQuiz = new JMenuItem("Consultar");
+		mntmQuiz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new PanelConsultaQuiz(usuario);
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				revalidate();
+			}
+		});
+		
+		menuItemConsultaQuiz.add(mntmQuiz);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
 
 		menuRelatorioDeUsuarios = new JMenu("RELATÓRIO");
 		menuBar.add(menuRelatorioDeUsuarios);
@@ -220,11 +243,13 @@ public class TelaPrincipal extends JFrame {
 		menuQuestoes.setVisible(false);
 		menuRelatorioDeUsuarios.setVisible(false);
 		menuCadastroDeUsuarios.setVisible(false);
+		menuItemConsultaQuiz.setVisible(false);
 	}
 
 	public void abrirTelaProfessor(ProfessorVO professor) {
 		// visibilidades somente do professor
 		menuQuestoes.setVisible(true);
+		menuItemConsultaQuiz.setVisible(true);
 		
 		// visibilidades negadas para o professor
 		menuResolverQuiz.setVisible(false);
@@ -240,5 +265,6 @@ public class TelaPrincipal extends JFrame {
 		// visibilidades negadas para o coordenador
 		menuQuestoes.setVisible(false);
 		menuResolverQuiz.setVisible(false);
+		menuItemConsultaQuiz.setVisible(false);
 	}
 }

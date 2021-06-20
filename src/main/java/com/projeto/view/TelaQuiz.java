@@ -74,7 +74,7 @@ public class TelaQuiz extends JFrame {
 		contadorBotoesdeQuestao = 1;
 		
 		for (PerguntaVO pergunta : quizVO.getPerguntas()) {
-
+			acertos = 0;
 			JButton btnQuestao = new JButton(contadorBotoesdeQuestao + "");
 			formataBotao(btnQuestao);
 			btnQuestao.addActionListener(new ActionListener() {
@@ -101,7 +101,7 @@ public class TelaQuiz extends JFrame {
 	}
 	
 	protected static void fechaTela() {
-			JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n Número de acertos: "+acertos, null, JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Quiz Finalizado!\n Número de acertos: "+acertos, null, JOptionPane.INFORMATION_MESSAGE);			
 			cadastraResultado();			
 	}
 
@@ -146,14 +146,26 @@ public class TelaQuiz extends JFrame {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				botao.setBackground(Color.darkGray);
-				botao.setForeground(UIManager.getColor("Button.light"));
+				if (!botao.isEnabled()) {
+					botao.setBackground(Color.gray);
+				} else {
+					
+					botao.setBackground(Color.darkGray);
+					botao.setForeground(UIManager.getColor("Button.light"));
+				}
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				botao.setBackground(UIManager.getColor("Button.light"));
-				botao.setForeground(UIManager.getColor("Button.foreground"));
+				
+				if (!botao.isEnabled()) {
+					botao.setBackground(Color.gray);
+				} else {
+					botao.setBackground(UIManager.getColor("Button.light"));
+					botao.setForeground(UIManager.getColor("Button.foreground"));					
+				
+				}
+				
 			}
 		});
 		return botao;
