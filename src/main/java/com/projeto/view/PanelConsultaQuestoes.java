@@ -35,6 +35,7 @@ import org.apache.commons.collections4.map.HashedMap;
 import com.projeto.controller.AlternativaController;
 import com.projeto.controller.CategoriaController;
 import com.projeto.controller.PerguntaController;
+import com.projeto.controller.QuizController;
 import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.exceptions.ErroNoCadastroException;
 import com.projeto.model.entity.AlternativaVO;
@@ -58,11 +59,14 @@ public class PanelConsultaQuestoes extends JPanel {
 	private PerguntaController perguntaController = new PerguntaController();
 	private List<CategoriaVO> categorias = new ArrayList<>();
 	private List<PerguntaVO> perguntas = new ArrayList<>();
+	private List<PerguntaVO> quiz; // = new ArrayList<>();
 	private PlaceholderTextField textFieldBusca;
 	private List<AlternativaVO> alternativas;
 	private JCheckBox chckbxMinhasPerguntas;
+	private List<PerguntaVO> todasPerguntas;
 	private int alternativaSelecionada;
 	private JComboBox comboCategorias;
+	private int contadorPerguntasQuiz;
 	private JTable tableAlternativas;
 	private int perguntaSelecionada;
 	private JButton btnAvancaPagina;
@@ -70,17 +74,21 @@ public class PanelConsultaQuestoes extends JPanel {
 	private JLabel lblNomeUsuario;
 	private JTable tableConsulta;
 	private int paginaAtual = 1;
+	private UsuarioVO usuario;
 	private JLabel lblPagina;
 	private int paginas;
-	private UsuarioVO usuario;
-
+	private JButton btncontaPerguntasQuiz;
+	
 	Map<Integer, String> mapCategorias = new HashedMap<>();
+	private JButton btnAdicionaPergunta;
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelConsultaQuestoes(UsuarioVO usuarioLogado) {
 		usuario = usuarioLogado;
+		
+		quiz = new ArrayList<>();
 		setBackground(new Color(112, 128, 144));
 		setBorder(new LineBorder(new Color(250, 128, 114), 5));
 
@@ -99,9 +107,12 @@ public class PanelConsultaQuestoes extends JPanel {
 		comboCategorias = new JComboBox();
 		comboCategorias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				consultarPerguntas();
+			//	consultarPerguntas();
 			}
 
+			/**
+			 * Método desabilitado porque não está aceitando a paginação da tabela
+			 */
 			protected void consultarPerguntas() {
 				limpaTabelaPerguntas();
 				limpaTabelaAlternativas();
@@ -217,32 +228,81 @@ public class PanelConsultaQuestoes extends JPanel {
 		lblPagina = new JLabel("      ");
 		lblPagina.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblPagina.setText(String.valueOf(paginaAtual));
+		
+		btnAdicionaPergunta = new JButton("Adicionar Pergunta ao Quiz");
+		btnAdicionaPergunta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
+				if (perguntaSelecionada < 0) {
+					JOptionPane.showMessageDialog(null, "Selecione uma PERGUNTA para adicionar", Constants.ALERTA,
+							JOptionPane.ERROR_MESSAGE, null);
+					
+				} else {
+					int opcaoEscolhida = JOptionPane.showConfirmDialog(null, "Deseja ADICIONAR  a pergunta ao QUIZ?",
+							"INCLUSÃO DE PERGUNTA ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+							null);
+
+					if (opcaoEscolhida == JOptionPane.YES_OPTION) {
+						PerguntaVO perguntaAdicionadaQuiz = new PerguntaVO();
+						perguntaAdicionadaQuiz = perguntas.get(perguntaSelecionada);
+						quiz.add(perguntaAdicionadaQuiz);
+						JOptionPane.showMessageDialog(null, "Pergunta Adicionada!");
+						contadorPerguntasQuiz++;
+						if (contadorPerguntasQuiz == 1) {
+							btncontaPerguntasQuiz.setText(contadorPerguntasQuiz+" Pergunta Adicionada");
+							
+						} else if (contadorPerguntasQuiz > 1) {
+							btncontaPerguntasQuiz.setText(contadorPerguntasQuiz+" Perguntas Adicionadas");
+						}
+						
+					} else {
+						JOptionPane.showMessageDialog(null, "Inclusão cancelada!");
+					}										
+				} 
+			}
+		});
+		btnAdicionaPergunta.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		btncontaPerguntasQuiz = new JButton(" ");
+		btncontaPerguntasQuiz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				TelaPreviaQuiz telaPreviaQuiz = new TelaPreviaQuiz(quiz);
+				telaPreviaQuiz.setVisible(true);				
+			}
+		});
+		btncontaPerguntasQuiz.setBackground(new Color(112, 128, 144));
+		btncontaPerguntasQuiz.setFont(new Font("Tahoma", Font.BOLD, 11));
 
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+							.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 826, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+							.addComponent(panelBotoes, GroupLayout.DEFAULT_SIZE, 826, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
+							.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
 							.addGap(54)
 							.addComponent(lblNomeUsuario, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
 							.addGap(26))
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblPerguntas, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(chckbxMinhasPerguntas, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblAlternativas, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 490, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnAdicionaPergunta, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btncontaPerguntasQuiz, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
 							.addComponent(btnVoltaPagina)
 							.addGap(13)
 							.addComponent(lblPagina)
@@ -251,11 +311,11 @@ public class PanelConsultaQuestoes extends JPanel {
 							.addGap(28))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+								.addComponent(tableConsulta, GroupLayout.DEFAULT_SIZE, 826, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+									.addComponent(textFieldBusca, GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
 									.addGap(50)
-									.addComponent(comboCategorias, 0, 344, Short.MAX_VALUE)))
+									.addComponent(comboCategorias, 0, 367, Short.MAX_VALUE)))
 							.addContainerGap())))
 		);
 		groupLayout.setVerticalGroup(
@@ -287,7 +347,12 @@ public class PanelConsultaQuestoes extends JPanel {
 							.addGap(18))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblAlternativas)
-							.addPreferredGap(ComponentPlacement.UNRELATED)))
+							.addPreferredGap(ComponentPlacement.UNRELATED))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnAdicionaPergunta)
+								.addComponent(btncontaPerguntasQuiz))
+							.addGap(18)))
 					.addComponent(tableAlternativas, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
 					.addGap(28)
 					.addComponent(panelBotoes, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
@@ -441,7 +506,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						break;
 
 					case "ALTERNATIVA":
-						preparaAlteracaoAlternativa(true);
+						preparaAlteracaoAlternativa();
 						break;
 
 					default:
@@ -450,12 +515,11 @@ public class PanelConsultaQuestoes extends JPanel {
 				}
 			}
 
-			private void preparaAlteracaoAlternativa(boolean primeiraTela) {
+			private void preparaAlteracaoAlternativa() {
 				AlternativaVO alternativaVO = new AlternativaVO();
 				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
 				alternativaSelecionada = tableAlternativas.getSelectedRow() - 1;
 				
-				boolean podeAlterar = true;
 				if (alternativaSelecionada < 0 || perguntaSelecionada < 0) {
 					JOptionPane.showMessageDialog(null, "Selecione uma ALTERNATIVA para alterar", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
@@ -476,16 +540,15 @@ public class PanelConsultaQuestoes extends JPanel {
 							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_ERRADA);
 
 						} else if (opcao == JOptionPane.YES_OPTION) {
-							podeAlterar = this.podeSelecionarAlternativaCorreta(alternativaVO);
+							alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
 						}
 
 						try {
-							if(primeiraTela && podeAlterar) {
-								alternativaController.alteraAlternativa(alternativaVO, usuarioLogado);
+								alternativaController.alteraAlternativa(alternativas, alternativaVO, usuarioLogado);
 								JOptionPane.showMessageDialog(null, "Alteração efetuada!", Constants.SUCESSO,
 										JOptionPane.INFORMATION_MESSAGE);
 								consultarAlternativasDaPerguntaSelecionada();
-							}
+								
 						} catch (ErroNoCadastroException mensagem) {
 							JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
 									JOptionPane.ERROR_MESSAGE, null);
@@ -494,33 +557,6 @@ public class PanelConsultaQuestoes extends JPanel {
 						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
 					}
 				}
-			}
-
-			private boolean podeSelecionarAlternativaCorreta(AlternativaVO alternativaVO) {
-				boolean temAlternativaCorreta = false;
-				
-				alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
-				for (AlternativaVO alternativaVO2 : alternativas) {
-					System.out.println("alternativa = "+alternativaVO2.getTexto()+ " -> "
-														+alternativaVO2.getAlternativaCorreta()+ " -> "
-														+alternativaVO2.getIdAlternativa());
-					if (alternativaVO2.getAlternativaCorreta()
-							.equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {
-						
-						temAlternativaCorreta = true;
-						break;
-					}
-				}
-				if (temAlternativaCorreta){
-					JOptionPane.showMessageDialog(null,
-							"Verifique! \nJá existe uma alternativa correta!", Constants.ALERTA,
-							JOptionPane.INFORMATION_MESSAGE);
-					preparaAlteracaoAlternativa(false);
-				} else {
-					alternativaVO.setAlternativaCorreta(Constants.ALTERNATIVA_CORRETA);
-				}
-				
-				return !temAlternativaCorreta;
 			}
 			
 			private void preparaAlteracaoCategoria() {
@@ -635,10 +671,26 @@ public class PanelConsultaQuestoes extends JPanel {
 		btnConsultar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelBotoes.add(btnConsultar);
 
-		JButton btnSalvar = new JButton("SALVAR");
-		formataBotao(btnSalvar);
-		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 11));
-		panelBotoes.add(btnSalvar);
+		JButton btnSalvarQuiz = new JButton("Salvar  Quiz");
+		btnSalvarQuiz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					QuizController quizController = new QuizController();
+					int codigoQuiz = quizController.cadastraQuiz(quiz, usuarioLogado.getIdUsuario()); 
+					quiz.clear();
+					JOptionPane.showMessageDialog(null, "Cadastro OK!\n O Código do Quiz é: "+codigoQuiz, Constants.SUCESSO,
+							JOptionPane.INFORMATION_MESSAGE);
+					btncontaPerguntasQuiz.setText(" ");
+					
+				} catch (Exception mensagem) {
+					JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
+							JOptionPane.ERROR_MESSAGE, null);
+				}
+			}
+		});
+		formataBotao(btnSalvarQuiz);
+		btnSalvarQuiz.setFont(new Font("Tahoma", Font.BOLD, 11));
+		panelBotoes.add(btnSalvarQuiz);
 		setLayout(groupLayout);
 
 	}
@@ -686,7 +738,7 @@ public class PanelConsultaQuestoes extends JPanel {
 		try {
 			perguntas = perguntaController.buscaComSeletor(perguntaSeletor);
 			paginas = perguntaController.consultarTotalPaginas(perguntaSeletor);
-
+			todasPerguntas = perguntas;
 			lblPagina.setText(String.valueOf(paginaAtual));
 				
 			verificarBotoesPaginas();

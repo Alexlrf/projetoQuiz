@@ -9,6 +9,7 @@ import com.projeto.model.bo.PerguntaBO;
 import com.projeto.model.entity.AlternativaVO;
 import com.projeto.model.entity.PerguntaVO;
 import com.projeto.model.entity.UsuarioVO;
+import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 
 public class AlternativaController {
@@ -31,7 +32,7 @@ public class AlternativaController {
  		return alternativaBO.buscaAlternativas(pergunta);
 	}
 
-	public boolean alteraAlternativa(AlternativaVO alternativaVO, UsuarioVO usuarioLogado) throws ErroNoCadastroException{
+	public boolean alteraAlternativa(List<AlternativaVO> alternativas, AlternativaVO alternativaVO, UsuarioVO usuarioLogado) throws ErroNoCadastroException{
 		String mensagem = "";
 		boolean retorno = true;
 		
@@ -49,6 +50,12 @@ public class AlternativaController {
 		} else if (idBuscado != usuarioLogado.getIdUsuario()) {
 			mensagem = "Não é possível alterar ALTERNATIVA de outro usuário!\n";
 			retorno = false;
+		} else if (!validaAlternativas(alternativas)) {
+			mensagem = "Verifique a existência de alternativas em branco!\n";
+			retorno = false;
+		}else if (!validaAlternativaCorreta(alternativas)) {
+			mensagem = "Verifique a escolha da alternativa correta!\n";
+			retorno = false;
 		} else {
 			if(!alternativaBO.alteraAlternativa(alternativaVO)) {
 				mensagem = "Não foi possível alterar ALTERNATIVA!\n";
@@ -60,6 +67,22 @@ public class AlternativaController {
 			throw new ErroNoCadastroException(mensagem);
 		}		
 		return retorno;		
+	}
+
+	private boolean validaAlternativaCorreta(List<AlternativaVO> alternativas) {
+		boolean listaValida =true;
+		int contaAlternativaCorreta = 0;
+		
+		for (AlternativaVO alternativaVO : alternativas) {
+			if (alternativaVO.getAlternativaCorreta().equalsIgnoreCase(Constants.ALTERNATIVA_CORRETA)) {				
+				contaAlternativaCorreta++;
+			}			
+		}
+		
+		if (contaAlternativaCorreta != 1) {
+			listaValida =false;
+		}		
+		return listaValida;
 	}	
 
 }
