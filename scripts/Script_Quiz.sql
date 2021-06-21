@@ -342,5 +342,6 @@ insert into prova_quiz (id_quiz, id_usuario, id_pergunta) values (1, 2, 1);
 insert into prova_quiz (id_quiz, id_usuario, id_pergunta) values (1, 2, 2);
 insert into prova_quiz (id_quiz, id_usuario, id_pergunta) values (1, 2, 3);
 
-insert into resultado_prova (id_quiz, id_usuario, num_acertos) values (1, 2, 2);
-insert into resultado_prova (id_quiz, id_usuario, num_acertos) values (1, 1, 3);
+insert into resultado_prova (id_quiz, id_usuario, num_acertos) values (1, 9, 2);
+insert into resultado_prova (id_quiz, id_usuario, num_acertos) values (1, 13, 3);
+
