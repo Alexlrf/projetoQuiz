@@ -1,25 +1,18 @@
 package com.projeto.view;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.FlowLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.projeto.model.entity.PerguntaVO;
-
-import java.awt.Color;
+import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import java.awt.Toolkit;
+
+import com.projeto.model.entity.PerguntaVO;
 
 public class TelaPreviaQuiz extends JFrame {
 
