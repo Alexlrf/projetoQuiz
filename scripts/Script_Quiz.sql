@@ -336,10 +336,6 @@ INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) va
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('26', 'SÃO FATORES E CONDIÇÕES EXTERNAS QUE TÊM RELEVÂNCIA IMEDIATA PARA A ORGANIZAÇÃO', 'CORRETA');
 INSERT INTO alternativa (id_pergunta, texto_alternativa, alternativa_correta) values('26', 'NENHUMA DAS ALTERNATIVAS ANTERIORES', '- - -');
 
-
-
-insert into quiz (id_usuario) values (2);
-INSERT INTO quiz (id_usuario) values (1);
 INSERT INTO quiz (id_usuario) values (1);
 
 insert into prova_quiz (id_quiz, id_usuario, id_pergunta) values (1, 2, 1);

@@ -170,7 +170,7 @@ public class CategoriaDAO implements BaseDao<CategoriaVO> {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao alterar categoria por descrição!");
+			System.out.println("");
 			alteradaCategoria = false;
 
 		}
