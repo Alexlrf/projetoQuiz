@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.projeto.exceptions.CpfExistenteException;
-import com.projeto.exceptions.LoginNaoInformadoException;
+import com.projeto.exceptions.CpfNaoInformadoException;
 import com.projeto.exceptions.RgExistenteException;
 import com.projeto.exceptions.SenhaIncorretaException;
 import com.projeto.exceptions.SenhaNaoInformadaException;
@@ -18,14 +18,14 @@ import com.projeto.view.TelaPrincipal;
 
 public class UsuarioController {
 
-	public UsuarioVO verificarLoginController(String cpf, String senha) throws UsuarioNaoExistenteException, LoginNaoInformadoException, SenhaNaoInformadaException, SenhaIncorretaException {
+	public UsuarioVO verificarLoginController(String cpf, String senha) throws UsuarioNaoExistenteException, CpfNaoInformadoException, SenhaNaoInformadaException, SenhaIncorretaException {
 		UsuarioBO verificarLogin = new UsuarioBO();
 		
 		// caso algum dos campos estejam nulos, deverá lançar uma Exceção
 		if (cpf == null || cpf.trim().isEmpty()) {
-			throw new LoginNaoInformadoException("Login não informado");
+			throw new CpfNaoInformadoException("CPF não informado!");
 		} else if (senha.trim().isEmpty()) {
-			throw new SenhaNaoInformadaException("Senha não informada");
+			throw new SenhaNaoInformadaException("Senha não informada!");
 		}
 		
 		UsuarioVO usuario = verificarLogin.verificarLoginBO(cpf, senha);

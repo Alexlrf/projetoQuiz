@@ -27,7 +27,8 @@ public class GeradorPlanilhaUsuario {
 		
 		usuario = usuarioController.pesquisarUsuarioController(seletor);
 		
-		String[] nomeColunas = {"Nome", "Tipo de Usuario", "Turno", "Sexo", "Possui Deficiência", "RG", "CPF", "Status"}; 
+		String[] nomeColunas = {"N O M E", "T I P O   D E   U S U A R I O", "T U R N O", "S E X O", 
+				"P O S S U I   D E F I C I Ê N C I A", "R G", "C P F", "S T A T U S"}; 
 		HSSFWorkbook planilha = new HSSFWorkbook();
 		HSSFSheet aba = planilha.createSheet("Relatório de Usuarios");
 		
@@ -40,28 +41,30 @@ public class GeradorPlanilhaUsuario {
 		}
 		
 		// Cria linhas
-		int rowNum = 0;
+		int rowNum = 1;
 		for (UsuarioVO usu : usuario) {
 			Row novaLinha = aba.createRow(rowNum++);
 			novaLinha.createCell(0).setCellValue(usu.getNome());
 			novaLinha.createCell(1).setCellValue(usu.getTipo().toString());
 			novaLinha.createCell(2).setCellValue(usu.getTurno().toString());
 			
+			novaLinha.createCell(3).setCellValue("Feminino");
 			if (usu.getSexo() == Constants.MASCULINO) {
 				novaLinha.createCell(3).setCellValue("Masculino");
-			} else {
-				novaLinha.createCell(3).setCellValue("Feminino");
 			}
 			
+			novaLinha.createCell(4).setCellValue("Não");
 			if (usu.isPossuiDeficiencia()) {
 				novaLinha.createCell(4).setCellValue("Sim");
-			} else {
-				novaLinha.createCell(4).setCellValue("Não");
 			}
 			
 			novaLinha.createCell(5).setCellValue(usu.getRg());
 			novaLinha.createCell(6).setCellValue(usu.getCpf());
-			novaLinha.createCell(7).setCellValue(usu.isAtivo());
+			
+			novaLinha.createCell(7).setCellValue("DESATIVADO");
+			if (usu.isAtivo()) {
+				novaLinha.createCell(7).setCellValue("ATIVADO");
+			}
 		}
 		
 		// Ajusta o tamanho das colunas de acordo com seu conteúdo

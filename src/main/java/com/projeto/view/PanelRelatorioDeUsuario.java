@@ -52,7 +52,8 @@ public class PanelRelatorioDeUsuario extends JPanel {
 	private JButton btnProximaPagina;
 	private JPanel panel;
 	private List<UsuarioVO> usuarios = new ArrayList<>();
-	private String[] nomesColunas = {"Nome", "Tipo de Usuario", "Turno", "Sexo", "Possui Deficiência", "RG", "CPF", "Status"};
+	private String[] nomesColunas = {"N O M E", "T I P O   D E   U S U A R I O", "T U R N O", "S E X O", 
+			"P O S S U I   D E F I C I Ê N C I A", "R G", "C P F", "S T A T U S"};
 	private DefaultTableModel model;
 	private int paginaAtual = 1;
 	private JButton btnGerarXls;
@@ -235,7 +236,7 @@ public class PanelRelatorioDeUsuario extends JPanel {
 								JOptionPane.INFORMATION_MESSAGE, null);
 
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, "Erro ao gerar planilha!", "ATENÇÃO",
+						JOptionPane.showMessageDialog(null, "Erro ao gerar planilha!", Constants.ALERTA,
 								JOptionPane.ERROR_MESSAGE, null);
 						System.out.println("Erro ao gerar planilha de usuarios: " + ex.getMessage());
 					}
@@ -250,13 +251,13 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		cbxTurno.setModel(new DefaultComboBoxModel
 				(new String[] {"SELECIONE O TURNO", TurnoEnum.MATUTINO.toString(), TurnoEnum.VESPERTINO.toString(), TurnoEnum.NOTURNO.toString()}));
 		
-		JLabel lblTurno = new JLabel("Turno");
+		JLabel lblTurno = new JLabel("Turno:");
 		
 		JLabel lblDe = new JLabel("de");
 		
 		lblTotalPaginas = new JLabel("");
 		
-		JLabel lblAtivo = new JLabel("ativado");
+		JLabel lblAtivo = new JLabel("Status:");
 		
 		cbxAtivado = new JComboBox();
 		cbxAtivado.setModel(new DefaultComboBoxModel
@@ -427,32 +428,28 @@ public class PanelRelatorioDeUsuario extends JPanel {
 		model = (DefaultTableModel) this.tblListaDeUsuarios.getModel();
 		
 		for(UsuarioVO usu: usuarios) {
-			
 			Object[] novaLinhaTabela = new Object[8];
 			
 			novaLinhaTabela[0] = usu.getNome();
 			novaLinhaTabela[1] = usu.getTipo();
 			novaLinhaTabela[2] = usu.getTurno();
 			
+			novaLinhaTabela[3] = "Feminino";
 			if (usu.getSexo() == Constants.MASCULINO) {
 				novaLinhaTabela[3] = "Masculino";
-			} else {
-				novaLinhaTabela[3] = "Feminino";
 			}
 			
+			novaLinhaTabela[4] = "Não";
 			if (usu.isPossuiDeficiencia()) {
 				novaLinhaTabela[4] = "Sim";				
-			} else {
-				novaLinhaTabela[4] = "Não";
 			}
 			
 			novaLinhaTabela[5] = usu.getRg();
 			novaLinhaTabela[6] = usu.getCpf();
 			
+			novaLinhaTabela[7] = "DESATIVADO";
 			if ( usu.isAtivo()) {
 				novaLinhaTabela[7] = "ATIVADO";
-			} else {
-				novaLinhaTabela[7] = "DESATIVADO";
 			}
 			
 			model.addRow(novaLinhaTabela);

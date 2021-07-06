@@ -27,7 +27,7 @@ import javax.swing.text.MaskFormatter;
 
 import com.projeto.controller.UsuarioController;
 import com.projeto.enums.TipoUsuarioEnum;
-import com.projeto.exceptions.LoginNaoInformadoException;
+import com.projeto.exceptions.CpfNaoInformadoException;
 import com.projeto.exceptions.SenhaIncorretaException;
 import com.projeto.exceptions.SenhaNaoInformadaException;
 import com.projeto.exceptions.UsuarioNaoExistenteException;
@@ -99,7 +99,7 @@ public class TelaLoginSenha extends JFrame {
 				}
 			}
 		});
-		txtCpf.setToolTipText("Digite o seu Cpf");
+		txtCpf.setToolTipText("Digite o seu CPF");
 		txtCpf.setColumns(10);
 		
 		passwordField = new PlaceholderPasswordField();
@@ -143,7 +143,7 @@ public class TelaLoginSenha extends JFrame {
 			}
 		});
 		
-		JLabel lblCpf = new JLabel("Cpf");
+		JLabel lblCpf = new JLabel("CPF");
 		
 		JLabel lblSenha = new JLabel("Senha");
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -207,7 +207,7 @@ public class TelaLoginSenha extends JFrame {
 			UsuarioVO usuario = usuarioController.verificarLoginController(cpf, senha);
 			dispose();
 			
-		} catch (UsuarioNaoExistenteException | LoginNaoInformadoException | SenhaNaoInformadaException | SenhaIncorretaException e) {
+		} catch (UsuarioNaoExistenteException | CpfNaoInformadoException | SenhaNaoInformadaException | SenhaIncorretaException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Erro de Login", JOptionPane.WARNING_MESSAGE);
 		}
 	}
