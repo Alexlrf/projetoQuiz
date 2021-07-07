@@ -3,8 +3,11 @@ package com.projeto.repository;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.text.MaskFormatter;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -59,7 +62,9 @@ public class GeradorPlanilhaUsuario {
 			}
 			
 			novaLinha.createCell(5).setCellValue(usu.getRg());
-			novaLinha.createCell(6).setCellValue(usu.getCpf());
+			
+			String cpfMascarado = this.mascararCpf(String.valueOf(usu.getCpf()));
+			novaLinha.createCell(6).setCellValue(cpfMascarado);
 			
 			novaLinha.createCell(7).setCellValue("DESATIVADO");
 			if (usu.isAtivo()) {
@@ -94,6 +99,18 @@ public class GeradorPlanilhaUsuario {
 			}
 		}
 		
+	}
+	
+	private String mascararCpf(String cpf) {
+		try {
+			MaskFormatter mask = new MaskFormatter("AAA.AAA.AAA-AA");
+			mask.setPlaceholderCharacter(' ');
+			mask.setValueContainsLiteralCharacters(false);
+			cpf = mask.valueToString(cpf);
+		} catch (ParseException e) {
+			System.out.println("Erro ao formatar rg: " + e.getMessage());
+		}
+		return cpf;
 	}
 
 }
