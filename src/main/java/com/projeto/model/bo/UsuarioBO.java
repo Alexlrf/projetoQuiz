@@ -17,9 +17,9 @@ public class UsuarioBO {
 	public UsuarioVO verificarLoginBO(String cpf, String senha) throws UsuarioNaoExistenteException, SenhaIncorretaException {
 		UsuarioDAO verificarCpfSenha = new UsuarioDAO();
 		if (!verificarCpfSenha.verificarCpfDAO(cpf, null)) {
-			throw new UsuarioNaoExistenteException("Usuario não cadastrado");
+			throw new UsuarioNaoExistenteException("Usuario não cadastrado!");
 		} else if (!verificarCpfSenha.verificarSenhaDAO(cpf, senha)){
-			throw new SenhaIncorretaException("Senha incorreta");
+			throw new SenhaIncorretaException("Senha incorreta!");
 		}else {
 			return verificarCpfSenha.verificarCpfSenhaDAO(cpf, senha);
 		}
@@ -31,13 +31,13 @@ public class UsuarioBO {
 	}
 
 	public String excluirUsuarioBO(Integer idUsuarioSelecionado) {
-		String retorno = "Erro ao verificar validação de exclusão";
+		String retorno = "Erro ao verificar validação de exclusão!";
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		
 		if (usuarioDAO.desativarUsuarioDAO(idUsuarioSelecionado)) {
-			retorno = "Usuario excluido com sucesso.";
+			retorno = "Usuario excluido com sucesso!";
 		} else {
-			retorno = "Não foi possivel excluir o usuario.";
+			retorno = "Não foi possivel excluir o usuario!";
 		}
 		return retorno;
 	}
@@ -51,9 +51,9 @@ public class UsuarioBO {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		
 		if (usuarioDAO.verificarRgDAO(usuario.getRg(), usuario.getIdUsuario())) {
-			throw new RgExistenteException("Rg já existente no banco, favor reconsiderar!");
+			throw new RgExistenteException("RG já existente no banco, favor reconsiderar!");
 		} else if (usuarioDAO.verificarCpfDAO(usuario.getCpf(), usuario.getIdUsuario())) {
-			throw new CpfExistenteException("Cpf já cadastrado no banco, favor reconsiderar!");
+			throw new CpfExistenteException("CPF já cadastrado no banco, favor reconsiderar!");
 		} else {
 			usuario = usuarioDAO.cadastrar(usuario);
 		}
@@ -66,9 +66,9 @@ public class UsuarioBO {
 		boolean atualizou = false;
 		
 		if (usuarioDAO.verificarRgDAO(usuario.getRg(), usuario.getIdUsuario())) {
-			throw new RgExistenteException("Rg já existente no banco, favor reconsiderar!");
+			throw new RgExistenteException("RG já existente no banco, favor reconsiderar!");
 		} else if (usuarioDAO.verificarCpfDAO(usuario.getCpf(), usuario.getIdUsuario())) {
-			throw new CpfExistenteException("Cpf já cadastrado no banco, favor reconsiderar!");
+			throw new CpfExistenteException("CPF já cadastrado no banco, favor reconsiderar!");
 		} else {
 			atualizou = usuarioDAO.alterar(usuario);
 		}
