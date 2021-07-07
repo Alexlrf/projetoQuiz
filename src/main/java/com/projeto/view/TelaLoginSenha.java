@@ -208,7 +208,7 @@ public class TelaLoginSenha extends JFrame {
 			dispose();
 			
 		} catch (UsuarioNaoExistenteException | CpfNaoInformadoException | SenhaNaoInformadaException | SenhaIncorretaException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Erro de Login", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Erro de Login", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

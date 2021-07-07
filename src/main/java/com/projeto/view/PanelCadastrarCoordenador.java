@@ -481,20 +481,22 @@ public class PanelCadastrarCoordenador extends JPanel {
 		
 		String mensagem = "";
 		String titulo = "";
+		int icone = JOptionPane.ERROR_MESSAGE;
 		if (coordenador.getIdUsuario() != null) {
 			titulo = "Atualizar";
 			boolean atualizou = false;
-			mensagem = "Erro ao atualizar coordenador.";
+			mensagem = "Erro ao atualizar coordenador!";
 			
 			try {
 				atualizou = UsuarioController.alterar(coordenador);
 			} catch (RgExistenteException | CpfExistenteException e) {
-				mensagem = e.getMessage();
+				mensagem = e.getMessage() + "!";
 				titulo = "Aviso";
 			}
 			
 			if (atualizou) {
 				mensagem = "Coordenador atualizado com sucesso!";
+				icone = JOptionPane.INFORMATION_MESSAGE;
 			}
 		} else {
 			
@@ -503,16 +505,17 @@ public class PanelCadastrarCoordenador extends JPanel {
 				coordenador = UsuarioController.cadastrar(coordenador);
 				if (coordenador.getIdUsuario() != null) {
 					mensagem = "Coordenador cadastrado com sucesso!";
+					icone = JOptionPane.INFORMATION_MESSAGE;
 					limparTela();
 				} else {
-					mensagem = "Erro ao cadastrar coordenador.";
+					mensagem = "Erro ao cadastrar coordenador!";
 				}
 			} catch (RgExistenteException | CpfExistenteException e) {
-				mensagem = e.getMessage();
+				mensagem = e.getMessage() + "!";
 				titulo = "Aviso";
 			}
 		}
-		JOptionPane.showMessageDialog(null, mensagem, titulo, JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, mensagem, titulo, icone);
 	}
 
 	protected boolean validarSenha() {
@@ -521,15 +524,15 @@ public class PanelCadastrarCoordenador extends JPanel {
 		if (!pswSenha.getText().equals(pswConfirmarSenha.getText())) {
 			validarSenha = false;
 			JOptionPane.showMessageDialog(null, "Para confirmar a senha, é necessário que as duas senhas sejam as mesmas.\n "
-					+ "Favor verificar!", "Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+					+ "Favor verificar!", "Senha Inconsistente", JOptionPane.ERROR_MESSAGE);
 		} else if (pswSenha.getText().length() < 8) {
 			validarSenha = false;
 			JOptionPane.showMessageDialog(null, "A senha deve conter mais de 8 caracteres.\n Favor verificar!", 
-					"Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+					"Senha Inconsistente", JOptionPane.ERROR_MESSAGE);
 		} else if (pswSenha.getText().length() > 30) {
 			validarSenha = false;
 			JOptionPane.showMessageDialog(null, "A senha deve conter menos de 30 caracteres.\n Favor verificar!", 
-					"Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+					"Senha Inconsistente", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return validarSenha;
@@ -568,7 +571,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 		
 		LocalDate dataAtual = LocalDate.now();
 		if (dtNascimento!= null && dtNascimento.isAfter(dataAtual)) {
-			JOptionPane.showMessageDialog(null, "Data de nascimento é maior que a data atual. \n Favor Reconsiderar!", "A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Data de nascimento é maior que a data atual. \n Favor Reconsiderar!", "A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
 			validar = false;
 		}
 
@@ -600,7 +603,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 		mensagem.append("são obrigatórios.\n Favor preenchê-los!");
 		
 		if (!validar) {
-			JOptionPane.showMessageDialog(null, mensagem, "A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, mensagem, "A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return validar;
