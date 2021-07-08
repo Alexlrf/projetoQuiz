@@ -3,8 +3,6 @@ package com.projeto.repository;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 
-import javax.swing.JOptionPane;
-
 public class Utils {
 	
 	/**
@@ -66,8 +64,7 @@ public class Utils {
 		
 	}
 	
-	/**
-	 * 
+	/** 
 	 * Método que valida se o número de celular recebido começa com o dígito 9
 	 * 
 	 * @param texto com número de celular digitado pelo usuário
@@ -83,6 +80,26 @@ public class Utils {
 			resultado = false;				
 		} 		
 		return resultado;		
+	}
+
+	/** 
+	 * Método que valida se o número de RG recebido não possui mais de 3 letras em sequência
+	 * ou uma quantidade maior que 3 letras 
+	 * 
+	 * @param texto com número de RG digitado pelo usuário
+	 * @return true, se RGválido ou false caso contrário
+	 */
+	public static boolean validaFormatoRG(String rg) {
+		boolean rgValidado = true;	
+		
+		rg = rg.replaceAll("\\d", "").trim(); 
+		boolean rgValido = Pattern.compile("\\D{4,}")
+				.matcher(rg).find();
+		
+		if (rgValido || rg.length() > 3) {			
+			rgValidado = false;				
+		} 		
+		return rgValidado;
 	}
 
 }

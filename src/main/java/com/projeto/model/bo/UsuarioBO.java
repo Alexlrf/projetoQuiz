@@ -50,9 +50,15 @@ public class UsuarioBO {
 	public UsuarioVO cadastrar(UsuarioVO usuario) throws RgExistenteException, CpfExistenteException {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		
-		if (usuarioDAO.verificarRgDAO(usuario.getRg(), usuario.getIdUsuario())) {
-			throw new RgExistenteException("RG já existente no banco, favor reconsiderar!");
-		} else if (usuarioDAO.verificarCpfDAO(usuario.getCpf(), usuario.getIdUsuario())) {
+		/**
+		 * Método desabilitado por não estar sendo usada a lógica de verificar RG único no banco
+		 */
+		
+//		if (usuarioDAO.verificarRgDAO(usuario.getRg(), usuario.getIdUsuario())) {
+//			throw new RgExistenteException("RG já existente no banco, favor reconsiderar!");
+//		} else 
+		
+		if (usuarioDAO.verificarCpfDAO(usuario.getCpf(), usuario.getIdUsuario())) {
 			throw new CpfExistenteException("CPF já cadastrado no banco, favor reconsiderar!");
 		} else {
 			usuario = usuarioDAO.cadastrar(usuario);
@@ -65,9 +71,15 @@ public class UsuarioBO {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		boolean atualizou = false;
 		
-		if (usuarioDAO.verificarRgDAO(usuario.getRg(), usuario.getIdUsuario())) {
-			throw new RgExistenteException("RG já existente no banco, favor reconsiderar!");
-		} else if (usuarioDAO.verificarCpfDAO(usuario.getCpf(), usuario.getIdUsuario())) {
+		/**
+		 * Método desabilitado por não estar sendo usada a lógica de verificar RG único no banco
+		 */
+		
+//		if (usuarioDAO.verificarRgDAO(usuario.getRg(), usuario.getIdUsuario())) {
+//			throw new RgExistenteException("RG já existente no banco, favor reconsiderar!");
+//		} else 
+				
+		if (usuarioDAO.verificarCpfDAO(usuario.getCpf(), usuario.getIdUsuario())) {
 			throw new CpfExistenteException("CPF já cadastrado no banco, favor reconsiderar!");
 		} else {
 			atualizou = usuarioDAO.alterar(usuario);
