@@ -32,6 +32,7 @@ import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Constants;
+import com.projeto.repository.TextFieldLimit;
 import com.projeto.repository.Utils;
 import com.projeto.controller.UsuarioController;
 
@@ -128,6 +129,7 @@ setBackground(new Color(70, 130, 150));
 		
 		txtNome = new PlaceholderTextField();
 		txtNome.setPlaceholder("Digite o nome completo, Ex: José da Silva Sauro.");
+		txtNome.setDocument(new TextFieldLimit(255));
 		txtNome.setColumns(10);
 		
 		MaskFormatter mascaraRg;
