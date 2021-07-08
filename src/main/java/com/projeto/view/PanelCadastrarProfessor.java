@@ -592,7 +592,7 @@ setBackground(new Color(70, 130, 150));
 		}
 		
 		if (!Utils.stringValida(txtRg.getText().replace(".", ""))) {
-			mensagem.append("Rg, ");
+			mensagem.append("RG, ");
 			validar = false;
 		} else if (!Utils.validaFormatoRG(txtRg.getText())){			
 			JOptionPane.showMessageDialog(null, "Número de RG inválido!",
@@ -604,7 +604,7 @@ setBackground(new Color(70, 130, 150));
 		}
 		
 		if (!Utils.stringValida(txtCpf.getText().replace(".", "").replace("-", ""))) {
-			mensagem.append("Cpf, ");
+			mensagem.append("CPF, ");
 			validar = false;
 		}
 

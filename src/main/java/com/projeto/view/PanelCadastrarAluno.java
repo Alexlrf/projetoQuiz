@@ -39,6 +39,7 @@ import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Constants;
+import com.projeto.repository.TextFieldLimit;
 import com.projeto.repository.Utils;
 
 public class PanelCadastrarAluno extends JPanel {
@@ -104,6 +105,7 @@ public class PanelCadastrarAluno extends JPanel {
 		
 		txtNome = new PlaceholderTextField();
 		txtNome.setPlaceholder("Digite o nome completo, Ex: José da Silva Sauro.");
+		txtNome.setDocument(new TextFieldLimit(255));
 		txtNome.setColumns(10);
 		
 		JLabel lblCadastrarAluno = new JLabel("Cadastrar Aluno");
@@ -563,7 +565,7 @@ boolean validarSenha = true;
 		}
 		
 		if (!Utils.stringValida(txtRg.getText().replace(".", ""))) {
-			mensagem.append("Rg, ");
+			mensagem.append("RG, ");
 			validar = false;
 		} else if (!Utils.validaFormatoRG(txtRg.getText())){			
 			JOptionPane.showMessageDialog(null, "Número de RG inválido!",
@@ -575,7 +577,7 @@ boolean validarSenha = true;
 		}
 		
 		if (!Utils.stringValida(txtCpf.getText().replace(".", "").replace("-", ""))) {
-			mensagem.append("Cpf, ");
+			mensagem.append("CPF, ");
 			validar = false;
 		}
 

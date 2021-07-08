@@ -39,6 +39,7 @@ import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Constants;
+import com.projeto.repository.TextFieldLimit;
 import com.projeto.repository.Utils;
 
 public class PanelCadastrarCoordenador extends JPanel {
@@ -105,6 +106,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 		
 		txtNome = new PlaceholderTextField();
 		txtNome.setPlaceholder("Digite o nome completo, Ex: José da Silva Sauro.");
+		txtNome.setDocument(new TextFieldLimit(255));
 		txtNome.setColumns(10);
 		
 		JLabel lblRg = new JLabel("RG:");
@@ -562,7 +564,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 		}
 		
 		if (!Utils.stringValida(txtRg.getText().replace(".", ""))) {
-			mensagem.append("Rg, ");
+			mensagem.append("RG, ");
 			validar = false;
 		} else if (!Utils.validaFormatoRG(txtRg.getText())){			
 			JOptionPane.showMessageDialog(null, "Número de RG inválido!",
@@ -574,7 +576,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 		}
 		
 		if (!Utils.stringValida(txtCpf.getText().replace(".", "").replace("-", ""))) {
-			mensagem.append("Cpf, ");
+			mensagem.append("CPF, ");
 			validar = false;
 		}
 
