@@ -1,6 +1,9 @@
 package com.projeto.repository;
 
 import java.time.LocalDate;
+import java.util.regex.Pattern;
+
+import javax.swing.JOptionPane;
 
 public class Utils {
 	
@@ -61,6 +64,25 @@ public class Utils {
 		
 		return texto.replaceAll("\\s+", " ").trim();
 		
+	}
+	
+	/**
+	 * 
+	 * Método que valida se o número de celular recebido começa com o dígito 9
+	 * 
+	 * @param texto com número de celular digitado pelo usuário
+	 * @return true, se houver o dígito 9 no início ou false caso contrário
+	 */
+	public static boolean validaNumeroCelular(String celular) {	
+		
+		boolean resultado = true;
+		boolean celularValido = Pattern.compile("\\(\\d{2}\\)\\s*9\\d{4}-\\d{4}")
+				.matcher(celular).find();
+		
+		if (!celularValido) {			
+			resultado = false;				
+		} 		
+		return resultado;		
 	}
 
 }

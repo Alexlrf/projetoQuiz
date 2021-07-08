@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -587,7 +588,14 @@ public class PanelCadastrarCoordenador extends JPanel {
 
 		if (!Utils.stringValida(txtCelular.getText().replace("(", "").replace(")", "").replace("-", ""))) {
 			mensagem.append("Celular, ");
+			txtCelular.requestFocusInWindow();
 			validar = false;
+		} else if (!Utils.validaNumeroCelular(txtCelular.getText())){			
+				JOptionPane.showMessageDialog(null, "Número de celular inválido!",
+						"A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
+				txtCelular.setText("");
+				txtCelular.requestFocusInWindow();
+				validar = false;							
 		}
 		
 		if (!Utils.stringValida(pswSenha.getText())) {
