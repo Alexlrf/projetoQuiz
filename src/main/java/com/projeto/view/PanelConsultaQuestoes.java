@@ -162,7 +162,8 @@ public class PanelConsultaQuestoes extends JPanel {
 				mapCategorias.put(categoriaVO.getIdCategoria(), categoriaVO.getDescricaoCategoria());
 			}
 		} catch (ErroNaConsultaException e1) {
-			JOptionPane.showMessageDialog(null, "Não foi possível consultar as categorias!");
+			JOptionPane.showMessageDialog(null, "Não foi possível consultar as categorias!", Constants.ALERTA,
+					JOptionPane.ERROR_MESSAGE, null);
 		}
 
 		JPanel panelBotoes = new JPanel();
@@ -649,7 +650,8 @@ public class PanelConsultaQuestoes extends JPanel {
 						}
 
 					} else {
-						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
+						JOptionPane.showMessageDialog(null, "Alteração cancelada!", Constants.ALERTA,
+								JOptionPane.ERROR_MESSAGE, null);
 
 					}
 				}
