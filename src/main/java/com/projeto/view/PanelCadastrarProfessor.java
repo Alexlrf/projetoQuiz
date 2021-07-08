@@ -620,16 +620,12 @@ setBackground(new Color(70, 130, 150));
 			mensagem.append("Celular, ");
 			txtCelular.requestFocusInWindow();
 			validar = false;
-		} else {
-			boolean celularValido = Pattern.compile("\\(\\d{2}\\)\\s*9\\d{4}-\\d{4}")
-					.matcher(txtCelular.getText().toString()).find();
-			if (!celularValido) {
-				JOptionPane.showMessageDialog(null, "Número de celular inválido!",
-						"A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
-				txtCelular.setText("");
-				txtCelular.requestFocusInWindow();
-				validar = false;				
-			} 				
+		} else if (!Utils.validaNumeroCelular(txtCelular.getText())){			
+			JOptionPane.showMessageDialog(null, "Número de celular inválido!",
+					"A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
+			txtCelular.setText("");
+			txtCelular.requestFocusInWindow();
+			validar = false;			
 		}
 		
 		if (cbxDisciplina.getSelectedIndex() == 0) {
