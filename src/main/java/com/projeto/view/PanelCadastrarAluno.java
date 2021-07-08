@@ -1,17 +1,30 @@
 package com.projeto.view;
 
-import javax.swing.JPanel;
-import javax.swing.AbstractButton;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
 import com.github.lgooddatepicker.components.DatePicker;
@@ -21,7 +34,6 @@ import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
 import com.projeto.exceptions.CpfExistenteException;
 import com.projeto.exceptions.RgExistenteException;
-import com.projeto.model.dao.AlunoDAO;
 import com.projeto.model.entity.AlunoVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
@@ -29,28 +41,12 @@ import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Constants;
 import com.projeto.repository.Utils;
 
-import javax.swing.SwingConstants;
-import javax.swing.JRadioButton;
-import java.awt.Component;
-import javax.swing.JComboBox;
-import javax.swing.JCheckBox;
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-import java.awt.event.ActionEvent;
-import java.awt.Color;
-import javax.swing.JFormattedTextField;
-
 public class PanelCadastrarAluno extends JPanel {
 	private PlaceholderTextField txtNome;
 	private JFormattedTextField txtCpf;
 	private final ButtonGroup buttonGroupSexo = new ButtonGroup();
 	private final ButtonGroup buttonGroupDeficiente = new ButtonGroup();
-	private JFormattedTextField txtRg;
+	private JTextField txtRg;
 	private JFormattedTextField txtCelular;
 	private PlaceholderPasswordField pswSenha;
 	private PlaceholderPasswordField pswConfirmarSenha;
@@ -69,6 +65,7 @@ public class PanelCadastrarAluno extends JPanel {
 	private JComboBox cbxTurno;
 	private JLabel lblStatus;
 	private JComboBox cbxAtivado;
+	private int contaCaracteres = 0;
 
 	public PanelCadastrarAluno(AlunoVO aluno) {
 		this.aluno = aluno;
@@ -113,15 +110,22 @@ public class PanelCadastrarAluno extends JPanel {
 		lblCadastrarAluno.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCadastrarAluno.setFont(new Font("Tahoma", Font.BOLD, 24));
 		
-		JLabel lblRg = new JLabel("RG:");
-		
-		MaskFormatter mascaraRg;
-		try {
-			mascaraRg = new MaskFormatter("#.###.###");
-			txtRg = new JFormattedTextField(mascaraRg);
-		} catch (ParseException e) {
-			System.out.println("Erro ao formatar mascara de Rg: " + e.getMessage());
-		}
+		JLabel lblRg = new JLabel("RG:");		
+	
+		txtRg = new JTextField();
+		txtRg.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {				
+				contaCaracteres++;
+				if (contaCaracteres > 20) {
+					JOptionPane.showMessageDialog(null, "Campo RG pode conter no MÁXIMO 20 caracteres\n"
+							+ "NÃO são aceitas mais de 3 letras em sequência",
+							"A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
+					txtRg.setText("");
+					contaCaracteres = 0;
+				}
+			}
+		});
 		txtRg.setColumns(10);
 		
 		MaskFormatter mascaraCpf;
@@ -561,6 +565,13 @@ boolean validarSenha = true;
 		if (!Utils.stringValida(txtRg.getText().replace(".", ""))) {
 			mensagem.append("Rg, ");
 			validar = false;
+		} else if (!Utils.validaFormatoRG(txtRg.getText())){			
+			JOptionPane.showMessageDialog(null, "Número de RG inválido!",
+					"A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
+			txtRg.setText("");
+			txtRg.requestFocusInWindow();
+			contaCaracteres = 0;
+			validar = false;							
 		}
 		
 		if (!Utils.stringValida(txtCpf.getText().replace(".", "").replace("-", ""))) {
@@ -596,7 +607,7 @@ boolean validarSenha = true;
 			validar = false;
 		} else if (!Utils.validaNumeroCelular(txtCelular.getText())){			
 			JOptionPane.showMessageDialog(null, "Número de celular inválido!",
-					"A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
+					"A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
 			txtCelular.setText("");
 			txtCelular.requestFocusInWindow();
 			validar = false;			
