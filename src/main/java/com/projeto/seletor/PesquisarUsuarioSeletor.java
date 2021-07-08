@@ -15,6 +15,9 @@ public class PesquisarUsuarioSeletor {
 	private int limite;
 	private int pagina;
 	
+	private boolean ordenarPorNome;
+	private boolean ordenarPorUsuario;
+	
 	public PesquisarUsuarioSeletor() {
 		//Default: traz os resultados sem limite e sem página
 		this.limite = 0;
@@ -58,6 +61,24 @@ public class PesquisarUsuarioSeletor {
 		}
 		
 		if (this.ativo != null) {
+			retorno = true;
+		}
+		
+		return retorno;
+	}
+	
+	/**
+	 * Verifica se tem que ordenar algum campo
+	 * @return
+	 */
+	public boolean temOrderBy() {
+		boolean retorno = false;
+		
+		if (this.ordenarPorNome) {
+			retorno = true;
+		}
+		
+		if (this.ordenarPorUsuario) {
 			retorno = true;
 		}
 		
@@ -119,6 +140,22 @@ public class PesquisarUsuarioSeletor {
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public boolean isOrdenarPorNome() {
+		return ordenarPorNome;
+	}
+
+	public void setOrdenarPorNome(boolean ordenarPorNome) {
+		this.ordenarPorNome = ordenarPorNome;
+	}
+
+	public boolean isOrdenarPorUsuario() {
+		return ordenarPorUsuario;
+	}
+
+	public void setOrdenarPorUsuario(boolean ordenarPorUsuario) {
+		this.ordenarPorUsuario = ordenarPorUsuario;
 	}
 	
 }

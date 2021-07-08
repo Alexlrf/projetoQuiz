@@ -469,20 +469,22 @@ public class PanelCadastrarAluno extends JPanel {
 		
 		String mensagem = "";
 		String titulo = "";
+		int icone = JOptionPane.ERROR_MESSAGE;
 		if (aluno.getIdUsuario() != null) {
 			titulo = "Atualizar";
 			boolean atualizou = false;
-			mensagem = "Erro ao atualizar aluno.";
+			mensagem = "Erro ao atualizar aluno!";
 			
 			try {
 				atualizou = UsuarioController.alterar(aluno);
 			} catch (RgExistenteException | CpfExistenteException e) {
-				mensagem = e.getMessage();
+				mensagem = e.getMessage() + "!";
 				titulo = "Aviso";
 			}
 			
 			if (atualizou) {
 				mensagem = "Aluno atualizado com sucesso!";
+				icone = JOptionPane.INFORMATION_MESSAGE;
 			}
 		} else {
 			
@@ -491,16 +493,17 @@ public class PanelCadastrarAluno extends JPanel {
 				aluno = UsuarioController.cadastrar(aluno);
 				if (aluno.getIdUsuario() != null) {
 					mensagem = "Aluno cadastrado com sucesso!";
+					icone = JOptionPane.INFORMATION_MESSAGE;
 					limparTela();
 				} else {
-					mensagem = "Erro ao cadastrar aluno.";
+					mensagem = "Erro ao cadastrar aluno!";
 				}
 			} catch (RgExistenteException | CpfExistenteException e) {
-				mensagem = e.getMessage();
+				mensagem = e.getMessage() + "!";
 				titulo = "Aviso";
 			}
 		}
-		JOptionPane.showMessageDialog(null, mensagem, titulo, JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, mensagem, titulo, icone);
 		
 	}
 	
@@ -526,15 +529,15 @@ boolean validarSenha = true;
 		if (!pswSenha.getText().equals(pswConfirmarSenha.getText())) {
 			validarSenha = false;
 			JOptionPane.showMessageDialog(null, "Para confirmar a senha, é necessário que as duas senhas sejam as mesmas.\n "
-					+ "Favor verificar!", "Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+					+ "Favor verificar!", "Senha Inconsistente", JOptionPane.ERROR_MESSAGE);
 		} else if (pswSenha.getText().length() < 8) {
 			validarSenha = false;
 			JOptionPane.showMessageDialog(null, "A senha deve conter mais de 8 caracteres.\n Favor verificar!", 
-					"Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+					"Senha Inconsistente", JOptionPane.ERROR_MESSAGE);
 		} else if (pswSenha.getText().length() > 30) {
 			validarSenha = false;
 			JOptionPane.showMessageDialog(null, "A senha deve conter menos de 30 caracteres.\n Favor verificar!", 
-					"Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+					"Senha Inconsistente", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return validarSenha;
@@ -573,7 +576,7 @@ boolean validarSenha = true;
 		
 		LocalDate dataAtual = LocalDate.now();
 		if (dtNascimento!= null && dtNascimento.isAfter(dataAtual)) {
-			JOptionPane.showMessageDialog(null, "Data de nascimento é maior que a data atual. \n Favor Reconsiderar!", "A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Data de nascimento é maior que a data atual. \n Favor Reconsiderar!", "A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
 			validar = false;
 		}
 
@@ -612,7 +615,7 @@ boolean validarSenha = true;
 		mensagem.append("são obrigatórios.\n Favor preenchê-los!");
 		
 		if (!validar) {
-			JOptionPane.showMessageDialog(null, mensagem, "A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, mensagem, "A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return validar;
