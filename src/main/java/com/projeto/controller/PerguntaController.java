@@ -25,7 +25,7 @@ public class PerguntaController {
 
 		listaPerguntas = perguntaBO.buscaComSeletor(perguntaSeletor);
 		if (listaPerguntas == null || listaPerguntas.size() == 0) {
-			mensagem = "Não foram encontradas perguntas para esta pesquisa";
+			mensagem = "Não foram encontradas perguntas para esta pesquisa!";
 		}
 
 		if (Utils.stringValida(mensagem)) {
@@ -64,15 +64,15 @@ public class PerguntaController {
 		String mensagem = "";
 
 		if (!Utils.stringValida(perguntaAlterada.getCategoria().getDescricaoCategoria())) {
-			mensagem = "Falha ao encontrar CATEGORIA\n";
+			mensagem = "Falha ao encontrar CATEGORIA!\n";
 		} else if (!Utils.stringValida(perguntaAlterada.getTextoPergunta())) {
-			mensagem += "Falha ao encontrar TEXTO DA PERGUNTA\n";
+			mensagem += "Falha ao encontrar TEXTO DA PERGUNTA!\n";
 		} else if (perguntaAlterada.getIdUsuario() < 1) {
-			mensagem += "Falha ao encontrar USUÁRIO\n";
+			mensagem += "Falha ao encontrar USUÁRIO!\n";
 		} else if (perguntaAlterada.getIdPergunta() < 1) {
-			mensagem += "Falha ao encontrar IDENTIFICADOR DA PERGUNTA\n";
+			mensagem += "Falha ao encontrar IDENTIFICADOR DA PERGUNTA!\n";
 		} else if (perguntaOriginal.getIdUsuario() != usuarioLogado.getIdUsuario()) {
-			mensagem += "Não é possível alterar PERGUNTA de outro usuário\n";
+			mensagem += "Não é possível alterar PERGUNTA de outro usuário!\n";
 		} else {
 			perguntaBO.alteraPergunta(perguntaAlterada);
 		}
@@ -90,7 +90,7 @@ public class PerguntaController {
 			mensagem = "Não é possível excluir PERGUNTA de outro usuário\n";
 
 		} else if (!perguntaBO.excluiPergunta(perguntaExcluida)) {
-			mensagem = "Não é possível excluir PERGUNTA de outro usuário\n";
+			mensagem = "Não é possível excluir PERGUNTA de outro usuário!\n";
 		}
 
 		if (Utils.stringValida(mensagem)) {

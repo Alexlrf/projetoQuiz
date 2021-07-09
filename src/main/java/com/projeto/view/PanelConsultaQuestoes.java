@@ -235,7 +235,7 @@ public class PanelConsultaQuestoes extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
 				if (perguntaSelecionada < 0) {
-					JOptionPane.showMessageDialog(null, "Selecione uma PERGUNTA para adicionar", Constants.ALERTA,
+					JOptionPane.showMessageDialog(null, "Selecione uma PERGUNTA para adicionar!", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
 					
 				} else {
@@ -436,14 +436,14 @@ public class PanelConsultaQuestoes extends JPanel {
 				perguntaSelecionada = tableConsulta.getSelectedRow() - 1;
 
 				if (perguntaSelecionada < 0) {
-					JOptionPane.showMessageDialog(null, "Selecione uma PERGUNTA para excluir", Constants.ALERTA,
+					JOptionPane.showMessageDialog(null, "Selecione uma PERGUNTA para excluir!", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
 				} else {
 					
 					try {
 						perguntaExcluida = perguntas.get(perguntaSelecionada);
 						perguntaController.excluiPergunta(perguntaExcluida , usuarioLogado.getIdUsuario());
-						JOptionPane.showMessageDialog(null, "Exclusão realizada", Constants.SUCESSO,
+						JOptionPane.showMessageDialog(null, "Exclusão realizada!", Constants.SUCESSO,
 								JOptionPane.INFORMATION_MESSAGE);
 					} catch (ErroNoCadastroException mensagem) {
 						JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
@@ -462,13 +462,14 @@ public class PanelConsultaQuestoes extends JPanel {
 							null);
 
 					if (opcaoEscolhida != JOptionPane.YES_OPTION) {
-						JOptionPane.showMessageDialog(null, "Exclusão cancelada!");
+						JOptionPane.showMessageDialog(null, "Exclusão cancelada!", Constants.ALERTA,
+								JOptionPane.ERROR_MESSAGE, null);
 
 					} else if (opcaoEscolhida == JOptionPane.YES_OPTION) { 					
 					
 						try {
 							categoriaController.excluiCategoria(categoriaEscolhida, usuarioLogado.getIdUsuario());
-							JOptionPane.showMessageDialog(null, "Exclusão realizada", Constants.SUCESSO,
+							JOptionPane.showMessageDialog(null, "Exclusão realizada!", Constants.SUCESSO,
 									JOptionPane.INFORMATION_MESSAGE);
 						} catch (ErroNoCadastroException mensagem) {
 							JOptionPane.showMessageDialog(null, mensagem.getMessage(), Constants.ALERTA,
@@ -476,7 +477,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						}
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Selecione uma CATEGORIA para excluir", Constants.ALERTA,
+					JOptionPane.showMessageDialog(null, "Selecione uma CATEGORIA para excluir!", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
 					
 				}
@@ -522,7 +523,7 @@ public class PanelConsultaQuestoes extends JPanel {
 				alternativaSelecionada = tableAlternativas.getSelectedRow() - 1;
 				
 				if (alternativaSelecionada < 0 || perguntaSelecionada < 0) {
-					JOptionPane.showMessageDialog(null, "Selecione uma ALTERNATIVA para alterar", Constants.ALERTA,
+					JOptionPane.showMessageDialog(null, "Selecione uma ALTERNATIVA para alterar!", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
 				} else {
 					alternativaVO = alternativas.get(alternativaSelecionada);
@@ -555,7 +556,8 @@ public class PanelConsultaQuestoes extends JPanel {
 									JOptionPane.ERROR_MESSAGE, null);
 						}
 					} else {
-						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
+						JOptionPane.showMessageDialog(null, "Alteração cancelada!", Constants.ALERTA,
+								JOptionPane.ERROR_MESSAGE, null);
 					}
 				}
 			}
@@ -567,7 +569,8 @@ public class PanelConsultaQuestoes extends JPanel {
 							"Digite a alteração desejada!", JOptionPane.QUESTION_MESSAGE);
 
 					if (!Utils.stringValida(categoriaAlterada)) {
-						JOptionPane.showMessageDialog(null, "Alteração cancelada!");
+						JOptionPane.showMessageDialog(null, "Alteração cancelada!", Constants.ALERTA,
+								JOptionPane.ERROR_MESSAGE, null);
 
 					} else {
 						categoriaAlterada = Utils.formataEspacoUnico(categoriaAlterada).toUpperCase();
@@ -577,7 +580,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						String mensagem = categoriaController.alteraCategoria(categoriaEscolhida, categoriaAlterada,
 								usuarioLogado.getIdUsuario());
 
-						JOptionPane.showMessageDialog(null, mensagem, Constants.SUCESSO,
+						JOptionPane.showMessageDialog(null, mensagem, null,
 								JOptionPane.INFORMATION_MESSAGE);
 
 					} catch (Exception e) {
@@ -597,7 +600,7 @@ public class PanelConsultaQuestoes extends JPanel {
 				PerguntaVO perguntaAlterada = new PerguntaVO();
 
 				if (perguntaSelecionada < 0) {
-					JOptionPane.showMessageDialog(null, "Selecione uma PERGUNTA para alterar", Constants.ALERTA,
+					JOptionPane.showMessageDialog(null, "Selecione uma PERGUNTA para alterar!", Constants.ALERTA,
 							JOptionPane.ERROR_MESSAGE, null);
 				} else {
 					perguntaOriginal = perguntas.get(perguntaSelecionada);
@@ -622,7 +625,8 @@ public class PanelConsultaQuestoes extends JPanel {
 								JOptionPane.QUESTION_MESSAGE, null, categoriasTexto, categoriasTexto[0]);
 
 						if (!Utils.stringValida(categoriaAlterada2)) {
-							JOptionPane.showMessageDialog(null, "Alteração cancelada!");
+							JOptionPane.showMessageDialog(null, "Alteração cancelada!", Constants.ALERTA,
+									JOptionPane.ERROR_MESSAGE, null);
 
 						} else {
 							categoriaAlterada2 = Utils.formataEspacoUnico(categoriaAlterada2);
