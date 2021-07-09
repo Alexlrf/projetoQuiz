@@ -1,6 +1,7 @@
 package com.projeto.repository;
 
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 public class Utils {
 	
@@ -61,6 +62,44 @@ public class Utils {
 		
 		return texto.replaceAll("\\s+", " ").trim();
 		
+	}
+	
+	/** 
+	 * Método que valida se o número de celular recebido começa com o dígito 9
+	 * 
+	 * @param texto com número de celular digitado pelo usuário
+	 * @return true, se houver o dígito 9 no início ou false caso contrário
+	 */
+	public static boolean validaNumeroCelular(String celular) {	
+		
+		boolean resultado = true;
+		boolean celularValido = Pattern.compile("\\(\\d{2}\\)\\s*9\\d{4}-\\d{4}")
+				.matcher(celular).find();
+		
+		if (!celularValido) {			
+			resultado = false;				
+		} 		
+		return resultado;		
+	}
+
+	/** 
+	 * Método que valida se o número de RG recebido não possui mais de 3 letras em sequência
+	 * ou uma quantidade maior que 3 letras 
+	 * 
+	 * @param texto com número de RG digitado pelo usuário
+	 * @return true, se RGválido ou false caso contrário
+	 */
+	public static boolean validaFormatoRG(String rg) {
+		boolean rgValidado = true;	
+		
+		rg = rg.replaceAll("\\d", "").trim(); 
+		boolean rgValido = Pattern.compile("\\D{4,}")
+				.matcher(rg).find();
+		
+		if (rgValido || rg.length() > 3) {			
+			rgValidado = false;				
+		} 		
+		return rgValidado;
 	}
 
 }

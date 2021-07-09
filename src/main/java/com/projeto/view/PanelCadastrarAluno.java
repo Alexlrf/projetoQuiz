@@ -1,17 +1,30 @@
 package com.projeto.view;
 
-import javax.swing.JPanel;
-import javax.swing.AbstractButton;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
 import com.github.lgooddatepicker.components.DatePicker;
@@ -21,35 +34,20 @@ import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
 import com.projeto.exceptions.CpfExistenteException;
 import com.projeto.exceptions.RgExistenteException;
-import com.projeto.model.dao.AlunoDAO;
 import com.projeto.model.entity.AlunoVO;
 import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Constants;
+import com.projeto.repository.TextFieldLimit;
 import com.projeto.repository.Utils;
-
-import javax.swing.SwingConstants;
-import javax.swing.JRadioButton;
-import java.awt.Component;
-import javax.swing.JComboBox;
-import javax.swing.JCheckBox;
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import java.awt.Color;
-import javax.swing.JFormattedTextField;
 
 public class PanelCadastrarAluno extends JPanel {
 	private PlaceholderTextField txtNome;
 	private JFormattedTextField txtCpf;
 	private final ButtonGroup buttonGroupSexo = new ButtonGroup();
 	private final ButtonGroup buttonGroupDeficiente = new ButtonGroup();
-	private JFormattedTextField txtRg;
+	private JTextField txtRg;
 	private JFormattedTextField txtCelular;
 	private PlaceholderPasswordField pswSenha;
 	private PlaceholderPasswordField pswConfirmarSenha;
@@ -68,6 +66,7 @@ public class PanelCadastrarAluno extends JPanel {
 	private JComboBox cbxTurno;
 	private JLabel lblStatus;
 	private JComboBox cbxAtivado;
+	private int contaCaracteres = 0;
 
 	public PanelCadastrarAluno(AlunoVO aluno) {
 		this.aluno = aluno;
@@ -106,21 +105,17 @@ public class PanelCadastrarAluno extends JPanel {
 		
 		txtNome = new PlaceholderTextField();
 		txtNome.setPlaceholder("Digite o nome completo, Ex: José da Silva Sauro.");
+		txtNome.setDocument(new TextFieldLimit(255));
 		txtNome.setColumns(10);
 		
 		JLabel lblCadastrarAluno = new JLabel("Cadastrar Aluno");
 		lblCadastrarAluno.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCadastrarAluno.setFont(new Font("Tahoma", Font.BOLD, 24));
 		
-		JLabel lblRg = new JLabel("RG:");
-		
-		MaskFormatter mascaraRg;
-		try {
-			mascaraRg = new MaskFormatter("#.###.###");
-			txtRg = new JFormattedTextField(mascaraRg);
-		} catch (ParseException e) {
-			System.out.println("Erro ao formatar mascara de Rg: " + e.getMessage());
-		}
+		JLabel lblRg = new JLabel("RG:");		
+	
+		txtRg = new JTextField();
+		txtRg.setDocument(new TextFieldLimit(20));
 		txtRg.setColumns(10);
 		
 		MaskFormatter mascaraCpf;
@@ -181,6 +176,7 @@ public class PanelCadastrarAluno extends JPanel {
 		JLabel lblSenha = new JLabel("Senha:");
 		
 		pswSenha = new PlaceholderPasswordField();
+		pswSenha.setDocument(new TextFieldLimit(30));
 		pswSenha.setPlaceholder("Digite sua senha, e não se esqueça de anotar.");
 		
 		cbMostrarSenha = new JCheckBox("Mostrar Senha");
@@ -199,6 +195,7 @@ public class PanelCadastrarAluno extends JPanel {
 		JLabel lblConfirmarSenha = new JLabel("Confirmar Senha:");
 		
 		pswConfirmarSenha = new PlaceholderPasswordField();
+		pswConfirmarSenha.setDocument(new TextFieldLimit(30));
 		pswConfirmarSenha.setPlaceholder("A confirmação da senha deve ser exatamente igual a senha digitada anteriormente.");
 		
 		cbConfirmarSenha = new JCheckBox("Mostrar Senha");
@@ -468,20 +465,22 @@ public class PanelCadastrarAluno extends JPanel {
 		
 		String mensagem = "";
 		String titulo = "";
+		int icone = JOptionPane.ERROR_MESSAGE;
 		if (aluno.getIdUsuario() != null) {
 			titulo = "Atualizar";
 			boolean atualizou = false;
-			mensagem = "Erro ao atualizar aluno.";
+			mensagem = "Erro ao atualizar aluno!";
 			
 			try {
 				atualizou = UsuarioController.alterar(aluno);
 			} catch (RgExistenteException | CpfExistenteException e) {
-				mensagem = e.getMessage();
+				mensagem = e.getMessage() + "!";
 				titulo = "Aviso";
 			}
 			
 			if (atualizou) {
 				mensagem = "Aluno atualizado com sucesso!";
+				icone = JOptionPane.INFORMATION_MESSAGE;
 			}
 		} else {
 			
@@ -490,16 +489,17 @@ public class PanelCadastrarAluno extends JPanel {
 				aluno = UsuarioController.cadastrar(aluno);
 				if (aluno.getIdUsuario() != null) {
 					mensagem = "Aluno cadastrado com sucesso!";
+					icone = JOptionPane.INFORMATION_MESSAGE;
 					limparTela();
 				} else {
-					mensagem = "Erro ao cadastrar aluno.";
+					mensagem = "Erro ao cadastrar aluno!";
 				}
 			} catch (RgExistenteException | CpfExistenteException e) {
-				mensagem = e.getMessage();
+				mensagem = e.getMessage() + "!";
 				titulo = "Aviso";
 			}
 		}
-		JOptionPane.showMessageDialog(null, mensagem, titulo, JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, mensagem, titulo, icone);
 		
 	}
 	
@@ -525,15 +525,15 @@ boolean validarSenha = true;
 		if (!pswSenha.getText().equals(pswConfirmarSenha.getText())) {
 			validarSenha = false;
 			JOptionPane.showMessageDialog(null, "Para confirmar a senha, é necessário que as duas senhas sejam as mesmas.\n "
-					+ "Favor verificar!", "Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+					+ "Favor verificar!", "Senha Inconsistente", JOptionPane.ERROR_MESSAGE);
 		} else if (pswSenha.getText().length() < 8) {
 			validarSenha = false;
 			JOptionPane.showMessageDialog(null, "A senha deve conter mais de 8 caracteres.\n Favor verificar!", 
-					"Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+					"Senha Inconsistente", JOptionPane.ERROR_MESSAGE);
 		} else if (pswSenha.getText().length() > 30) {
 			validarSenha = false;
 			JOptionPane.showMessageDialog(null, "A senha deve conter menos de 30 caracteres.\n Favor verificar!", 
-					"Senha Inconsistente", JOptionPane.INFORMATION_MESSAGE);
+					"Senha Inconsistente", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return validarSenha;
@@ -555,12 +555,19 @@ boolean validarSenha = true;
 		}
 		
 		if (!Utils.stringValida(txtRg.getText().replace(".", ""))) {
-			mensagem.append("Rg, ");
+			mensagem.append("RG, ");
 			validar = false;
+		} else if (!Utils.validaFormatoRG(txtRg.getText())){			
+			JOptionPane.showMessageDialog(null, "Número de RG inválido!",
+					"A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
+			txtRg.setText("");
+			txtRg.requestFocusInWindow();
+			contaCaracteres = 0;
+			validar = false;							
 		}
 		
 		if (!Utils.stringValida(txtCpf.getText().replace(".", "").replace("-", ""))) {
-			mensagem.append("Cpf, ");
+			mensagem.append("CPF, ");
 			validar = false;
 		}
 
@@ -572,7 +579,7 @@ boolean validarSenha = true;
 		
 		LocalDate dataAtual = LocalDate.now();
 		if (dtNascimento!= null && dtNascimento.isAfter(dataAtual)) {
-			JOptionPane.showMessageDialog(null, "Data de nascimento é maior que a data atual. \n Favor Reconsiderar!", "A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Data de nascimento é maior que a data atual. \n Favor Reconsiderar!", "A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
 			validar = false;
 		}
 
@@ -588,7 +595,14 @@ boolean validarSenha = true;
 
 		if (!Utils.stringValida(txtCelular.getText().replace("(", "").replace(")", "").replace("-", ""))) {
 			mensagem.append("Celular, ");
+			txtCelular.requestFocusInWindow();
 			validar = false;
+		} else if (!Utils.validaNumeroCelular(txtCelular.getText())){			
+			JOptionPane.showMessageDialog(null, "Número de celular inválido!",
+					"A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
+			txtCelular.setText("");
+			txtCelular.requestFocusInWindow();
+			validar = false;			
 		}
 
 		if (!Utils.stringValida(pswSenha.getText())) {
@@ -604,7 +618,7 @@ boolean validarSenha = true;
 		mensagem.append("são obrigatórios.\n Favor preenchê-los!");
 		
 		if (!validar) {
-			JOptionPane.showMessageDialog(null, mensagem, "A T E N Ç Ã O", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, mensagem, "A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		return validar;

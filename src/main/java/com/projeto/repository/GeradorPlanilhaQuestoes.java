@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Color;
 import org.apache.poi.ss.usermodel.Row;
 
 import com.projeto.model.entity.PerguntaVO;
@@ -24,11 +25,11 @@ public class GeradorPlanilhaQuestoes {
 		// Cria o cabeçalho
 		for (int i =0; i < nomeColunas.length; i++) {
 			Cell cell = headerRow.createCell(i);
-			cell.setCellValue(nomeColunas[i]);			
+			cell.setCellValue(nomeColunas[i]);				
 		}
 		
 		// Cria linhas
-		int rowNum = 0;
+		int rowNum = 1;
 		for (PerguntaVO pergunta : perguntas) {
 			Row novaLinha = aba.createRow(rowNum++);
 			novaLinha.createCell(0).setCellValue(pergunta.getTextoPergunta());

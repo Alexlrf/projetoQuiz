@@ -1,26 +1,36 @@
 package com.projeto.view;
 
-import javax.swing.JPanel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
-import java.awt.SystemColor;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import javax.swing.SwingConstants;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.projeto.controller.UsuarioController;
 import com.projeto.enums.TipoUsuarioEnum;
 import com.projeto.enums.TurnoEnum;
 import com.projeto.exceptions.CpfExistenteException;
@@ -31,23 +41,14 @@ import com.projeto.model.entity.UsuarioVO;
 import com.projeto.placeholder.PlaceholderPasswordField;
 import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Constants;
+import com.projeto.repository.TextFieldLimit;
 import com.projeto.repository.Utils;
-import com.projeto.controller.UsuarioController;
-
-import javax.swing.JTextField;
-import javax.swing.JRadioButton;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JCheckBox;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.ButtonGroup;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class PanelCadastrarProfessor extends JPanel {
 	private PlaceholderTextField txtNome;
-	private JFormattedTextField txtRg;
+	private JTextField txtRg;
 	private JFormattedTextField txtCpf;
 	private JFormattedTextField txtCelular;
 	private PlaceholderPasswordField pswSenha;
@@ -68,6 +69,7 @@ public class PanelCadastrarProfessor extends JPanel {
 	private final ButtonGroup buttonGroupDeficiente = new ButtonGroup();
 	private final ButtonGroup buttonGroupSexo = new ButtonGroup();
 	private JComboBox cbxAtivado;
+	private int contaCaracteres = 0;
 
 	public PanelCadastrarProfessor(ProfessorVO professor) {
 		this.professor = professor;
@@ -87,17 +89,17 @@ setBackground(new Color(70, 130, 150));
 		JPanel panel = new JPanel();
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		
@@ -127,15 +129,11 @@ setBackground(new Color(70, 130, 150));
 		
 		txtNome = new PlaceholderTextField();
 		txtNome.setPlaceholder("Digite o nome completo, Ex: José da Silva Sauro.");
+		txtNome.setDocument(new TextFieldLimit(255));
 		txtNome.setColumns(10);
 		
-		MaskFormatter mascaraRg;
-		try {
-			mascaraRg = new MaskFormatter("#.###.###");
-			txtRg = new JFormattedTextField(mascaraRg);
-		} catch (ParseException e) {
-			System.out.println("Erro ao formatar mascara de Rg: " + e.getMessage());
-		}
+		txtRg = new JTextField();
+		txtRg.setDocument(new TextFieldLimit(20));
 		txtRg.setColumns(10);
 		
 		MaskFormatter mascaraCpf;
@@ -182,9 +180,11 @@ setBackground(new Color(70, 130, 150));
 		cbxTurno.setModel(preencherTurno);
 		
 		pswSenha = new PlaceholderPasswordField();
+		pswSenha.setDocument(new TextFieldLimit(30));
 		pswSenha.setPlaceholder("Digite sua senha, e não se esqueça de anotar.");
 		
 		pswConfirmarSenha = new PlaceholderPasswordField();
+		pswConfirmarSenha.setDocument(new TextFieldLimit(30));
 		pswConfirmarSenha.setPlaceholder("A confirmação da senha deve ser exatamente igual a senha digitada anteriormente.");
 		
 		JLabel lblDisciplina = new JLabel("Disciplina:");
@@ -261,7 +261,7 @@ setBackground(new Color(70, 130, 150));
 		cbxAtivado.setModel(new DefaultComboBoxModel
 				(new String[] {Constants.ATIVADO.toString(), Constants.DESATIVADO.toString()}));
 		
-		JLabel lblAtivado = new JLabel("Ativado");
+		JLabel lblAtivado = new JLabel("Status");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -269,13 +269,6 @@ setBackground(new Color(70, 130, 150));
 					.addGap(299)
 					.addComponent(lblCadastrarProfessor, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGap(247))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 249, Short.MAX_VALUE)
-					.addComponent(btnCadastrar, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
-					.addComponent(btnAtualizar, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(37)
 					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -310,7 +303,7 @@ setBackground(new Color(70, 130, 150));
 							.addComponent(rdbFeminino)
 							.addGap(58))
 						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblTurno)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -323,14 +316,14 @@ setBackground(new Color(70, 130, 150));
 									.addComponent(lblCpf)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(txtCpf, GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
-								.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblNome)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+									.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
 									.addGap(11)
 									.addComponent(lblAtivado)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(cbxAtivado, 0, 138, Short.MAX_VALUE))
+									.addComponent(cbxAtivado, 0, 142, Short.MAX_VALUE))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblPossuiDeficiencia)
 									.addGap(18)
@@ -346,6 +339,14 @@ setBackground(new Color(70, 130, 150));
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(cbxDisciplina, 0, 157, Short.MAX_VALUE)))
 							.addGap(20))))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
+					.addComponent(btnCadastrar, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(btnAtualizar, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -396,11 +397,13 @@ setBackground(new Color(70, 130, 150));
 						.addComponent(pswConfirmarSenha, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cbConfirmarSenha)
-					.addGap(84)
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnCadastrar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
-						.addComponent(btnAtualizar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
-						.addComponent(btnLimpar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(208))
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addContainerGap(618, Short.MAX_VALUE)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnCadastrar, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnAtualizar, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		panel.setLayout(gl_panel);
@@ -501,7 +504,7 @@ setBackground(new Color(70, 130, 150));
 		if (rdbDeficienteSim.isSelected()) {
 			professor.setPossuiDeficiencia(true);
 		}
-		
+
 		professor.setCelular(txtCelular.getText().replace("(", "").replace(")", "").replace("-", "").replace(" ", ""));
 		
 		String disciplinaSelecionada = cbxDisciplina.getSelectedItem().toString();
@@ -583,12 +586,19 @@ setBackground(new Color(70, 130, 150));
 		}
 		
 		if (!Utils.stringValida(txtRg.getText().replace(".", ""))) {
-			mensagem.append("Rg, ");
+			mensagem.append("RG, ");
 			validar = false;
+		} else if (!Utils.validaFormatoRG(txtRg.getText())){			
+			JOptionPane.showMessageDialog(null, "Número de RG inválido!",
+					"A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
+			txtRg.setText("");
+			txtRg.requestFocusInWindow();
+			contaCaracteres = 0;
+			validar = false;							
 		}
 		
 		if (!Utils.stringValida(txtCpf.getText().replace(".", "").replace("-", ""))) {
-			mensagem.append("Cpf, ");
+			mensagem.append("CPF, ");
 			validar = false;
 		}
 
@@ -613,10 +623,17 @@ setBackground(new Color(70, 130, 150));
 			mensagem.append("Possui Deficiência, ");
 			validar = false;
 		}
-
+		
 		if (!Utils.stringValida(txtCelular.getText().replace("(", "").replace(")", "").replace("-", ""))) {
 			mensagem.append("Celular, ");
+			txtCelular.requestFocusInWindow();
 			validar = false;
+		} else if (!Utils.validaNumeroCelular(txtCelular.getText())){			
+			JOptionPane.showMessageDialog(null, "Número de celular inválido!",
+					"A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
+			txtCelular.setText("");
+			txtCelular.requestFocusInWindow();
+			validar = false;			
 		}
 		
 		if (cbxDisciplina.getSelectedIndex() == 0) {
