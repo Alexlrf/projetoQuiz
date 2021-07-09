@@ -580,7 +580,7 @@ public class PanelConsultaQuestoes extends JPanel {
 						String mensagem = categoriaController.alteraCategoria(categoriaEscolhida, categoriaAlterada,
 								usuarioLogado.getIdUsuario());
 
-						JOptionPane.showMessageDialog(null, mensagem, Constants.SUCESSO,
+						JOptionPane.showMessageDialog(null, mensagem, null,
 								JOptionPane.INFORMATION_MESSAGE);
 
 					} catch (Exception e) {
