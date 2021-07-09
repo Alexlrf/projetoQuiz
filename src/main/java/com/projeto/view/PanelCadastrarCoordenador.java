@@ -112,19 +112,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 		JLabel lblRg = new JLabel("RG:");
 		
 		txtRg = new JTextField();
-		txtRg.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {				
-				contaCaracteres++;
-				if (contaCaracteres > 20) {
-					JOptionPane.showMessageDialog(null, "Campo RG pode conter no MÁXIMO 20 caracteres\n"
-							+ "NÃO são aceitas mais de 3 letras em sequência",
-							"A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
-					txtRg.setText("");
-					contaCaracteres = 0;
-				}
-			}
-		});
+		txtRg.setDocument(new TextFieldLimit(20));
 		txtRg.setColumns(10);
 			
 		JLabel lblCpf = new JLabel("CPF:");
@@ -185,6 +173,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 		JLabel lblSenha = new JLabel("Senha:");
 		
 		pswSenha = new PlaceholderPasswordField();
+		pswSenha.setDocument(new TextFieldLimit(30));
 		pswSenha.setPlaceholder("Digite sua senha, e não se esqueça de anotar.");
 		pswSenha.setColumns(10);
 		
@@ -202,6 +191,7 @@ public class PanelCadastrarCoordenador extends JPanel {
 		JLabel lblSenha_1 = new JLabel("Confirmar Senha:");
 		
 		pswConfirmarSenha = new PlaceholderPasswordField();
+		pswConfirmarSenha.setDocument(new TextFieldLimit(30));
 		pswConfirmarSenha.setPlaceholder("A confirmação da senha deve ser exatamente igual a senha digitada anteriormente.");
 		pswConfirmarSenha.setColumns(10);
 		
