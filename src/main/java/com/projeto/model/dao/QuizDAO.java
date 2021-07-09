@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.exceptions.ErroNoCadastroException;
@@ -40,7 +41,7 @@ public class QuizDAO {
 
 	}
 
-	public boolean cadastraQuiz(int idQuiz, List<PerguntaVO> quiz, Integer idUsuario) {
+	public boolean cadastraQuiz(int idQuiz, Set<PerguntaVO> quiz, Integer idUsuario) {
 		boolean retorno = true;
 		String sql = "INSERT INTO prova_quiz (id_quiz, id_usuario, id_pergunta) VALUES (?, ?, ?);";
 

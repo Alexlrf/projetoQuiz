@@ -1,6 +1,7 @@
 package com.projeto.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import com.projeto.bo.QuizBO;
 import com.projeto.exceptions.ErroNaConsultaException;
@@ -14,7 +15,7 @@ import com.projeto.seletor.QuizSeletor;
 public class QuizController {
 	QuizBO quizBO = new QuizBO();
 
-	public int cadastraQuiz(List<PerguntaVO> quiz, Integer idUsuario) throws ErroNoCadastroException {
+	public int cadastraQuiz(Set<PerguntaVO> quiz, Integer idUsuario) throws ErroNoCadastroException {
 		int idQuiz = 0;
 		String mensagem = "";
 

@@ -2,6 +2,7 @@ package com.projeto.bo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.projeto.exceptions.ErroNaConsultaException;
 import com.projeto.exceptions.ErroNoCadastroException;
@@ -15,7 +16,7 @@ import com.projeto.seletor.QuizSeletor;
 public class QuizBO {
 	QuizDAO quizDAO = new QuizDAO();
 
-	public int cadastraQuiz(List<PerguntaVO> quiz, Integer idUsuario) throws ErroNoCadastroException {
+	public int cadastraQuiz(Set<PerguntaVO> quiz, Integer idUsuario) throws ErroNoCadastroException {
 		String mensagem = "";
 
 		int idQuiz = quizDAO.cadastraCodigoQuiz(idUsuario);
