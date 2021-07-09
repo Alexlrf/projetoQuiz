@@ -43,6 +43,8 @@ import com.projeto.placeholder.PlaceholderTextField;
 import com.projeto.repository.Constants;
 import com.projeto.repository.TextFieldLimit;
 import com.projeto.repository.Utils;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class PanelCadastrarProfessor extends JPanel {
 	private PlaceholderTextField txtNome;
@@ -131,19 +133,7 @@ setBackground(new Color(70, 130, 150));
 		txtNome.setColumns(10);
 		
 		txtRg = new JTextField();
-		txtRg.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {				
-				contaCaracteres++;
-				if (contaCaracteres > 20) {
-					JOptionPane.showMessageDialog(null, "Campo RG pode conter no MÁXIMO 20 caracteres\n"
-							+ "NÃO são aceitas mais de 3 letras em sequência",
-							"A T E N Ç Ã O", JOptionPane.ERROR_MESSAGE);
-					txtRg.setText("");
-					contaCaracteres = 0;
-				}
-			}
-		});
+		txtRg.setDocument(new TextFieldLimit(20));
 		txtRg.setColumns(10);
 		
 		MaskFormatter mascaraCpf;
@@ -190,9 +180,11 @@ setBackground(new Color(70, 130, 150));
 		cbxTurno.setModel(preencherTurno);
 		
 		pswSenha = new PlaceholderPasswordField();
+		pswSenha.setDocument(new TextFieldLimit(30));
 		pswSenha.setPlaceholder("Digite sua senha, e não se esqueça de anotar.");
 		
 		pswConfirmarSenha = new PlaceholderPasswordField();
+		pswConfirmarSenha.setDocument(new TextFieldLimit(30));
 		pswConfirmarSenha.setPlaceholder("A confirmação da senha deve ser exatamente igual a senha digitada anteriormente.");
 		
 		JLabel lblDisciplina = new JLabel("Disciplina:");
@@ -269,13 +261,13 @@ setBackground(new Color(70, 130, 150));
 		cbxAtivado.setModel(new DefaultComboBoxModel
 				(new String[] {Constants.ATIVADO.toString(), Constants.DESATIVADO.toString()}));
 		
-		JLabel lblAtivado = new JLabel("Ativado");
+		JLabel lblAtivado = new JLabel("Status");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(299)
-					.addComponent(lblCadastrarProfessor, GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+					.addComponent(lblCadastrarProfessor, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGap(247))
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(37)
@@ -289,20 +281,20 @@ setBackground(new Color(70, 130, 150));
 										.addGroup(gl_panel.createSequentialGroup()
 											.addComponent(cbMostrarSenha, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
 											.addGap(85)
-											.addComponent(lblDicaSenha, GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+											.addComponent(lblDicaSenha, GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
 											.addGap(267))
-										.addComponent(pswSenha, GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE)))
+										.addComponent(pswSenha, GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblConfirmarSenha)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addComponent(cbConfirmarSenha)
-										.addComponent(pswConfirmarSenha, GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE))))
+										.addComponent(pswConfirmarSenha, GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE))))
 							.addContainerGap())
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(lblDataDeNascimento)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(dataNascimento, GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+							.addComponent(dataNascimento, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
 							.addGap(32)
 							.addComponent(lblSexo)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -315,23 +307,23 @@ setBackground(new Color(70, 130, 150));
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblTurno)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(cbxTurno, 0, 200, Short.MAX_VALUE)
+									.addComponent(cbxTurno, 0, 186, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(lblRg)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(txtRg, GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+									.addComponent(txtRg, GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(lblCpf)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(txtCpf, GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE))
+									.addComponent(txtCpf, GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblNome)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+									.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
 									.addGap(11)
 									.addComponent(lblAtivado)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(cbxAtivado, 0, 163, Short.MAX_VALUE))
+									.addComponent(cbxAtivado, 0, 142, Short.MAX_VALUE))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblPossuiDeficiencia)
 									.addGap(18)
@@ -341,20 +333,20 @@ setBackground(new Color(70, 130, 150));
 									.addGap(21)
 									.addComponent(lblCelular)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(txtCelular, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+									.addComponent(txtCelular, GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(lblDisciplina)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(cbxDisciplina, 0, 178, Short.MAX_VALUE)))
+									.addComponent(cbxDisciplina, 0, 157, Short.MAX_VALUE)))
 							.addGap(20))))
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 273, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
 					.addComponent(btnCadastrar, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(18)
 					.addComponent(btnAtualizar, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
-					.addGap(18))
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -405,11 +397,13 @@ setBackground(new Color(70, 130, 150));
 						.addComponent(pswConfirmarSenha, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cbConfirmarSenha)
-					.addGap(117)
+					.addGap(208))
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addContainerGap(618, Short.MAX_VALUE)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnCadastrar, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnAtualizar, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnAtualizar, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		panel.setLayout(gl_panel);
